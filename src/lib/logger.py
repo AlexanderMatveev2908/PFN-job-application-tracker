@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-def _cg(
+def log(
     *arg,
     ttl: str = "logger",
 ) -> None:
@@ -32,4 +32,4 @@ def _cg(
     caller_file = Path(frame.filename if frame else "").resolve()
     print(f"📌 => from {caller_file}")
 
-    print("\n")
+    print("\t")

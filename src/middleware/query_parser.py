@@ -3,6 +3,7 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from starlette.responses import Response
+from src.lib.data_structure import parse_bool
 
 
 class ParserQuery(BaseHTTPMiddleware):
@@ -12,12 +13,15 @@ class ParserQuery(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: Callable
     ) -> Response:
-        psd_q: Dict[str, Any] = {}
+        parsed_q: Dict[str, Any] = {}
 
-        for k in request.query_params.keys():
+        for k in request.query_params:
             v = request.query_params.getlist(k)
-            psd_q[k] = v if len(v) > 1 else v[0]
 
-        request.state.psd_q = psd_q
+            if len(v) > 1:
+                parsed_q[k] = [parse_bool(el) for el in v]
+            else:
+                parsed_q[k] = parse_bool(v[0])
 
+        request.state.parsed_q = parsed_q
         return await call_next(request)

@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from src.lib.logger import log
 from src.middleware.json_logger import LoggerJSON
 from src.routes.index import api
-from .lib.logger import _cg
 from .middleware.query_parser import ParserQuery
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    _cg(ttl="🚀 server running on 3000...")
+    log(ttl="🚀 server running on 3000...")
     yield
-    _cg(ttl="💣 server shutting down")
+    log(ttl="💣 server shutting down")
 
 
 app = FastAPI(lifespan=lifespan)

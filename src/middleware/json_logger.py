@@ -7,7 +7,7 @@ from ..lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp
-from ..lib.logger import _cg
+from ..lib.logger import log
 
 
 # @attr.s(auto_attribs=True)
@@ -37,7 +37,7 @@ class LoggerJSON(BaseHTTPMiddleware):
             parsed = json.loads(body)
 
         except Exception as err:
-            _cg(
+            log(
                 err,
                 ttl="❌ JSON parse error:",
             )
@@ -46,7 +46,7 @@ class LoggerJSON(BaseHTTPMiddleware):
         obj = {
             "body": parsed,
             "params": dict(request.path_params),
-            "psd_q": dict(request.state.psd_q),
+            "parsed_q": dict(request.state.parsed_q),
             "access_token": request.headers.get("authorization"),
             "refresh_token": request.cookies.get("refresh_token"),
         }
