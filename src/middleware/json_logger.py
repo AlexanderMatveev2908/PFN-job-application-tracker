@@ -1,5 +1,5 @@
 import json
-from typing import Callable
+from typing import Callable, Dict
 
 # import attr
 from fastapi import Request
@@ -7,6 +7,7 @@ from ..lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp
+from ..lib.logger import _cg
 
 
 # @attr.s(auto_attribs=True)
@@ -27,29 +28,34 @@ class LoggerJSON(BaseHTTPMiddleware):
         body = await request.body()
         parsed = {}
 
-        if (
-            request.url.path.startswith(
-                ("/docs", "/openapi.json", "/favicon.ico", "/redoc")
-            )
-            or not body
+        if request.url.path.startswith(
+            ("/docs", "/openapi.json", "/favicon.ico", "/redoc")
         ):
             return await call_next(request)
 
         try:
             parsed = json.loads(body)
-            print(parsed)
+
         except Exception as err:
-            print("❌ JSON parse error:", err)
+            _cg(
+                err,
+                ttl="❌ JSON parse error:",
+            )
             parsed = {"raw": body.decode("utf-8", errors="ignore")}
 
         obj = {
             "body": parsed,
             "params": dict(request.path_params),
-            "query": dict(request.query_params),
+            "psd_q": dict(request.state.psd_q),
             "access_token": request.headers.get("authorization"),
             "refresh_token": request.cookies.get("refresh_token"),
         }
 
         write_f(self.log_path, json.dumps(obj, indent=2))
+
+        async def receive() -> Dict:
+            return {"type": "http.request", "body": body, "more_body": False}
+
+        request = Request(request.scope, receive)
 
         return await call_next(request)

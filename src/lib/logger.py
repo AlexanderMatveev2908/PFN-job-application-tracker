@@ -3,21 +3,20 @@ from pathlib import Path
 from datetime import datetime
 
 
-def __cg(
+def _cg(
     *arg,
     ttl: str = "logger",
 ) -> None:
 
     print(
-        f"{(f'{ttl} 🔥'.center(len(ttl) + 4, ' ')).center(len(ttl) * 4, '—')}"
+        f"{(f'{ttl} 🔥'.center(len(ttl) + 4, ' ')).center(len(ttl) + 20, '—')}"
     )
 
-    print("\t")
-
-    for x in arg:
-        print(x)
-
-    print("\t")
+    if len(arg):
+        print("\t")
+        for x in arg:
+            print(x)
+        print("\t")
 
     now = datetime.now()
     time_parsed = f'⏰ => at {now.strftime("%H:%M:%S")}'
