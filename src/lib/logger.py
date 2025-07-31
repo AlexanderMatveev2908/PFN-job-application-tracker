@@ -12,8 +12,12 @@ def __cg(
         f"{(f'{ttl} 🔥'.center(len(ttl) + 4, ' ')).center(len(ttl) * 4, '—')}"
     )
 
+    print("\t")
+
     for x in arg:
         print(x)
+
+    print("\t")
 
     now = datetime.now()
     time_parsed = f'⏰ => at {now.strftime("%H:%M:%S")}'
@@ -28,3 +32,5 @@ def __cg(
 
     caller_file = Path(frame.filename if frame else "").resolve()
     print(f"📌 => from {caller_file}")
+
+    print("\n")
