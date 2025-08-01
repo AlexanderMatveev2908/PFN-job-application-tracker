@@ -8,14 +8,17 @@ from src.lib.form_check import CheckFormErr, check_form
 
 
 class User(BaseModel):
-    first_name: str = Field(..., min_length=5)
+    first_name: str = Field(...)
     last_name: str = Field("Anonymous")
     age: int
 
     @field_validator("age")
     def check_age(cls, v) -> None:
         if v <= 0:
-            raise ErrAPI(msg="invalid age", status=422)
+            raise ErrAPI(
+                msg="invalid age",
+                status=422,
+            )
 
         return v
 

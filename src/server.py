@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.lib.logger import clg
@@ -6,11 +7,14 @@ from src.middleware.json_logger import LoggerJSON
 from src.middleware.wrap_api import WrapAPI
 from src.routes.index import api
 from .middleware.query_parser import ParserQuery
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    clg(ttl="🚀 server running on 3000...")
+    clg(ttl=f"🚀 server running on {os.getenv('PORT')}...")
     yield
     clg(ttl="💣 server shutting down")
 
