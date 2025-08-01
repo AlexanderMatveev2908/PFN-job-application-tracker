@@ -1,7 +1,7 @@
 class ErrAPI(Exception):
-    def __init__(self, status: int, msg: str, *, opt: dict | None = None):
+    def __init__(self, status: int, msg: str, **kwargs):
         self.status = status
         self.msg = msg
-        self.opt = opt or {}
+        self.data = kwargs
 
         super().__init__(msg)

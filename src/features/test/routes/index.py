@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+
 from ..controllers.get import get_test
 
 router_test = APIRouter(prefix="/test")

@@ -39,7 +39,7 @@ class WrapAPI(BaseHTTPMiddleware):
                 ttl="💥 global err",
             )
 
-            opt = None
+            data = None
 
             if isinstance(err, HTTPException):
                 status = err.status_code
@@ -47,9 +47,9 @@ class WrapAPI(BaseHTTPMiddleware):
             elif isinstance(err, ErrAPI):
                 status = err.status
                 msg = err.msg
-                opt = getattr(err, "opt", None)
+                data = getattr(err, "data", None)
             else:
                 status = 500
                 msg = str(err)
 
-            return ResAPI.err_ctm(status=status, msg=msg, opt=opt)
+            return ResAPI.err_ctm(status=status, msg=msg, data=data)

@@ -75,6 +75,6 @@ class ResAPI(JSONResponse):
 
     @classmethod
     def err_ctm(
-        cls, status: int, msg: str, *, opt: dict | None = None
+        cls, status: int, msg: str, *, data: dict | None = None
     ) -> "ResAPI":
-        return cls(status, {"msg": msg, **(opt or {})})
+        return cls(status, {"msg": msg, **(data or {})})

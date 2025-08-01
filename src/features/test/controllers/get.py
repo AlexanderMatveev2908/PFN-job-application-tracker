@@ -1,33 +1,8 @@
-import json
-from fastapi import Request
-from pydantic import BaseModel, Field, field_validator
-
-from src.decorators.err import ErrAPI
+from fastapi import Depends, Request
 from src.decorators.res import ResAPI
-from src.lib.form_check import CheckFormErr, check_form
+from src.features.test.middleware.check_user import User, check_user
 
 
-class User(BaseModel):
-    first_name: str = Field(..., min_length=5)
-    last_name: str = Field("Anonymous")
-    age: int
+async def get_test(_: Request, user: User = Depends(check_user)) -> ResAPI:
 
-    @field_validator("age")
-    def check_age(cls, v) -> None:
-        if v <= 0:
-            raise ErrAPI(msg="invalid age", status=422)
-
-        return v
-
-
-async def get_test(req: Request) -> ResAPI:
-
-    # form = getattr(req.state, "parsed_f", {})
-
-    parsed = json.loads(await req.body())
-    data = check_form(User, parsed)
-
-    if isinstance(data, CheckFormErr):
-        return ResAPI.err_422(msg=data.msg, data=data.list_errs)
-
-    return ResAPI.ok_201(data=data.form)
+    return ResAPI.ok_201(data=user)
