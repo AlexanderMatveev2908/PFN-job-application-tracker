@@ -48,7 +48,8 @@ class LoggerJSON(BaseHTTPMiddleware):
         obj = {
             "body": parsed,
             "params": dict(request.path_params),
-            "parsed_q": getattr(request.state, "parsed_q", {}),
+            "parsed_q": getattr(request.state, "parsed_q", None),
+            "parsed_f": getattr(request.state, "parsed_f", None),
             "access_token": request.headers.get("authorization"),
             "refresh_token": request.cookies.get("refresh_token"),
         }

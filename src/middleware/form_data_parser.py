@@ -15,12 +15,15 @@ UPLOAD_FIR = app_dir / "uploads/"
 
 
 def gen_filename(uf: UploadFile) -> str:
+    name = str(uuid.uuid4())
+    # name = p.stem
     ext = (
         Path(uf.filename).suffix
         if uf.filename
         else mimetypes.guess_extension(uf.content_type or "")
     )
-    return f"{uuid.uuid4()}{ext}"
+
+    return f"{name}{ext}"
 
 
 async def gen_local_vid(uf: UploadFile) -> str:
@@ -58,14 +61,14 @@ class FormDataParser(BaseHTTPMiddleware):
                     saved_path = await gen_local_vid(v)
 
                     value = {
-                        "filename": v.filename,
+                        "filename": Path(saved_path).name,
                         "content_type": v.content_type,
                         "size": getattr(v, "size", None),
                         "path": saved_path,
                     }
                 else:
                     value = {
-                        "filename": v.filename,
+                        "filename": gen_filename(v),
                         "content_type": v.content_type,
                         "size": getattr(v, "size", None),
                     }
@@ -80,6 +83,6 @@ class FormDataParser(BaseHTTPMiddleware):
             else:
                 parsed_f[k] = value
 
-        print(parsed_f)
+        request.state.parsed_f = parsed_f
 
         return await call_next(request)
