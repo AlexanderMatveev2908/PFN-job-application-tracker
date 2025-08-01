@@ -37,6 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(CorsMDW)
+app.add_middleware(CorsMDW, whitelist=whitelist)
 
 app.include_router(router=api)
