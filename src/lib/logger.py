@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-def log(
+def clg(
     *arg,
     ttl: str = "logger",
 ) -> None:

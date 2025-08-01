@@ -3,11 +3,12 @@ from typing import Callable
 
 # import attr
 from fastapi import Request
+
+from src.lib.logger import clg
 from ..lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp
-from ..lib.logger import log
 
 
 # @attr.s(auto_attribs=True)
@@ -17,7 +18,7 @@ class LoggerJSON(BaseHTTPMiddleware):
         self.log_path = log_path
 
     # app: ASGIApp
-    # log_path: str = attr.ib(default="logger/log.json")
+    # log_path: str = attr.ib(default="clger/clg.json")
 
     # def __attrs_post_init__(self):
     #     super().__init__(self.app)
@@ -34,14 +35,15 @@ class LoggerJSON(BaseHTTPMiddleware):
             return await call_next(request)
 
         try:
-            parsed = json.loads(body)
+            if "application/json" in request.headers.get("content-type", ""):
+                parsed = json.loads(body)
 
         except Exception as err:
-            log(
+            clg(
                 err,
-                ttl="❌ JSON parse error:",
+                ttl="err logger json parsing",
             )
-            parsed = {"raw": body.decode("utf-8", errors="ignore")}
+            # parsed = {"raw": body.decode("utf-8", errors="ignore")}
 
         obj = {
             "body": parsed,
@@ -54,7 +56,11 @@ class LoggerJSON(BaseHTTPMiddleware):
         write_f(self.log_path, json.dumps(obj, indent=2))
 
         async def receive() -> dict:
-            return {"type": "http.request", "body": body, "more_body": False}
+            return {
+                "type": "http.request",
+                "body": body,
+                "more_body": False,
+            }
 
         request = Request(request.scope, receive)
 

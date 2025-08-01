@@ -8,7 +8,7 @@ from typing import Callable
 
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from ..lib.logger import log
+from src.lib.logger import clg
 
 
 class WrapAPI(BaseHTTPMiddleware):
@@ -32,7 +32,7 @@ class WrapAPI(BaseHTTPMiddleware):
                         f" | 🆎 {f.name} | ☢️ {f.line}"
                     )
 
-            log(
+            clg(
                 *src_frames,
                 "\t",
                 f"💣 {type(err).__name__}",
