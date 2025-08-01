@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 
 script_file = Path(__file__).resolve()
@@ -17,3 +18,11 @@ def write_f(relative: str, content: str) -> None:
 
     with open(joined, "w") as f:
         f.write(content)
+
+
+def del_vid(form: dict[str, Any]) -> None:
+    if vid := form.get("video", None):
+        # os.remove(vid["path"])
+        pf = Path(vid["path"])
+        print(pf.exists())
+        pf.unlink(missing_ok=True)

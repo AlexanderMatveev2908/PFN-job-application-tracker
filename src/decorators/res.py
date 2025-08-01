@@ -1,5 +1,6 @@
 from typing import Any, Optional
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 
 class ResAPI(JSONResponse):
@@ -9,6 +10,11 @@ class ResAPI(JSONResponse):
         data: Optional[dict[str, Any]] = None,
     ) -> None:
         data = data or {}
+
+        for k, v in data.items():
+            if isinstance(v, BaseModel):
+                data[k] = v.model_dump()
+
         super().__init__(status_code=status, content=data)
 
     @classmethod
