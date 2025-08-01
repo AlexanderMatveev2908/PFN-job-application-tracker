@@ -58,21 +58,29 @@ class FormDataParser(BaseHTTPMiddleware):
 
         for k, v in form.multi_items():
             if isinstance(v, UploadFile):
+                size_b = getattr(v, "size", None)
+                size_MB = round(size_b / (1024**2)) if size_b else None
+
+                value = {
+                    "content_type": v.content_type,
+                    "size": size_MB,
+                }
+
                 if v.content_type and v.content_type.startswith("video/"):
                     saved_path = await gen_local_vid(v)
 
-                    value = {
-                        "filename": Path(saved_path).name,
-                        "content_type": v.content_type,
-                        "size": getattr(v, "size", None),
-                        "path": saved_path,
-                    }
+                    value.update(
+                        {
+                            "filename": Path(saved_path).name,
+                            "path": saved_path,
+                        }
+                    )
                 else:
-                    value = {
-                        "filename": gen_filename(v),
-                        "content_type": v.content_type,
-                        "size": getattr(v, "size", None),
-                    }
+                    value.update(
+                        {
+                            "filename": gen_filename(v),
+                        }
+                    )
             else:
                 value = parse_bool(v)
 
