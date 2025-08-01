@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.lib.data_structure import CheckFormErr, check_form
+from src.lib.form_check import CheckFormErr, check_form
 
 
 class User(BaseModel):
