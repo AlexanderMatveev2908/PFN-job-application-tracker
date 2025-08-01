@@ -18,3 +18,8 @@ def is_obj_ok(obj: object | None) -> bool:
     return bool(len(parsed.keys())) and any(
         v is not None for v in parsed.values()
     )
+
+
+def is_list_ok(arg: list | None) -> bool:
+
+    return bool(arg) and any(el is not None for el in (arg))
