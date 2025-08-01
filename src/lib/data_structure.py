@@ -1,5 +1,5 @@
+import dataclasses
 from typing import Generic, Type, TypeVar
-import attr
 from pydantic import BaseModel, ValidationError
 from pydantic_core import ErrorDetails
 from src.constants.data_structure import BoolParser
@@ -27,17 +27,17 @@ def is_obj_ok(obj: object | None) -> bool:
 FormT = TypeVar("FormT", bound=BaseModel)
 
 
-@attr.s(auto_attribs=True)
+@dataclasses.dataclass
 class CheckForm:
     success: bool
 
 
-@attr.s(auto_attribs=True)
+@dataclasses.dataclass
 class CheckFormOk(CheckForm, Generic[FormT]):
     form: FormT
 
 
-@attr.s(auto_attribs=True)
+@dataclasses.dataclass
 class CheckFormErr(CheckForm):
     msg: str
     list_errs: list[ErrorDetails]
