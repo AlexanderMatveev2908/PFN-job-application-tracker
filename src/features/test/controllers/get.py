@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.lib.data_structure import check_form
+from src.lib.data_structure import CheckFormErr, check_form
 
 
 class User(BaseModel):
@@ -27,7 +27,7 @@ async def get_test(req: Request) -> ResAPI:
     parsed = json.loads(await req.body())
     data = check_form(User, parsed)
 
-    if not data["success"]:
-        return ResAPI.err_422(msg=data["msg"], data=data["list_errs"])
+    if isinstance(data, CheckFormErr):
+        return ResAPI.err_422(msg=data.msg, data=data.list_errs)
 
-    return ResAPI.ok_201(data=data["form"])
+    return ResAPI.ok_201(data=data.form)
