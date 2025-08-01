@@ -50,8 +50,13 @@ class ResAPI(JSONResponse):
         return cls(status=409, data={"msg": msg})
 
     @classmethod
-    def err_422(cls, msg: str = "Unprocessable entity 🧐") -> "ResAPI":
-        return cls(status=422, data={"msg": msg})
+    def err_422(
+        cls, msg: str = "Unprocessable entity 🧐", **kwargs
+    ) -> "ResAPI":
+        return cls(
+            status=422,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def err_429(
