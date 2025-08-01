@@ -8,6 +8,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp
 from starlette.datastructures import UploadFile
+
+from src.lib.data_structure import parse_bool
 from ..lib.system import app_dir
 
 
@@ -16,7 +18,6 @@ UPLOAD_FIR = app_dir / "uploads/"
 
 def gen_filename(uf: UploadFile) -> str:
     name = str(uuid.uuid4())
-    # name = p.stem
     ext = (
         Path(uf.filename).suffix
         if uf.filename
@@ -73,7 +74,9 @@ class FormDataParser(BaseHTTPMiddleware):
                         "size": getattr(v, "size", None),
                     }
             else:
-                value = v
+                print(v, type(v))
+                value = parse_bool(v)
+                print(value, type(value))
 
             if k in parsed_f:
                 if isinstance(parsed_f[k], list):
