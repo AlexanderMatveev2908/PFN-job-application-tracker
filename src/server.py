@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from src.decorators.err import ErrAPI
 from src.lib.logger import clg
 from src.middleware.form_data_parser import FormDataParser
 from src.middleware.json_logger import LoggerJSON
@@ -7,6 +8,9 @@ from src.middleware.wrap_api import WrapAPI
 from src.routes.index import api
 from .middleware.query_parser import ParserQuery
 from .conf.env import env_var
+
+if env_var.secret != "👻":
+    raise ErrAPI(msg="Missing .env var", status=500)
 
 
 @asynccontextmanager
