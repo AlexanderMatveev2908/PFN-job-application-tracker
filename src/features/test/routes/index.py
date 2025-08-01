@@ -7,5 +7,5 @@ router_test = APIRouter(prefix="/test")
 router_test.add_api_route(
     "/",
     get_test,
-    methods=["GET"],
+    methods=["GET", "POST"],
 )

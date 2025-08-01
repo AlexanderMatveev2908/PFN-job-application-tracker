@@ -22,15 +22,3 @@ app.add_middleware(ParserQuery)
 app.add_middleware(WrapAPI)
 
 app.include_router(router=api)
-
-
-# @app.middleware("http")
-# async def err_catcher(req: Request, next: Callable) -> Response | ResAPI:
-#     try:
-#         return await next(req)
-#     except Exception as err:
-#         log(
-#             err,
-#             ttl="last wall",
-#         )
-#         return ResAPI.err_500()
