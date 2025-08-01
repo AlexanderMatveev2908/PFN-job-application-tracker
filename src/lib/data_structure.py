@@ -1,3 +1,5 @@
+import re
+import uuid
 from src.constants.data_structure import BoolParser
 
 
@@ -23,3 +25,17 @@ def is_obj_ok(obj: object | None) -> bool:
 def is_list_ok(arg: list | None) -> bool:
 
     return bool(arg) and any(el is not None for el in (arg))
+
+
+def is_id_ok(v: str) -> bool:
+    try:
+        return uuid.UUID(v).version == 4
+    except Exception:
+        return False
+
+
+def t_str(v: str | None, reg: re.Pattern[str]) -> bool:
+    if not v:
+        return False
+
+    return bool(reg.match(v))
