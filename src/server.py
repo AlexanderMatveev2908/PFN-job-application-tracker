@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from src.lib.data_structure import is_obj_ok
 from src.lib.logger import clg
 from src.middleware.form_data_parser import FormDataParser
 from src.middleware.json_logger import LoggerJSON
@@ -17,6 +18,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
+clg(is_obj_ok([1]), ttl="result")
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
