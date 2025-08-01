@@ -74,9 +74,7 @@ class FormDataParser(BaseHTTPMiddleware):
                         "size": getattr(v, "size", None),
                     }
             else:
-                print(v, type(v))
                 value = parse_bool(v)
-                print(value, type(value))
 
             if k in parsed_f:
                 if isinstance(parsed_f[k], list):

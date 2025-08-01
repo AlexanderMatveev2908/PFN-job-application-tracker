@@ -4,6 +4,7 @@ from typing import Callable
 # import attr
 from fastapi import Request
 
+from src.lib.data_structure import is_obj_ok
 from src.lib.logger import clg
 from ..lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -45,11 +46,15 @@ class LoggerJSON(BaseHTTPMiddleware):
             )
             # parsed = {"raw": body.decode("utf-8", errors="ignore")}
 
+        parsed_q = (getattr(request.state, "parsed_q", None),)
+        parsed_f = getattr(request.state, "parsed_f", None)
+        params = dict(request.path_params)
+
         obj = {
-            "body": parsed,
-            "params": dict(request.path_params),
-            "parsed_q": getattr(request.state, "parsed_q", None),
-            "parsed_f": getattr(request.state, "parsed_f", None),
+            "body": parsed if is_obj_ok(parsed) else None,
+            "params": params if is_obj_ok(params) else None,
+            "parsed_q": parsed_q if is_obj_ok(parsed_q) else None,
+            "parsed_f": parsed_f if is_obj_ok(parsed_f) else None,
             "access_token": request.headers.get("authorization"),
             "refresh_token": request.cookies.get("refresh_token"),
         }

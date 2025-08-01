@@ -10,7 +10,7 @@ def parse_bool(v: str) -> bool | str:
 
 def is_obj_ok(obj: object | None) -> bool:
 
-    parsed = obj.__dict__ if hasattr(obj, "__dict__") else obj
+    parsed = vars(obj) if hasattr(obj, "__dict__") else obj
 
     if not isinstance(parsed, dict):
         return False
