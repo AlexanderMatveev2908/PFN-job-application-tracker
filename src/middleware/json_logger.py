@@ -1,5 +1,5 @@
 import json
-from typing import Callable, Dict
+from typing import Callable
 
 # import attr
 from fastapi import Request
@@ -53,7 +53,7 @@ class LoggerJSON(BaseHTTPMiddleware):
 
         write_f(self.log_path, json.dumps(obj, indent=2))
 
-        async def receive() -> Dict:
+        async def receive() -> dict:
             return {"type": "http.request", "body": body, "more_body": False}
 
         request = Request(request.scope, receive)

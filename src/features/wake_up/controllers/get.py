@@ -1,9 +1,8 @@
 import json
-from typing import Dict
 from fastapi import Request, Response
 
 
-async def wake_up_ctrl(req: Request, res: Response) -> Dict[str, str]:
+async def wake_up_ctrl(req: Request, res: Response) -> dict[str, str]:
     b = await req.body()
     p = b.decode()
     s = json.loads(p)

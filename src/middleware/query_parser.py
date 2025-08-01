@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
@@ -13,7 +13,7 @@ class ParserQuery(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: Callable
     ) -> Response:
-        parsed_q: Dict[str, Any] = {}
+        parsed_q: dict[str, Any] = {}
 
         for k in request.query_params:
             v = request.query_params.getlist(k)
