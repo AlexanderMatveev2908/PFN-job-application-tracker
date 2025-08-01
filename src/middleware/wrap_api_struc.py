@@ -1,26 +1,19 @@
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.types import ASGIApp
-from starlette.responses import Response
-from fastapi import HTTPException
-from typing import Callable
+from typing import Awaitable, Callable
+
+from fastapi import HTTPException, Request
 
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from ..lib.logger import log
+from src.lib.logger import log
 
 
-class WrapAPI(BaseHTTPMiddleware):
-    def __init__(self, app: ASGIApp) -> None:
-        super().__init__(app)
+def wrap_api(cb_ctrl: Callable[[Request], Awaitable]) -> Callable:
 
-    async def dispatch(
-        self, request: Request, call_next: Callable
-    ) -> Response:
+    async def wrap(req: Request) -> "ResAPI" | Callable:
         try:
-            return await call_next(request)
+            return await cb_ctrl(req)
         except Exception as err:
-            log(err, ttl="💥 global err")
+            log(err, ttl="err wrap api")
 
             opt = None
 
@@ -36,3 +29,5 @@ class WrapAPI(BaseHTTPMiddleware):
                 msg = str(err)
 
             return ResAPI.err_ctm(status=status, msg=msg, opt=opt)
+
+    return wrap
