@@ -8,6 +8,7 @@ from src.middleware.wrap_api import WrapAPI
 from src.routes.index import api
 from .middleware.query_parser import ParserQuery
 from dotenv import load_dotenv
+from .conf.env import env_var
 
 load_dotenv()
 
@@ -21,6 +22,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
+print(env_var)
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
