@@ -59,7 +59,9 @@ class FormDataParser(BaseHTTPMiddleware):
         for k, v in form.multi_items():
             if isinstance(v, UploadFile):
                 size_b = getattr(v, "size", None)
-                size_MB = round(size_b / (1024**2)) if size_b else None
+                size_MB = (
+                    round(size_b / (1024**2), ndigits=2) if size_b else None
+                )
 
                 value = {
                     "content_type": v.content_type,
@@ -79,6 +81,7 @@ class FormDataParser(BaseHTTPMiddleware):
                     value.update(
                         {
                             "filename": gen_filename(v),
+                            "buffer": await v.read(),
                         }
                     )
             else:

@@ -6,6 +6,8 @@ class EnvVar(BaseSettings):
     # __ I pass also client env cause I copy paste them in every environment
     #  __ so I do not lost pieces during road
 
+    app_name: str = Field(..., alias="APP_NAME")
+
     # __ client stuff
     next_public_env: str | None = Field(None, alias="NEXT_PUBLIC_ENV")
     next_public_back_url: str | None = Field(
@@ -28,6 +30,12 @@ class EnvVar(BaseSettings):
     # __ communication client
     front_url: str | None = Field(None, alias="FRONT_URL")
     front_url_dev: str | None = Field(None, alias="FRONT_URL_DEV")
+
+    #  __ AWS
+    aws_access_key: str = Field(..., alias="AWS_ACCESS_KEY")
+    aws_access_secret_key: str = Field(..., alias="AWS_ACCESS_SECRET_KEY")
+    aws_region: str = Field(..., alias="AWS_REGION")
+    aws_bucket_name: str = Field(..., alias="AWS_BUCKET_NAME")
 
     # __ test only
     secret: str = Field(..., alias="SECRET")

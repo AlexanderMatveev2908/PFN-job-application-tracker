@@ -48,6 +48,14 @@ class LoggerJSON(BaseHTTPMiddleware):
 
         parsed_q = (getattr(request.state, "parsed_q", None),)
         parsed_f = getattr(request.state, "parsed_f", None)
+
+        if parsed_f and parsed_f["images"]:
+            for idx, img in enumerate(parsed_f["images"]):
+                parsed_f["images"][idx] = {
+                    "filename": img["filename"],
+                    "size": img["size"],
+                }
+
         params = dict(request.path_params)
 
         obj = {
@@ -59,7 +67,10 @@ class LoggerJSON(BaseHTTPMiddleware):
             "refresh_token": request.cookies.get("refresh_token"),
         }
 
-        write_f(self.log_path, json.dumps(obj, indent=2))
+        try:
+            write_f(self.log_path, json.dumps(obj, indent=2))
+        except Exception as err:
+            clg(err, ttl="obj not serializable")
 
         async def receive() -> dict:
             return {
