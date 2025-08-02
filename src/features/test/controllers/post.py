@@ -2,7 +2,7 @@ import asyncio
 from fastapi import Depends, Request
 from src.decorators.res import ResAPI
 from src.features.test.middleware.check_user import User, check_user
-from src.lib.s3 import upload_w3
+from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
 
 
