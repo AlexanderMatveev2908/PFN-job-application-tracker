@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.decorators.err import ErrAPI
-from src.lib.etc import wrap_async
 from src.lib.logger import clg
-from src.lib.s3 import get_asset
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
 from src.middleware.json_logger import LoggerJSON
@@ -24,15 +22,6 @@ async def lifespan(app: FastAPI):
     yield
     clg(ttl="💣 server shutting down")
 
-
-async def a() -> None:
-    await get_asset(
-        public_id="PFN-job-application-tracker/images/"
-        "10adb7ff-c999-4ccb-99f8-9ac55eee062d.jpeg"
-    )
-
-
-wrap_async(a)
 
 app = FastAPI(lifespan=lifespan)
 
