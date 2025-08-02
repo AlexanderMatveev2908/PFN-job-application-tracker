@@ -35,6 +35,7 @@ watchfiles = "^1.1.0"
 black = "^25.1.0"
 ruff = "^0.12.7"
 tomlkit = "^0.13.3"
+mypy-boto3-s3 = "^1.40.0"
 
 
 [tool.black]

@@ -24,5 +24,4 @@ def del_vid(form: dict[str, Any]) -> None:
     if vid := form.get("video", None):
         # os.remove(vid["path"])
         pf = Path(vid["path"])
-        print(pf.exists())
         pf.unlink(missing_ok=True)

@@ -1,3 +1,4 @@
+import copy
 import json
 from typing import Callable
 
@@ -47,13 +48,14 @@ class LoggerJSON(BaseHTTPMiddleware):
             # parsed = {"raw": body.decode("utf-8", errors="ignore")}
 
         parsed_q = (getattr(request.state, "parsed_q", None),)
-        parsed_f = getattr(request.state, "parsed_f", None)
+        parsed_f = copy.deepcopy(getattr(request.state, "parsed_f", None))
 
         if parsed_f and parsed_f["images"]:
             for idx, img in enumerate(parsed_f["images"]):
                 parsed_f["images"][idx] = {
                     "filename": img["filename"],
                     "size": img["size"],
+                    "content_type": img.get("content_type"),
                 }
 
         params = dict(request.path_params)
