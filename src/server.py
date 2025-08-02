@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from src.conf.db import test_connect
 from src.decorators.err import ErrAPI
 from src.lib.logger import clg
 from src.middleware.cors import CorsMDW
@@ -19,6 +20,11 @@ if env_var.secret != "👻":
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     clg(ttl=f"🚀 server running on {env_var.port}...")
+
+    await test_connect()
+
+    clg(ttl="🗃️ DB connection passed")
+
     yield
     clg(ttl="💣 server shutting down")
 

@@ -16,7 +16,8 @@ def clg(
         print("\t")
         for x in arg:
             print(x)
-        print("\t")
+
+    print("\t")
 
     now = datetime.now()
     time_parsed = f'⏰ => at {now.strftime("%H:%M:%S")}'

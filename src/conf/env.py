@@ -37,6 +37,10 @@ class EnvVar(BaseSettings):
     aws_region_name: str = Field(..., alias="AWS_REGION")
     aws_bucket_name: str = Field(..., alias="AWS_BUCKET_NAME")
 
+    # __ database — currently using Supabase as host
+    db_pwd: str = Field(..., alias="DB_PWD")
+    db_url: str = Field(..., alias="DB_URL")
+
     # __ test only
     secret: str = Field(..., alias="SECRET")
 

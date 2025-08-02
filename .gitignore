@@ -73,6 +73,7 @@ apps/*/out/
 *.crt
 .env
 .env.*
+certs/
 
 # __ assets
 uploads/
