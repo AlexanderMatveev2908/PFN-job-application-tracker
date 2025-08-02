@@ -58,3 +58,12 @@ async def upload_w3(v: dict | list[dict]) -> dict | list[dict]:
             ]
         else:
             return await upload_single(v, base_path=base_path, s3=s3)
+
+
+async def gen_session_url(public_id: str) -> str:
+    async with gen_s3_session() as s3:
+        return await s3.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
+            ExpiresIn=60**2 * 24,
+        )
