@@ -1,12 +1,12 @@
 from pathlib import Path
-from src.conf.s3 import gen_s3_session
+from src.conf.aws.s3 import gen_s3_session
 from src.lib.logger import clg
 from ...conf.env import env_var
 
 
 async def gen_presigned_url(public_id: str) -> str:
     async with gen_s3_session() as s3:
-        return await s3.generate_presigned_url(
+        return await s3.generate_presigned_url(  # type: ignore
             ClientMethod="get_object",
             Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
             ExpiresIn=60**2 * 24,
@@ -36,7 +36,7 @@ async def save_asset(res: dict, public_id: str) -> None:
 
 async def get_asset(public_id: str) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.get_object(
+        res = await s3.get_object(  # type: ignore
             Bucket=env_var.aws_bucket_name, Key=public_id
         )
 
@@ -45,7 +45,7 @@ async def get_asset(public_id: str) -> None:
 
 async def gen_list_assets(prefix: str = "") -> None:
     async with gen_s3_session() as s3:
-        res = await s3.list_objects_v2(
+        res = await s3.list_objects_v2(  # type: ignore
             Bucket=env_var.aws_bucket_name, Prefix=prefix
         )
 

@@ -1,12 +1,12 @@
 from pathlib import Path
-from src.conf.s3 import gen_s3_session
+from src.conf.aws.s3 import gen_s3_session
 from src.lib.logger import clg
 from ...conf.env import env_var
 
 
 async def del_asset(public_id: str) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.delete_object(
+        res = await s3.delete_object(  # type: ignore
             Bucket=env_var.aws_bucket_name, Key=public_id
         )
 
@@ -15,7 +15,7 @@ async def del_asset(public_id: str) -> None:
 
 async def del_list_assets(public_ids: list[str]) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.delete_objects(
+        res = await s3.delete_objects(  # type: ignore
             Bucket=env_var.aws_bucket_name,
             Delete={
                 "Objects": [{"Key": k} for k in public_ids],
@@ -33,7 +33,7 @@ async def del_folder_assets(prefix: str) -> None:
         base_path = env_var.app_name
         full_path = str(Path(base_path) / prefix)
 
-        async for page in paginator.paginate(
+        async for page in paginator.paginate(  # type: ignore
             Bucket=env_var.aws_bucket_name, Prefix=full_path
         ):
             contents = page.get("Contents", [])
@@ -42,7 +42,7 @@ async def del_folder_assets(prefix: str) -> None:
 
             ids = [obj["Key"] for obj in contents]
 
-            res = await s3.delete_objects(
+            res = await s3.delete_objects(  # type: ignore
                 Bucket=env_var.aws_bucket_name,
                 Delete={"Objects": [{"Key": id} for id in ids]},
             )

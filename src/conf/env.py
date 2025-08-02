@@ -34,7 +34,7 @@ class EnvVar(BaseSettings):
     #  __ AWS
     aws_access_key: str = Field(..., alias="AWS_ACCESS_KEY")
     aws_access_secret_key: str = Field(..., alias="AWS_ACCESS_SECRET_KEY")
-    aws_region: str = Field(..., alias="AWS_REGION")
+    aws_region_name: str = Field(..., alias="AWS_REGION")
     aws_bucket_name: str = Field(..., alias="AWS_BUCKET_NAME")
 
     # __ test only

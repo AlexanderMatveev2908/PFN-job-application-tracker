@@ -3,7 +3,7 @@ from io import BytesIO
 from pathlib import Path
 from mypy_boto3_s3 import S3Client
 
-from src.conf.s3 import gen_s3_session
+from src.conf.aws.s3 import gen_s3_session
 from ...conf.env import env_var
 
 
@@ -42,7 +42,7 @@ async def upload_single(file: dict, s3: S3Client) -> dict:
 
     public_url = (
         f"https://{env_var.aws_bucket_name}.s3."
-        f"{env_var.aws_region}.amazonaws.com/{public_id}"
+        f"{env_var.aws_region_name}.amazonaws.com/{public_id}"
     )
 
     return {"public_id": public_id, "public_url": public_url}
