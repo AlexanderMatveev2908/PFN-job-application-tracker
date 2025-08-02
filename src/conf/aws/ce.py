@@ -1,8 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 import aioboto3
-
-from src.conf import aws
+from .aws import aws_keys
 
 
 @asynccontextmanager
@@ -11,6 +10,6 @@ async def gen_ce_session() -> AsyncGenerator[Any, None]:
 
     async with session.client(  # type: ignore type
         "ce",
-        **aws.aws_keys,  # type: ignore type
+        **aws_keys,  # type: ignore type
     ) as ce:
         yield ce

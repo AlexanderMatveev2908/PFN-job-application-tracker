@@ -6,11 +6,15 @@ from ...conf.env import env_var
 
 async def gen_presigned_url(public_id: str) -> str:
     async with gen_s3_session() as s3:
-        return await s3.generate_presigned_url(  # type: ignore
+        res = await s3.generate_presigned_url(  # type: ignore
             ClientMethod="get_object",
             Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
             ExpiresIn=60**2 * 24,
         )
+
+        clg(res, ttl="presigned url")
+
+        return res
 
 
 async def save_asset(res: dict, public_id: str) -> None:
@@ -41,6 +45,8 @@ async def get_asset(public_id: str) -> None:
         )
 
         clg(res)
+
+        await save_asset(res, public_id=public_id)
 
 
 async def gen_list_assets(prefix: str = "") -> None:
