@@ -1,9 +1,12 @@
 import datetime
 from io import BytesIO
+import mimetypes
 from pathlib import Path
+import uuid
 from mypy_boto3_s3 import S3Client
 
 from src.conf.s3 import gen_s3_session
+from src.lib.logger import clg
 from ..conf.env import env_var
 
 
@@ -63,3 +66,38 @@ async def gen_presigned_url(public_id: str) -> str:
             Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
             ExpiresIn=60**2 * 24,
         )
+
+
+async def get_asset(public_id: str) -> None:
+    async with gen_s3_session() as s3:
+        res = await s3.get_object(
+            Bucket=env_var.aws_bucket_name, Key=public_id
+        )
+
+        obj = {
+            "public_id": public_id,
+            "content_type": res["ContentType"],
+            "size": res["ContentLength"],
+            "metadata": res.get("Metadata"),
+        }
+
+        ext = mimetypes.guess_extension(obj["content_type"]) or ""
+        # body_b = await res["Body"].read()
+        file_dir = Path.cwd() / "assets"
+        file_dir.mkdir(exist_ok=True)
+        file_p = file_dir / f"{uuid.uuid4()}{ext}"
+        # file_p.write_bytes(body_b)
+
+        stream = res["Body"]
+        with file_p.open("wb") as f:
+            while chunk := await stream.read(1024**2):
+                f.write(chunk)
+
+
+async def gen_list_assets(prefix: str = "") -> None:
+    async with gen_s3_session() as s3:
+        res = await s3.get_objects_v2(
+            Bucket=env_var.aws_bucket_name, Prefix=prefix
+        )
+
+        clg(res)
