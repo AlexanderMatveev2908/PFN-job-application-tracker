@@ -1,8 +1,11 @@
-from sqlalchemy import select
+import uuid
+from sqlalchemy import select, text
 from typing import Any
-from sqlalchemy import text
+from sqlalchemy.orm import selectinload
 from src.lib.logger import clg
+from src.models.job import Job
 from src.models.root import RootTable
+from src.models.user import User
 from ...conf.db import db_session
 
 
@@ -90,6 +93,31 @@ async def get_all() -> None:
 
             await db.commit()
 
+        except Exception as err:
+            clg(err, ttl="💣 err transaction")
+            await db.rollback()
+
+
+async def get_us_joined() -> None:
+    async with db_session() as db:  # type: ignore
+        try:
+            await db.begin()
+
+            us = await db.execute(
+                select(User)
+                .where(
+                    User.id
+                    == uuid.UUID("3fd7bb85-3a78-426d-8149-55fa261ba6c8")
+                )
+                .options(selectinload(User.jobs).joinedload(Job.company))
+                # .options(selectinload(User.companies))
+            )
+
+            for x in us.scalars().one().jobs:
+                print(x.company.to_d())
+
+            await db.commit()
+            print("✅ op 200")
         except Exception as err:
             clg(err, ttl="💣 err transaction")
             await db.rollback()
