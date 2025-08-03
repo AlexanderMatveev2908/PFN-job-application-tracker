@@ -13,6 +13,7 @@ Base = declarative_base()
 
 if TYPE_CHECKING:
     from .company import Company
+    from .car import Car
 
 
 class User(RootTable):
@@ -29,3 +30,4 @@ class User(RootTable):
     companies: Mapped[list["Company"]] = relationship(
         secondary=Job.__table__, back_populates="users", viewonly=True
     )
+    cars: Mapped[list["Car"]] = relationship(back_populates="user")
