@@ -16,11 +16,10 @@ db_session = sessionmaker(  # type: ignore
 async def test_connect() -> None:
 
     async with db_session() as db:  # type: ignore
-        await db.execute(text("SELECT version()"))
 
         tables_result = await db.execute(
             text(
-                """
+                """--sql
                 SELECT table_name
                 FROM information_schema.tables
                 WHERE table_schema = 'public'
@@ -30,4 +29,4 @@ async def test_connect() -> None:
         )
 
         tables = [row[0] for row in tables_result]
-        print(f"🗃️ DB has {len(tables)} tables")
+        print(f"🗃️ DB TABLES => {(tables)}")
