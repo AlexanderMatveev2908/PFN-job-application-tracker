@@ -1,15 +1,16 @@
+from src import models
+
 from logging.config import fileConfig
 import os
 from sqlalchemy import pool, create_engine
 from alembic import context
 from dotenv import load_dotenv
 
-from src.models import Base
-
 load_dotenv()
 db_url = os.getenv("DB_URL")
 if not db_url:
     raise RuntimeError("💣 missing db_url")
+
 
 sync_db_url = db_url.replace("+asyncpg", "")
 
@@ -21,7 +22,7 @@ config.set_main_option("sqlalchemy.url", sync_db_url)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata
+target_metadata = models.SQLModel.metadata
 
 
 def run_migrations_offline() -> None:
