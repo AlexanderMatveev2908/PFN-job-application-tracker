@@ -15,6 +15,6 @@ class Job(RootTable):
     title: Mapped[str] = mapped_column(String(50), nullable=False)
 
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id"), unique=True, nullable=False
+        ForeignKey("users.id", name="fk_user_id"), unique=True, nullable=False
     )
     user: Mapped["User"] = relationship(back_populates="job", uselist=False)

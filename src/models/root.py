@@ -5,6 +5,7 @@ from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID
 
 Base = declarative_base()
+Base.metadata.schema = "public"
 
 
 class RootTable(Base):
