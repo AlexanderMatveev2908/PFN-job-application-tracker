@@ -7,11 +7,11 @@ from sqlalchemy.orm import (
     relationship,
 )
 from src.models.root import RootTable
+from .job import Job
 
 Base = declarative_base()
 
 if TYPE_CHECKING:
-    from .job import Job
     from .company import Company
 
 
@@ -27,5 +27,5 @@ class User(RootTable):
         back_populates="user",
     )
     companies: Mapped[list["Company"]] = relationship(
-        secondary="jobs", back_populates="users", viewonly=True
+        secondary=Job.__table__, back_populates="users", viewonly=True
     )

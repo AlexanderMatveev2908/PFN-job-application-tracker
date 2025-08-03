@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.conf.db import test_connect
 from src.decorators.err import ErrAPI
+
+# from src.dev_only.db.post import add_data
+# from src.lib.etc import wrap_async
 from src.lib.logger import clg
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
@@ -27,6 +30,8 @@ async def lifespan(app: FastAPI):
 
     clg(ttl="💣 server shutting down")
 
+
+# wrap_async(add_data)
 
 app = FastAPI(lifespan=lifespan)
 

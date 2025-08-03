@@ -2,7 +2,6 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from src.conf.env import env_var
-from src.lib.logger import clg
 
 
 engine = create_async_engine(
@@ -31,4 +30,4 @@ async def test_connect() -> None:
         )
 
         tables = [row[0] for row in tables_result]
-        clg(tables, ttl="🗃️ db tables")
+        print(f"🗃️ DB has {len(tables)} tables")
