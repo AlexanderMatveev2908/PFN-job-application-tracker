@@ -1,6 +1,8 @@
+from sqlalchemy import select
 from typing import Any
 from sqlalchemy import text
 from src.lib.logger import clg
+from src.models.root import RootTable
 from ...conf.db import db_session
 
 
@@ -46,11 +48,41 @@ async def get_data_raw() -> None:
         name="John", email="john@gmail.com.changed"
     )
 
-    txt = f"""--sql
+    txt = f"""
     SELECT * FROM users us
     WHERE {cond}
     """
-
     res = await run_raw_sql(txt, bind_params)
 
     print(res)
+
+
+async def get_all() -> None:
+    MODELS = {
+        mapper.class_.__name__: mapper.class_
+        for mapper in RootTable.registry.mappers
+    }
+    names = ["User", "Car", "Company", "Job"]
+
+    async with db_session() as db:  # type: ignore
+        try:
+            await db.begin()
+
+            print("🤘🏼 data DB 🚀".center(16, " ").center(40, "―"))
+            print("\t")
+
+            for k, v in MODELS.items():
+
+                if k not in names:
+                    continue
+
+                res = await db.execute(select(v))
+                rows = res.scalars().all()
+
+                print(k, [r.to_d() for r in rows])
+
+            await db.commit()
+
+        except Exception as err:
+            clg(err, ttl="💣 err transaction")
+            await db.rollback()
