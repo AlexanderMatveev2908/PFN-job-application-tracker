@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     clg(ttl="💣 server shutting down")
 
 
-wrap_async(add_data)
+# wrap_async(add_data)
 
 app = FastAPI(lifespan=lifespan)
 

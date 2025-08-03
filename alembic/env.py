@@ -5,7 +5,7 @@ from alembic import context
 from dotenv import load_dotenv
 from src import models
 
-target_metadata = models.SQLModel.metadata
+target_metadata = models.Base.metadata
 
 
 load_dotenv()
@@ -24,7 +24,7 @@ config.set_main_option("sqlalchemy.url", sync_db_url)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = models.SQLModel.metadata
+target_metadata = target_metadata
 
 
 def run_migrations_offline() -> None:
