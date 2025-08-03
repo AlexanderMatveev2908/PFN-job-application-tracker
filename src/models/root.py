@@ -27,3 +27,6 @@ class RootTable(Base):
     deleted_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=True
     )
+
+    def to_d(self) -> dict:
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

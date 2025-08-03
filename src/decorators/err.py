@@ -3,3 +3,8 @@ class ErrAPI(Exception):
         self.status = status
         self.msg = f"💣 {msg}"
         self.data = kwargs
+
+
+class ErrGen(Exception):
+    def __init__(self, msg: str) -> None:
+        self.msg = f"💣 {msg}"
