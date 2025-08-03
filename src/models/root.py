@@ -37,7 +37,6 @@ metadata = SQLModel.metadata
 
 class RootTable(SQLModel, RootMixin):
     __abstract__ = True
-    __table_args__ = {"schema": "public"}
 
     def to_d(self) -> dict:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}  # type: ignore # noqa: E501

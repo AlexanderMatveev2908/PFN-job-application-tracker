@@ -2,10 +2,9 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import Column, String
 from sqlmodel import Field, Relationship
 from src.models.root import RootTable
+from .job import Job
 
 if TYPE_CHECKING:
-    from .company import Company
-    from .job import Job
     from .car import Car
 
 
@@ -18,10 +17,6 @@ class User(RootTable, table=True):
     )
 
     jobs: List["Job"] = Relationship(back_populates="user")
-    companies: List["Company"] = Relationship(
-        back_populates="users",
-        sa_relationship_kwargs={"secondary": "jobs", "viewonly": True},
-    )
     cars: List["Car"] = Relationship(back_populates="user")
 
 

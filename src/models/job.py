@@ -16,7 +16,7 @@ class Job(RootTable, table=True):
     title: str = Field(sa_column=Column(String(50), nullable=False))
 
     company_id: uuid.UUID = Field(
-        Column(
+        sa_column=Column(
             PG_UUID(as_uuid=True),
             ForeignKey("companies.id", name="fk_job_company_id"),
             nullable=False,
@@ -24,7 +24,7 @@ class Job(RootTable, table=True):
     )
 
     user_id: uuid.UUID = Field(
-        Column(
+        sa_column=Column(
             PG_UUID(as_uuid=True),
             ForeignKey("users.id", name="fk_job_user_id"),
             nullable=False,

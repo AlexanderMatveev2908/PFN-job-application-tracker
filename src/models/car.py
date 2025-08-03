@@ -15,7 +15,7 @@ class Car(RootTable, table=True):
     name: str = Field(sa_column=Column(String(50), nullable=False))
 
     user_id: uuid.UUID = Field(
-        Column(
+        sa_column=Column(
             PG_UUID(as_uuid=True),
             ForeignKey("users.id", name="fk_car_user_id"),
             nullable=False,
