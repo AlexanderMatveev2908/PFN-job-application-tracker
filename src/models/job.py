@@ -1,9 +1,9 @@
 import uuid
 from typing import TYPE_CHECKING, Optional
 from sqlalchemy import String, Column, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlmodel import Field, Relationship
 from src.models.root import RootTable
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 
 if TYPE_CHECKING:
     from .company import Company
@@ -16,7 +16,7 @@ class Job(RootTable, table=True):
     title: str = Field(sa_column=Column(String(50), nullable=False))
 
     company_id: uuid.UUID = Field(
-        sa_column=Column(
+        Column(
             PG_UUID(as_uuid=True),
             ForeignKey("companies.id", name="fk_job_company_id"),
             nullable=False,
@@ -24,7 +24,7 @@ class Job(RootTable, table=True):
     )
 
     user_id: uuid.UUID = Field(
-        sa_column=Column(
+        Column(
             PG_UUID(as_uuid=True),
             ForeignKey("users.id", name="fk_job_user_id"),
             nullable=False,

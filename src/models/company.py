@@ -13,7 +13,7 @@ class Company(RootTable, table=True):
 
     name: str = Field(sa_column=Column(String(50), nullable=False, index=True))
 
-    # jobs: List["Job"] = Relationship(back_populates="company")
+    jobs: List["Job"] = Relationship(back_populates="company")
 
     users: List["User"] = Relationship(
         back_populates="companies",

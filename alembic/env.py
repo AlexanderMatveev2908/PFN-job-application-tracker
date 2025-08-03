@@ -1,10 +1,12 @@
-from src import models
-
 from logging.config import fileConfig
 import os
 from sqlalchemy import pool, create_engine
 from alembic import context
 from dotenv import load_dotenv
+from src import models
+
+target_metadata = models.SQLModel.metadata
+
 
 load_dotenv()
 db_url = os.getenv("DB_URL")

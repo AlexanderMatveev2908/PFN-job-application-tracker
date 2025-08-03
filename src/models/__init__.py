@@ -1,22 +1,12 @@
 from sqlmodel import SQLModel
 from .root import RootTable
-from .test import Test
-
 from .user import User
 from .car import Car
-
-# from .job import Job
 from .company import Company
+from .job import Job
 
 
-__all__ = [
-    "SQLModel",
-    "RootTable",
-    "Test",
-    "User",
-    "Car",
-    "Company",
-]
+__all__ = ["SQLModel", "RootTable", "User", "Car", "Company", "Job"]
 
 
 # from .root import Base

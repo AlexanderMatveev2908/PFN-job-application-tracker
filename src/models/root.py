@@ -32,6 +32,9 @@ class RootMixin:
         return Column(TIMESTAMP(timezone=True), nullable=True)
 
 
+metadata = SQLModel.metadata
+
+
 class RootTable(SQLModel, RootMixin):
     __abstract__ = True
     __table_args__ = {"schema": "public"}

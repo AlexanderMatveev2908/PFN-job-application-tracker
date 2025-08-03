@@ -17,7 +17,7 @@ class User(RootTable, table=True):
         sa_column=Column(String(50), nullable=False, unique=True, index=True)
     )
 
-    # jobs: List["Job"] = Relationship(back_populates="user")
+    jobs: List["Job"] = Relationship(back_populates="user")
     companies: List["Company"] = Relationship(
         back_populates="users",
         sa_relationship_kwargs={"secondary": "jobs", "viewonly": True},

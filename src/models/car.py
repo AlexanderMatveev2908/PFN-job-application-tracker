@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, Optional
 import uuid
-from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlmodel import Field, Relationship
 from src.models.root import RootTable
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 
 if TYPE_CHECKING:
     from .user import User
