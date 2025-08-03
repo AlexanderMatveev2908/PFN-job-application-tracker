@@ -68,8 +68,8 @@ async def get_all() -> None:
         try:
             await db.begin()
 
-            print("🤘🏼 data DB 🚀".center(16, " ").center(40, "―"))
-            print("\t")
+            print("🤘🏼 data DB 🚀".center(16, " ").center(32, "―"))
+            # print("\t")
 
             for k, v in MODELS.items():
 
@@ -80,14 +80,13 @@ async def get_all() -> None:
                 rows = res.scalars().all()
 
                 print(
-                    f"🗃️ {k} 📦",
+                    f"🗃️ {k} — {len(rows)} 📦",
                 )
-                print("—" * 50)
-                for r in rows:
-                    print(r.to_d())
-                    print("\t")
+                # print("—" * 50)
+                # for r in rows:
+                #     print(r.id)
 
-                print("\t")
+                # print("\t")
 
             await db.commit()
 
