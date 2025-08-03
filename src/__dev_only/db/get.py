@@ -79,7 +79,15 @@ async def get_all() -> None:
                 res = await db.execute(select(v))
                 rows = res.scalars().all()
 
-                print(k, [r.to_d() for r in rows])
+                print(
+                    f"🗃️ {k} 📦",
+                )
+                print("—" * 50)
+                for r in rows:
+                    print(r.to_d())
+                    print("\t")
+
+                print("\t")
 
             await db.commit()
 

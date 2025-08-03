@@ -1,33 +1,27 @@
-from sqlalchemy import select
 from src.lib.logger import clg
-from src.models.company import Company
+from src.models.user import User
 from ...conf.db import db_session
 
 
-async def add_data() -> None:
+async def add_data_ud() -> None:
     async with db_session() as db:  # type: ignore
         try:
             await db.begin()
 
-            res = (
-                (
-                    (
-                        await db.execute(
-                            select(Company).where(Company.name == "Taco Bell")  # type: ignore # noqa: E501
-                        )
-                    )
-                )
-                .scalars()
-                .all()
+            us = User(
+                first_name="Mike", last_name="Doe", email="mike@gamil.com"
             )
 
-            print(res)
+            db.add(us)
 
-            if not res:
-                print("❌ empty list")
+            await db.flush([us])
+            await db.refresh(us)
+
+            print(us.to_d())
 
             await db.commit()
 
+            clg(ttl="✅ 201")
         except Exception as err:
             clg(err, ttl="err transaction")
 
