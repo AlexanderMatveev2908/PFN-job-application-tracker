@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from src.lib.logger import clg
 from src.models.company import Company
+from src.models.user import User
 from ...conf.db import db_session
 
 
@@ -11,20 +12,19 @@ async def add_data() -> None:
 
             res = (
                 (
-                    (
-                        await db.execute(
-                            select(Company).where(Company.name == "Taco Bell")  # type: ignore # noqa: E501
-                        )
+                    await db.execute(
+                        select(Company).where(Company.name == "Taco Bell")  # type: ignore # noqa: E501
                     )
                 )
-                .scalars()
-                .all()
-            )
+            ).all()
 
-            print(res)
+            us = User(first_name="John")
 
-            if not res:
-                print("❌ empty list")
+            # c = Company(
+            #     name="Burger King",
+            # )
+            # db.add(c)
+            # await db.flush([c])
 
             await db.commit()
 

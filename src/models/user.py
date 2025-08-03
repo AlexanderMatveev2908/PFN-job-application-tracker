@@ -11,7 +11,8 @@ if TYPE_CHECKING:
 class User(RootTable, table=True):
     __tablename__ = "users"  # type: ignore
 
-    name: str = Field(sa_column=Column(String(50), nullable=False))
+    first_name: str = Field(sa_column=Column(String(50), nullable=False))
+    last_name: str = Field(sa_column=Column(String(50), nullable=False))
     email: str = Field(
         sa_column=Column(String(50), nullable=False, unique=True, index=True)
     )
