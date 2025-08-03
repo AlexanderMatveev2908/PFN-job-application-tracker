@@ -1,4 +1,9 @@
-from .root import RootTable, Base
+from .root import Base
 from .user import User
+from .job import Job
 
-__all__ = ["Base", "RootTable", "User"]
+__all__ = [
+    "Base",
+    "User",
+    "Job",
+]

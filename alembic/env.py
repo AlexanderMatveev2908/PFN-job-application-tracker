@@ -1,18 +1,21 @@
 import asyncio
 from logging.config import fileConfig
-
 from sqlalchemy import pool
-
 from alembic import context
 
 # __
-from src.conf.env import env_var
+from src.conf import env
 from src.models import Base
 from sqlalchemy.ext.asyncio import create_async_engine
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# __
+config.set_main_option("sqlalchemy.url", env.env_var.db_url)
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -46,10 +49,11 @@ def run_migrations_offline() -> None:
     """
     # __
     context.configure(
-        url=env_var.db_url,
+        url=env.env_var.db_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=True,
     )
 
     with context.begin_transaction():
@@ -64,11 +68,15 @@ async def run_migrations_online() -> None:
 
     """
     # __
-    connectable = create_async_engine(env_var.db_url, poolclass=pool.NullPool)
+    connectable = create_async_engine(
+        env.env_var.db_url, poolclass=pool.NullPool
+    )
     async with connectable.connect() as connection:
         await connection.run_sync(
             lambda conn: context.configure(
-                connection=conn, target_metadata=target_metadata
+                connection=conn,
+                target_metadata=target_metadata,
+                compare_type=True,
             )
         )
         await connection.run_sync(lambda _: context.run_migrations())

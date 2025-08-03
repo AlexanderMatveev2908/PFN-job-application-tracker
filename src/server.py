@@ -23,9 +23,8 @@ async def lifespan(app: FastAPI):
 
     await test_connect()
 
-    clg(ttl="🗃️ DB connection passed")
-
     yield
+
     clg(ttl="💣 server shutting down")
 
 

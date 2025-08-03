@@ -2,6 +2,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from src.conf.env import env_var
+from src.lib.logger import clg
 
 
 engine = create_async_engine(
@@ -14,7 +15,20 @@ db_session = sessionmaker(  # type: ignore
 
 
 async def test_connect() -> None:
+
     async with db_session() as db:  # type: ignore
         await db.execute(text("SELECT version()"))
 
-    # clg(res.scalar(), ttl="db connection")
+        tables_result = await db.execute(
+            text(
+                """
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public'
+                ORDER BY table_name;
+                """
+            )
+        )
+
+        tables = [row[0] for row in tables_result]
+        clg(tables, ttl="🗃️ db tables")
