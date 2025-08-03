@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from .user import User
+    from .company import Company
 
 
 class Job(RootTable):
@@ -14,7 +15,12 @@ class Job(RootTable):
 
     title: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", name="fk_user_id"), unique=True, nullable=False
+    company_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("companies.id", name="fk_job_company_id"), nullable=False
     )
-    user: Mapped["User"] = relationship(back_populates="job", uselist=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", name="fk_job_user_id"), nullable=False
+    )
+
+    company: Mapped["Company"] = relationship(back_populates="jobs")
+    user: Mapped["User"] = relationship(back_populates="jobs")

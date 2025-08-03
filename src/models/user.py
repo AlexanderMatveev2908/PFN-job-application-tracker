@@ -12,16 +12,20 @@ Base = declarative_base()
 
 if TYPE_CHECKING:
     from .job import Job
+    from .company import Company
 
 
 class User(RootTable):
     __tablename__ = "users"
 
-    first_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(50), nullable=False)
-
+    name: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str] = mapped_column(
         String(50), nullable=False, unique=True, index=True
     )
 
-    job: Mapped["Job"] = relationship(back_populates="user", uselist=False)
+    jobs: Mapped[list["Job"]] = relationship(
+        back_populates="user",
+    )
+    companies: Mapped[list["Company"]] = relationship(
+        secondary="jobs", back_populates="users", viewonly=True
+    )
