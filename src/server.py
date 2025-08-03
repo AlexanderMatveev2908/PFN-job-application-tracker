@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.__dev_only.db.get import get_all
+from src.__dev_only.db.get import get_all, get_us_joined
 from src.decorators.err import ErrAPI
+from src.lib.etc import wrap_async
 from src.lib.logger import clg
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
@@ -21,7 +22,6 @@ if env_var.secret != "👻":
 async def lifespan(app: FastAPI):
     clg(ttl=f"🚀 server running on {env_var.port}...")
 
-    # await test_connect()
     await get_all()
 
     yield
@@ -30,6 +30,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+wrap_async(get_us_joined)
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)

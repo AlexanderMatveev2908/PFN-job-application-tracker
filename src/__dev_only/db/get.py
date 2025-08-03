@@ -103,18 +103,17 @@ async def get_us_joined() -> None:
         try:
             await db.begin()
 
-            us = await db.execute(
+            res = await db.execute(
                 select(User)
                 .where(
                     User.id
-                    == uuid.UUID("3fd7bb85-3a78-426d-8149-55fa261ba6c8")
+                    == uuid.UUID("bc984b98-b95b-45cb-83ef-871567e822d5")
                 )
                 .options(selectinload(User.jobs).joinedload(Job.company))
                 # .options(selectinload(User.companies))
             )
-
-            for x in us.scalars().one().jobs:
-                print(x.company.to_d())
+            us = res.scalars().one()
+            print(us.to_d(join=True, depth=2))
 
             await db.commit()
             print("✅ op 200")

@@ -1,11 +1,10 @@
-from typing import TYPE_CHECKING
 from sqlalchemy import String
 from src.models.root import RootTable
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .job import Job
 
-if TYPE_CHECKING:
-    from .user import User
+# if TYPE_CHECKING:
+# from .user import User
 
 
 class Company(RootTable):
@@ -16,8 +15,8 @@ class Company(RootTable):
     jobs: Mapped[list["Job"]] = relationship(
         back_populates="company",
     )
-    users: Mapped[list["User"]] = relationship(
-        secondary=Job.__table__,
-        back_populates="companies",
-        viewonly=True,
-    )
+    # users: Mapped[list["User"]] = relationship(
+    #     secondary=Job.__table__,
+    #     back_populates="companies",
+    #     viewonly=True,
+    # )

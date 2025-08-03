@@ -12,7 +12,7 @@ async def post_ud() -> None:
             await db.begin()
 
             us = User(
-                first_name="Mike", last_name="Doe", email="mike@gamil.com"
+                first_name="John", last_name="Doe", email="john@gamil.com"
             )
 
             db.add(us)
@@ -56,7 +56,7 @@ async def post_j() -> None:
                 select(User).where(User.first_name == "John")
             )
             c = await db.execute(
-                select(Company).where(Company.name == "Mc Donald")
+                select(Company).where(Company.name == "Burger King")
             )
 
             us_readable = us.scalars().one()

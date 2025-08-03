@@ -12,7 +12,7 @@ from .job import Job
 Base = declarative_base()
 
 if TYPE_CHECKING:
-    from .company import Company
+    # from .company import Company
     from .car import Car
 
 
@@ -28,7 +28,7 @@ class User(RootTable):
     jobs: Mapped[List["Job"]] = relationship(
         back_populates="user",
     )
-    companies: Mapped[List["Company"]] = relationship(
-        secondary=Job.__table__, back_populates="users", viewonly=True
-    )
+    # companies: Mapped[List["Company"]] = relationship(
+    #     secondary=Job.__table__, back_populates="users", viewonly=True
+    # )
     cars: Mapped[List["Car"]] = relationship(back_populates="user")
