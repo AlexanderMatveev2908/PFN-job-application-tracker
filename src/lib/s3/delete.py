@@ -6,7 +6,7 @@ from ...conf.env import env_var
 
 async def del_asset(public_id: str) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.delete_object(  # type: ignore
+        res = await s3.delete_object(
             Bucket=env_var.aws_bucket_name, Key=public_id
         )
 
@@ -15,7 +15,7 @@ async def del_asset(public_id: str) -> None:
 
 async def del_list_assets(public_ids: list[str]) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.delete_objects(  # type: ignore
+        res = await s3.delete_objects(
             Bucket=env_var.aws_bucket_name,
             Delete={
                 "Objects": [{"Key": k} for k in public_ids],
@@ -33,7 +33,7 @@ async def del_folder_assets(prefix: str) -> None:
         base_path = env_var.app_name
         full_path = str(Path(base_path) / prefix)
 
-        async for page in paginator.paginate(  # type: ignore
+        async for page in paginator.paginate(
             Bucket=env_var.aws_bucket_name, Prefix=full_path
         ):
             contents = page.get("Contents", [])
@@ -42,7 +42,7 @@ async def del_folder_assets(prefix: str) -> None:
 
             ids = [obj["Key"] for obj in contents]
 
-            res = await s3.delete_objects(  # type: ignore
+            res = await s3.delete_objects(
                 Bucket=env_var.aws_bucket_name,
                 Delete={"Objects": [{"Key": id} for id in ids]},
             )
