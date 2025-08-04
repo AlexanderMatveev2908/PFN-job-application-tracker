@@ -1,10 +1,11 @@
 import inspect
 from pathlib import Path
 from datetime import datetime
+from typing import Any, Optional
 
 
 def clg(
-    *arg,
+    *arg: list[Any],
     ttl: str = "logger",
 ) -> None:
 
@@ -23,7 +24,7 @@ def clg(
     time_parsed = f'⏰ => at {now.strftime("%H:%M:%S")}'
     print(time_parsed)
 
-    frame = ""
+    frame: Optional[inspect.FrameInfo] = None
     for fr in inspect.stack():
         filename = fr.filename
         if "src/" in filename and "lib/logger" not in filename:
