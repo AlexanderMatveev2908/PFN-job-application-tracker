@@ -1,7 +1,7 @@
 from __future__ import annotations
 import mimetypes
 from pathlib import Path
-from typing import Awaitable, Callable, Optional, TypedDict, Union, List, cast
+from typing import Awaitable, Callable, Optional, TypedDict, Union, List
 import uuid
 import aiofiles
 from fastapi import Request
@@ -109,8 +109,7 @@ class FormDataParser(BaseHTTPMiddleware):
             if existing is None:
                 parsed_f[k] = value
             elif isinstance(existing, list):
-                parsed_list: ParsedList = cast(ParsedList, existing)
-                parsed_list.append(value)
+                existing.append(value)
             else:
                 parsed_f[k] = [existing, value]
 
