@@ -1,3 +1,4 @@
+from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.__dev_only.db.get import get_all
@@ -20,7 +21,7 @@ if env_var.secret != "👻":
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     clg(ttl=f"🚀 server running on {env_var.port}...")
 
     await get_all()
