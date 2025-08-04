@@ -19,13 +19,13 @@ class ResAPI(JSONResponse):
 
     @classmethod
     def ok_200(
-        cls, msg: str = "GET operation successful ✅", **kwargs
+        cls, msg: str = "GET operation successful ✅", **kwargs: Any
     ) -> "ResAPI":
         return cls(status=200, data={"msg": msg, **kwargs})
 
     @classmethod
     def ok_201(
-        cls, msg: str = "POST operation successful ✅", **kwargs
+        cls, msg: str = "POST operation successful ✅", **kwargs: Any
     ) -> "ResAPI":
         return cls(status=201, data={"msg": msg, **kwargs})
 
@@ -51,7 +51,7 @@ class ResAPI(JSONResponse):
 
     @classmethod
     def err_422(
-        cls, msg: str = "Unprocessable entity 🧐", **kwargs
+        cls, msg: str = "Unprocessable entity 🧐", **kwargs: Any
     ) -> "ResAPI":
         return cls(
             status=422,
