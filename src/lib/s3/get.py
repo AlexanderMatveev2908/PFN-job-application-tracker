@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import cast
+from typing import Mapping, TypedDict, cast
 from src.conf.aws.s3 import gen_s3_session
 from src.lib.logger import clg
 from ...conf.env import env_var
@@ -22,20 +22,27 @@ async def gen_presigned_url(public_id: str) -> str:
         return res
 
 
+class Asset(TypedDict):
+    public_id: str
+    content_type: str
+    size: int
+    metadata: Mapping[str, str]
+
+
 async def save_asset(res: GetObjectOutputTypeDef, public_id: str) -> None:
-    obj = {
+    obj: Asset = {
         "public_id": public_id,
         "content_type": res.get("ContentType", ""),
         "size": res.get("ContentLength", 0),
-        "metadata": res.get("Metadata", {}),
+        "metadata": (res.get("Metadata") or {}),  # OK: {} is Mapping[str, str]
     }
 
-    # ext = mimetypes.guess_extension(obj["content_type"]) or ""
-    # body_b = await res["Body"].read()
     file_dir = Path.cwd() / "assets"
     file_dir.mkdir(exist_ok=True)
-    file_p = file_dir / obj["metadata"]["filename"]
-    # file_p.write_bytes(body_b)
+
+    metadata = obj["metadata"]
+    filename = metadata.get("filename", public_id)
+    file_p = file_dir / filename
 
     stream = res["Body"]
     with file_p.open("wb") as f:
@@ -56,7 +63,7 @@ async def get_asset(public_id: str) -> None:
 
 async def gen_list_assets(prefix: str = "") -> None:
     async with gen_s3_session() as s3:
-        res = await s3.list_objects_v2(  # type: ignore
+        res = await s3.list_objects_v2(
             Bucket=env_var.aws_bucket_name, Prefix=prefix
         )
 
