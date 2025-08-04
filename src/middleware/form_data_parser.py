@@ -1,6 +1,7 @@
+from __future__ import annotations
 import mimetypes
 from pathlib import Path
-from typing import Callable
+from typing import Awaitable, Callable, Optional, TypedDict, Union, List, cast
 import uuid
 import aiofiles
 from fastapi import Request
@@ -16,19 +17,32 @@ from ..lib.system import app_dir
 UPLOAD_FIR = app_dir / "uploads/"
 
 
+class AppFile(TypedDict, total=False):
+    content_type: Optional[str]
+    size: float | None
+    filename: Optional[str]
+    buffer: Optional[bytes]
+    path: Optional[str]
+
+
+Primitive = str | bool
+ParsedItem = Union[AppFile, Primitive]
+ParsedList = List[ParsedItem]
+ParsedValue = Union[ParsedItem, ParsedList]
+ParsedForm = dict[str, ParsedValue]
+
+
 def gen_filename(uf: UploadFile) -> str:
     name = str(uuid.uuid4())
     ext = (
         Path(uf.filename).suffix
         if uf.filename
         else mimetypes.guess_extension(uf.content_type or "")
-    )
-
+    ) or ""
     return f"{name}{ext}"
 
 
 async def gen_local_vid(uf: UploadFile) -> str:
-
     if not UPLOAD_FIR.exists():
         UPLOAD_FIR.mkdir(exist_ok=True)
 
@@ -46,55 +60,59 @@ class FormDataParser(BaseHTTPMiddleware):
         super().__init__(app)
 
     async def dispatch(
-        self, request: Request, call_next: Callable
+        self,
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
         content_t = request.headers.get("content-type", "")
-
         if "multipart/form-data" not in content_t:
             return await call_next(request)
 
-        parsed_f = {}
+        parsed_f: ParsedForm = {}
         form = await request.form()
 
         for k, v in form.multi_items():
+            value: ParsedItem
+
             if isinstance(v, UploadFile):
                 size_b = getattr(v, "size", None)
                 size_MB = (
                     round(size_b / (1024**2), ndigits=2) if size_b else None
                 )
 
-                value = {
+                file_rec: AppFile = {
                     "content_type": v.content_type,
                     "size": size_MB,
                 }
 
                 if v.content_type and v.content_type.startswith("video/"):
                     saved_path = await gen_local_vid(v)
-
-                    value.update(
+                    file_rec.update(
                         {
                             "filename": Path(saved_path).name,
                             "path": saved_path,
                         }
                     )
                 else:
-                    value.update(
+                    file_rec.update(
                         {
                             "filename": gen_filename(v),
                             "buffer": await v.read(),
                         }
                     )
+
+                value = file_rec
             else:
                 value = parse_bool(v)
 
-            if k in parsed_f:
-                if isinstance(parsed_f[k], list):
-                    parsed_f[k].append(value)
-                else:
-                    parsed_f[k] = [parsed_f[k], value]
-            else:
+            existing = parsed_f.get(k)
+            if existing is None:
                 parsed_f[k] = value
+            elif isinstance(existing, list):
+                parsed_list: ParsedList = cast(ParsedList, existing)
+                parsed_list.append(value)
+            else:
+                parsed_f[k] = [existing, value]
 
         request.state.parsed_f = parsed_f
-
         return await call_next(request)

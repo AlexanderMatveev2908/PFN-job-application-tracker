@@ -15,7 +15,7 @@ from starlette.types import ASGIApp
 
 # @attr.s(auto_attribs=True)
 class LoggerJSON(BaseHTTPMiddleware):
-    def __init__(self, app: ASGIApp, log_path="logger/log.json"):
+    def __init__(self, app: ASGIApp, log_path: str = "logger/log.json"):
         super().__init__(app)
         self.log_path = log_path
 
