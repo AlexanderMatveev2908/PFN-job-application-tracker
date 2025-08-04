@@ -1951,6 +1951,18 @@ files = [
 ]
 
 [[package]]
+name = "types-aiofiles"
+version = "24.1.0.20250801"
+description = "Typing stubs for aiofiles"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "types_aiofiles-24.1.0.20250801-py3-none-any.whl", hash = "sha256:0f3bdb3384ae5b3425644a2e56e414b7c2791b23079e639a2c2914b0b85c3ecf"},
+    {file = "types_aiofiles-24.1.0.20250801.tar.gz", hash = "sha256:050d85e662eba7be4dd2a66a7d6ccd4ff779a3a89361603393ed16ba30d12457"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.14.1"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -2483,4 +2495,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "e418915c0de4561d749e443cd796c7f6c5ab3069ed6ad9dbf667580448d3607c"
+content-hash = "dee13205b6d7e6db82aaa8f53ca6db19f293e92578655852832f91f540680f33"

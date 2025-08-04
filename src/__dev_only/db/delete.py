@@ -7,12 +7,12 @@ from ...conf.db import db_session
 
 
 async def del_row() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 
             c = (
-                await db.execute(select(User).where(User.name == "Jane"))
+                await db.execute(select(User).where(User.first_name == "Jane"))
             ).scalar()
 
             if c:
