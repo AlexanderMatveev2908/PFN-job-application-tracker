@@ -8,7 +8,7 @@ from .aws import aws_keys
 async def gen_ce_session() -> AsyncGenerator[Any, None]:
     session = aioboto3.Session()
 
-    async with session.client(  # type: ignore type
+    async with session.client(
         "ce",
         **aws_keys,  # type: ignore type
     ) as ce:

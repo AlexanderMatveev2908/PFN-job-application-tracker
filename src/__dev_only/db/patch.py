@@ -5,12 +5,16 @@ from ...conf.db import db_session
 
 
 async def patch_data() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
             c = (
-                await db.execute(select(User).where(User.name == "John"))
+                await db.execute(select(User).where(User.first_name == "John"))
             ).scalar()
+
+            if c is None:
+                return
+
             c.email = c.email + ".changed"
 
             print(c.to_d())

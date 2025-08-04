@@ -1093,18 +1093,6 @@ mypyc = ["setuptools (>=50)"]
 reports = ["lxml"]
 
 [[package]]
-name = "mypy-boto3-s3"
-version = "1.40.0"
-description = "Type annotations for boto3 S3 1.40.0 service generated with mypy-boto3-builder 8.11.0"
-optional = false
-python-versions = ">=3.8"
-groups = ["dev"]
-files = [
-    {file = "mypy_boto3_s3-1.40.0-py3-none-any.whl", hash = "sha256:5736b7780d57a156312d8d136462c207671d0236b0355704b5754496bb712bc8"},
-    {file = "mypy_boto3_s3-1.40.0.tar.gz", hash = "sha256:99a4a27f04d62fe0b31032f274f2e19889fa66424413617a9416873c48567f1d"},
-]
-
-[[package]]
 name = "mypy-extensions"
 version = "1.1.0"
 description = "Type system extensions for programs checked with the mypy type checker."
@@ -2495,4 +2483,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "26ccd37303be0332f404525aafb1f84e38e81519d77f569d0f55f28c61d792ff"
+content-hash = "e418915c0de4561d749e443cd796c7f6c5ab3069ed6ad9dbf667580448d3607c"

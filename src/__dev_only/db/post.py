@@ -7,7 +7,7 @@ from ...conf.db import db_session
 
 
 async def post_ud() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 
@@ -32,7 +32,7 @@ async def post_ud() -> None:
 
 
 async def post_c() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 
@@ -48,7 +48,7 @@ async def post_c() -> None:
 
 
 async def post_j() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 

@@ -1,14 +1,19 @@
 from datetime import datetime
 from typing import Any, Optional, cast
 import uuid
-from sqlalchemy import TIMESTAMP, func, inspect
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column, Mapper
+from sqlalchemy import TIMESTAMP, MetaData, func, inspect
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    mapped_column,
+    Mapper,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.state import InstanceState
 
 
-Base = declarative_base()
-Base.metadata.schema = "public"
+class Base(DeclarativeBase):
+    metadata = MetaData(schema="public")
 
 
 class RootTable(Base):

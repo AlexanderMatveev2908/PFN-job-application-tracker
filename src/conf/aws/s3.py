@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 import aioboto3
-from mypy_boto3_s3 import S3Client
+from types_aiobotocore_s3 import S3Client
 from .aws import aws_keys
 
 
