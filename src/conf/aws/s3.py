@@ -9,7 +9,5 @@ from .aws import aws_keys
 async def gen_s3_session() -> AsyncGenerator[S3Client, None]:
     session = aioboto3.Session()
 
-    async with session.client(  # type: ignore[func-returns-value]
-        "s3", **aws_keys  # type: ignore
-    ) as s3:
+    async with session.client("s3", **aws_keys) as s3:  # type: ignore
         yield s3

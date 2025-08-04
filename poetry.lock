@@ -1951,6 +1951,18 @@ files = [
 ]
 
 [[package]]
+name = "types-aiobotocore-s3"
+version = "2.23.2"
+description = "Type annotations for aiobotocore S3 2.23.2 service generated with mypy-boto3-builder 8.11.0"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "types_aiobotocore_s3-2.23.2-py3-none-any.whl", hash = "sha256:e0baf323fad6102b27a0d63789415499d879f5f219547097468ef3c7e97b3f13"},
+    {file = "types_aiobotocore_s3-2.23.2.tar.gz", hash = "sha256:f01a08178db31fdee38900965a43077ab598b45c9b548f3ff1512d6aca45e382"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.14.1"
 description = "Backported and Experimental Type Hints for Python 3.9+"
@@ -2483,4 +2495,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "facf283042532d9e4fb9bad80ca93c7c4066d4cecaf00dabb09358a58d27447d"
+content-hash = "26ccd37303be0332f404525aafb1f84e38e81519d77f569d0f55f28c61d792ff"
