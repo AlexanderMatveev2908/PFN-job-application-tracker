@@ -9,35 +9,31 @@ from src.models.user import User
 from ...conf.db import db_session
 
 
-def raw_sql_where(**kwargs) -> tuple[str, dict[str, Any]]:
-    cond = []
-    bind_params = {}
+def raw_sql_where(**kwargs: Any) -> tuple[str, dict[str, Any]]:
+    cond_parts: list[str] = []
+    bind_params: dict[str, Any] = {}
 
     for k, v in kwargs.items():
-        cond.append(f"{k} = :{k}")
+        cond_parts.append(f"{k} = :{k}")
         bind_params[k] = v
 
-    cond = "\nAND ".join(cond)
-
+    cond: str = "\nAND ".join(cond_parts)
     return cond, bind_params
 
 
 async def run_raw_sql(
     txt: str,
-    bind_params: dict,
-) -> list[dict]:
-
-    async with db_session() as db:  # type: ignore
+    bind_params: dict[str, Any],
+) -> list[dict[str, Any]]:
+    async with db_session() as db:
         try:
             await db.begin()
-
             res = await db.execute(text(txt), bind_params)
-            readable = [dict(r) for r in res.mappings().all()]
-
+            readable: list[dict[str, Any]] = [
+                dict(r) for r in res.mappings().all()
+            ]
             await db.commit()
-
             clg(ttl="✅ 200")
-
             return readable
         except Exception as err:
             clg(err, ttl="💣 err transaction")
@@ -67,7 +63,7 @@ async def get_all() -> None:
     }
     names = ["User", "Car", "Company", "Job"]
 
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 
@@ -99,7 +95,7 @@ async def get_all() -> None:
 
 
 async def get_us_joined() -> None:
-    async with db_session() as db:  # type: ignore
+    async with db_session() as db:
         try:
             await db.begin()
 
