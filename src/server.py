@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.__dev_only.db.get import get_all, get_us_joined
+from src.__dev_only.db.get import get_all
 from src.decorators.err import ErrAPI
-from src.lib.etc import wrap_async
+
+# from src.lib.etc import wrap_async
 from src.lib.logger import clg
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
@@ -32,7 +33,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-wrap_async(get_us_joined)
+# wrap_async(get_us_joined)
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
