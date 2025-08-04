@@ -1,12 +1,17 @@
 from pathlib import Path
+from typing import cast
 from src.conf.aws.s3 import gen_s3_session
 from src.lib.logger import clg
 from ...conf.env import env_var
+from types_aiobotocore_s3.type_defs import (
+    GetObjectOutputTypeDef,
+    ObjectTypeDef,
+)
 
 
 async def gen_presigned_url(public_id: str) -> str:
     async with gen_s3_session() as s3:
-        res = await s3.generate_presigned_url(  # type: ignore
+        res = await s3.generate_presigned_url(
             ClientMethod="get_object",
             Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
             ExpiresIn=60**2 * 24,
@@ -17,7 +22,7 @@ async def gen_presigned_url(public_id: str) -> str:
         return res
 
 
-async def save_asset(res: dict, public_id: str) -> None:
+async def save_asset(res: GetObjectOutputTypeDef, public_id: str) -> None:
     obj = {
         "public_id": public_id,
         "content_type": res.get("ContentType", ""),
@@ -40,7 +45,7 @@ async def save_asset(res: dict, public_id: str) -> None:
 
 async def get_asset(public_id: str) -> None:
     async with gen_s3_session() as s3:
-        res = await s3.get_object(  # type: ignore
+        res = await s3.get_object(
             Bucket=env_var.aws_bucket_name, Key=public_id
         )
 
@@ -55,4 +60,5 @@ async def gen_list_assets(prefix: str = "") -> None:
             Bucket=env_var.aws_bucket_name, Prefix=prefix
         )
 
-        clg(len(res["Contents"]))
+        contents = cast(list[ObjectTypeDef], res.get("Contents", []))
+        clg(len(contents))
