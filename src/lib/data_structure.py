@@ -1,4 +1,5 @@
 import re
+from typing import Any, Optional
 import uuid
 from src.constants.data_structure import BoolParser
 
@@ -22,7 +23,9 @@ def is_obj_ok(obj: object | None) -> bool:
     )
 
 
-def is_list_ok(arg: list | None) -> bool:
+def is_list_ok(arg: Optional[list[Any]]) -> bool:
+    if arg is None:
+        return False
 
     return bool(arg) and any(el is not None for el in (arg))
 

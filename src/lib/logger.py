@@ -5,7 +5,7 @@ from typing import Any, Optional
 
 
 def clg(
-    *arg: list[Any],
+    *arg: Any | list[Any],
     ttl: str = "logger",
 ) -> None:
 

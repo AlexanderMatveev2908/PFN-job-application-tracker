@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Optional, cast
 import uuid
 from sqlalchemy import TIMESTAMP, func, inspect
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+from sqlalchemy.orm import declarative_base, Mapped, mapped_column, Mapper
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm.attributes import NO_VALUE  # type: ignore # noqa: E501
+from sqlalchemy.orm.state import InstanceState
 
 
 Base = declarative_base()
@@ -32,8 +32,9 @@ class RootTable(Base):
     )
 
     def to_d(self, join: bool = False, depth: int = 0) -> dict[str, Any]:
-        mapper = inspect(self.__class__)
-        state = inspect(self)
+        state = cast(InstanceState[Any], inspect(self))
+        mapper: Mapper[Any] = state.mapper
+
         out: dict[str, Any] = {}
 
         for col in mapper.columns:
@@ -48,8 +49,7 @@ class RootTable(Base):
             for rel in mapper.relationships:
                 attr = state.attrs[rel.key]
 
-                loaded = attr.loaded_value is not NO_VALUE
-                if not loaded:
+                if rel.key in state.unloaded:
                     continue
 
                 v = attr.value
