@@ -1,0 +1,46 @@
+.link {
+  transition: 0.3s ease-in-out;
+  position: relative;
+  max-width: fit-content;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -3.5px;
+    width: 0%;
+    left: 50%;
+    height: 2px;
+    transition: 0.3s ease-in-out;
+    background-color: var(--white__0);
+  }
+
+  &:hover {
+    text-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
+
+    &::after {
+      width: 100%;
+      left: 0;
+      box-shadow: 0 0 5px var(--white__0), 0 0 10px var(--white__0);
+    }
+  }
+}
+
+.btn__app:enabled,
+.el__app {
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(var(--scale__up));
+  }
+}
+
+.btn__app:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.btn__app:enabled:active,
+.el__app:active {
+  transition: 0.15s;
+  transform: scale(0.8);
+}

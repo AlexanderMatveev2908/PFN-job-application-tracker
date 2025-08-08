@@ -1,0 +1,20 @@
+{
+  "name": "PFN-job-application-tracker",
+  "packageManager": "yarn@4.9.2",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "tsx": "^4.20.3",
+    "turbo": "^2.5.5"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "install_pkg": "turbo install_pkg --parallel && yarn workspace client playwright install",
+    "dev": "turbo dev --parallel",
+    "build": "turbo build --parallel",
+    "start": "turbo run start --parallel",
+    "check": "turbo check --parallel",
+    "test": "turbo test --parallel"
+  }
+}

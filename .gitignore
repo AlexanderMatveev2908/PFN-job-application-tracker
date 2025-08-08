@@ -1,0 +1,90 @@
+# __ python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+.Python
+env/
+.venv/
+venv/
+pip-wheel-metadata/
+
+# __ useless
+.editorconfig
+
+# __ keep .vscode because it have useful settings for python formatting
+
+# __ keep cheat_sheet because can be useful as reminder for some concepts 
+
+# __ pytest
+htmlcov/
+.cache/
+.tox/
+.coverage
+.coverage.*
+.pytest_cache/
+nosetests.xml
+test-results.xml
+.pytest_cache/
+
+# __ mypy / ruff / linting
+.mypy_cache/
+.dmypy.json
+ruff_cache/
+*.lint
+*.typecheck
+
+# __ yarn
+.yarn/*
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/sdks/
+!.yarn/versions/
+!.yarnrc.yml
+
+# __ node
+node_modules/
+
+# __ ts build
+*.tsbuildinfo
+
+# __ turbo
+turbo/
+.turbo/
+
+# __ build apps
+dist/
+build/
+
+# __ loggers
+logger/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# __ client
+apps/*/.next/
+apps/*/out/
+
+# __ secrets
+*.pem
+*.key
+*.crt
+.env
+.env.*
+certs/
+
+# __ assets
+uploads/
+assets/
+
+# __ tests
+playwright-report/
+test-results/

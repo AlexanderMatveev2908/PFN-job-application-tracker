@@ -1,0 +1,15 @@
+.txt__md {
+  @apply font-semibold text-base sm:text-lg md:text-lg lg:text-xl;
+}
+
+.txt__lg {
+  @apply font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl;
+}
+
+.txt__xl {
+  @apply font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+}
+
+.txt__2xl {
+  @apply font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+}
