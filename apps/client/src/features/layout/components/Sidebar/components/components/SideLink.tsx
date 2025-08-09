@@ -7,11 +7,17 @@ import type { FC } from "react";
 
 type PropsType = {
   lk: LinkAppSvgT;
+  isCurrPath: boolean;
 };
 
-const SideLink: FC<PropsType> = ({ lk }) => {
+const SideLink: FC<PropsType> = ({ lk, isCurrPath }) => {
   return (
-    <Link href={lk.href} className="flex items-center justify-start gap-6">
+    <Link
+      href={lk.href}
+      className={`link__app ${
+        isCurrPath && "link__curr"
+      } flex items-center justify-start gap-6`}
+    >
       <lk.Svg className="svg__lg" />
 
       <span className="txt__lg">{lk.label}</span>

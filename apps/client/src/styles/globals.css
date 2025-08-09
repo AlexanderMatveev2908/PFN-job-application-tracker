@@ -44,27 +44,28 @@
   scrollbar-color: var(--white__0) transparent;
 }
 
-.link {
-  transition: 0.3s ease-in-out;
+.link__app,
+.link__curr {
   position: relative;
   max-width: fit-content;
 }
-.link::after {
+.link__app::after,
+.link__curr::after {
   content: "";
   position: absolute;
   bottom: -3.5px;
-  width: 0%;
-  left: 50%;
+  width: 100%;
+  left: 0;
   height: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
   transition: 0.3s ease-in-out;
   background-color: var(--white__0);
 }
-.link:hover {
-  text-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0);
-}
-.link:hover::after {
-  width: 100%;
-  left: 0;
+
+.link__app:hover::after,
+.link__curr::after {
+  transform: scaleX(1);
   box-shadow: 0 0 5px var(--white__0), 0 0 10px var(--white__0);
 }
 
