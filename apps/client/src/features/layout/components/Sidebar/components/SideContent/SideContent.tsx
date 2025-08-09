@@ -2,11 +2,12 @@
 "use client";
 
 import type { FC } from "react";
-import { sideLinksAll } from "../uiFactory/idx";
+import { sideDropAccount, sideLinksAll } from "./uiFactory/idx";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import SideLink from "./components/SideLink";
 import { usePathname } from "next/navigation";
 import { calcIsCurrPath } from "@/core/lib/etc";
+import DropMenu from "@/common/components/dropMenus/DropMenu";
 
 const SideContent: FC = () => {
   const { ids } = useGenIDs({
@@ -23,6 +24,8 @@ const SideContent: FC = () => {
           {...{ lk, isCurrPath: calcIsCurrPath(path, lk.href) }}
         />
       ))}
+
+      <DropMenu {...{ el: sideDropAccount }} />
     </div>
   );
 };

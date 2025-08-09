@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 import { css } from "@emotion/react";
-import SideContent from "./components/SideContent";
+import SideContent from "./components/SideContent/SideContent";
 
 const Sidebar: FC = () => {
   const sideRef = useRef(null);

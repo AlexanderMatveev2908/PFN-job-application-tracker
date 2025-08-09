@@ -6,7 +6,7 @@ import SvgRecoverPwd from "@/common/components/SVGs/RecoverPwd";
 import SvgRegister from "@/common/components/SVGs/Register";
 import SvgSearch from "@/common/components/SVGs/Search";
 import SvgWrite from "@/common/components/SVGs/Write";
-import { DropMenuT, LinkAppSvgT } from "@/common/types/ui";
+import { DropElT, LinkAppSvgT } from "@/common/types/ui";
 
 export const sideLinksAll: LinkAppSvgT[] = [
   {
@@ -37,26 +37,26 @@ export const sideLinksLogged: LinkAppSvgT[] = [
   },
 ];
 
-export const sideLinksNonLogged: DropMenuT = {
+export const sideDropAccount: DropElT = {
   label: "Account",
   Svg: SvgAccount,
-
-  links: [
-    {
-      label: "Register",
-      href: "/auth/register",
-      Svg: SvgRegister,
-    },
-    {
-      label: "Login",
-      href: "/auth/login",
-      Svg: SvgLogin,
-    },
-    {
-      label: "Recover Email",
-      href: "/auth/recover-pwd",
-      Svg: SvgRecoverPwd,
-    },
-    ...sideSharedLinks,
-  ],
 };
+
+export const sideLinksNonLogged: LinkAppSvgT[] = [
+  {
+    label: "Register",
+    href: "/auth/register",
+    Svg: SvgRegister,
+  },
+  {
+    label: "Login",
+    href: "/auth/login",
+    Svg: SvgLogin,
+  },
+  {
+    label: "Recover Email",
+    href: "/auth/recover-pwd",
+    Svg: SvgRecoverPwd,
+  },
+  ...sideSharedLinks,
+];

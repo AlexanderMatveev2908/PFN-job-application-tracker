@@ -13,6 +13,7 @@ module.exports = {
   svgo: true,
   svgoConfig: {
     plugins: [
+      { name: "removeEditorsNSData", active: true },
       { name: "removeAttrs", params: { attrs: ["fill", "stroke"] } },
       { name: "inlineStyles", params: { onlyMatchedOnce: false } },
       { name: "removeStyleElement", active: true },

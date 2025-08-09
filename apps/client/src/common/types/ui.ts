@@ -9,9 +9,7 @@ export interface LinkAppSvgT extends LinkAppT {
   Svg: IconType;
 }
 
-export interface DropMenuT {
+export interface DropElT {
   label: string;
   Svg?: IconType;
-
-  links: (LinkAppT | LinkAppSvgT)[];
 }

@@ -3,6 +3,7 @@ export { default as Burger } from "./Burger";
 export { default as Close } from "./Close";
 export { default as CloseSquare } from "./CloseSquare";
 export { default as ConfirmEmail } from "./ConfirmEmail";
+export { default as Down } from "./Down";
 export { default as Home } from "./Home";
 export { default as Login } from "./Login";
 export { default as Logo } from "./Logo";
