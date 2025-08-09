@@ -6,6 +6,7 @@ import Providers from "@/features/layout/shells/Providers";
 import Toast from "@/features/layout/components/Toast/Toast";
 import WrapWakeUp from "@/features/layout/shells/WrapWakeUp/WrapWakeUp";
 import Header from "@/features/layout/components/Header/Header";
+import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
           }}
         >
           <Header />
+          <Sidebar />
           <Toast />
 
           <WrapWakeUp>{children}</WrapWakeUp>
