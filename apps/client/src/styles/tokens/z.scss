@@ -1,19 +1,23 @@
 .z__bg_sidebar {
-  z-index: 3500;
+  z-index: 350;
+}
+
+.z__header {
+  z-index: 400;
 }
 
 .z__sidebar {
-  z-index: 4000;
+  z-index: 450;
 }
 
 .z__black_bg__popup {
-  z-index: 4500;
+  z-index: 550;
 }
 
 .z__popup {
-  z-index: 5000;
+  z-index: 600;
 }
 
 .z__toast {
-  z-index: 10000;
+  z-index: 1000;
 }
