@@ -7,12 +7,13 @@ module.exports = {
   dimensions: false,
   svgProps: {
     "aria-hidden": "true",
-    fill: "currentColor",
+    // fill: "currentColor",
     stroke: "currentColor",
   },
   svgo: true,
   svgoConfig: {
     plugins: [
+      { name: "removeEditorsNSData", active: true },
       { name: "removeAttrs", params: { attrs: ["fill", "stroke"] } },
       { name: "inlineStyles", params: { onlyMatchedOnce: false } },
       { name: "removeStyleElement", active: true },

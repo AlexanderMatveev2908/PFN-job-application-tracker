@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        w_0: "#f5f5f5",
+        w__0: "#f5f5f5",
       },
       borderWidth: {
         3: "3px",
