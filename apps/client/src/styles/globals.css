@@ -140,6 +140,10 @@
   @apply font-extrabold text-3xl sm:text-4xl lg:text-5xl;
 }
 
+.txt__clr {
+  @apply text-neutral-300;
+}
+
 .svg__xs {
   width: 25px;
   min-width: 25px;
@@ -279,7 +283,7 @@
   }
 }
 .bd__md {
-  @apply border-3 border-w_0;
+  @apply border-3 border-w__0;
 }
 
 :root {

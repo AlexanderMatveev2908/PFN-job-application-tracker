@@ -25,3 +25,7 @@
 .txt__3xl {
   @apply font-extrabold text-3xl sm:text-4xl lg:text-5xl;
 }
+
+.txt__clr {
+  @apply text-neutral-300;
+}

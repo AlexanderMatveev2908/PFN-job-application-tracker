@@ -8,3 +8,8 @@ export const clearTmr = (timerID: RefObject<NodeJS.Timeout | null>) => {
 };
 
 export const isWdw = () => typeof window !== "undefined";
+
+export const genLorem = (n?: number) =>
+  "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem perferendis nostrum, sapiente dicta praesentium neque ratione rem facilis. Alias quos libero vel iusto quam in, recusandae accusamus cupiditate fugiat nam.".repeat(
+    n ?? 1
+  );
