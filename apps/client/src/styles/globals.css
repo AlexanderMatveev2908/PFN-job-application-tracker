@@ -88,12 +88,20 @@
   transform: scale(0.8);
 }
 
+.z__bg_sidebar {
+  z-index: 3500;
+}
+
+.z__sidebar {
+  z-index: 4000;
+}
+
 .z__black_bg__popup {
-  z-index: 500;
+  z-index: 4500;
 }
 
 .z__popup {
-  z-index: 1000;
+  z-index: 5000;
 }
 
 .z__toast {

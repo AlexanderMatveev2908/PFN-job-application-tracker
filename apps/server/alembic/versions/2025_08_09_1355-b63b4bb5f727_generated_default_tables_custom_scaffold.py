@@ -1,8 +1,8 @@
-"""=> mig
+"""💾 generated default tables custom scaffold
 
-Revision ID: 044c94256655
+Revision ID: b63b4bb5f727
 Revises: 
-Create Date: 2025-08-09 13:30:58.988813
+Create Date: 2025-08-09 13:55:40.961718
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '044c94256655'
+revision: str = 'b63b4bb5f727'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
