@@ -10,7 +10,7 @@ import BlackBg from "@/common/components/elements/BlackBg";
 import { motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import { genLorem } from "@/core/lib/etc";
-import TxtScroll from "@/common/components/elements/txts/TxtScroll";
+import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 
 const Sidebar: FC = () => {
   const sideRef = useRef(null);
@@ -55,7 +55,7 @@ const Sidebar: FC = () => {
           <div className="w-full min-h-[60px] h-[60px] sticky top-0 border-b-3 flex items-center justify-start px-5">
             <TxtScroll
               {...{
-                txt: "john.doe@gmail.com",
+                txt: "example@gmail.com",
               }}
             />
           </div>
