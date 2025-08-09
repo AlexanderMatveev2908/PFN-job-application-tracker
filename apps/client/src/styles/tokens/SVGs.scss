@@ -9,21 +9,27 @@ $svg-sizes: (
 
 @each $k, $v in $svg-sizes {
   .svg__#{$k} {
+    width: #{$v}px;
     min-width: #{$v}px;
+    height: #{$v}px;
     min-height: #{$v}px;
   }
 
   @media screen and (min-width: 600px) {
     .svg__#{$k} {
       min-width: #{($v + 5)}px;
+      width: #{($v + 5)}px;
       min-height: #{($v + 5)}px;
+      height: #{($v + 5)}px;
     }
   }
 
   @media screen and (min-width: 1000px) {
     .svg__#{$k} {
       min-width: #{($v + 10)}px;
+      width: #{($v + 10)}px;
       min-height: #{($v + 10)}px;
+      height: #{($v + 10)}px;
     }
   }
 }

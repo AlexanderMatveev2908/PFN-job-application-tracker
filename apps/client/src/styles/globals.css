@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 .tb {
   @apply border-[3px] border-[whitesmoke];
 }
@@ -99,124 +100,176 @@
   z-index: 10000;
 }
 
+.txt__xs {
+  @apply font-normal text-xs sm:text-sm lg:text-base;
+}
+
+.txt__sm {
+  @apply font-normal text-sm sm:text-base lg:text-lg;
+}
+
 .txt__md {
-  @apply font-semibold text-base sm:text-lg md:text-lg lg:text-xl;
+  @apply font-medium text-base sm:text-lg lg:text-xl;
 }
 
 .txt__lg {
-  @apply font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  @apply font-bold text-lg sm:text-xl lg:text-2xl;
 }
 
 .txt__xl {
-  @apply font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  @apply font-bold text-xl sm:text-2xl lg:text-3xl;
 }
 
 .txt__2xl {
-  @apply font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  @apply font-bold text-2xl sm:text-3xl lg:text-4xl;
+}
+
+.txt__3xl {
+  @apply font-extrabold text-3xl sm:text-4xl lg:text-5xl;
 }
 
 .svg__xs {
+  width: 25px;
   min-width: 25px;
+  height: 25px;
   min-height: 25px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__xs {
     min-width: 30px;
+    width: 30px;
     min-height: 30px;
+    height: 30px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__xs {
     min-width: 35px;
+    width: 35px;
     min-height: 35px;
+    height: 35px;
   }
 }
 .svg__sm {
+  width: 30px;
   min-width: 30px;
+  height: 30px;
   min-height: 30px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__sm {
     min-width: 35px;
+    width: 35px;
     min-height: 35px;
+    height: 35px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__sm {
     min-width: 40px;
+    width: 40px;
     min-height: 40px;
+    height: 40px;
   }
 }
 .svg__md {
+  width: 35px;
   min-width: 35px;
+  height: 35px;
   min-height: 35px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__md {
     min-width: 40px;
+    width: 40px;
     min-height: 40px;
+    height: 40px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__md {
     min-width: 45px;
+    width: 45px;
     min-height: 45px;
+    height: 45px;
   }
 }
 .svg__lg {
+  width: 40px;
   min-width: 40px;
+  height: 40px;
   min-height: 40px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__lg {
     min-width: 45px;
+    width: 45px;
     min-height: 45px;
+    height: 45px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__lg {
     min-width: 50px;
+    width: 50px;
     min-height: 50px;
+    height: 50px;
   }
 }
 .svg__xl {
+  width: 45px;
   min-width: 45px;
+  height: 45px;
   min-height: 45px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__xl {
     min-width: 50px;
+    width: 50px;
     min-height: 50px;
+    height: 50px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__xl {
     min-width: 55px;
+    width: 55px;
     min-height: 55px;
+    height: 55px;
   }
 }
 .svg__2xl {
+  width: 50px;
   min-width: 50px;
+  height: 50px;
   min-height: 50px;
 }
 
 @media screen and (min-width: 600px) {
   .svg__2xl {
     min-width: 55px;
+    width: 55px;
     min-height: 55px;
+    height: 55px;
   }
 }
 @media screen and (min-width: 1000px) {
   .svg__2xl {
     min-width: 60px;
+    width: 60px;
     min-height: 60px;
+    height: 60px;
   }
 }
+.bd__md {
+  @apply border-3 border-w_0;
+}
+
 :root {
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;

@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "install_pkg": "yarn install",
     "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev -p 3001",
