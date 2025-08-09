@@ -3,8 +3,8 @@
 
 import { DropElT } from "@/common/types/ui";
 import { ReactNode, useState, type FC } from "react";
-import SvgDown from "../SVGs/Down";
 import { css } from "@emotion/react";
+import { FaChevronDown } from "react-icons/fa6";
 
 type PropsType = {
   el: DropElT;
@@ -30,8 +30,8 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
           <span className="txt__lg">{el.label}</span>
         </div>
 
-        <SvgDown
-          className="svg__xs"
+        <FaChevronDown
+          className="svg__sm"
           css={css`
             transition: 0.3s transform;
             transform: rotate(${isOpen ? 180 : 0}deg);
