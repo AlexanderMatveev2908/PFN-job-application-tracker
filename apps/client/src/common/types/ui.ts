@@ -7,6 +7,8 @@ export interface LinkAppT {
 
 export interface LinkAppSvgT extends LinkAppT {
   Svg: IconType;
+  fill?: string;
+  stroke?: string;
 }
 
 export interface DropElT {

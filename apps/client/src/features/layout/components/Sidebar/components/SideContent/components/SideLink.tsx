@@ -18,7 +18,7 @@ const SideLink: FC<PropsType> = ({ lk, isCurrPath }) => {
         isCurrPath && "link__curr"
       } flex items-center justify-start gap-6`}
     >
-      <lk.Svg className="svg__lg" />
+      <lk.Svg className="svg__lg" fill={lk.fill} />
 
       <span className="txt__lg">{lk.label}</span>
     </Link>

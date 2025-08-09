@@ -2,9 +2,10 @@
 "use client";
 
 import { DropElT } from "@/common/types/ui";
-import { ReactNode, useState, type FC } from "react";
+import { ReactNode, useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
+import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
 type PropsType = {
   el: DropElT;
@@ -13,16 +14,41 @@ type PropsType = {
 
 const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropRef = useRef(null);
+
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [contentH, setContentH] = useState(0);
+
+  useMouseOut({
+    ref: dropRef,
+    cb: () => setIsOpen(false),
+  });
+
+  useEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+
+    const cb = () => setContentH(el.scrollHeight + 25);
+    cb();
+  }, [isOpen]);
 
   return (
-    <div className="w-full flex flex-col">
+    <div
+      ref={dropRef}
+      className={`${
+        isOpen ? "gap-4" : "gap-0"
+      } w-full flex flex-col translate-0 duration-300`}
+    >
       <div
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
             : "text-neutral-300 hover:text-neutral-950 "
-        } w-full flex items-center justify-between transition-all duration-300 hover:bg-neutral-300 cursor-pointer rounded-xl px-4 py-2`}
+        } flex items-center justify-between transition-all duration-300 hover:bg-neutral-300 cursor-pointer rounded-xl px-4 py-2 -ml-4`}
+        css={css`
+          width: calc(100% + 1rem);
+        `}
       >
         <div className="flex items-center justify-start gap-6">
           {el.Svg && <el.Svg className="svg__md" />}
@@ -40,14 +66,17 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
       </div>
 
       <div
-        className="scroll__app overflow-y-auto flex w-full flex-col gap-4 py-3"
+        className="flex w-full flex-col overflow-hidden"
         css={css`
           transition: opacity 0.3s, max-height 0.4s;
-          max-height: ${isOpen ? 10 ** 3 : 0}px;
+          max-height: ${isOpen ? contentH : 0}px;
+          height: ${contentH}px;
           opacity: ${isOpen ? 1 : 0};
         `}
       >
-        {children}
+        <div ref={innerRef} className="w-full flex flex-col gap-4 h-full">
+          {children}
+        </div>
       </div>
     </div>
   );

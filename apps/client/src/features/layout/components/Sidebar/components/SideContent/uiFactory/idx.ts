@@ -1,12 +1,13 @@
 import SvgAccount from "@/common/components/SVGs/Account";
 import SvgConfirmEmail from "@/common/components/SVGs/ConfirmEmail";
 import SvgHome from "@/common/components/SVGs/Home";
-import SvgLogin from "@/common/components/SVGs/Login";
 import SvgRecoverPwd from "@/common/components/SVGs/RecoverPwd";
 import SvgRegister from "@/common/components/SVGs/Register";
 import SvgSearch from "@/common/components/SVGs/Search";
 import SvgWrite from "@/common/components/SVGs/Write";
 import { DropElT, LinkAppSvgT } from "@/common/types/ui";
+import { FiLogIn } from "react-icons/fi";
+import { HiOutlineLogout } from "react-icons/hi";
 
 export const sideLinksAll: LinkAppSvgT[] = [
   {
@@ -51,12 +52,19 @@ export const sideLinksNonLogged: LinkAppSvgT[] = [
   {
     label: "Login",
     href: "/auth/login",
-    Svg: SvgLogin,
+    Svg: FiLogIn,
   },
   {
     label: "Recover Email",
     href: "/auth/recover-pwd",
     Svg: SvgRecoverPwd,
+    fill: "var(--white__0)",
   },
   ...sideSharedLinks,
 ];
+
+export const sideLinkLogout: LinkAppSvgT = {
+  label: "Logout",
+  href: "#",
+  Svg: HiOutlineLogout,
+};
