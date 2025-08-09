@@ -12,6 +12,10 @@ export const sideSlice = createSlice({
     toggleSide: (state, action: PayloadAction<boolean | undefined>) => {
       state.isOpen = typeof action === "boolean" ? action : !state.isOpen;
     },
+
+    closeSide: (state) => {
+      state.isOpen = false;
+    },
   },
 });
 

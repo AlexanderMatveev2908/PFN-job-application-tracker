@@ -32,6 +32,7 @@ const Header: FC = () => {
         </button>
 
         <button
+          key={sideState.isOpen + ""}
           onClick={() => dispatch(sideSlice.actions.toggleSide())}
           className="btn__app"
           style={
