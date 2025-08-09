@@ -7,7 +7,7 @@ module.exports = {
   dimensions: false,
   svgProps: {
     "aria-hidden": "true",
-    fill: "currentColor",
+    // fill: "currentColor",
     stroke: "currentColor",
   },
   svgo: true,

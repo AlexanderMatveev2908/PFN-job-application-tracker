@@ -8,7 +8,6 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     className="icon flat-line"
     aria-hidden="true"
-    fill="currentColor"
     stroke="currentColor"
     {...props}
   >

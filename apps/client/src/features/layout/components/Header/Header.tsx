@@ -28,7 +28,7 @@ const Header: FC = () => {
 
       <div className="w-fit flex items-center gap-14">
         <button>
-          <SvgUser className="svg__xl text-w__0" />
+          <SvgUser className="svg__xl text-w__0" fill="var(--white__0)" />
         </button>
 
         <button
@@ -42,7 +42,7 @@ const Header: FC = () => {
           }
         >
           {sideState.isOpen ? (
-            <SvgClose className="svg__xl text-red-600" />
+            <SvgClose className="svg__xl" fill="var(--red__600)" />
           ) : (
             <SvgBurger className="svg__xl text-w__0" />
           )}

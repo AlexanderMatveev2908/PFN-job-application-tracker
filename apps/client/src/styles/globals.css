@@ -283,6 +283,10 @@
     height: 60px;
   }
 }
+.bd__sm {
+  @apply border-2 border-w__0 rounded-xl;
+}
+
 .bd__md {
   @apply border-3 border-w__0;
 }
