@@ -8,9 +8,9 @@ import { getSideState, sideSlice } from "./slice";
 import BlackBg from "@/common/components/elements/BlackBg";
 import { motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
-import { genLorem } from "@/core/lib/etc";
 import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 import { css } from "@emotion/react";
+import SideContent from "./components/SideContent";
 
 const Sidebar: FC = () => {
   const sideRef = useRef(null);
@@ -69,7 +69,7 @@ const Sidebar: FC = () => {
               max-height: calc(100% - 60px);
             `}
           >
-            {genLorem(50)}
+            <SideContent />
           </div>
         </div>
       </motion.div>
