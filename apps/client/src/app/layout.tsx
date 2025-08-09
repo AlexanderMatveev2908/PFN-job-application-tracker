@@ -5,6 +5,7 @@ import { genStoreSSR } from "@/core/store";
 import Providers from "@/features/layout/shells/Providers";
 import Toast from "@/features/layout/components/Toast/Toast";
 import WrapWakeUp from "@/features/layout/shells/WrapWakeUp/WrapWakeUp";
+import Header from "@/features/layout/components/Header/Header";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
   const store = genStoreSSR({});
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
         className={`${fira_code.className} min-h-screen h-full w-full antialiased bg-neutral-950`}
       >
@@ -37,6 +38,7 @@ export default function RootLayout({
             preloadedState: store.getState(),
           }}
         >
+          <Header />
           <Toast />
 
           <WrapWakeUp>{children}</WrapWakeUp>

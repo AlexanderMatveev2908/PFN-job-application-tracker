@@ -454,5 +454,3 @@ Instead:
 I hope you find the project interesting — if not, the app doesn’t come with a refund policy 💰
 
 Thanks for checking out the repo ✌🏼
-
-<!--  -->
