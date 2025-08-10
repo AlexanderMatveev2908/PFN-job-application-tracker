@@ -303,6 +303,20 @@
   @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-w__0;
 }
 
+@keyframes skeleton {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+.skeleton {
+  background: linear-gradient(to right, var(--neutral__800) 0%, var(--neutral__700) 40%, var(--neutral__800) 80%);
+  background-size: 200% 100%;
+  animation: skeleton 2.5s linear infinite;
+}
+
 :root {
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;

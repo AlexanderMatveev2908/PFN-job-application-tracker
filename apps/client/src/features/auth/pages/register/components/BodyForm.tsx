@@ -42,12 +42,13 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
   const { ids } = useGenIDs({
     lengths: [registerSwap_0.length, registerSwap_0.length],
   });
+
   return (
     <div
       className="transition-all duration-[0.4s] p-5"
       css={css`
-        max-height: ${contentH}px;
-        height: ${contentH}px;
+        max-height: ${contentH ? `${contentH}px` : "fit-content"};
+        height: ${contentH ? `${contentH}px` : "fit-content"};
         overflow: hidden;
       `}
     >
