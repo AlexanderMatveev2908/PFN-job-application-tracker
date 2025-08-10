@@ -60,7 +60,6 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
               {...{
                 el,
                 control,
-                errors,
               }}
             />
           ))}

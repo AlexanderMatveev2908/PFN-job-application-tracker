@@ -8,11 +8,7 @@ import { useFormContext } from "react-hook-form";
 
 const PairPwd: FC = ({}) => {
   const formCtx = useFormContext();
-  const {
-    control,
-    formState: { errors },
-    trigger,
-  } = formCtx;
+  const { control, trigger } = formCtx;
 
   const [isPwdShw, setIsPwdShw] = useState(false);
   const [isConfPwdShw, setIsConfPwdShw] = useState(false);
@@ -33,7 +29,6 @@ const PairPwd: FC = ({}) => {
         {...{
           el: pwdFields.password,
           control,
-          errors,
           cb: () => trigger("confirm_password"),
           isShw: isPwdShw,
           handleSvgClick: handlePwdClick,
@@ -44,7 +39,6 @@ const PairPwd: FC = ({}) => {
         {...{
           el: pwdFields.confirm_password,
           control,
-          errors,
           cb: () => trigger("password"),
           isShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,

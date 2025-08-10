@@ -1,0 +1,93 @@
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import { FieldInputT, FormFieldTxtT } from "@/common/types/ui";
+import { ChangeEvent, ReactNode, useCallback } from "react";
+import {
+  Control,
+  Controller,
+  ControllerRenderProps,
+  FieldValues,
+  Path,
+} from "react-hook-form";
+import ErrField from "../../etc/ErrField";
+
+type PropsType<T extends FieldValues> = {
+  el: FormFieldTxtT<T>;
+  control: Control<T>;
+  cb?: (v: string) => void;
+  isDisabled?: boolean;
+  manualMsg?: string;
+  showLabel?: boolean;
+  dynamicInputT?: FieldInputT;
+  children?: ReactNode;
+};
+
+const RawField = <T extends FieldValues>({
+  el,
+  cb,
+  isDisabled,
+  manualMsg,
+  showLabel,
+  children,
+  control,
+  dynamicInputT,
+}: PropsType<T>) => {
+  const genDefProps = useCallback(
+    (field: ControllerRenderProps<T, Path<T>>) => ({
+      placeholder: el.place,
+      disabled: !!isDisabled,
+      value: field.value ?? "",
+      className: `input__base txt__md ${
+        el.type === "textarea" && "scroll__app"
+      }`,
+
+      onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {
+          target: { value: v },
+        } = e;
+
+        field.onChange(v);
+
+        cb?.(v);
+      },
+    }),
+    [el, cb, isDisabled]
+  );
+
+  return (
+    <label className="w-full grid grid-cols-1 gap-4">
+      {showLabel && <span className="txt__lg">{el.label}</span>}
+
+      <div className="w-full relative">
+        <Controller
+          name={el.name}
+          control={control}
+          render={({ field, fieldState }) => (
+            <>
+              {el.type === "textarea" ? (
+                <textarea {...field} {...genDefProps(field)} rows={4} />
+              ) : (
+                <input
+                  {...field}
+                  type={dynamicInputT ?? el.type}
+                  {...genDefProps(field)}
+                />
+              )}
+
+              {children}
+
+              <ErrField
+                {...{
+                  msg: fieldState?.error?.message ?? manualMsg,
+                }}
+              />
+            </>
+          )}
+        />
+      </div>
+    </label>
+  );
+};
+
+export default RawField;
