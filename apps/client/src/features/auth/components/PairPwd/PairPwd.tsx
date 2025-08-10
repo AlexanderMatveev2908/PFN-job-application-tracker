@@ -29,7 +29,7 @@ const PairPwd: FC = ({}) => {
         {...{
           el: pwdFields.password,
           control,
-          cb: () => trigger("confirm_password"),
+          cbChange: () => trigger("confirm_password"),
           isShw: isPwdShw,
           handleSvgClick: handlePwdClick,
         }}
@@ -39,7 +39,7 @@ const PairPwd: FC = ({}) => {
         {...{
           el: pwdFields.confirm_password,
           control,
-          cb: () => trigger("password"),
+          cbChange: () => trigger("password"),
           isShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
         }}

@@ -15,7 +15,7 @@ import ErrField from "../../etc/ErrField";
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
   control: Control<T>;
-  cb?: (v: string) => void;
+  cbChange?: (v: string) => void;
   isDisabled?: boolean;
   manualMsg?: string;
   showLabel?: boolean;
@@ -25,7 +25,7 @@ type PropsType<T extends FieldValues> = {
 
 const RawField = <T extends FieldValues>({
   el,
-  cb,
+  cbChange,
   isDisabled,
   manualMsg,
   showLabel,
@@ -49,10 +49,10 @@ const RawField = <T extends FieldValues>({
 
         field.onChange(v);
 
-        cb?.(v);
+        cbChange?.(v);
       },
     }),
-    [el, cb, isDisabled]
+    [el, cbChange, isDisabled]
   );
 
   return (

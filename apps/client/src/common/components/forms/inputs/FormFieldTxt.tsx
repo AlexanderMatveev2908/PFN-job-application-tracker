@@ -8,7 +8,7 @@ import RawField from "./subComponents/RawField";
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
   control: Control<T>;
-  cb?: (v: string) => void;
+  cbChange?: (v: string) => void;
   isDisabled?: boolean;
   manualMsg?: string;
   showLabel?: boolean;
@@ -17,7 +17,7 @@ type PropsType<T extends FieldValues> = {
 const FormFieldTxt = <T extends FieldValues>({
   el,
   control,
-  cb,
+  cbChange,
   isDisabled,
   manualMsg,
   showLabel = true,
@@ -27,7 +27,7 @@ const FormFieldTxt = <T extends FieldValues>({
       {...{
         el,
         control,
-        cb,
+        cbChange,
         isDisabled,
         manualMsg,
         showLabel,
