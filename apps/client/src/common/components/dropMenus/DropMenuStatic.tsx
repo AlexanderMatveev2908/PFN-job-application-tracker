@@ -28,9 +28,9 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
     const el = innerRef.current;
     if (!el) return;
 
-    const cb = () => setContentH(el.scrollHeight + 25);
+    const cb = () => setContentH(el.scrollHeight + 10);
     cb();
-  }, [isOpen]);
+  }, [isOpen, children]);
 
   return (
     <div
