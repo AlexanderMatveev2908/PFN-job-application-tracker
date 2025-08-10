@@ -14,7 +14,7 @@ type PropsType = {
   isEnabled?: boolean;
 };
 
-const IconBtn: FC<PropsType> = ({
+const BtnSvg: FC<PropsType> = ({
   handleClick,
   act = "NONE",
   Svg,
@@ -42,4 +42,4 @@ const IconBtn: FC<PropsType> = ({
   );
 };
 
-export default IconBtn;
+export default BtnSvg;
