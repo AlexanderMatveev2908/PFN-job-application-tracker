@@ -8,12 +8,14 @@ import type { FC } from "react";
 type PropsType = {
   lk: LinkAppSvgT;
   isCurrPath: boolean;
+  handleClick: () => void;
 };
 
-const SideLink: FC<PropsType> = ({ lk, isCurrPath }) => {
+const SideLink: FC<PropsType> = ({ lk, isCurrPath, handleClick }) => {
   return (
     <Link
       href={lk.href}
+      onClick={handleClick}
       className={`link__app ${
         isCurrPath && "link__curr"
       } flex items-center justify-start gap-6`}
