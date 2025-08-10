@@ -31,6 +31,8 @@ export type FormFieldTxtT<T extends FieldValues> = {
   type: FieldInputT;
 };
 
+export type FormFieldSvgT<T extends FieldValues> = FormFieldTxtT<T> & {};
+
 export type FieldCheckT = "checkbox" | "radio";
 
 export type FormFieldCheckT<T extends FieldValues> = {

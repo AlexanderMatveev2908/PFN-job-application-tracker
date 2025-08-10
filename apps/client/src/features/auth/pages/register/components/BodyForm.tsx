@@ -4,17 +4,14 @@
 import { css } from "@emotion/react";
 import { type FC } from "react";
 import WrapSwap from "./subComponents/WrapSwap";
-import {
-  registerSwap_0,
-  registerSwap_1,
-  termsField,
-} from "../uiFactory/register";
+import { registerSwap_0, termsField } from "../uiFactory/register";
 import { useFormContext } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { RegisterFormT } from "../schemas/register";
 import { useListenHeight } from "@/core/hooks/ui/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
+import PairPwd from "@/features/auth/components/PairPwd/PairPwd";
 
 type PropsType = {
   currSwap: number;
@@ -26,7 +23,6 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
   const {
     control,
     formState: { errors },
-    trigger,
     watch,
     setValue,
   } = useFormContext<RegisterFormT>();
@@ -76,20 +72,7 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
             contentRef,
           }}
         >
-          {registerSwap_1.map((el, i) => (
-            <FormFieldTxt
-              key={ids[1][i]}
-              {...{
-                el,
-                control,
-                errors,
-                cb: () =>
-                  trigger(
-                    el.name === "password" ? "confirm_password" : "password"
-                  ),
-              }}
-            />
-          ))}
+          <PairPwd />
 
           <FormFieldCheck
             {...{

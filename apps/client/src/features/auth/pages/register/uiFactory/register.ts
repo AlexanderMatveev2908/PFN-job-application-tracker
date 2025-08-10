@@ -17,11 +17,6 @@ export const registerSwap_0: FormFieldTxtT<RegisterFormT>[] = [
   }),
 ];
 
-export const registerSwap_1: FormFieldTxtT<RegisterFormT>[] = [
-  gen.txtField({ name: "password" }),
-  gen.txtField({ name: "confirm_password" }),
-];
-
 export const termsField: FormFieldCheckT<RegisterFormT> = gen.checkField({
   name: "terms",
 });

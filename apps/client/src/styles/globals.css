@@ -153,6 +153,29 @@
   @apply text-neutral-300;
 }
 
+.svg__xxs {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+}
+
+@media screen and (min-width: 600px) {
+  .svg__xxs {
+    min-width: 25px;
+    width: 25px;
+    min-height: 25px;
+    height: 25px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .svg__xxs {
+    min-width: 25px;
+    width: 25px;
+    min-height: 25px;
+    height: 25px;
+  }
+}
 .svg__xs {
   width: 25px;
   min-width: 25px;
@@ -170,10 +193,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__xs {
-    min-width: 35px;
-    width: 35px;
-    min-height: 35px;
-    height: 35px;
+    min-width: 30px;
+    width: 30px;
+    min-height: 30px;
+    height: 30px;
   }
 }
 .svg__sm {
@@ -193,10 +216,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__sm {
-    min-width: 40px;
-    width: 40px;
-    min-height: 40px;
-    height: 40px;
+    min-width: 35px;
+    width: 35px;
+    min-height: 35px;
+    height: 35px;
   }
 }
 .svg__md {
@@ -216,10 +239,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__md {
-    min-width: 45px;
-    width: 45px;
-    min-height: 45px;
-    height: 45px;
+    min-width: 40px;
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
   }
 }
 .svg__lg {
@@ -239,10 +262,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__lg {
-    min-width: 50px;
-    width: 50px;
-    min-height: 50px;
-    height: 50px;
+    min-width: 45px;
+    width: 45px;
+    min-height: 45px;
+    height: 45px;
   }
 }
 .svg__xl {
@@ -262,10 +285,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__xl {
-    min-width: 55px;
-    width: 55px;
-    min-height: 55px;
-    height: 55px;
+    min-width: 50px;
+    width: 50px;
+    min-height: 50px;
+    height: 50px;
   }
 }
 .svg__2xl {
@@ -285,10 +308,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__2xl {
-    min-width: 60px;
-    width: 60px;
-    min-height: 60px;
-    height: 60px;
+    min-width: 55px;
+    width: 55px;
+    min-height: 55px;
+    height: 55px;
   }
 }
 .input__base {
