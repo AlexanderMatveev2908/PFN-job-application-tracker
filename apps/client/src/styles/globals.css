@@ -299,6 +299,10 @@
   box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
 }
 
+.auth__form {
+  @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-w__0;
+}
+
 :root {
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;
