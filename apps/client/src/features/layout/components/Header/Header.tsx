@@ -16,6 +16,7 @@ import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import HeaderLink from "./components/HeaderLink";
 import { calcIsCurrPath } from "@/core/lib/etc";
 import { usePathname } from "next/navigation";
+import { headerHight } from "@/core/constants/style";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
@@ -30,9 +31,9 @@ const Header: FC = () => {
 
   return (
     <div
-      className="z__header w-full sticky top-0 left-0 border-b-3 border-w__0 flex items-center justify-between px-3"
+      className="z__header w-full sticky top-0 left-0 border-b-3 bg-neutral-950 border-w__0 flex items-center justify-between px-3"
       css={css`
-        height: ${75}px;
+        height: ${headerHight}px;
       `}
     >
       <Link href={"/"}>

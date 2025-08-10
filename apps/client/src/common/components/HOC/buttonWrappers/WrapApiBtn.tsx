@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 import SpinBtn from "../../spinners/SpinBtn";
 import { AppEventT } from "@/common/types/api";
+import { ChildrenT } from "@/common/types/ui";
 
 type PropsType = {
   isLoading?: boolean;
   act?: AppEventT;
-  children: ReactNode;
-};
+} & ChildrenT;
 
 const WrapApiBtn: FC<PropsType> = ({ isLoading, act = "NONE", children }) => {
   return isLoading ? (

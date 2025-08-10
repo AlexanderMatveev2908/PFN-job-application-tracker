@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { ReactNode, useRef, useState, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { FieldTxtSvgT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
@@ -11,8 +11,7 @@ type PropsType = {
   el: FieldTxtSvgT;
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
-  children: ReactNode;
-};
+} & ChildrenT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,

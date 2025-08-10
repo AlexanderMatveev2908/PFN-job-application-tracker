@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
 export interface LinkAppT {
@@ -15,3 +16,7 @@ export interface FieldTxtSvgT {
   label?: string;
   Svg?: IconType;
 }
+
+export type ChildrenT = {
+  children: ReactNode;
+};

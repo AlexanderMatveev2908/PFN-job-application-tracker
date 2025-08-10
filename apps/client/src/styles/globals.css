@@ -9,7 +9,7 @@
 }
 
 .grad__txt {
-  background: linear-gradient(to right, var(--white__0), var(--neutral__600));
+  background: linear-gradient(to right, var(--white__0), var(--neutral__500));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
