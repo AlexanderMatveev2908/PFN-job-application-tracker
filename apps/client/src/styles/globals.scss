@@ -6,6 +6,7 @@
 @use "./tokens/txt.scss";
 @use "./tokens//SVGs.scss";
 @use "./tokens/border.scss";
+@use "./tokens/inputs.scss";
 
 :root {
   --white__0: #f5f5f5;
@@ -40,6 +41,9 @@ body {
 }
 
 button {
+  appearance: none;
+}
+input {
   appearance: none;
 }
 
