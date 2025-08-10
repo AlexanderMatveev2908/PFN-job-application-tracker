@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { registerSwap_0, registerSwap_1 } from "./uiFactory/register";
 import { useFocus } from "@/core/hooks/etc/useFocus";
 import { __cg } from "@/core/lib/log";
@@ -12,11 +12,29 @@ import { RegisterFormT, registerSchema } from "./schemas/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { css } from "@emotion/react";
 import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
-import WrapSwap from "../../components/components/WrapSwap";
+import WrapSwap from "./components/WrapSwap";
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 
 const Register: FC = ({}) => {
   const [currSwap, setCurrSwap] = useState(0);
+
+  const [contentH, setContentH] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const cb = () => setContentH(el.scrollHeight);
+    cb();
+
+    const ro = new ResizeObserver(cb);
+    ro.observe(el);
+
+    return () => {
+      ro.disconnect();
+    };
+  }, [currSwap]);
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
@@ -54,14 +72,16 @@ const Register: FC = ({}) => {
         className="w-full flex"
         css={css`
           min-width: 200%;
-          transition: transform 0.4s, opacity 0.3s;
+          max-height: ${contentH}px;
+          overflow: hidden;
+          transition: transform 0.4s, max-height 0.4s, opacity 0.3s;
           transform: translateX(-${(100 / 2) * currSwap}%);
         `}
       >
         <WrapSwap
           {...{
-            currSwap,
-            idx: 0,
+            isCurr: currSwap === 0,
+            contentRef,
           }}
         >
           {registerSwap_0.map((el, i) => (
@@ -78,8 +98,8 @@ const Register: FC = ({}) => {
 
         <WrapSwap
           {...{
-            currSwap,
-            idx: 1,
+            isCurr: currSwap === 1,
+            contentRef,
           }}
         >
           {registerSwap_1.map((el, i) => (
@@ -107,7 +127,7 @@ const Register: FC = ({}) => {
         }}
       />
 
-      <div className="w-[250px] justify-self-center">
+      <div className="w-[250px] justify-self-center mt-4">
         <BtnShim
           {...{
             type: "submit",
