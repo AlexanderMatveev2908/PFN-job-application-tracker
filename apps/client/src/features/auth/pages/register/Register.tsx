@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { css } from "@emotion/react";
 import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
 import WrapSwap from "../../components/components/WrapSwap";
+import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 
 const Register: FC = ({}) => {
   const [currSwap, setCurrSwap] = useState(0);
@@ -36,6 +37,8 @@ const Register: FC = ({}) => {
     },
     (errs) => {
       __cg("errors", errs);
+
+      return errs;
     }
   );
 
@@ -46,7 +49,7 @@ const Register: FC = ({}) => {
   });
 
   return (
-    <form className="w-full flex flex-col gap-10" onSubmit={handleSave}>
+    <form className="w-full grid grid-cols-1 gap-10" onSubmit={handleSave}>
       <div
         className="w-full flex"
         css={css`
@@ -103,6 +106,15 @@ const Register: FC = ({}) => {
           totSwaps: 2,
         }}
       />
+
+      <div className="w-[250px] justify-self-center">
+        <BtnShim
+          {...{
+            type: "submit",
+            label: "Save",
+          }}
+        />
+      </div>
     </form>
   );
 };

@@ -34,7 +34,6 @@ const FormFieldTxt = <T extends FieldValues>({
 
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
-      required: !!el.required,
       placeholder: el.place,
       disabled: isDisabled,
       value: field.value ?? "",

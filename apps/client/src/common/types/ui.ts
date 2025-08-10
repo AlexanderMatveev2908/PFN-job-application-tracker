@@ -29,5 +29,4 @@ export type FormFieldTxtT<T extends FieldValues> = {
   place: string;
   type: FieldInputT;
   label?: string | null;
-  required?: boolean;
 };
