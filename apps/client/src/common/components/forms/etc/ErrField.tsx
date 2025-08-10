@@ -13,9 +13,8 @@ const ErrField: FC<PropsType> = ({ msg }) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
   useEffect(() => {
-    if ((!isStr(prevErr) && isStr(msg)) || (isStr(msg) && msg !== prevErr)) {
+    if (isStr(msg) && (!isStr(prevErr) || msg !== prevErr))
       setPrevErr(msg as string);
-    }
   }, [prevErr, msg]);
 
   return (

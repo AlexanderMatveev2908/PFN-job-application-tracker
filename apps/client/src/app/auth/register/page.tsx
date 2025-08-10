@@ -18,7 +18,12 @@ const Page: FC = () => {
     mode: "onChange",
     resolver: zodResolver(registerSchema),
   });
-  const { control, setFocus, watch } = formCtx;
+  const {
+    control,
+    setFocus,
+    watch,
+    formState: { errors },
+  } = formCtx;
 
   useFocus("first_name", { setFocus });
 
@@ -33,6 +38,7 @@ const Page: FC = () => {
         {...{
           el: registerField,
           control,
+          errors,
         }}
       />
     </WrapAuthForm>

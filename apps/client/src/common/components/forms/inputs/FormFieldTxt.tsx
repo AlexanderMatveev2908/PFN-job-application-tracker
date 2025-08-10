@@ -7,15 +7,19 @@ import {
   Control,
   Controller,
   ControllerRenderProps,
+  FieldErrors,
   FieldValues,
   Path,
 } from "react-hook-form";
+import ErrField from "../etc/ErrField";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
   control: Control<T>;
   cb?: (v: string) => void;
   isDisabled?: boolean;
+  errors?: FieldErrors<T>;
+  manualMsg?: string;
 };
 
 const FormFieldTxt = <T extends FieldValues>({
@@ -23,14 +27,20 @@ const FormFieldTxt = <T extends FieldValues>({
   control,
   cb,
   isDisabled,
+  errors,
+  manualMsg,
 }: PropsType<T>) => {
+  const msg = manualMsg ?? (errors?.[el.name]?.message as string);
+
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
       required: !!el.required,
       placeholder: el.place,
       disabled: isDisabled,
       value: field.value ?? "",
-      className: "input__base bd__sm txt__md",
+      className: `input__base bd__sm txt__md ${
+        el.type === "textarea" && "scroll__app"
+      }`,
 
       onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {
@@ -49,17 +59,25 @@ const FormFieldTxt = <T extends FieldValues>({
     <label className="w-full grid grid-cols-1 gap-4">
       {el.label && <span className="txt__lg">{el.label}</span>}
 
-      <Controller
-        name={el.name}
-        control={control}
-        render={({ field }) =>
-          el.type === "textarea" ? (
-            <textarea {...field} {...genDefProps(field)} />
-          ) : (
-            <input {...field} type={el.type} {...genDefProps(field)} />
-          )
-        }
-      />
+      <div className="w-full relative">
+        <Controller
+          name={el.name}
+          control={control}
+          render={({ field }) =>
+            el.type === "textarea" ? (
+              <textarea {...field} {...genDefProps(field)} rows={4} />
+            ) : (
+              <input {...field} type={el.type} {...genDefProps(field)} />
+            )
+          }
+        />
+
+        <ErrField
+          {...{
+            msg,
+          }}
+        />
+      </div>
     </label>
   );
 };
