@@ -27,19 +27,20 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
   const { isHydrated } = useHydration();
 
   const [triggerRTK, res] = wakeUpSliceAPI.useLazyWakeServerQuery();
-  const { data } = res;
   const { triggerRef } = useWrapQuery({
     ...res,
     showToast: true,
   });
-  const triggerAPI = useCallback(() => {
+  const triggerAPI = useCallback(async () => {
     triggerRef();
-    triggerRTK(
+    const resAPI = await triggerRTK(
       {
         _: Date.now(),
       },
       false
     );
+
+    return resAPI.data;
   }, [triggerRef, triggerRTK]);
 
   useEffect(() => {
@@ -67,20 +68,30 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
     const listener = async () => {
       if (!canGo) return;
 
+      let count = 0;
       while (!isAwakeRef.current) {
-        await new Promise<void>((res) => {
-          timerID.current = setTimeout(() => {
-            if (isStr(data?.msg)) {
-              saveStorage(Date.now(), { key: "WAKE_UP" });
-              isAwakeRef.current = true;
-              setIsPop(false);
-            } else {
-              triggerAPI();
-            }
+        await new Promise<void>((resPrm) => {
+          timerID.current = setTimeout(
+            async () => {
+              try {
+                const r = await triggerAPI();
 
-            clearTmr(timerID);
-            res();
-          }, 2000);
+                if (isStr(r?.msg)) {
+                  saveStorage(Date.now(), { key: "WAKE_UP" });
+                  isAwakeRef.current = true;
+                  setIsPop(false);
+                } else {
+                  count++;
+                }
+              } catch {
+                count++;
+              }
+
+              clearTmr(timerID);
+              resPrm();
+            },
+            count ? 2000 : 0
+          );
         });
       }
     };
@@ -90,7 +101,8 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
     return () => {
       clearTmr(timerID);
     };
-  }, [triggerAPI, canGo, wrapListener, data, isHydrated]);
+  }, [triggerAPI, triggerRTK, canGo, wrapListener]);
+
   return (
     <div className="w-full h-full pt-[25px] pb-[200px]">
       <WrapPop
