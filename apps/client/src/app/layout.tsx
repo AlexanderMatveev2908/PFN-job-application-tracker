@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${fira_code.className} min-h-screen h-full w-full antialiased bg-neutral-950`}
+        className={`${fira_code.className} min-h-screen h-full w-full antialiased bg-neutral-950 text-neutral-200`}
       >
         <Providers
           {...{

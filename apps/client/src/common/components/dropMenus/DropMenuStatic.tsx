@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { DropElT } from "@/common/types/ui";
+import { FieldTxtSvgT } from "@/common/types/ui";
 import { ReactNode, useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
+import PairTxtSvg from "../elements/PairTxtSvg";
 
 type PropsType = {
-  el: DropElT;
+  el: FieldTxtSvgT;
   children: ReactNode;
 };
 
@@ -44,17 +45,13 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
         className={`${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
-            : "text-neutral-300 hover:text-neutral-950 "
+            : "text-neutral-300 hover:text-neutral-950"
         } flex items-center justify-between transition-all duration-300 hover:bg-neutral-300 cursor-pointer rounded-xl px-4 py-2 -ml-4`}
         css={css`
           width: calc(100% + 1rem);
         `}
       >
-        <div className="flex items-center justify-start gap-6">
-          {el.Svg && <el.Svg className="svg__md" />}
-
-          <span className="txt__lg">{el.label}</span>
-        </div>
+        <PairTxtSvg {...{ el }} />
 
         <FaChevronDown
           className="svg__sm"
@@ -74,7 +71,11 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
           opacity: ${isOpen ? 1 : 0};
         `}
       >
-        <div ref={innerRef} className="w-full flex flex-col gap-4 h-full">
+        <div
+          onClick={() => setIsOpen(false)}
+          ref={innerRef}
+          className="w-full flex flex-col gap-4 h-full"
+        >
           {children}
         </div>
       </div>

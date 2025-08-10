@@ -38,9 +38,7 @@ const Home: FC = () => {
       }}
     >
       <div className="w-full h-full min-h-screen flex flex-col justify-center items-center gap-20">
-        <span className="text-3xl font-bold text-neutral-200">
-          Script worked ✌🏽
-        </span>
+        <span className="text-3xl font-bold">Script worked ✌🏽</span>
 
         <div className="w-[250px]">
           <WrapShadow

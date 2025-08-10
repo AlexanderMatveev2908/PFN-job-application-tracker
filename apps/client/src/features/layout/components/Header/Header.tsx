@@ -5,16 +5,29 @@ import SvgBurger from "@/common/components/SVGs/Burger";
 import SvgLogo from "@/common/components/SVGs/Logo";
 import { css } from "@emotion/react";
 import Link from "next/link";
-import type { FC } from "react";
+import { useRef, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSideState, sideSlice } from "../Sidebar/slice";
 import SvgClose from "@/common/components/SVGs/Close";
 import { TbUserFilled } from "react-icons/tb";
+import DropMenuAbsolute from "@/common/components/dropMenus/DropMenuAbsolute";
+import { linksAll, linksNonLogged } from "@/core/uiFactory/links";
+import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
+import HeaderLink from "./components/HeaderLink";
+import { calcIsCurrPath } from "@/core/lib/etc";
+import { usePathname } from "next/navigation";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
+  const dropRef = useRef(null);
 
+  const path = usePathname();
   const dispatch = useDispatch();
+
+  const { ids } = useGenIDs({
+    lengths: [linksAll.length + linksNonLogged.length],
+  });
+
   return (
     <div
       className="z__header w-full sticky top-0 left-0 border-b-3 border-w__0 flex items-center justify-between px-3"
@@ -26,10 +39,29 @@ const Header: FC = () => {
         <SvgLogo className="svg__xl" />
       </Link>
 
-      <div className="w-fit flex items-center gap-14">
-        <button>
-          <TbUserFilled className="svg__md text-w__0" fill="var(--white__0)" />
-        </button>
+      <div ref={dropRef} className="w-fit flex items-center gap-14">
+        <DropMenuAbsolute
+          {...{
+            el: {
+              Svg: TbUserFilled,
+            },
+            $SvgCls: "svg__sm",
+            $customCSS: css`
+              left: -200px;
+            `,
+          }}
+        >
+          {[...linksAll, ...linksNonLogged].map((lk, i) => (
+            <HeaderLink
+              key={ids[0][i]}
+              {...{
+                isCurrPath: calcIsCurrPath(path, lk.href),
+                lk,
+                handleClick: () => null,
+              }}
+            />
+          ))}
+        </DropMenuAbsolute>
 
         <button
           key={sideState.isOpen + ""}

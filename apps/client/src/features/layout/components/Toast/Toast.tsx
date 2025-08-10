@@ -50,7 +50,7 @@ const Toast: FC = () => {
         >
           <div className="w-full flex justify-between items-center pt-2">
             <span
-              className="txt__lg"
+              className="txt__2xl"
               css={css`
                 color: ${clr};
               `}
@@ -68,7 +68,7 @@ const Toast: FC = () => {
           </div>
 
           <div className="w-full flex justify-center">
-            <span className="txt__md text-neutral-200">
+            <span className="txt__lg text-neutral-200">
               {toastState.toast.msg.slice(0, 200)}
             </span>
           </div>

@@ -11,7 +11,7 @@ export interface LinkAppSvgT extends LinkAppT {
   stroke?: string;
 }
 
-export interface DropElT {
-  label: string;
+export interface FieldTxtSvgT {
+  label?: string;
   Svg?: IconType;
 }
