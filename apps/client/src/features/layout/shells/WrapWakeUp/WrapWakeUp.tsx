@@ -104,7 +104,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
   }, [triggerAPI, triggerRTK, canGo, wrapListener]);
 
   return (
-    <div className="w-full h-full pt-[25px] pb-[200px]">
+    <div className="w-full h-full pt-[25px] pb-[200px] px-[25px] sm:px-[50px]">
       <WrapPop
         {...{
           isPop,

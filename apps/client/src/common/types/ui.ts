@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { FieldValues, Path } from "react-hook-form";
 import { IconType } from "react-icons";
 
 export interface LinkAppT {
@@ -19,4 +20,14 @@ export interface FieldTxtSvgT {
 
 export type ChildrenT = {
   children: ReactNode;
+};
+
+export type FieldInputT = "text" | "email" | "password" | "url" | "textarea";
+
+export type FormFieldTxtT<T extends FieldValues> = {
+  name: Path<T>;
+  place: string;
+  type: FieldInputT;
+  label?: string | null;
+  required?: boolean;
 };
