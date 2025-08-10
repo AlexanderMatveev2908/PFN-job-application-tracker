@@ -26,7 +26,15 @@ export type FieldInputT = "text" | "email" | "password" | "url" | "textarea";
 
 export type FormFieldTxtT<T extends FieldValues> = {
   name: Path<T>;
+  label: string | null;
   place: string;
   type: FieldInputT;
-  label?: string | null;
+};
+
+export type FieldCheckT = "checkbox" | "radio";
+
+export type FormFieldCheckT<T extends FieldValues> = {
+  name: Path<T>;
+  label: string | null;
+  type: FieldCheckT;
 };
