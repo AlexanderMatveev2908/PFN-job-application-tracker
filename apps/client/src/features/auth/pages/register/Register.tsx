@@ -15,6 +15,7 @@ const Register: FC = ({}) => {
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
+    reValidateMode: "onChange",
     resolver: zodResolver(registerSchema),
   });
 
