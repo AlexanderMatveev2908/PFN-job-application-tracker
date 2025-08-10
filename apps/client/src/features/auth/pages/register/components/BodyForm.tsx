@@ -2,7 +2,7 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import WrapSwap from "./subComponents/WrapSwap";
 import { registerSwap_0, registerSwap_1 } from "../uiFactory/register";
 import { useFormContext } from "react-hook-form";
@@ -20,31 +20,13 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
 
   const {
     control,
-    trigger,
     formState: { errors },
-    setError,
-    clearErrors,
-    watch,
+    trigger,
   } = useFormContext<RegisterFormT>();
-
-  const pwd = watch("password");
-  const confPwd = watch("confirm_password");
 
   const { ids } = useGenIDs({
     lengths: [registerSwap_0.length, registerSwap_0.length],
   });
-
-  useEffect(() => {
-    if (pwd !== confPwd)
-      setError("confirm_password", {
-        message: "Passwords do not match",
-      });
-    else if (
-      errors?.confirm_password?.message === "Passwords do not match" &&
-      pwd === confPwd
-    )
-      clearErrors("confirm_password");
-  }, [pwd, confPwd, watch, setError, errors, clearErrors]);
 
   return (
     <div

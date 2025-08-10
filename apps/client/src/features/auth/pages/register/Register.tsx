@@ -15,8 +15,15 @@ const Register: FC = ({}) => {
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
-    reValidateMode: "onChange",
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      terms: true,
+    },
   });
 
   const { setFocus, handleSubmit } = formCtx;
