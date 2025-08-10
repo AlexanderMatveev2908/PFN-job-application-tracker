@@ -53,6 +53,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
           transition: transform 0.4s, opacity 0.3s;
           transform: translateY(${isOpen ? "0" : "75px"});
           opacity: ${isOpen ? 1 : 0};
+          pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
         <div

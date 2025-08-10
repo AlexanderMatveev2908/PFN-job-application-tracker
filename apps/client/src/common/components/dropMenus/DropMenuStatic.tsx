@@ -68,6 +68,7 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
           max-height: ${isOpen ? contentH : 0}px;
           height: ${contentH}px;
           opacity: ${isOpen ? 1 : 0};
+          pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
         <div
