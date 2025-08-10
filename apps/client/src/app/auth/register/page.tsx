@@ -9,9 +9,10 @@ import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { registerField } from "@/features/auth/uiFactory/register";
+import { registerSwap_0 } from "@/features/auth/uiFactory/register";
 import { useFocus } from "@/core/hooks/etc/useFocus";
 import { __cg } from "@/core/lib/log";
+import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 
 const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
@@ -32,15 +33,24 @@ const Page: FC = () => {
     __cg(vls);
   }, [vls]);
 
+  const { ids } = useGenIDs({
+    lengths: [registerSwap_0.length],
+  });
+
   return (
     <WrapAuthForm>
-      <FormFieldTxt
-        {...{
-          el: registerField,
-          control,
-          errors,
-        }}
-      />
+      <div className="w-full grid grid-cols-1 gap-6">
+        {registerSwap_0.map((el, i) => (
+          <FormFieldTxt
+            key={ids[0][i]}
+            {...{
+              el,
+              control,
+              errors,
+            }}
+          />
+        ))}
+      </div>
     </WrapAuthForm>
   );
 };

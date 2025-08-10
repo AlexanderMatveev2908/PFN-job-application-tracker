@@ -6,7 +6,7 @@ import type { FC } from "react";
 
 const WrapAuthForm: FC<ChildrenT> = ({ children }) => {
   return (
-    <div className="w-full mx-auto mt-[50px] max-w-[800px] h-fit bd__md rounded-xl p-5">
+    <div className="w-full mx-auto mt-[50px] max-w-[800px] h-fit bd__md rounded-xl p-5 pb-8">
       {children}
     </div>
   );
