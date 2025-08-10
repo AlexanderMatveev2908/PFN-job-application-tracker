@@ -2,36 +2,21 @@
 "use client";
 
 import { css } from "@emotion/react";
-import { useEffect, useRef, useState, type FC } from "react";
+import { type FC } from "react";
 import WrapSwap from "./subComponents/WrapSwap";
 import { registerSwap_0, registerSwap_1 } from "../uiFactory/register";
 import { useFormContext } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { RegisterFormT } from "../schemas/register";
+import { useListenHeight } from "@/core/hooks/ui/useListenHeight";
 
 type PropsType = {
   currSwap: number;
 };
 
 const BodyForm: FC<PropsType> = ({ currSwap }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentH, setContentH] = useState(0);
-
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-
-    const cb = () => setContentH(el.scrollHeight + 50);
-    cb();
-
-    const ro = new ResizeObserver(cb);
-    ro.observe(el);
-
-    return () => {
-      ro.disconnect();
-    };
-  }, [currSwap]);
+  const { contentRef, contentH } = useListenHeight({ opdDep: [currSwap] });
 
   const {
     control,
@@ -91,10 +76,7 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
                 el,
                 control,
                 errors,
-                cb: () =>
-                  trigger(
-                    el.name === "password" ? "confirm_password" : "password"
-                  ),
+                cb: () => trigger(["password", "confirm_password"]),
               }}
             />
           ))}
