@@ -43,7 +43,7 @@ const Register: FC = ({}) => {
 
   return (
     <FormProvider {...formCtx}>
-      <form className="w-full grid grid-cols-1 gap-10" onSubmit={handleSave}>
+      <form className="w-full grid grid-cols-1" onSubmit={handleSave}>
         <BodyForm
           {...{
             currSwap,
