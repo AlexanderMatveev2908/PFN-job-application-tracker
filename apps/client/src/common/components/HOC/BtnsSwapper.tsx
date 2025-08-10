@@ -2,9 +2,9 @@
 "use client";
 
 import type { Dispatch, FC, SetStateAction } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import WrapShadow from "./buttonWrappers/WrapShadow";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type PropsType = {
   currSwap: number;
@@ -20,14 +20,14 @@ const BtnsSwapper: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
       {ids[0].map((id, i) => (
         <div
           key={id}
-          className={`w-[100px] ${
+          className={`w-[75px] ${
             !i ? "justify-self-start" : "justify-self-end"
           }`}
         >
           <WrapShadow
             {...{
               act: "NONE",
-              el: { Svg: !i ? FaChevronLeft : FaChevronRight },
+              el: { Svg: !i ? ChevronLeft : ChevronRight },
               wrapper: "html_button",
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
               handleClick: () =>
