@@ -14,7 +14,9 @@ const WrapSwap: FC<PropsType> = ({ children, isCurr, contentRef }) => {
     <div
       ref={isCurr ? contentRef : null}
       className={`grid grid-cols-1 gap-6 w-full h-fit items-start transition-all duration-300 ${
-        isCurr ? "opacity-100" : "opacity-0"
+        isCurr
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
       }`}
     >
       {children}

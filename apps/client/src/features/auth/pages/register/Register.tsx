@@ -17,7 +17,6 @@ import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 
 const Register: FC = ({}) => {
   const [currSwap, setCurrSwap] = useState(0);
-
   const [contentH, setContentH] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +24,7 @@ const Register: FC = ({}) => {
     const el = contentRef.current;
     if (!el) return;
 
-    const cb = () => setContentH(el.scrollHeight);
+    const cb = () => setContentH(el.scrollHeight + 50);
     cb();
 
     const ro = new ResizeObserver(cb);
@@ -69,71 +68,80 @@ const Register: FC = ({}) => {
   return (
     <form className="w-full grid grid-cols-1 gap-10" onSubmit={handleSave}>
       <div
-        className="w-full flex"
+        className="transition-all duration-[0.4s] p-5"
         css={css`
-          min-width: 200%;
           max-height: ${contentH}px;
+          height: ${contentH}px;
           overflow: hidden;
-          transition: transform 0.4s, max-height 0.4s, opacity 0.3s;
-          transform: translateX(-${(100 / 2) * currSwap}%);
         `}
       >
-        <WrapSwap
-          {...{
-            isCurr: currSwap === 0,
-            contentRef,
-          }}
+        <div
+          className="w-full h-full flex"
+          css={css`
+            min-width: 200%;
+            transition: 0.4s;
+            transform: translateX(-${(100 / 2) * currSwap}%);
+          `}
         >
-          {registerSwap_0.map((el, i) => (
-            <FormFieldTxt
-              key={ids[0][i]}
-              {...{
-                el,
-                control,
-                errors,
-              }}
-            />
-          ))}
-        </WrapSwap>
+          <WrapSwap
+            {...{
+              isCurr: currSwap === 0,
+              contentRef,
+            }}
+          >
+            {registerSwap_0.map((el, i) => (
+              <FormFieldTxt
+                key={ids[0][i]}
+                {...{
+                  el,
+                  control,
+                  errors,
+                }}
+              />
+            ))}
+          </WrapSwap>
 
-        <WrapSwap
-          {...{
-            isCurr: currSwap === 1,
-            contentRef,
-          }}
-        >
-          {registerSwap_1.map((el, i) => (
-            <FormFieldTxt
-              key={ids[0][i]}
-              {...{
-                el,
-                control,
-                errors,
-                cb: () =>
-                  trigger(
-                    el.name === "password" ? "confirm_password" : "password"
-                  ),
-              }}
-            />
-          ))}
-        </WrapSwap>
+          <WrapSwap
+            {...{
+              isCurr: currSwap === 1,
+              contentRef,
+            }}
+          >
+            {registerSwap_1.map((el, i) => (
+              <FormFieldTxt
+                key={ids[0][i]}
+                {...{
+                  el,
+                  control,
+                  errors,
+                  cb: () =>
+                    trigger(
+                      el.name === "password" ? "confirm_password" : "password"
+                    ),
+                }}
+              />
+            ))}
+          </WrapSwap>
+        </div>
       </div>
 
-      <BtnsSwapper
-        {...{
-          currSwap,
-          setCurrSwap,
-          totSwaps: 2,
-        }}
-      />
-
-      <div className="w-[250px] justify-self-center mt-4">
-        <BtnShim
+      <div className="w-full grid grid-cols-1 gap-14 p-5">
+        <BtnsSwapper
           {...{
-            type: "submit",
-            label: "Save",
+            currSwap,
+            setCurrSwap,
+            totSwaps: 2,
           }}
         />
+
+        <div className="w-[250px] justify-self-center">
+          <BtnShim
+            {...{
+              type: "submit",
+              label: "Save",
+            }}
+          />
+        </div>
       </div>
     </form>
   );
