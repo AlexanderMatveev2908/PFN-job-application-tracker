@@ -18,7 +18,7 @@ const BtnBg: FC<PropsType> = ({ el, act = "NONE" }) => {
 
   return (
     <button
-      className="bd__sm btn__app flex items-center justify-center w-full py-2 px-4"
+      className="btn__sm btn__app flex items-center justify-center w-full py-2 px-4"
       style={
         {
           "--scale__up": 1.15,

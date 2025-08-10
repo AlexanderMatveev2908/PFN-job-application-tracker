@@ -20,6 +20,7 @@ type PropsType<T extends FieldValues> = {
   isDisabled?: boolean;
   errors?: FieldErrors<T>;
   manualMsg?: string;
+  showLabel?: boolean;
 };
 
 const FormFieldTxt = <T extends FieldValues>({
@@ -29,6 +30,7 @@ const FormFieldTxt = <T extends FieldValues>({
   isDisabled,
   errors,
   manualMsg,
+  showLabel = true,
 }: PropsType<T>) => {
   const msg = manualMsg ?? (errors?.[el.name]?.message as string);
 
@@ -37,7 +39,7 @@ const FormFieldTxt = <T extends FieldValues>({
       placeholder: el.place,
       disabled: isDisabled,
       value: field.value ?? "",
-      className: `input__base bd__sm txt__md ${
+      className: `input__base txt__md ${
         el.type === "textarea" && "scroll__app"
       }`,
 
@@ -56,7 +58,7 @@ const FormFieldTxt = <T extends FieldValues>({
 
   return (
     <label className="w-full grid grid-cols-1 gap-4">
-      {el.label && <span className="txt__lg">{el.label}</span>}
+      {showLabel && <span className="txt__lg">{el.label}</span>}
 
       <div className="w-full relative">
         <Controller

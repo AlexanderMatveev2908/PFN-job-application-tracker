@@ -44,6 +44,14 @@
   scrollbar-color: var(--white__0) transparent;
 }
 
+.bd__sm {
+  @apply border-2 border-neutral-300 rounded-xl;
+}
+
+.bd__md {
+  @apply border-3 border-neutral-300 rounded-xl;
+}
+
 .link__app,
 .link__curr {
   position: relative;
@@ -283,16 +291,8 @@
     height: 60px;
   }
 }
-.bd__sm {
-  @apply border-2 border-w__0 rounded-xl;
-}
-
-.bd__md {
-  @apply border-3 border-w__0;
-}
-
 .input__base {
-  @apply transition-all duration-300 w-full py-2 px-4 outline-0;
+  @apply transition-all duration-300 w-full py-2 px-4 outline-0 border-2 border-neutral-300 rounded-xl;
 }
 
 .input__base:focus {
@@ -300,7 +300,7 @@
 }
 
 .auth__form {
-  @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-w__0;
+  @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-neutral-300;
 }
 
 @keyframes skeleton {

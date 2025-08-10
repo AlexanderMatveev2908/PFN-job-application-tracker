@@ -28,7 +28,9 @@ export const registerSchema = z
       .string({ error: "You must confirm password" })
       .min(1, "You must confirm password"),
 
-    terms: z.literal(true, { message: "You must accept terms & conditions" }),
+    terms: z
+      .boolean()
+      .refine((v) => v, { message: "You must accept terms & conditions" }),
   })
   .refine((d) => d.password === d.confirm_password, {
     path: ["confirm_password"],

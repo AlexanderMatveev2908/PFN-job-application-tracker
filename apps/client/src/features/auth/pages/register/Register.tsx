@@ -22,7 +22,7 @@ const Register: FC = ({}) => {
       email: "",
       password: "",
       confirm_password: "",
-      terms: true,
+      terms: false,
     },
   });
 

@@ -31,7 +31,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
     <div ref={dropRef} className="w-full relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`btn__app w-full cursor-pointer p-[6px] bd__sm ${
+        className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
             : "text-neutral-300 hover:text-neutral-950"
@@ -46,7 +46,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
       </button>
 
       <div
-        className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 bd__md rounded-xl"
+        className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
           ${$customCSS}
           top: calc(100% + 10px);

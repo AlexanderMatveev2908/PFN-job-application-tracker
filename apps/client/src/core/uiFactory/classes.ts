@@ -14,7 +14,7 @@ export class FormFieldGen<T extends FieldValues> {
 
   public txtField(
     arg: Partial<FormFieldTxtT<T>>
-  ): FormFieldTxtT<T> & { id: string } {
+  ): NonNullable<FormFieldTxtT<T>> & { id: string } {
     const label = this.extractLabel(arg.name!, arg.label);
 
     return {
@@ -28,7 +28,7 @@ export class FormFieldGen<T extends FieldValues> {
 
   public checkField(
     arg: Partial<FormFieldCheckT<T>>
-  ): FormFieldCheckT<T> & { id: string } {
+  ): NonNullable<FormFieldCheckT<T>> & { id: string } {
     return {
       id: this.genID(),
       name: arg.name!,

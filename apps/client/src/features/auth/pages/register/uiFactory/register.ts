@@ -1,6 +1,6 @@
 import { FormFieldGen } from "@/core/uiFactory/classes";
 import { RegisterFormT } from "../schemas/register";
-import { FormFieldTxtT } from "@/common/types/ui";
+import { FormFieldCheckT, FormFieldTxtT } from "@/common/types/ui";
 
 const gen = new FormFieldGen<RegisterFormT>();
 
@@ -21,3 +21,7 @@ export const registerSwap_1: FormFieldTxtT<RegisterFormT>[] = [
   gen.txtField({ name: "password" }),
   gen.txtField({ name: "confirm_password" }),
 ];
+
+export const termsField: FormFieldCheckT<RegisterFormT> = gen.checkField({
+  name: "terms",
+});
