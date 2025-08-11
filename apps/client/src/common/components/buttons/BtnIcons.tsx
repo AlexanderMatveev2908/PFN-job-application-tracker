@@ -24,7 +24,7 @@ const BtnIcons: FC<PropsType> = ({
       onClick={handleClick}
       type={type}
       disabled={isEnabled!}
-      className="btn_icons"
+      className="btn_icons w-full transition-all duration-500 relative enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
     >
       <div className="relative w-full overflow-hidden rounded-xl">
         <div className="btn_icons__content">

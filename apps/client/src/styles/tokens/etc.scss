@@ -1,9 +1,16 @@
 .tb {
   @apply border-[3px] border-[whitesmoke];
 }
-
 .tc {
-  @apply text-[whitesmoke] text-xl;
+  @apply text-[whitesmoke] text-2xl;
+}
+
+.bd__sm {
+  @apply border-2 border-neutral-300 rounded-xl;
+}
+
+.bd__md {
+  @apply border-3 border-neutral-300 rounded-xl;
 }
 
 .grad__txt {
@@ -40,12 +47,4 @@
 .scroll__app {
   scrollbar-width: thin;
   scrollbar-color: var(--white__0) transparent;
-}
-
-.bd__sm {
-  @apply border-2 border-neutral-300 rounded-xl;
-}
-
-.bd__md {
-  @apply border-3 border-neutral-300 rounded-xl;
 }

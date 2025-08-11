@@ -1,21 +1,21 @@
 .btn_icons {
-  @apply w-full transition-all duration-500 relative enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn_icons__content,
 .btn_icons__shadow {
-  @apply py-2 rounded-full transition-all duration-300 
-  bg-neutral-950 relative overflow-hidden;
+  @apply py-2 rounded-2xl transition-all duration-300 
+  bg-neutral-950 overflow-hidden;
 }
-.btn_icons__content::after {
-  @apply absolute content-[''] inset-0 w-full h-full rounded-full bg-transparent border-3 border-[whitesmoke] z-40;
-}
+.btn_icons__content::after,
 .btn_icons__shadow::after {
-  @apply absolute content-[''] inset-0 w-full h-full rounded-full bg-transparent border-3 border-[whitesmoke] z-40;
+  @apply absolute content-[''] inset-0 w-full h-full rounded-2xl bg-transparent border-3 border-[whitesmoke] z-40;
 }
 
-.btn__txt {
-  @apply sm:text-lg lg:text-xl font-bold text-[whitesmoke];
+.btn_icons__content {
+  @apply relative;
+}
+.btn_icons__shadow {
+  @apply absolute inset-0 -z-10 transition-all duration-300;
 }
 
 .btn_icons__ref_0,
@@ -39,10 +39,6 @@
 }
 .btn_icons__ref_1::after {
   @apply w-[200%] bg-neutral-800  -left-2 opacity-90;
-}
-
-.btn_icons__shadow {
-  @apply absolute min-w-full min-h-full top-0 left-0 -z-10 transition-all duration-300;
 }
 
 /* svg */
@@ -74,41 +70,41 @@
 }
 
 /* hover  */
-.btn_icons:not(:disabled):hover .btn_icons__shadow {
+.btn_icons:enabled:hover .btn_icons__shadow {
   @apply -translate-x-[3%] translate-y-[15%];
 }
-.btn_icons:not(:disabled):hover .btn_icons__ref_0 {
+.btn_icons:enabled:hover .btn_icons__ref_0 {
   @apply translate-x-[1000%];
 }
-.btn_icons:not(:disabled):hover .btn_icons__ref_1 {
+.btn_icons:enabled:hover .btn_icons__ref_1 {
   @apply translate-x-[2000%];
 }
-.btn_icons:not(:disabled):hover {
+.btn_icons:enabled:hover {
   @apply -rotate-[5deg] scale-110;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_0,
-.btn_icons:not(:disabled):hover .btn_icons__svg_1,
-.btn_icons:not(:disabled):hover .btn_icons__svg_2,
-.btn_icons:not(:disabled):hover .btn_icons__svg_3,
-.btn_icons:not(:disabled):hover .btn_icons__svg_4,
-.btn_icons:not(:disabled):hover .btn_icons__svg_5 {
+.btn_icons:enabled:hover .btn_icons__svg_0,
+.btn_icons:enabled:hover .btn_icons__svg_1,
+.btn_icons:enabled:hover .btn_icons__svg_2,
+.btn_icons:enabled:hover .btn_icons__svg_3,
+.btn_icons:enabled:hover .btn_icons__svg_4,
+.btn_icons:enabled:hover .btn_icons__svg_5 {
   @apply opacity-100;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_0 {
+.btn_icons:enabled:hover .btn_icons__svg_0 {
   @apply scale-110 delay-100;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_1 {
+.btn_icons:enabled:hover .btn_icons__svg_1 {
   @apply scale-110;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_2 {
+.btn_icons:enabled:hover .btn_icons__svg_2 {
   @apply scale-110 -translate-y-[200%] delay-100;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_3 {
+.btn_icons:enabled:hover .btn_icons__svg_3 {
   @apply scale-110 -translate-y-[30%] -rotate-45;
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_4 {
+.btn_icons:enabled:hover .btn_icons__svg_4 {
   @apply scale-110  delay-100 -translate-y-[100%];
 }
-.btn_icons:not(:disabled):hover .btn_icons__svg_5 {
+.btn_icons:enabled:hover .btn_icons__svg_5 {
   @apply scale-110  delay-100 -rotate-45;
 }
