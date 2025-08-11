@@ -4,6 +4,7 @@
 import { FormFieldTxtT } from "@/common/types/ui";
 import { Control, FieldValues } from "react-hook-form";
 import RawField from "./subComponents/RawField";
+import { RefObject } from "react";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
@@ -12,6 +13,7 @@ type PropsType<T extends FieldValues> = {
   isDisabled?: boolean;
   manualMsg?: string;
   showLabel?: boolean;
+  optRef?: RefObject<HTMLElement | null>;
 };
 
 const FormFieldTxt = <T extends FieldValues>({
@@ -20,6 +22,7 @@ const FormFieldTxt = <T extends FieldValues>({
   cbChange,
   isDisabled,
   manualMsg,
+  optRef,
   showLabel = true,
 }: PropsType<T>) => {
   return (
@@ -31,6 +34,7 @@ const FormFieldTxt = <T extends FieldValues>({
         isDisabled,
         manualMsg,
         showLabel,
+        optRef,
       }}
     />
   );

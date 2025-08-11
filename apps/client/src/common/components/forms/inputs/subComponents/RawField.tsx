@@ -2,7 +2,7 @@
 "use client";
 
 import { FieldInputT, FormFieldTxtT } from "@/common/types/ui";
-import { ChangeEvent, ReactNode, useCallback } from "react";
+import { ChangeEvent, ReactNode, RefObject, useCallback } from "react";
 import {
   Control,
   Controller,
@@ -21,6 +21,7 @@ type PropsType<T extends FieldValues> = {
   showLabel?: boolean;
   dynamicInputT?: FieldInputT;
   children?: ReactNode;
+  optRef?: RefObject<HTMLElement | null>;
 };
 
 const RawField = <T extends FieldValues>({
@@ -32,12 +33,18 @@ const RawField = <T extends FieldValues>({
   children,
   control,
   dynamicInputT,
+  optRef,
 }: PropsType<T>) => {
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
       placeholder: el.place,
       disabled: !!isDisabled,
       value: field.value ?? "",
+      ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
+        field.ref(node);
+
+        if (optRef) optRef.current = node;
+      },
       className: `input__base txt__md ${
         el.type === "textarea" && "scroll__app"
       }`,
@@ -52,7 +59,7 @@ const RawField = <T extends FieldValues>({
         cbChange?.(v);
       },
     }),
-    [el, cbChange, isDisabled]
+    [el, cbChange, isDisabled, optRef]
   );
 
   return (
