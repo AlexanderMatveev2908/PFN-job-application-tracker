@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { css } from "@emotion/react";
 import { FC } from "react";
 import { FaCloud, FaDatabase, FaGear, FaServer } from "react-icons/fa6";
 import { IoGitNetwork } from "react-icons/io5";
@@ -25,6 +26,16 @@ const BtnIcons: FC<PropsType> = ({
       type={type}
       disabled={isEnabled!}
       className="btn_icons w-full transition-all duration-500 relative enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      css={css`
+        .btn_icons__content,
+        .btn_icons__shadow {
+          padding: 0.5rem 1rem;
+          transition: 0.3s;
+          border-radius: 1rem;
+          background: var(--neutral__950);
+          overflow: hidden;
+        }
+      `}
     >
       <div className="relative w-full overflow-hidden rounded-xl">
         <div className="btn_icons__content">

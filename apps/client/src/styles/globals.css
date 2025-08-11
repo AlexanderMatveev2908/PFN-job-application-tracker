@@ -358,12 +358,6 @@
     opacity: 0;
   }
 }
-.btn_icons__content,
-.btn_icons__shadow {
-  @apply py-2 rounded-2xl transition-all duration-300
-  bg-neutral-950 overflow-hidden;
-}
-
 .btn_icons__content::after,
 .btn_icons__shadow::after {
   @apply absolute content-[""] inset-0 w-full h-full rounded-2xl bg-transparent border-3 border-[whitesmoke] z-40;
