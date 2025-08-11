@@ -11,6 +11,7 @@ import FooterForm from "./components/FooterForm";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import { useFocusSwap } from "@/core/hooks/ui/useFocusSwap";
 import { useFocus } from "@/core/hooks/ui/useFocus";
+import ProgressSwap from "@/common/components/elements/ProgressSwap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -54,22 +55,33 @@ const Register: FC = ({}) => {
   });
 
   return (
-    <FormProvider {...formCtx}>
-      <form className="w-full grid grid-cols-1" onSubmit={handleSave}>
-        <BodyForm
-          {...{
-            swapState,
-          }}
-        />
+    <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
+      <ProgressSwap
+        {...{
+          currSwap: swapState.currSwap,
+          maxW: 800,
+          totSwaps: 2,
+        }}
+      />
+      <div className="auth__form">
+        <FormProvider {...formCtx}>
+          <form className="w-full grid grid-cols-1" onSubmit={handleSave}>
+            <BodyForm
+              {...{
+                swapState,
+              }}
+            />
 
-        <FooterForm
-          {...{
-            swapState,
-            startSwap,
-          }}
-        />
-      </form>
-    </FormProvider>
+            <FooterForm
+              {...{
+                swapState,
+                startSwap,
+              }}
+            />
+          </form>
+        </FormProvider>
+      </div>
+    </div>
   );
 };
 

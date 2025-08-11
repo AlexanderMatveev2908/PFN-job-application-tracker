@@ -36,6 +36,7 @@ const PortalWrapper: FC<PropsType> = ({
           transition: transform 0.4s, opacity 0.3s;
           transform: translateY(${isHover ? "-100" : ""}%);
           opacity: ${isHover ? 1 : 0};
+          z-index: 100;
         `}
       >
         {children}
