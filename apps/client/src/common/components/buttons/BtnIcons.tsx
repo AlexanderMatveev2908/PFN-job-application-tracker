@@ -24,25 +24,25 @@ const BtnIcons: FC<PropsType> = ({
       onClick={handleClick}
       type={type}
       disabled={isEnabled!}
-      className="btn_container"
+      className="btn_icons"
     >
-      <div className="btn_container__content">
-        <div className="content__btn">
+      <div className="btn_icons__content">
+        <div className="btn_icons__content__txt">
           <span className={`relative z-40 txt__lg`}>{label}</span>
         </div>
 
-        <span className="btn__ref_1"></span>
-        <span className="btn__ref_2"></span>
+        <span className="btn_icons__ref_0"></span>
+        <span className="btn_icons__ref_1"></span>
       </div>
 
-      <span className="btn_container__shadow"></span>
+      <span className="btn_icons__shadow"></span>
 
-      <FaDatabase className="btn_container__svg_1" />
-      <FaGear className="btn_container__svg_2" />
-      <FaCloud className="btn_container__svg_3" />
-      <FaServer className="btn_container__svg_4" />
-      <IoGitNetwork className="btn_container__svg_5" />
-      <LiaCookieSolid className="btn_container__svg_6" />
+      <FaDatabase className="btn_icons__svg_0" />
+      <FaGear className="btn_icons__svg_1" />
+      <FaCloud className="btn_icons__svg_2" />
+      <FaServer className="btn_icons__svg_3" />
+      <IoGitNetwork className="btn_icons__svg_4" />
+      <LiaCookieSolid className="btn_icons__svg_5" />
     </button>
   );
 };
