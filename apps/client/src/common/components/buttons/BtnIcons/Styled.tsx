@@ -8,6 +8,11 @@ type PropsType = {
 
 export const BtnIconStyled = styled.button<PropsType>`
   color: ${({ $clr }) => $clr};
+
+  .btn_icons__content > span {
+    color: var(--white__0);
+  }
+
   .btn_icons__content,
   .btn_icons__shadow {
     padding: 0.5rem 1rem;
@@ -43,6 +48,21 @@ export const BtnIconStyled = styled.button<PropsType>`
     .btn_icons__ref_1 {
       transition-delay: 0.1s;
       transform: translateX(750%) skew(-35deg);
+    }
+  }
+  &:enabled:active {
+    rotate: 0deg;
+    transform: scale(0.8);
+
+    .btn_icons__shadow {
+      transform: translate(0, 0);
+    }
+
+    .btn_icons__ref_0 {
+      transform: translateX(0) skew(0);
+    }
+    .btn_icons__ref_1 {
+      transform: translateX(0) skew(0);
     }
   }
 
