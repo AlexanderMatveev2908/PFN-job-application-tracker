@@ -2,9 +2,11 @@
 "use client";
 
 import SvgPasswordCursor from "@/common/components/SVGs/PasswordCursor";
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import BtnSvg from "@/common/components/buttons/BtnSvg";
 import { SwapModeT } from "@/app/auth/register/page";
+import CpyPaste from "@/common/components/elements/CpyPaste";
+import { genPwd } from "@/core/lib/etc";
 
 type PropsType = {
   swapMode?: SwapModeT;
@@ -15,9 +17,13 @@ const PwdGenerator: FC<PropsType> = ({
   swapMode = "swapped",
   isCurrSwap = true,
 }) => {
+  const [pwd, setPwd] = useState("");
+
+  genPwd();
+
   return (
-    <div className="w-full grid grid-cols-1">
-      <div className="w-fit relative">
+    <div className="w-full flex items-center gap-10">
+      <div className="w-fit">
         <BtnSvg
           {...{
             Svg: SvgPasswordCursor,
@@ -29,6 +35,10 @@ const PwdGenerator: FC<PropsType> = ({
             },
           }}
         />
+      </div>
+
+      <div className="w-fit">
+        <CpyPaste {...{ txt: pwd }} />
       </div>
     </div>
   );
