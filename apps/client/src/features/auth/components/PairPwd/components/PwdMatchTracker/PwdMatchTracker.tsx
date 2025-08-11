@@ -7,7 +7,7 @@ import { css } from "@emotion/react";
 import type { FC } from "react";
 import { rulesPwd, lengthPwd } from "./uiFactory/idx";
 import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
-import { SwapModeT } from "@/features/auth/pages/register/Register";
+import { SwapModeT } from "@/app/auth/register/page";
 
 type PropsType = {
   coords: CoordsTooltipT;
