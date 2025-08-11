@@ -26,8 +26,8 @@ const BtnIcons: FC<PropsType> = ({
       disabled={isEnabled!}
       className="btn_icons"
     >
-      <div className="btn_icons__content">
-        <div className="btn_icons__content__txt">
+      <div className="relative w-full overflow-hidden rounded-xl">
+        <div className="btn_icons__content">
           <span className={`relative z-40 txt__lg`}>{label}</span>
         </div>
 
