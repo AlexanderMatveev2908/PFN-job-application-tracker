@@ -7,13 +7,19 @@ import { css } from "@emotion/react";
 import type { FC } from "react";
 import { rulesPwd, lengthPwd } from "./uiFactory/idx";
 import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
+import { SwapModeT } from "@/features/auth/pages/register/Register";
 
 type PropsType = {
   coords: CoordsTooltipT;
   isCurrSwap: boolean;
+  swapMode?: SwapModeT;
 };
 
-const PwdMatchTracker: FC<PropsType> = ({ coords, isCurrSwap }) => {
+const PwdMatchTracker: FC<PropsType> = ({
+  coords,
+  swapMode = "swapped",
+  isCurrSwap,
+}) => {
   const { ids } = useGenIDs({ lengths: [rulesPwd.length] });
 
   return (
@@ -27,7 +33,7 @@ const PwdMatchTracker: FC<PropsType> = ({ coords, isCurrSwap }) => {
         $trgCtmCSS: css`
           left: 15%;
         `,
-        isHover: isCurrSwap,
+        isHover: isCurrSwap && swapMode === "swapped",
       }}
     >
       <div className="w-[75vw] max-w-[800px] p-5 grid grid-cols-1 gap-6">

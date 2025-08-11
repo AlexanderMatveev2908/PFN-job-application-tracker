@@ -47,6 +47,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
         {...{
           coords,
           isCurrSwap,
+          swapMode,
         }}
       />
 
