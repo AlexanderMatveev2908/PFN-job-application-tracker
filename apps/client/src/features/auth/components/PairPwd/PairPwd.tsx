@@ -5,9 +5,8 @@ import { useState, type FC } from "react";
 import { pwdFields } from "../../uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext } from "react-hook-form";
-import PortalWrapper from "@/common/components/HOC/PortalWrapper";
-import { css } from "@emotion/react";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import PwdMatchTracker from "./components/PwdMatchTracker";
 
 const PairPwd: FC = ({}) => {
   const formCtx = useFormContext();
@@ -30,17 +29,11 @@ const PairPwd: FC = ({}) => {
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
-      <PortalWrapper
+      <PwdMatchTracker
         {...{
-          $CSS: css`
-            top: ${coords[0]}px;
-            left: ${coords[1]}px;
-          `,
-          act: "INFO",
+          coords,
         }}
-      >
-        <div className="w-[75vw] h-[200px] p-5"></div>
-      </PortalWrapper>
+      />
 
       <FormFieldPwd
         {...{
