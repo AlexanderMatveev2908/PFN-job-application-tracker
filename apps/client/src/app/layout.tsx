@@ -41,7 +41,7 @@ export default function RootLayout({
         >
           <div
             id="portal-root"
-            className="w-full max-w-full min-h-full  overflow-x-hidden absolute pointer-events-none"
+            className="w-full max-w-full min-h-full overflow-x-hidden absolute pointer-events-none"
           ></div>
 
           <Header />
