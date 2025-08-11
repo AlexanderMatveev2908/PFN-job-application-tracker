@@ -2,14 +2,15 @@
 "use client";
 
 import { type FC } from "react";
-import { useFocus } from "@/core/hooks/etc/useFocus";
 import { __cg } from "@/core/lib/log";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, Path, useForm } from "react-hook-form";
 import { RegisterFormT, registerSchema } from "./schemas/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BodyForm from "./components/BodyForm";
 import FooterForm from "./components/FooterForm";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
+import { useFocusSwap } from "@/core/hooks/ui/useFocusSwap";
+import { useFocus } from "@/core/hooks/ui/useFocus";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -43,6 +44,14 @@ const Register: FC = ({}) => {
   );
 
   useFocus("first_name", { setFocus });
+
+  const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
+
+  useFocusSwap({
+    kwargs,
+    setFocus,
+    swapState,
+  });
 
   return (
     <FormProvider {...formCtx}>
