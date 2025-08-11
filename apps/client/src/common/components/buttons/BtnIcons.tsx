@@ -66,7 +66,7 @@ const BtnIcons: FC<PropsType> = ({
             transform: translateX(2000%) skew(-35deg);
           }
           .btn_icons__ref_1 {
-            transition-delay: 0.05s;
+            transition-delay: 0.1s;
             transform: translateX(750%) skew(-35deg);
           }
         }
@@ -79,7 +79,7 @@ const BtnIcons: FC<PropsType> = ({
           background: linear-gradient(
             to right,
             transparent 0%,
-            var(--neutral__300) 50%,
+            var(--neutral__400) 50%,
             transparent 100%
           );
           transform: skewX(-35deg);
@@ -95,7 +95,7 @@ const BtnIcons: FC<PropsType> = ({
             background: linear-gradient(
               to right,
               transparent 0%,
-              var(--neutral__800) 50%,
+              var(--neutral__500) 50%,
               transparent 100%
             );
             filter: blur(2.5px);
@@ -116,7 +116,7 @@ const BtnIcons: FC<PropsType> = ({
       <div
         className="relative w-full rounded-xl"
         css={css`
-          /* overflow: hidden; */
+          overflow: hidden;
         `}
       >
         <div className="btn_icons__content relative">
