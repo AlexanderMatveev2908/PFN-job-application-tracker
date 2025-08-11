@@ -361,7 +361,7 @@
 .btn_icons__ref_0,
 .btn_icons__ref_1 {
   @apply min-h-[500%] absolute rotate-[30deg]
-  -top-1/2 transition-all duration-300 bg-white;
+  -top-1/2 transition-all duration-300 bg-white border-3 border-red-600;
 }
 
 .btn_icons__ref_0 {
@@ -420,20 +420,12 @@
 }
 
 /* hover  */
-.btn_icons:enabled:hover .btn_icons__shadow {
-  @apply -translate-x-[3%] translate-y-[15%];
-}
-
 .btn_icons:enabled:hover .btn_icons__ref_0 {
   @apply translate-x-[1000%];
 }
 
 .btn_icons:enabled:hover .btn_icons__ref_1 {
   @apply translate-x-[2000%];
-}
-
-.btn_icons:enabled:hover {
-  @apply -rotate-[5deg] scale-110;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_0,

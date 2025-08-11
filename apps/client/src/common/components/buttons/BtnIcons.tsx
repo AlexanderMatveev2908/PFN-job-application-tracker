@@ -3,7 +3,7 @@
 
 import { AppEventT } from "@/common/types/api";
 import { css } from "@emotion/react";
-import { CSSProperties, FC } from "react";
+import { FC } from "react";
 import { FaCloud, FaDatabase, FaGear, FaServer } from "react-icons/fa6";
 import { IoGitNetwork } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
@@ -39,7 +39,7 @@ const BtnIcons: FC<PropsType> = ({
           transition: 0.3s;
           border-radius: 1rem;
           background: var(--neutral__950);
-          overflow: hidden;
+          /* overflow: hidden; */
 
           &::after {
             content: "";
@@ -50,17 +50,26 @@ const BtnIcons: FC<PropsType> = ({
             border-radius: 1rem;
             background: transparent;
             border: 3px solid ${$clr};
-            z-index: 50;
+            z-index: 10;
+          }
+        }
+
+        &:enabled:hover {
+          rotate: -5deg;
+          transform: scale(1.1);
+
+          .btn_icons__shadow {
+            transform: translate(-4%, 15%);
           }
         }
       `}
-      style={
-        {
-          "--scale__up": 1.15,
-        } as CSSProperties
-      }
     >
-      <div className="relative w-full overflow-hidden rounded-xl">
+      <div
+        className="relative w-full rounded-xl"
+        css={css`
+          /* overflow: hidden; */
+        `}
+      >
         <div className="btn_icons__content relative">
           <span className={`relative z-40 txt__lg`}>{label}</span>
         </div>
