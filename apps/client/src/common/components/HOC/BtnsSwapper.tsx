@@ -2,10 +2,10 @@
 "use client";
 
 import type { FC } from "react";
-import WrapShadow from "./buttonWrappers/WrapShadow";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import BtnShadow from "../buttons/BtnShadow";
 
 type PropsType = {
   totSwaps: number;
@@ -27,11 +27,10 @@ const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
             !i ? "justify-self-start" : "justify-self-end"
           }`}
         >
-          <WrapShadow
+          <BtnShadow
             {...{
               act: "NONE",
               el: { Svg: !i ? ChevronLeft : ChevronRight },
-              wrapper: "html_button",
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
               handleClick: () => {
                 const val = !i ? currSwap - 1 : currSwap + 1;

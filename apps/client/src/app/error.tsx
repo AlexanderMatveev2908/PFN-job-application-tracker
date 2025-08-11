@@ -5,8 +5,8 @@
 import type { FC } from "react";
 import { CircleAlert } from "lucide-react";
 import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage";
-import WrapShadow from "@/common/components/HOC/buttonWrappers/WrapShadow";
 import { __cg } from "@/core/lib/log";
+import BtnShadow from "@/common/components/buttons/BtnShadow";
 
 type PropsType = {
   error: any;
@@ -25,9 +25,8 @@ const Err: FC<PropsType> = ({ error: err }: PropsType) => {
       }}
     >
       <div className="w-[250px]">
-        <WrapShadow
+        <BtnShadow
           {...{
-            wrapper: "html_button",
             act: "ERR",
             el: { label: "Refresh" },
             handleClick: () => location.reload(),

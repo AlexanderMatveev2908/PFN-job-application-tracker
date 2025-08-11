@@ -3,7 +3,7 @@
 import type { FC } from "react";
 import { FaCircleQuestion } from "react-icons/fa6";
 import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage";
-import WrapShadow from "@/common/components/HOC/buttonWrappers/WrapShadow";
+import LinkShadow from "@/common/components/links/LinkShadow";
 
 const NotFound: FC = () => {
   return (
@@ -15,7 +15,7 @@ const NotFound: FC = () => {
       }}
     >
       <div className="w-[250px]">
-        <WrapShadow
+        <LinkShadow
           {...{
             wrapper: "next_link",
             act: "INFO",
