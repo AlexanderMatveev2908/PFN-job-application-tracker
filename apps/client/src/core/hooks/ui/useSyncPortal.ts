@@ -29,8 +29,6 @@ export const useSyncPortal = (optDep?: any[]) => {
         right: window.innerWidth - right,
         bottom: bottom + window.scrollY,
       });
-
-      console.log(left);
     };
 
     cb();
