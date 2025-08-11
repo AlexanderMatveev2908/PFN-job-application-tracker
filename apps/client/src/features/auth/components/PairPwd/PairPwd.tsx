@@ -6,7 +6,7 @@ import { pwdFields } from "../../uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import PwdMatchTracker from "./components/PwdMatchTracker";
+import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
 
 const PairPwd: FC = ({}) => {
   const formCtx = useFormContext();

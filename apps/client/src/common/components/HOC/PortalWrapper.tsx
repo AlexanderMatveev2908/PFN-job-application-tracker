@@ -13,9 +13,15 @@ import TriangleTooltip from "../elements/Tooltip/subComponents/TriangleTooltip";
 type PropsType = {
   $CSS: SerializedStyles;
   act?: AppEventT;
+  $trgCtmCSS?: SerializedStyles;
 } & ChildrenT;
 
-const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
+const PortalWrapper: FC<PropsType> = ({
+  $CSS,
+  $trgCtmCSS,
+  children,
+  act = "NONE",
+}) => {
   const $clr = $argClr[act];
 
   return (
@@ -34,6 +40,7 @@ const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
           {...{
             $clr,
             $sizeTrg: 50,
+            $trgCtmCSS,
           }}
         />
       </div>
