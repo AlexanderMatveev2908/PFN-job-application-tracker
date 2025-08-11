@@ -13,7 +13,9 @@ export const useFocusSwap = <T extends FieldValues>({
   kwargs,
   setFocus,
 }: Params<T>) => {
-  const saved = useMemo(() => kwargs, [kwargs]);
+  // ! do not pass dynamic variables
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const saved = useMemo(() => kwargs, []);
 
   useEffect(() => {
     if (swapState.swapMode === "swapped") setFocus(saved[swapState.currSwap]);

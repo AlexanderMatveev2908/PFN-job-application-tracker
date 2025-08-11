@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { type FC } from "react";
 import WrapSwap from "./subComponents/WrapSwap";
 import { registerSwap_0, termsField } from "../uiFactory/register";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { RegisterFormT } from "../schemas/register";
@@ -25,9 +25,12 @@ const BodyForm: FC<PropsType> = ({ swapState }) => {
   const {
     control,
     formState: { errors },
-    watch,
     setValue,
   } = useFormContext<RegisterFormT>();
+  const isChecked = useWatch<RegisterFormT>({
+    control,
+    name: "terms",
+  });
 
   const { ids } = useGenIDs({
     lengths: [registerSwap_0.length, registerSwap_0.length],
@@ -88,7 +91,7 @@ const BodyForm: FC<PropsType> = ({ swapState }) => {
             {...{
               el: termsField,
               errors,
-              isChecked: watch("terms"),
+              isChecked: isChecked as boolean,
               setValue,
               showLabel: false,
               optTxt: "I accept terms & conditions",

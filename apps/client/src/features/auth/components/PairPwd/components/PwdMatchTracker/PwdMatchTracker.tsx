@@ -12,6 +12,7 @@ import { SwapModeT } from "@/app/auth/register/page";
 type PropsType = {
   coords: CoordsTooltipT;
   isCurrSwap: boolean;
+  isFocus: boolean;
   swapMode?: SwapModeT;
 };
 
@@ -19,6 +20,7 @@ const PwdMatchTracker: FC<PropsType> = ({
   coords,
   swapMode = "swapped",
   isCurrSwap,
+  isFocus,
 }) => {
   const { ids } = useGenIDs({ lengths: [rulesPwd.length] });
 
@@ -33,7 +35,7 @@ const PwdMatchTracker: FC<PropsType> = ({
         $trgCtmCSS: css`
           left: 15%;
         `,
-        isHover: isCurrSwap && swapMode === "swapped",
+        isHover: isCurrSwap && swapMode === "swapped" && isFocus,
       }}
     >
       <div className="w-[75vw] max-w-[800px] p-5 grid grid-cols-1 gap-6">

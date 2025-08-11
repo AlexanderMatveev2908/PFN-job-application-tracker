@@ -12,6 +12,8 @@ const FormFieldTxt = <T extends FieldValues>({
   isDisabled,
   manualMsg,
   optRef,
+  cbFocus,
+  cbBlur,
   showLabel = true,
   portalConf,
 }: RawFieldPropsT<T>) => {
@@ -21,6 +23,8 @@ const FormFieldTxt = <T extends FieldValues>({
         el,
         control,
         cbChange,
+        cbFocus,
+        cbBlur,
         isDisabled,
         manualMsg,
         showLabel,

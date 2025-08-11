@@ -16,7 +16,7 @@ export const useFocus = <T extends FieldValues, K extends Path<T>>(
     const cb = () =>
       setTimeout(() => {
         setFocus(path);
-      }, 100);
+      }, 250);
 
     wrapListener(cb);
   }, [wrapListener, setFocus, path]);

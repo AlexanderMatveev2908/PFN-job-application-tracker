@@ -15,6 +15,8 @@ type PropsType = {
 };
 
 const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   const formCtx = useFormContext();
   const { control, trigger } = formCtx;
   const pwd = useWatch({
@@ -48,6 +50,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           coords,
           isCurrSwap,
           swapMode,
+          isFocus,
         }}
       />
 
@@ -56,6 +59,8 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           el: pwdFields.password,
           control,
           cbChange: () => trigger("confirm_password"),
+          cbFocus: () => setIsFocus(true),
+          cbBlur: () => setIsFocus(false),
           isShw: isPwdShw,
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
