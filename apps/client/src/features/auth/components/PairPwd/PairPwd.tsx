@@ -18,7 +18,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const formCtx = useFormContext();
-  const { control, trigger } = formCtx;
+  const { control, trigger, getFieldState, formState } = formCtx;
   const pwd = useWatch({
     control,
     name: "password",
@@ -48,6 +48,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           swapMode,
           isFocus,
           pwd,
+          isDirty: getFieldState("password", formState).isDirty,
         }}
       />
 

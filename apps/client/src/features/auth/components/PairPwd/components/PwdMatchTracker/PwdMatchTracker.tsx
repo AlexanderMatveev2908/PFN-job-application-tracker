@@ -5,7 +5,7 @@ import PortalWrapper from "@/common/components/HOC/PortalWrapper";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { css } from "@emotion/react";
 import type { FC } from "react";
-import { rulesPwd, lengthPwd } from "./uiFactory/idx";
+import { rulesPwd, lengthPwd, extractClr } from "./uiFactory/idx";
 import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
 import { SwapModeT } from "@/app/auth/register/page";
 import { REG_PWD } from "@/core/constants/regex";
@@ -14,7 +14,8 @@ type PropsType = {
   coords: CoordsTooltipT;
   isCurrSwap: boolean;
   isFocus: boolean;
-  pwd: string;
+  isDirty: boolean;
+  pwd?: string;
   swapMode?: SwapModeT;
 };
 
@@ -23,7 +24,8 @@ const PwdMatchTracker: FC<PropsType> = ({
   swapMode = "swapped",
   isCurrSwap,
   isFocus,
-  pwd,
+  pwd = "",
+  isDirty,
 }) => {
   const { ids } = useGenIDs({ lengths: [rulesPwd.length] });
 
@@ -34,7 +36,7 @@ const PwdMatchTracker: FC<PropsType> = ({
           top: ${coords.top - 50}px;
           left: ${coords.left - 15}px;
         `,
-        act: REG_PWD.test(pwd) ? "OK" : "ERR",
+        act: !isDirty ? "NONE" : REG_PWD.test(pwd) ? "OK" : "ERR",
         $trgCtmCSS: css`
           left: 15%;
         `,
@@ -52,7 +54,7 @@ const PwdMatchTracker: FC<PropsType> = ({
             <div
               key={ids[0][i]}
               className={`flex w-[75px] items-center justify-center border-2 rounded-xl py-2 transition-all duration-300 ${
-                el.reg.test(pwd) ? "text-green-600" : "text-red-600"
+                !isDirty ? "text-w__0" : extractClr(el.reg, pwd)
               }`}
             >
               <el.Svg className="svg__sm" />
@@ -61,12 +63,12 @@ const PwdMatchTracker: FC<PropsType> = ({
 
           <div
             className={`flex w-[150px] items-center justify-center gap-6 border-2 rounded-xl py-2 col-span-2 transition-all duration-300 ${
-              lengthPwd.reg.test(pwd) ? "text-green-600" : "text-red-600"
+              !isDirty ? "text-w__0" : extractClr(lengthPwd.reg, pwd)
             }`}
           >
             <lengthPwd.Svg className="svg__sm" />
 
-            <span className="txt__lg">{pwd.length}/8</span>
+            <span className="txt__lg">{pwd?.length ?? 0}/8</span>
           </div>
         </div>
       </div>
