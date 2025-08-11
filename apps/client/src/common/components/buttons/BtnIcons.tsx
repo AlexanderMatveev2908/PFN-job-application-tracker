@@ -39,7 +39,7 @@ const BtnIcons: FC<PropsType> = ({
           transition: 0.3s;
           border-radius: 1rem;
           background: var(--neutral__950);
-          /* overflow: hidden; */
+          overflow: hidden;
 
           &::after {
             content: "";
@@ -61,6 +61,55 @@ const BtnIcons: FC<PropsType> = ({
           .btn_icons__shadow {
             transform: translate(-4%, 15%);
           }
+
+          .btn_icons__ref_0 {
+            transform: translateX(2000%) skew(-35deg);
+          }
+          .btn_icons__ref_1 {
+            transition-delay: 0.05s;
+            transform: translateX(750%) skew(-35deg);
+          }
+        }
+
+        .btn_icons__ref_0,
+        .btn_icons__ref_1 {
+          position: absolute;
+          min-height: 200%;
+          top: -50%;
+          background: linear-gradient(
+            to right,
+            transparent 0%,
+            var(--neutral__300) 50%,
+            transparent 100%
+          );
+          transform: skewX(-35deg);
+          width: 10%;
+
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            height: 100%;
+            left: -250%;
+            width: 150%;
+            background: linear-gradient(
+              to right,
+              transparent 0%,
+              var(--neutral__800) 50%,
+              transparent 100%
+            );
+            filter: blur(2.5px);
+            mix-blend-mode: overlay;
+            opacity: 0.9;
+          }
+        }
+        .btn_icons__ref_0 {
+          left: -50%;
+          transition: 0.4s;
+        }
+        .btn_icons__ref_1 {
+          left: -50%;
+          transition: 0.3s;
         }
       `}
     >

@@ -1,29 +1,6 @@
 .btn_icons {
 }
 
-.btn_icons__ref_0,
-.btn_icons__ref_1 {
-  @apply min-h-[500%] absolute rotate-[30deg] 
-  -top-1/2 transition-all duration-300 bg-white border-3 border-red-600;
-}
-.btn_icons__ref_0 {
-  @apply -left-full w-[10%];
-}
-.btn_icons__ref_1 {
-  @apply -left-1/2 w-[10%];
-}
-
-.btn_icons__ref_0::after,
-.btn_icons__ref_1::after {
-  @apply content-[""] absolute h-full -top-1/2;
-}
-.btn_icons__ref_0::after {
-  @apply w-[200%] bg-neutral-800  -left-2 opacity-90;
-}
-.btn_icons__ref_1::after {
-  @apply w-[200%] bg-neutral-800  -left-2 opacity-90;
-}
-
 /* svg */
 .btn_icons__svg_0,
 .btn_icons__svg_1,
@@ -53,13 +30,6 @@
 }
 
 /* hover  */
-
-.btn_icons:enabled:hover .btn_icons__ref_0 {
-  @apply translate-x-[1000%];
-}
-.btn_icons:enabled:hover .btn_icons__ref_1 {
-  @apply translate-x-[2000%];
-}
 
 .btn_icons:enabled:hover .btn_icons__svg_0,
 .btn_icons:enabled:hover .btn_icons__svg_1,
