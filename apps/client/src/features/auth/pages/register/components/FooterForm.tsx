@@ -6,7 +6,7 @@ import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
 import type { FC } from "react";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import BtnBbl from "@/common/components/buttons/BtnBbl";
-import BtnIcons from "@/common/components/buttons/BtnIcons";
+import BtnIcons from "@/common/components/buttons/BtnIcons/BtnIcons";
 
 type PropsType = {
   swapState: SwapStateT;
