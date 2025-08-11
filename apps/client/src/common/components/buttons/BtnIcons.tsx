@@ -3,7 +3,7 @@
 
 import { AppEventT } from "@/common/types/api";
 import { css } from "@emotion/react";
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 import { FaCloud, FaDatabase, FaGear, FaServer } from "react-icons/fa6";
 import { IoGitNetwork } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
@@ -31,7 +31,7 @@ const BtnIcons: FC<PropsType> = ({
       onClick={handleClick}
       type={type}
       disabled={isEnabled!}
-      className="btn_icons w-full transition-all duration-500 relative enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      className="btn_icons btn__app w-full transition-all duration-500 relative"
       css={css`
         .btn_icons__content,
         .btn_icons__shadow {
@@ -54,9 +54,14 @@ const BtnIcons: FC<PropsType> = ({
           }
         }
       `}
+      style={
+        {
+          "--scale__up": 1.15,
+        } as CSSProperties
+      }
     >
       <div className="relative w-full overflow-hidden rounded-xl">
-        <div className="btn_icons__content">
+        <div className="btn_icons__content relative">
           <span className={`relative z-40 txt__lg`}>{label}</span>
         </div>
 
@@ -64,7 +69,7 @@ const BtnIcons: FC<PropsType> = ({
         <span className="btn_icons__ref_1"></span>
       </div>
 
-      <span className="btn_icons__shadow"></span>
+      <span className="btn_icons__shadow absolute inset-0 -z-10"></span>
 
       <FaDatabase className="btn_icons__svg_0" />
       <FaGear className="btn_icons__svg_1" />

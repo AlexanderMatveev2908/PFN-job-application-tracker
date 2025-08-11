@@ -1,13 +1,6 @@
 .btn_icons {
 }
 
-.btn_icons__content {
-  @apply relative;
-}
-.btn_icons__shadow {
-  @apply absolute inset-0 -z-10 transition-all duration-300;
-}
-
 .btn_icons__ref_0,
 .btn_icons__ref_1 {
   @apply min-h-[500%] absolute rotate-[30deg] 
