@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapShadow from "@/common/components/HOC/buttonWrappers/WrapShadow";
+import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
@@ -41,9 +41,8 @@ const Home: FC = () => {
         <span className="text-3xl font-bold">Script worked ✌🏽</span>
 
         <div className="w-[250px]">
-          <WrapShadow
+          <BtnShadow
             {...{
-              wrapper: "html_button",
               act: "OK",
               handleClick,
               el: {

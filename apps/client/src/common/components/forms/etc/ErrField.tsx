@@ -4,12 +4,14 @@
 import { useEffect, useState, type FC } from "react";
 import Tooltip from "../../elements/Tooltip/Tooltip";
 import { isStr } from "@/core/lib/dataStructure";
+import { SerializedStyles } from "@emotion/react";
 
 type PropsType = {
   msg?: string | null;
+  $ctmCSS?: SerializedStyles;
 };
 
-const ErrField: FC<PropsType> = ({ msg }) => {
+const ErrField: FC<PropsType> = ({ msg, $ctmCSS }) => {
   const [prevErr, setPrevErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,6 +25,7 @@ const ErrField: FC<PropsType> = ({ msg }) => {
         isHover: isStr(msg),
         act: "ERR",
         txt: prevErr,
+        $ctmCSS,
       }}
     />
   );

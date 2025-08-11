@@ -1,9 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import { useHydration } from "./useHydration";
 
-export const useSyncPortal = () => {
+export type CoordsT = "top" | "left" | "right" | "bottom";
+export type CoordsTooltipT = Record<CoordsT, number>;
+
+export const useSyncPortal = (optDep?: any[]) => {
   const parentRef = useRef<HTMLElement | null>(null);
-  const [coords, setCoords] = useState([0, 0]);
+  const [coords, setCoords] = useState<CoordsTooltipT>({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
 
   const { isHydrated } = useHydration();
 
@@ -12,16 +21,16 @@ export const useSyncPortal = () => {
     if (!el || !isHydrated) return;
 
     const cb = () => {
-      const { top, left } = el.getBoundingClientRect();
+      const { top, left, right, bottom } = el.getBoundingClientRect();
 
-      setCoords([top + window.scrollY, left - el.scrollWidth]);
-
-      // console.log(top);
-      // console.log(window.scrollY);
-
-      console.log(left);
-      console.log(el.scrollWidth);
+      setCoords({
+        top: top + window.scrollY,
+        left,
+        right: window.innerWidth - right,
+        bottom: window.innerHeight - bottom,
+      });
     };
+
     cb();
 
     const ro = new ResizeObserver(cb);
@@ -35,7 +44,8 @@ export const useSyncPortal = () => {
       window.removeEventListener("resize", cb);
       window.removeEventListener("scroll", cb);
     };
-  }, [isHydrated]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHydrated, ...(optDep ?? [])]);
 
   return {
     coords,

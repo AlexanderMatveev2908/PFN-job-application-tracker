@@ -1,19 +1,22 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { Dispatch, FC, SetStateAction } from "react";
-import WrapShadow from "./buttonWrappers/WrapShadow";
+import type { FC } from "react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import BtnShadow from "../buttons/BtnShadow";
 
 type PropsType = {
-  currSwap: number;
-  setCurrSwap: Dispatch<SetStateAction<number>>;
   totSwaps: number;
+  swapState: SwapStateT;
+  startSwap: (v: number) => void;
 };
 
-const BtnsSwapper: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
+const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
   const { ids } = useGenIDs({ lengths: [2] });
+
+  const { currSwap } = swapState;
 
   return (
     <div className="w-full grid grid-cols-2">
@@ -24,14 +27,15 @@ const BtnsSwapper: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
             !i ? "justify-self-start" : "justify-self-end"
           }`}
         >
-          <WrapShadow
+          <BtnShadow
             {...{
               act: "NONE",
               el: { Svg: !i ? ChevronLeft : ChevronRight },
-              wrapper: "html_button",
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
-              handleClick: () =>
-                setCurrSwap((prev: number) => (!i ? prev - 1 : prev + 1)),
+              handleClick: () => {
+                const val = !i ? currSwap - 1 : currSwap + 1;
+                startSwap(val);
+              },
             }}
           />
         </div>

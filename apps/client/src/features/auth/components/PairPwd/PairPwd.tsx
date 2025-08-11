@@ -4,13 +4,25 @@
 import { useState, type FC } from "react";
 import { pwdFields } from "../../uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import PwdMatchTracker from "./components/PwdMatchTracker";
+import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
+import { SwapModeT } from "@/app/auth/register/page";
 
-const PairPwd: FC = ({}) => {
+type PropsType = {
+  isCurrSwap?: boolean;
+  swapMode?: SwapModeT;
+};
+
+const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   const formCtx = useFormContext();
-  const { control, trigger } = formCtx;
+  const { control, trigger, getFieldState, formState } = formCtx;
+  const pwd = useWatch({
+    control,
+    name: "password",
+  });
 
   const [isPwdShw, setIsPwdShw] = useState(false);
   const [isConfPwdShw, setIsConfPwdShw] = useState(false);
@@ -25,13 +37,18 @@ const PairPwd: FC = ({}) => {
     setIsConfPwdShw(!isConfPwdShw);
   };
 
-  const { coords, parentRef } = useSyncPortal();
+  const { coords, parentRef } = useSyncPortal([swapMode]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
       <PwdMatchTracker
         {...{
           coords,
+          isCurrSwap,
+          swapMode,
+          isFocus,
+          pwd,
+          isDirty: getFieldState("password", formState).isDirty,
         }}
       />
 
@@ -40,9 +57,15 @@ const PairPwd: FC = ({}) => {
           el: pwdFields.password,
           control,
           cbChange: () => trigger("confirm_password"),
+          cbFocus: () => setIsFocus(true),
+          cbBlur: () => setIsFocus(false),
           isShw: isPwdShw,
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
+          portalConf: {
+            showPortal: isCurrSwap && swapMode === "swapped",
+            optDep: [swapMode],
+          },
         }}
       />
 
@@ -53,6 +76,10 @@ const PairPwd: FC = ({}) => {
           cbChange: () => trigger("password"),
           isShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
+          portalConf: {
+            showPortal: isCurrSwap && swapMode === "swapped",
+            optDep: [swapMode],
+          },
         }}
       />
     </div>

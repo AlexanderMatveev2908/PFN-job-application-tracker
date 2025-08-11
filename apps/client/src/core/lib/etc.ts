@@ -24,3 +24,6 @@ export const calcIsCurrPath = (path: string, href: string) => {
 
   return reg.test(href);
 };
+
+export const genMinMax = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min);

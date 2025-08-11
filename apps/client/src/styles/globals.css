@@ -5,7 +5,15 @@
 }
 
 .tc {
-  @apply text-[whitesmoke] text-xl;
+  @apply text-[whitesmoke] text-2xl;
+}
+
+.bd__sm {
+  @apply border-2 border-neutral-300 rounded-xl;
+}
+
+.bd__md {
+  @apply border-3 border-neutral-300 rounded-xl;
 }
 
 .grad__txt {
@@ -42,14 +50,6 @@
 .scroll__app {
   scrollbar-width: thin;
   scrollbar-color: var(--white__0) transparent;
-}
-
-.bd__sm {
-  @apply border-2 border-neutral-300 rounded-xl;
-}
-
-.bd__md {
-  @apply border-3 border-neutral-300 rounded-xl;
 }
 
 .link__app,
@@ -323,7 +323,7 @@
 }
 
 .auth__form {
-  @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-neutral-300;
+  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300;
 }
 
 @keyframes skeleton {
@@ -338,6 +338,183 @@
   background: linear-gradient(to right, var(--neutral__800) 0%, var(--neutral__700) 40%, var(--neutral__800) 80%);
   background-size: 200% 100%;
   animation: skeleton 2.5s linear infinite;
+}
+
+.bubble {
+  animation: explode 0.5s ease-in-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(var(--pos));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+}
+.btn_icons__svg_0 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 50px;
+  height: 50px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_0 {
+  opacity: 1;
+  transition-delay: 0.05s;
+  transform: scale(1.1) translateY(-50%) rotate(25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_0 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_1 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 30px;
+  height: 30px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_1 {
+  opacity: 1;
+  transform: scale(1.1) translateY(-25%) rotate(-25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_1 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_2 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 50px;
+  height: 50px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_2 {
+  opacity: 1;
+  transition-delay: 0.05s;
+  transform: scale(1.1) translateY(-50%) rotate(25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_2 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_3 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 30px;
+  height: 30px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_3 {
+  opacity: 1;
+  transform: scale(1.1) translateY(-25%) rotate(-25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_3 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_4 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 50px;
+  height: 50px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_4 {
+  opacity: 1;
+  transition-delay: 0.05s;
+  transform: scale(1.1) translateY(-50%) rotate(25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_4 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_5 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 30px;
+  height: 30px;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_5 {
+  opacity: 1;
+  transform: scale(1.1) translateY(-25%) rotate(-25deg);
+}
+
+.btn_icons:enabled:active .btn_icons__svg_5 {
+  transition: 0.1s;
+  opacity: 0.5;
+  transform: scale(0);
+}
+
+.btn_icons__svg_0 {
+  @apply -top-[50%] -left-[10%];
+}
+
+.btn_icons__svg_1 {
+  @apply -top-[50%] -right-[10%];
+}
+
+.btn_icons__svg_2 {
+  @apply -bottom-[150%] left-[25%];
+}
+
+.btn_icons__svg_3 {
+  @apply -bottom-[50%] -left-[10%];
+}
+
+.btn_icons__svg_4 {
+  @apply -bottom-[75%] right-0;
+}
+
+.btn_icons__svg_5 {
+  @apply top-[0] right-[25%];
 }
 
 :root {

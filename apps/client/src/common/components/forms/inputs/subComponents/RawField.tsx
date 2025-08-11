@@ -1,32 +1,29 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldInputT, FormFieldTxtT } from "@/common/types/ui";
-import { ChangeEvent, ReactNode, RefObject, useCallback } from "react";
+import { RawEventT, RawFieldPropsT } from "@/common/types/ui";
+import { ReactNode, useCallback } from "react";
 import {
-  Control,
   Controller,
   ControllerRenderProps,
   FieldValues,
   Path,
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
+import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import Portal from "@/common/components/elements/Portal";
+import { css } from "@emotion/react";
+import { isObjOk } from "@/core/lib/dataStructure";
 
 type PropsType<T extends FieldValues> = {
-  el: FormFieldTxtT<T>;
-  control: Control<T>;
-  cbChange?: (v: string) => void;
-  isDisabled?: boolean;
-  manualMsg?: string;
-  showLabel?: boolean;
-  dynamicInputT?: FieldInputT;
   children?: ReactNode;
-  optRef?: RefObject<HTMLElement | null>;
-};
+} & RawFieldPropsT<T>;
 
 const RawField = <T extends FieldValues>({
   el,
   cbChange,
+  cbBlur,
+  cbFocus,
   isDisabled,
   manualMsg,
   showLabel,
@@ -34,7 +31,10 @@ const RawField = <T extends FieldValues>({
   control,
   dynamicInputT,
   optRef,
+  portalConf,
 }: PropsType<T>) => {
+  const { coords, parentRef } = useSyncPortal(portalConf?.optDep);
+
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
       placeholder: el.place,
@@ -42,6 +42,7 @@ const RawField = <T extends FieldValues>({
       value: field.value ?? "",
       ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
         field.ref(node);
+        parentRef.current = node;
 
         if (optRef) optRef.current = node;
       },
@@ -49,7 +50,7 @@ const RawField = <T extends FieldValues>({
         el.type === "textarea" && "scroll__app"
       }`,
 
-      onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange: (e: RawEventT) => {
         const {
           target: { value: v },
         } = e;
@@ -58,8 +59,22 @@ const RawField = <T extends FieldValues>({
 
         cbChange?.(v);
       },
+      onFocus: (e: RawEventT) => {
+        const {
+          target: { value: v },
+        } = e;
+
+        cbFocus?.(v);
+      },
+      onBlur: (e: RawEventT) => {
+        const {
+          target: { value: v },
+        } = e;
+
+        cbBlur?.(v);
+      },
     }),
-    [el, cbChange, isDisabled, optRef]
+    [el, cbChange, cbFocus, cbBlur, isDisabled, optRef, parentRef]
   );
 
   return (
@@ -70,27 +85,46 @@ const RawField = <T extends FieldValues>({
         <Controller
           name={el.name}
           control={control}
-          render={({ field, fieldState }) => (
-            <>
-              {el.type === "textarea" ? (
-                <textarea {...field} {...genDefProps(field)} rows={4} />
-              ) : (
-                <input
-                  {...field}
-                  type={dynamicInputT ?? el.type}
-                  {...genDefProps(field)}
-                />
-              )}
+          render={({ field, fieldState }) => {
+            const msg = fieldState?.error?.message ?? manualMsg;
+            return (
+              <>
+                {el.type === "textarea" ? (
+                  <textarea {...field} {...genDefProps(field)} rows={4} />
+                ) : (
+                  <input
+                    {...field}
+                    type={dynamicInputT ?? el.type}
+                    {...genDefProps(field)}
+                  />
+                )}
 
-              {children}
+                {children}
 
-              <ErrField
-                {...{
-                  msg: fieldState?.error?.message ?? manualMsg,
-                }}
-              />
-            </>
-          )}
+                {isObjOk(portalConf) ? (
+                  portalConf!.showPortal && (
+                    <Portal>
+                      <ErrField
+                        {...{
+                          msg,
+                          $ctmCSS: css`
+                            top: ${coords.top}px;
+                            right: ${coords.right}px;
+                          `,
+                        }}
+                      />
+                    </Portal>
+                  )
+                ) : (
+                  <ErrField
+                    {...{
+                      msg,
+                    }}
+                  />
+                )}
+              </>
+            );
+          }}
         />
       </div>
     </label>

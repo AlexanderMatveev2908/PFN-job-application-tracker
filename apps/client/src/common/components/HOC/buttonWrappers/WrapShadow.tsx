@@ -6,7 +6,7 @@ import { css, SerializedStyles } from "@emotion/react";
 import { CSSProperties, useMemo, type FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import Link from "next/link";
-import WrapApiBtn from "./WrapApiBtn";
+import WrapBtnAPI from "./WrapBtnAPI";
 import { FieldTxtSvgT } from "@/common/types/ui";
 
 type PropsType = {
@@ -78,11 +78,11 @@ const WrapShadow: FC<PropsType> = ({
       {content}
     </Link>
   ) : (
-    <WrapApiBtn {...{ isLoading, act }}>
+    <WrapBtnAPI {...{ isLoading, act }}>
       <button onClick={handleClick} disabled={!isEnabled} {...objProps}>
         {content}
       </button>
-    </WrapApiBtn>
+    </WrapBtnAPI>
   );
 };
 

@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { FieldValues, Path } from "react-hook-form";
+import { ChangeEvent, ReactNode, RefObject } from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
 import { IconType } from "react-icons";
 
 export interface LinkAppT {
@@ -40,3 +40,25 @@ export type FormFieldCheckT<T extends FieldValues> = {
   label: string | null;
   type: FieldCheckT;
 };
+
+export type PortalConfT = {
+  showPortal: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  optDep?: any[];
+};
+
+export type RawFieldPropsT<T extends FieldValues> = {
+  el: FormFieldTxtT<T>;
+  control: Control<T>;
+  cbChange?: (v: string) => void;
+  cbFocus?: (v: string) => void;
+  cbBlur?: (v: string) => void;
+  isDisabled?: boolean;
+  manualMsg?: string;
+  showLabel?: boolean;
+  dynamicInputT?: FieldInputT;
+  optRef?: RefObject<HTMLElement | null>;
+  portalConf?: PortalConfT;
+};
+
+export type RawEventT = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;

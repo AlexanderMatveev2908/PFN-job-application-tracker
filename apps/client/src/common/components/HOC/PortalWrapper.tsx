@@ -13,19 +13,30 @@ import TriangleTooltip from "../elements/Tooltip/subComponents/TriangleTooltip";
 type PropsType = {
   $CSS: SerializedStyles;
   act?: AppEventT;
+  $trgCtmCSS?: SerializedStyles;
+  isHover: boolean;
 } & ChildrenT;
 
-const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
+const PortalWrapper: FC<PropsType> = ({
+  $CSS,
+  $trgCtmCSS,
+  children,
+  act = "NONE",
+  isHover,
+}) => {
   const $clr = $argClr[act];
 
   return (
     <Portal>
       <div
-        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl"
+        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl pointer-events-none z-60"
         css={css`
-          z-index: 100;
           border-color: ${$clr};
           ${$CSS}
+          transition: transform 0.4s, opacity 0.3s;
+          transform: translateY(${isHover ? "-100" : ""}%);
+          opacity: ${isHover ? 1 : 0};
+          z-index: 100;
         `}
       >
         {children}
@@ -34,6 +45,7 @@ const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
           {...{
             $clr,
             $sizeTrg: 50,
+            $trgCtmCSS,
           }}
         />
       </div>

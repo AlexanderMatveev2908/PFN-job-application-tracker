@@ -3,20 +3,21 @@
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
-import type { Dispatch, FC, SetStateAction } from "react";
+import type { FC } from "react";
+import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
-  currSwap: number;
-  setCurrSwap: Dispatch<SetStateAction<number>>;
+  swapState: SwapStateT;
+  startSwap: (v: number) => void;
 };
 
-const FooterForm: FC<PropsType> = ({ currSwap, setCurrSwap }) => {
+const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-14 p-5">
       <BtnsSwapper
         {...{
-          currSwap,
-          setCurrSwap,
+          swapState,
+          startSwap,
           totSwaps: 2,
         }}
       />
