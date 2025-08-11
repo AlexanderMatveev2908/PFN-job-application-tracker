@@ -3,7 +3,7 @@
 
 import { css } from "@emotion/react";
 import { useState, type FC } from "react";
-import WrapApiBtn from "../../HOC/buttonWrappers/WrapApiBtn";
+import WrapBtnAPI from "../../HOC/buttonWrappers/WrapBtnAPI";
 import InnerShadow from "./components/InnerShadow";
 
 type PropsType = {
@@ -24,7 +24,7 @@ const BtnShim: FC<PropsType> = ({
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <WrapApiBtn {...{ isLoading }}>
+    <WrapBtnAPI {...{ isLoading }}>
       <button
         type={type}
         onClick={handleClick}
@@ -59,7 +59,7 @@ const BtnShim: FC<PropsType> = ({
           <span className="txt__lg relative z-60">{label}</span>
         </div>
       </button>
-    </WrapApiBtn>
+    </WrapBtnAPI>
   );
 };
 

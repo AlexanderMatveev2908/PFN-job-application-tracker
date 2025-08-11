@@ -11,7 +11,7 @@ type PropsType = {
   act?: AppEventT;
 } & ChildrenT;
 
-const WrapApiBtn: FC<PropsType> = ({ isLoading, act = "NONE", children }) => {
+const WrapBtnAPI: FC<PropsType> = ({ isLoading, act = "NONE", children }) => {
   return isLoading ? (
     <div className="w-full flex justify-center">
       <SpinBtn {...{ act }} />
@@ -21,4 +21,4 @@ const WrapApiBtn: FC<PropsType> = ({ isLoading, act = "NONE", children }) => {
   );
 };
 
-export default WrapApiBtn;
+export default WrapBtnAPI;

@@ -340,6 +340,24 @@
   animation: skeleton 2.5s linear infinite;
 }
 
+.bubble {
+  animation: explode 0.5s ease-in-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(var(--pos));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+}
 :root {
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;
