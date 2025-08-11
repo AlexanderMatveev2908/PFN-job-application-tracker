@@ -29,7 +29,7 @@ const Err: FC<PropsType> = ({ error: err }: PropsType) => {
           {...{
             wrapper: "html_button",
             act: "ERR",
-            label: "Refresh",
+            el: { label: "Refresh" },
             handleClick: () => location.reload(),
           }}
         />

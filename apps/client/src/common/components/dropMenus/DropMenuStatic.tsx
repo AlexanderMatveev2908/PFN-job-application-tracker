@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT } from "@/common/types/ui";
-import { ReactNode, useEffect, useRef, useState, type FC } from "react";
+import { ChildrenT, FieldTxtSvgT } from "@/common/types/ui";
+import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
@@ -10,8 +10,7 @@ import PairTxtSvg from "../elements/PairTxtSvg";
 
 type PropsType = {
   el: FieldTxtSvgT;
-  children: ReactNode;
-};
+} & ChildrenT;
 
 const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +68,7 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
           max-height: ${isOpen ? contentH : 0}px;
           height: ${contentH}px;
           opacity: ${isOpen ? 1 : 0};
+          pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
         <div

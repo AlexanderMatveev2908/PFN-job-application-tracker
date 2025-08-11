@@ -11,7 +11,7 @@ import { X } from "lucide-react";
 import { useToastStages } from "./hooks/useToastStages";
 import { useDispatch, useSelector } from "react-redux";
 import { FC } from "react";
-import IconBtn from "@/common/components/buttons/IconBtn";
+import BtnSvg from "@/common/components/buttons/BtnSvg";
 
 const Toast: FC = () => {
   const toastState = useSelector(getToastState);
@@ -58,7 +58,7 @@ const Toast: FC = () => {
               {toastState.toast.type?.toUpperCase()}
             </span>
 
-            <IconBtn
+            <BtnSvg
               {...{
                 handleClick: clickClose,
                 act: "ERR",

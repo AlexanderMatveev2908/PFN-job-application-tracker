@@ -45,8 +45,10 @@ const Home: FC = () => {
             {...{
               wrapper: "html_button",
               act: "OK",
-              label: "Click me",
               handleClick,
+              el: {
+                label: "Click me",
+              },
               // isLoading: true,
               // isEnabled: false,
             }}

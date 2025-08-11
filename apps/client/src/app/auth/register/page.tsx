@@ -1,9 +1,14 @@
 "use client";
 
-import type { FC } from "react";
+import Register from "@/features/auth/pages/register/Register";
+import { FC } from "react";
 
 const Page: FC = () => {
-  return <div></div>;
+  return (
+    <div className="auth__form">
+      <Register />
+    </div>
+  );
 };
 
 export default Page;

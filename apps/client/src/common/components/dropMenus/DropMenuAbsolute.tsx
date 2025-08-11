@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { ReactNode, useRef, useState, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { FieldTxtSvgT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
@@ -11,8 +11,7 @@ type PropsType = {
   el: FieldTxtSvgT;
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
-  children: ReactNode;
-};
+} & ChildrenT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
@@ -32,7 +31,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
     <div ref={dropRef} className="w-full relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`btn__app w-full cursor-pointer p-[6px] bd__sm ${
+        className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
             : "text-neutral-300 hover:text-neutral-950"
@@ -47,13 +46,14 @@ const DropMenuAbsolute: FC<PropsType> = ({
       </button>
 
       <div
-        className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 bd__md rounded-xl"
+        className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
           ${$customCSS}
           top: calc(100% + 10px);
           transition: transform 0.4s, opacity 0.3s;
           transform: translateY(${isOpen ? "0" : "75px"});
           opacity: ${isOpen ? 1 : 0};
+          pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
         <div

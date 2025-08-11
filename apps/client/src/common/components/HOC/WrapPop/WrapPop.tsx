@@ -6,7 +6,7 @@ import { useRef, type FC } from "react";
 import BlackBg from "../../elements/BlackBg";
 import { motion } from "framer-motion";
 import { varPop } from "./uiFactory";
-import IconBtn from "../../buttons/IconBtn";
+import BtnSvg from "../../buttons/BtnSvg";
 import { X } from "lucide-react";
 
 type PropsType = {
@@ -49,7 +49,7 @@ const WrapPop: FC<PropsType> = ({
         }
       >
         <div className="flex w-full max-h-full justify-end -mt-2">
-          <IconBtn
+          <BtnSvg
             {...{
               handleClick: () => setIsPop(false),
               isEnabled: allowClose,

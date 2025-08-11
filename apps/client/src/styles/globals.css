@@ -9,7 +9,7 @@
 }
 
 .grad__txt {
-  background: linear-gradient(to right, var(--white__0), var(--neutral__600));
+  background: linear-gradient(to right, var(--white__0), var(--neutral__500));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -42,6 +42,14 @@
 .scroll__app {
   scrollbar-width: thin;
   scrollbar-color: var(--white__0) transparent;
+}
+
+.bd__sm {
+  @apply border-2 border-neutral-300 rounded-xl;
+}
+
+.bd__md {
+  @apply border-3 border-neutral-300 rounded-xl;
 }
 
 .link__app,
@@ -145,6 +153,29 @@
   @apply text-neutral-300;
 }
 
+.svg__xxs {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+}
+
+@media screen and (min-width: 600px) {
+  .svg__xxs {
+    min-width: 25px;
+    width: 25px;
+    min-height: 25px;
+    height: 25px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .svg__xxs {
+    min-width: 25px;
+    width: 25px;
+    min-height: 25px;
+    height: 25px;
+  }
+}
 .svg__xs {
   width: 25px;
   min-width: 25px;
@@ -162,10 +193,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__xs {
-    min-width: 35px;
-    width: 35px;
-    min-height: 35px;
-    height: 35px;
+    min-width: 30px;
+    width: 30px;
+    min-height: 30px;
+    height: 30px;
   }
 }
 .svg__sm {
@@ -185,10 +216,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__sm {
-    min-width: 40px;
-    width: 40px;
-    min-height: 40px;
-    height: 40px;
+    min-width: 35px;
+    width: 35px;
+    min-height: 35px;
+    height: 35px;
   }
 }
 .svg__md {
@@ -208,10 +239,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__md {
-    min-width: 45px;
-    width: 45px;
-    min-height: 45px;
-    height: 45px;
+    min-width: 40px;
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
   }
 }
 .svg__lg {
@@ -231,10 +262,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__lg {
-    min-width: 50px;
-    width: 50px;
-    min-height: 50px;
-    height: 50px;
+    min-width: 45px;
+    width: 45px;
+    min-height: 45px;
+    height: 45px;
   }
 }
 .svg__xl {
@@ -254,10 +285,10 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__xl {
-    min-width: 55px;
-    width: 55px;
-    min-height: 55px;
-    height: 55px;
+    min-width: 50px;
+    width: 50px;
+    min-height: 50px;
+    height: 50px;
   }
 }
 .svg__2xl {
@@ -277,18 +308,36 @@
 }
 @media screen and (min-width: 1000px) {
   .svg__2xl {
-    min-width: 60px;
-    width: 60px;
-    min-height: 60px;
-    height: 60px;
+    min-width: 55px;
+    width: 55px;
+    min-height: 55px;
+    height: 55px;
   }
 }
-.bd__sm {
-  @apply border-2 border-w__0 rounded-xl;
+.input__base {
+  @apply transition-all duration-300 w-full py-2 px-4 outline-0 border-2 border-neutral-300 rounded-xl;
 }
 
-.bd__md {
-  @apply border-3 border-w__0;
+.input__base:focus {
+  box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
+}
+
+.auth__form {
+  @apply w-full mx-auto mt-[50px] max-w-[800px] h-fit rounded-xl overflow-hidden border-3 border-neutral-300;
+}
+
+@keyframes skeleton {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+.skeleton {
+  background: linear-gradient(to right, var(--neutral__800) 0%, var(--neutral__700) 40%, var(--neutral__800) 80%);
+  background-size: 200% 100%;
+  animation: skeleton 2.5s linear infinite;
 }
 
 :root {
@@ -321,6 +370,10 @@ body {
 }
 
 button {
+  appearance: none;
+}
+
+input {
   appearance: none;
 }
 

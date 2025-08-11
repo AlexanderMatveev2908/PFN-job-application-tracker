@@ -20,7 +20,9 @@ const NotFound: FC = () => {
             wrapper: "next_link",
             act: "INFO",
             href: "/",
-            label: "Home",
+            el: {
+              label: "Home",
+            },
           }}
         />
       </div>

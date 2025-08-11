@@ -1,1 +1,1 @@
-export const headerHight = 75;
+export const headerHight = 80;

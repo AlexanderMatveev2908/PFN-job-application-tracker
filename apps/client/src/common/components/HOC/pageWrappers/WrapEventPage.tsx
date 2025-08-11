@@ -2,17 +2,17 @@
 "use client";
 
 import { AppEventT } from "@/common/types/api";
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import BounceIconSSR from "../../elements/BounceIconSSR/BounceIconSSR";
 import { IconType } from "react-icons";
+import { ChildrenT } from "@/common/types/ui";
 
 type PropsType = {
   act: AppEventT;
   msg: string;
   Svg: IconType;
-  children: ReactNode;
-};
+} & ChildrenT;
 
 const WrapEventPage: FC<PropsType> = ({ act, msg, Svg, children }) => {
   const $clr = $argClr[act];

@@ -39,6 +39,11 @@ export default function RootLayout({
             preloadedState: store.getState(),
           }}
         >
+          <div
+            id="portal-root"
+            className="w-full max-w-full min-h-full  overflow-x-hidden absolute pointer-events-none"
+          ></div>
+
           <Header />
           <Sidebar />
           <Toast />

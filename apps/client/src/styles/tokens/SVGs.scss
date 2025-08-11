@@ -1,4 +1,5 @@
 $svg-sizes: (
+  xxs: 20,
   xs: 25,
   sm: 30,
   md: 35,
@@ -26,10 +27,10 @@ $svg-sizes: (
 
   @media screen and (min-width: 1000px) {
     .svg__#{$k} {
-      min-width: #{($v + 10)}px;
-      width: #{($v + 10)}px;
-      min-height: #{($v + 10)}px;
-      height: #{($v + 10)}px;
+      min-width: #{($v + 5)}px;
+      width: #{($v + 5)}px;
+      min-height: #{($v + 5)}px;
+      height: #{($v + 5)}px;
     }
   }
 }
