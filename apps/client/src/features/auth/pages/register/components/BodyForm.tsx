@@ -12,14 +12,14 @@ import { RegisterFormT } from "../schemas/register";
 import { useListenHeight } from "@/core/hooks/ui/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
 import PairPwd from "@/features/auth/components/PairPwd/PairPwd";
-import { SwapModeT } from "../Register";
+import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
-  currSwap: number;
-  swapMode: SwapModeT;
+  swapState: SwapStateT;
 };
 
-const BodyForm: FC<PropsType> = ({ currSwap, swapMode }) => {
+const BodyForm: FC<PropsType> = ({ swapState }) => {
+  const { currSwap, swapMode } = swapState;
   const { contentRef, contentH } = useListenHeight({ opdDep: [currSwap] });
 
   const {

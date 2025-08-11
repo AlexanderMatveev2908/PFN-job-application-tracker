@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, useState, type FC } from "react";
+import { type FC } from "react";
 import { useFocus } from "@/core/hooks/etc/useFocus";
 import { __cg } from "@/core/lib/log";
 import { FormProvider, useForm } from "react-hook-form";
@@ -9,26 +9,12 @@ import { RegisterFormT, registerSchema } from "./schemas/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BodyForm from "./components/BodyForm";
 import FooterForm from "./components/FooterForm";
-import { clearTmr } from "@/core/lib/etc";
+import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
 const Register: FC = ({}) => {
-  const [currSwap, setCurrSwap] = useState(0);
-  const [swapMode, setSwapMode] = useState<SwapModeT>("none");
-  const timerID = useRef<NodeJS.Timeout>(null);
-
-  useEffect(() => {
-    timerID.current = setTimeout(() => {
-      setSwapMode("swapped");
-
-      clearTmr(timerID);
-    }, 400);
-
-    return () => {
-      clearTmr(timerID);
-    };
-  }, [currSwap, swapMode]);
+  const { startSwap, swapState } = useSwap();
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
@@ -63,16 +49,14 @@ const Register: FC = ({}) => {
       <form className="w-full grid grid-cols-1" onSubmit={handleSave}>
         <BodyForm
           {...{
-            currSwap,
-            swapMode,
+            swapState,
           }}
         />
 
         <FooterForm
           {...{
-            currSwap,
-            setCurrSwap,
-            setSwapMode,
+            swapState,
+            startSwap,
           }}
         />
       </form>

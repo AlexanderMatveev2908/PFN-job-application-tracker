@@ -95,17 +95,19 @@ const RawField = <T extends FieldValues>({
                 {children}
 
                 {typeof portalConf === "object" && portalConf !== null ? (
-                  <Portal>
-                    <ErrField
-                      {...{
-                        msg,
-                        $ctmCSS: css`
-                          top: ${coords.top}px;
-                          right: ${coords.right}px;
-                        `,
-                      }}
-                    />
-                  </Portal>
+                  portalConf.showPortal && (
+                    <Portal>
+                      <ErrField
+                        {...{
+                          msg,
+                          $ctmCSS: css`
+                            top: ${coords.top}px;
+                            right: ${coords.right}px;
+                          `,
+                        }}
+                      />
+                    </Portal>
+                  )
                 ) : (
                   <ErrField
                     {...{

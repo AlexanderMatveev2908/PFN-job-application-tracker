@@ -19,7 +19,7 @@ export const useSwap = () => {
     timerID.current = setTimeout(() => {
       endSwap();
       clearTmr(timerID);
-    }, 100);
+    }, 400);
 
     return () => {
       clearTmr(timerID);
