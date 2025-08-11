@@ -33,6 +33,7 @@ const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
         <TriangleTooltip
           {...{
             $clr,
+            $sizeTrg: 50,
           }}
         />
       </div>

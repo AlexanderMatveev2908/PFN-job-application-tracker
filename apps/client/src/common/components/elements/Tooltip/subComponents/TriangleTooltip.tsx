@@ -7,13 +7,20 @@ import type { FC } from "react";
 type PropsType = {
   $clr: string;
   $trgCtmCSS?: SerializedStyles;
+  $sizeTrg?: number;
 };
 
-const TriangleTooltip: FC<PropsType> = ({ $clr, $trgCtmCSS }) => {
+const TriangleTooltip: FC<PropsType> = ({
+  $clr,
+  $trgCtmCSS,
+  $sizeTrg = 35,
+}) => {
   return (
     <div
-      className="w-[35px] h-[35px] absolute top-full overflow-hidden"
+      className="absolute top-full overflow-hidden"
       css={css`
+        width: ${$sizeTrg}px;
+        height: ${$sizeTrg}px;
         ${$trgCtmCSS ??
         `
             right:15%;
@@ -22,9 +29,11 @@ const TriangleTooltip: FC<PropsType> = ({ $clr, $trgCtmCSS }) => {
     >
       <div
         css={css`
+          width: ${$sizeTrg}px;
+          height: ${$sizeTrg}px;
           border: 2px solid ${$clr};
         `}
-        className="absolute w-[35px] h-[35px] rotate-45 bg-neutral-950 translate-y-[-50%] -top-[6px]"
+        className="absolute rotate-45 bg-neutral-950 translate-y-[-50%] top-[-20%]"
       ></div>
     </div>
   );

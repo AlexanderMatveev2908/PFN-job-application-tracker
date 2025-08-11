@@ -33,7 +33,7 @@ const Tooltip: FC<PropsType> = ({
         opacity: isHover ? 1 : 0,
         y: isHover ? "-150%" : 0,
       }}
-      className="absolute top-0 min-w-[200px] w-full h-fit max-w-fit py-1 px-5 pointer-events-none z-60 bg-neutral-950 rounded-xl"
+      className="absolute top-0 min-w-[200px] w-full h-fit max-w-fit py-2 px-4 pointer-events-none z-60 bg-neutral-950 rounded-xl"
       css={css`
         border: 2px solid ${$clr};
 
@@ -45,7 +45,7 @@ const Tooltip: FC<PropsType> = ({
     >
       <div className="w-full flex justify-center">
         <span
-          className="txt__xs break-all"
+          className="txt__sm break-all"
           css={css`
             color: ${$clr};
           `}
