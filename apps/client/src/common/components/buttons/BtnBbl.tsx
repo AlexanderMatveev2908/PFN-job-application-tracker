@@ -1,4 +1,6 @@
 /** @jsxImportSource @emotion/react */
+"use client";
+
 import React, { FC, useEffect, useRef, useState } from "react";
 import { v4 } from "uuid";
 import { AppEventT } from "@/common/types/api";

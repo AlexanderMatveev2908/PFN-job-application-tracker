@@ -1,0 +1,118 @@
+.btn_container {
+  @apply w-full max-h-fit transition-all duration-500 relative enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn_container__content {
+  @apply relative w-full max-h-fit overflow-hidden rounded-full;
+}
+
+.content__btn,
+.btn_container__shadow {
+  @apply py-2 rounded-full transition-all duration-300 
+  bg-neutral-950 relative overflow-hidden;
+}
+.content__btn::after {
+  @apply absolute content-[''] inset-0 w-full h-full rounded-full bg-transparent border-3 border-[whitesmoke] z-40;
+}
+.btn_container__shadow::after {
+  @apply absolute content-[''] inset-0 w-full h-full rounded-full bg-transparent border-3 border-[whitesmoke] z-40;
+}
+
+.btn__txt {
+  @apply sm:text-lg lg:text-xl font-bold text-[whitesmoke];
+}
+
+.btn__ref_1,
+.btn__ref_2 {
+  @apply min-h-[500%] absolute rotate-[30deg] 
+  -top-1/2 transition-all duration-300 bg-white;
+}
+.btn__ref_1 {
+  @apply -left-full w-[10%];
+}
+.btn__ref_2 {
+  @apply -left-1/2 w-[10%];
+}
+
+.btn__ref_1::after,
+.btn__ref_2::after {
+  @apply content-[""] absolute h-full -top-1/2;
+}
+.btn__ref_1::after {
+  @apply w-[200%] bg-neutral-800  -left-2 opacity-90;
+}
+.btn__ref_2::after {
+  @apply w-[200%] bg-neutral-800  -left-2 opacity-90;
+}
+
+.btn_container__shadow {
+  @apply absolute min-w-full min-h-full top-0 left-0 -z-10 transition-all duration-300;
+}
+
+/* svg */
+.btn_container__svg_1,
+.btn_container__svg_2,
+.btn_container__svg_3,
+.btn_container__svg_4,
+.btn_container__svg_5,
+.btn_container__svg_6 {
+  @apply absolute pointer-events-none transition-all duration-300 text-orange-500 z-50 scale-0 opacity-50;
+}
+.btn_container__svg_1 {
+  @apply w-[20px] h-[20px] -top-[50%] -left-[10%];
+}
+.btn_container__svg_2 {
+  @apply w-[40px] h-[40px] -top-[50%] -right-[10%];
+}
+.btn_container__svg_3 {
+  @apply w-[20px] h-[20px] -bottom-[150%] left-0;
+}
+.btn_container__svg_4 {
+  @apply w-[30px] h-[30px] -top-[35%] left-[25%];
+}
+.btn_container__svg_5 {
+  @apply w-[25px] h-[25px] -bottom-[100%] right-[10%];
+}
+.btn_container__svg_6 {
+  @apply w-[35px] h-[35px] -bottom-[50%] right-[50%];
+}
+
+/* hover  */
+.btn_container:not(:disabled):hover .btn_container__shadow {
+  @apply -translate-x-[3%] translate-y-[15%];
+}
+.btn_container:not(:disabled):hover .btn__ref_1 {
+  @apply translate-x-[1000%];
+}
+.btn_container:not(:disabled):hover .btn__ref_2 {
+  @apply translate-x-[2000%];
+}
+.btn_container:not(:disabled):hover {
+  @apply -rotate-[5deg] scale-110;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_1,
+.btn_container:not(:disabled):hover .btn_container__svg_2,
+.btn_container:not(:disabled):hover .btn_container__svg_3,
+.btn_container:not(:disabled):hover .btn_container__svg_4,
+.btn_container:not(:disabled):hover .btn_container__svg_5,
+.btn_container:not(:disabled):hover .btn_container__svg_6 {
+  @apply opacity-100;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_1 {
+  @apply scale-110 delay-100;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_2 {
+  @apply scale-110;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_3 {
+  @apply scale-110 -translate-y-[200%] delay-100;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_4 {
+  @apply scale-110 -translate-y-[30%] -rotate-45;
+}
+.btn_container:not(:disabled):hover .btn_container__svg_5 {
+  @apply scale-110  delay-100 -translate-y-[100%];
+}
+.btn_container:not(:disabled):hover .btn_container__svg_6 {
+  @apply scale-110  delay-100 -rotate-45;
+}

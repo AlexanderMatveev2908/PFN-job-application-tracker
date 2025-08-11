@@ -6,6 +6,7 @@ import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
 import type { FC } from "react";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import BtnBbl from "@/common/components/buttons/BtnBbl";
+import BtnIcons from "@/common/components/buttons/BtnIcons";
 
 type PropsType = {
   swapState: SwapStateT;
@@ -24,13 +25,9 @@ const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
       />
 
       <div className="w-[250px] justify-self-center">
-        <BtnBbl
+        <BtnIcons
           {...{
-            type: "button",
-            el: {
-              label: "Submit",
-            },
-            act: "INFO",
+            label: "Submit",
           }}
         />
         {/* <BtnShim
