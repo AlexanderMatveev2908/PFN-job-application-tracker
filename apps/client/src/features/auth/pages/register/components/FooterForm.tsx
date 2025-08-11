@@ -28,6 +28,7 @@ const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
         <BtnIcons
           {...{
             label: "Submit",
+            act: "INFO",
           }}
         />
         {/* <BtnShim

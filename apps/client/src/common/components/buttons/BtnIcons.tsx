@@ -1,17 +1,20 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { AppEventT } from "@/common/types/api";
 import { css } from "@emotion/react";
 import { FC } from "react";
 import { FaCloud, FaDatabase, FaGear, FaServer } from "react-icons/fa6";
 import { IoGitNetwork } from "react-icons/io5";
 import { LiaCookieSolid } from "react-icons/lia";
+import { $argClr } from "@/core/uiFactory/style";
 type PropsType = {
   label: string;
   type?: "button" | "submit";
   handleClick?: () => void;
   isEnabled?: boolean;
   isLoading?: boolean;
+  act?: AppEventT;
 };
 
 const BtnIcons: FC<PropsType> = ({
@@ -19,7 +22,10 @@ const BtnIcons: FC<PropsType> = ({
   label,
   type = "button",
   handleClick,
+  act = "NONE",
 }) => {
+  const $clr = $argClr[act];
+
   return (
     <button
       onClick={handleClick}
@@ -34,6 +40,18 @@ const BtnIcons: FC<PropsType> = ({
           border-radius: 1rem;
           background: var(--neutral__950);
           overflow: hidden;
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            background: transparent;
+            border: 3px solid ${$clr};
+            z-index: 50;
+          }
         }
       `}
     >

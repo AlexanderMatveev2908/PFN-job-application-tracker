@@ -358,11 +358,6 @@
     opacity: 0;
   }
 }
-.btn_icons__content::after,
-.btn_icons__shadow::after {
-  @apply absolute content-[""] inset-0 w-full h-full rounded-2xl bg-transparent border-3 border-[whitesmoke] z-40;
-}
-
 .btn_icons__content {
   @apply relative;
 }
