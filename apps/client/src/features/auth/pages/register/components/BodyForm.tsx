@@ -71,7 +71,11 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
             contentRef,
           }}
         >
-          <PairPwd />
+          <PairPwd
+            {...{
+              isCurrSwap: currSwap === 1,
+            }}
+          />
 
           <FormFieldCheck
             {...{

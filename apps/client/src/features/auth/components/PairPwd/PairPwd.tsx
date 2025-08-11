@@ -1,16 +1,28 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { pwdFields } from "../../uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
 
-const PairPwd: FC = ({}) => {
+type PropsType = {
+  isCurrSwap?: boolean;
+};
+
+const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
   const formCtx = useFormContext();
   const { control, trigger } = formCtx;
+  const pwd = useWatch({
+    control,
+    name: "password",
+  });
+
+  useEffect(() => {
+    console.log(pwd);
+  }, [pwd]);
 
   const [isPwdShw, setIsPwdShw] = useState(false);
   const [isConfPwdShw, setIsConfPwdShw] = useState(false);
@@ -32,6 +44,7 @@ const PairPwd: FC = ({}) => {
       <PwdMatchTracker
         {...{
           coords,
+          isCurrSwap,
         }}
       />
 

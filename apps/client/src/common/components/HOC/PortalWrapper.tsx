@@ -14,6 +14,7 @@ type PropsType = {
   $CSS: SerializedStyles;
   act?: AppEventT;
   $trgCtmCSS?: SerializedStyles;
+  isHover: boolean;
 } & ChildrenT;
 
 const PortalWrapper: FC<PropsType> = ({
@@ -21,17 +22,20 @@ const PortalWrapper: FC<PropsType> = ({
   $trgCtmCSS,
   children,
   act = "NONE",
+  isHover,
 }) => {
   const $clr = $argClr[act];
 
   return (
     <Portal>
       <div
-        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl"
+        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl pointer-events-none"
         css={css`
-          z-index: 100;
           border-color: ${$clr};
           ${$CSS}
+          transition: transform 0.4s, opacity 0.3s;
+          transform: translateY(${isHover ? "-100" : ""}%);
+          opacity: ${isHover ? 1 : 0};
         `}
       >
         {children}

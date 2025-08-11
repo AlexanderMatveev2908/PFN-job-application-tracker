@@ -9,22 +9,24 @@ import { rulesPwd, lengthPwd } from "./uiFactory/idx";
 
 type PropsType = {
   coords: number[];
+  isCurrSwap: boolean;
 };
 
-const PwdMatchTracker: FC<PropsType> = ({ coords }) => {
+const PwdMatchTracker: FC<PropsType> = ({ coords, isCurrSwap }) => {
   const { ids } = useGenIDs({ lengths: [rulesPwd.length] });
 
   return (
     <PortalWrapper
       {...{
         $CSS: css`
-          top: ${coords[0]}px;
+          top: ${coords[0] - 50}px;
           left: ${coords[1] - 15}px;
         `,
         act: "INFO",
         $trgCtmCSS: css`
           left: 15%;
         `,
+        isHover: isCurrSwap,
       }}
     >
       <div className="w-[75vw] max-w-[800px] p-5 grid grid-cols-1 gap-6">
