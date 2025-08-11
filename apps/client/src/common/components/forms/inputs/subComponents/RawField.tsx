@@ -12,7 +12,8 @@ import {
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import PortalErr from "../../etc/PortalErr";
+import Portal from "@/common/components/elements/Portal";
+import { css } from "@emotion/react";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
@@ -77,37 +78,44 @@ const RawField = <T extends FieldValues>({
         <Controller
           name={el.name}
           control={control}
-          render={({ field, fieldState }) => (
-            <>
-              {el.type === "textarea" ? (
-                <textarea {...field} {...genDefProps(field)} rows={4} />
-              ) : (
-                <input
-                  {...field}
-                  type={dynamicInputT ?? el.type}
-                  {...genDefProps(field)}
-                />
-              )}
+          render={({ field, fieldState }) => {
+            const msg = fieldState?.error?.message ?? manualMsg;
+            return (
+              <>
+                {el.type === "textarea" ? (
+                  <textarea {...field} {...genDefProps(field)} rows={4} />
+                ) : (
+                  <input
+                    {...field}
+                    type={dynamicInputT ?? el.type}
+                    {...genDefProps(field)}
+                  />
+                )}
 
-              {children}
+                {children}
 
-              {typeof portalConf === "object" && portalConf !== null ? (
-                <PortalErr
-                  {...{
-                    coords,
-                    msg: fieldState?.error?.message ?? manualMsg,
-                    showPortal: portalConf.showPortal,
-                  }}
-                />
-              ) : (
-                <ErrField
-                  {...{
-                    msg: fieldState?.error?.message ?? manualMsg,
-                  }}
-                />
-              )}
-            </>
-          )}
+                {typeof portalConf === "object" && portalConf !== null ? (
+                  <Portal>
+                    <ErrField
+                      {...{
+                        msg,
+                        $ctmCSS: css`
+                          top: ${coords.top}px;
+                          right: ${coords.right}px;
+                        `,
+                      }}
+                    />
+                  </Portal>
+                ) : (
+                  <ErrField
+                    {...{
+                      msg,
+                    }}
+                  />
+                )}
+              </>
+            );
+          }}
         />
       </div>
     </label>
