@@ -1,26 +1,16 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldTxtT, PortalConfT } from "@/common/types/ui";
-import { CSSProperties, RefObject } from "react";
-import { Control, FieldErrors, FieldValues } from "react-hook-form";
+import { RawFieldPropsT } from "@/common/types/ui";
+import { CSSProperties } from "react";
+import { FieldValues } from "react-hook-form";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
 import RawField from "./subComponents/RawField";
 
 type PropsType<T extends FieldValues> = {
-  el: FormFieldTxtT<T>;
-  control: Control<T>;
-  cbChange?: (v: string) => void;
-  isDisabled?: boolean;
-  errors?: FieldErrors<T>;
-  manualMsg?: string;
-  showLabel?: boolean;
-  optRef?: RefObject<HTMLElement | null>;
-  portalConf?: PortalConfT;
-
   isShw: boolean;
   handleSvgClick: () => void;
-};
+} & RawFieldPropsT<T>;
 
 const FormFieldPwd = <T extends FieldValues>({
   el,

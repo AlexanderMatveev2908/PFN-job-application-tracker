@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldInputT, FormFieldTxtT, PortalConfT } from "@/common/types/ui";
-import { ChangeEvent, ReactNode, RefObject, useCallback } from "react";
+import { RawEventT, RawFieldPropsT } from "@/common/types/ui";
+import { ReactNode, useCallback } from "react";
 import {
-  Control,
   Controller,
   ControllerRenderProps,
   FieldValues,
@@ -17,21 +16,14 @@ import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
 
 type PropsType<T extends FieldValues> = {
-  el: FormFieldTxtT<T>;
-  control: Control<T>;
-  cbChange?: (v: string) => void;
-  isDisabled?: boolean;
-  manualMsg?: string;
-  showLabel?: boolean;
-  dynamicInputT?: FieldInputT;
   children?: ReactNode;
-  optRef?: RefObject<HTMLElement | null>;
-  portalConf?: PortalConfT;
-};
+} & RawFieldPropsT<T>;
 
 const RawField = <T extends FieldValues>({
   el,
   cbChange,
+  cbBlur,
+  cbFocus,
   isDisabled,
   manualMsg,
   showLabel,
@@ -58,7 +50,7 @@ const RawField = <T extends FieldValues>({
         el.type === "textarea" && "scroll__app"
       }`,
 
-      onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange: (e: RawEventT) => {
         const {
           target: { value: v },
         } = e;
@@ -67,8 +59,22 @@ const RawField = <T extends FieldValues>({
 
         cbChange?.(v);
       },
+      onFocus: (e: RawEventT) => {
+        const {
+          target: { value: v },
+        } = e;
+
+        cbFocus?.(v);
+      },
+      onBlur: (e: RawEventT) => {
+        const {
+          target: { value: v },
+        } = e;
+
+        cbBlur?.(v);
+      },
     }),
-    [el, cbChange, isDisabled, optRef, parentRef]
+    [el, cbChange, cbFocus, cbBlur, isDisabled, optRef, parentRef]
   );
 
   return (
