@@ -6,6 +6,7 @@ import { easeInOut, motion } from "framer-motion";
 import { css, SerializedStyles } from "@emotion/react";
 import { $argClr } from "@/core/uiFactory/style";
 import { AppEventT } from "@/common/types/api";
+import TriangleTooltip from "./subComponents/TriangleTooltip";
 
 type PropsType = {
   isHover: boolean;
@@ -53,22 +54,12 @@ const Tooltip: FC<PropsType> = ({
         </span>
       </div>
 
-      <div
-        className="w-[35px] h-[35px] absolute top-full overflow-hidden"
-        css={css`
-          ${$trgCtmCSS ??
-          `
-            right:15%;
-          `}
-        `}
-      >
-        <div
-          css={css`
-            border: 2px solid ${$clr};
-          `}
-          className="absolute w-[35px] h-[35px] rotate-45 bg-neutral-950 translate-y-[-50%] -top-[6px]"
-        ></div>
-      </div>
+      <TriangleTooltip
+        {...{
+          $clr,
+          $trgCtmCSS,
+        }}
+      />
     </motion.div>
   );
 };

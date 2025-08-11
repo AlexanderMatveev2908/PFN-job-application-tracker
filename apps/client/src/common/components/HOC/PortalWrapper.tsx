@@ -8,6 +8,7 @@ import { SerializedStyles } from "@emotion/react";
 import { ChildrenT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
 import { $argClr } from "@/core/uiFactory/style";
+import TriangleTooltip from "../elements/Tooltip/subComponents/TriangleTooltip";
 
 type PropsType = {
   $CSS: SerializedStyles;
@@ -28,6 +29,12 @@ const PortalWrapper: FC<PropsType> = ({ $CSS, children, act = "NONE" }) => {
         `}
       >
         {children}
+
+        <TriangleTooltip
+          {...{
+            $clr,
+          }}
+        />
       </div>
     </Portal>
   );

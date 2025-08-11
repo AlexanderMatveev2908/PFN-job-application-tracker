@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState, type FC } from "react";
-import Tooltip from "../../elements/Tooltip";
+import Tooltip from "../../elements/Tooltip/Tooltip";
 import { isStr } from "@/core/lib/dataStructure";
 
 type PropsType = {
