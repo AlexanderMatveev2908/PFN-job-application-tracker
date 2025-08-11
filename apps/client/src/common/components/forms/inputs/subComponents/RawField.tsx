@@ -14,6 +14,7 @@ import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import Portal from "@/common/components/elements/Portal";
 import { css } from "@emotion/react";
+import { isObjOk } from "@/core/lib/dataStructure";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
@@ -94,8 +95,8 @@ const RawField = <T extends FieldValues>({
 
                 {children}
 
-                {typeof portalConf === "object" && portalConf !== null ? (
-                  portalConf.showPortal && (
+                {isObjOk(portalConf) ? (
+                  portalConf!.showPortal && (
                     <Portal>
                       <ErrField
                         {...{
