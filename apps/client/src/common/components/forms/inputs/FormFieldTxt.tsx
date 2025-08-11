@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldTxtT } from "@/common/types/ui";
+import { FormFieldTxtT, PortalConfT } from "@/common/types/ui";
 import { Control, FieldValues } from "react-hook-form";
 import RawField from "./subComponents/RawField";
 import { RefObject } from "react";
@@ -14,6 +14,7 @@ type PropsType<T extends FieldValues> = {
   manualMsg?: string;
   showLabel?: boolean;
   optRef?: RefObject<HTMLElement | null>;
+  portalConf?: PortalConfT;
 };
 
 const FormFieldTxt = <T extends FieldValues>({
@@ -24,6 +25,7 @@ const FormFieldTxt = <T extends FieldValues>({
   manualMsg,
   optRef,
   showLabel = true,
+  portalConf,
 }: PropsType<T>) => {
   return (
     <RawField
@@ -35,6 +37,7 @@ const FormFieldTxt = <T extends FieldValues>({
         manualMsg,
         showLabel,
         optRef,
+        portalConf,
       }}
     />
   );

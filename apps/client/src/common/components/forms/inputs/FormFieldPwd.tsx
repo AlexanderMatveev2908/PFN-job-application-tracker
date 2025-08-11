@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldTxtT } from "@/common/types/ui";
+import { FormFieldTxtT, PortalConfT } from "@/common/types/ui";
 import { CSSProperties, RefObject } from "react";
 import { Control, FieldErrors, FieldValues } from "react-hook-form";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
@@ -16,6 +16,7 @@ type PropsType<T extends FieldValues> = {
   manualMsg?: string;
   showLabel?: boolean;
   optRef?: RefObject<HTMLElement | null>;
+  portalConf?: PortalConfT;
 
   isShw: boolean;
   handleSvgClick: () => void;
@@ -31,6 +32,7 @@ const FormFieldPwd = <T extends FieldValues>({
   isShw,
   handleSvgClick,
   optRef,
+  portalConf,
 }: PropsType<T>) => {
   const Svg = isShw ? FaLockOpen : FaLock;
 
@@ -45,6 +47,7 @@ const FormFieldPwd = <T extends FieldValues>({
         showLabel,
         optRef,
         dynamicInputT: isShw ? "text" : "password",
+        portalConf,
       }}
     >
       <button

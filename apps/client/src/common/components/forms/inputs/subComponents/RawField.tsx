@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldInputT, FormFieldTxtT } from "@/common/types/ui";
+import { FieldInputT, FormFieldTxtT, PortalConfT } from "@/common/types/ui";
 import { ChangeEvent, ReactNode, RefObject, useCallback } from "react";
 import {
   Control,
@@ -24,6 +24,7 @@ type PropsType<T extends FieldValues> = {
   dynamicInputT?: FieldInputT;
   children?: ReactNode;
   optRef?: RefObject<HTMLElement | null>;
+  portalConf?: PortalConfT;
 };
 
 const RawField = <T extends FieldValues>({
@@ -36,8 +37,9 @@ const RawField = <T extends FieldValues>({
   control,
   dynamicInputT,
   optRef,
+  portalConf,
 }: PropsType<T>) => {
-  const { coords, parentRef } = useSyncPortal();
+  const { coords, parentRef } = useSyncPortal({ optDep: portalConf?.optDep });
 
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
@@ -89,18 +91,21 @@ const RawField = <T extends FieldValues>({
 
               {children}
 
-              {/* <ErrField
-                {...{
-                  msg: fieldState?.error?.message ?? manualMsg,
-                }}
-              /> */}
-
-              <PortalErr
-                {...{
-                  coords,
-                  msg: fieldState?.error?.message ?? manualMsg,
-                }}
-              />
+              {typeof portalConf === "object" && portalConf !== null ? (
+                <PortalErr
+                  {...{
+                    coords,
+                    msg: fieldState?.error?.message ?? manualMsg,
+                    showPortal: portalConf.showPortal,
+                  }}
+                />
+              ) : (
+                <ErrField
+                  {...{
+                    msg: fieldState?.error?.message ?? manualMsg,
+                  }}
+                />
+              )}
             </>
           )}
         />

@@ -10,10 +10,11 @@ import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
 type PropsType = {
   coords: CoordsTooltipT;
   msg?: string;
+  showPortal: boolean;
 };
 
-const PortalErr: FC<PropsType> = ({ msg, coords }) => {
-  return (
+const PortalErr: FC<PropsType> = ({ msg, coords, showPortal }) => {
+  return !showPortal ? null : (
     <Portal>
       <div
         className="w-full h-full absolute z-60 pointer-events-none"

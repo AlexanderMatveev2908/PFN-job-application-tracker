@@ -37,7 +37,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
     setIsConfPwdShw(!isConfPwdShw);
   };
 
-  const { coords, parentRef } = useSyncPortal();
+  const { coords, parentRef } = useSyncPortal({ optDep: [isCurrSwap] });
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
@@ -56,6 +56,9 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
           isShw: isPwdShw,
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
+          portalConf: {
+            showPortal: isCurrSwap,
+          },
         }}
       />
 
@@ -66,6 +69,9 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
           cbChange: () => trigger("password"),
           isShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
+          portalConf: {
+            showPortal: isCurrSwap,
+          },
         }}
       />
     </div>

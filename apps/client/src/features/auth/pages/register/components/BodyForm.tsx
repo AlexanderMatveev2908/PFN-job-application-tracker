@@ -60,6 +60,9 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
               {...{
                 el,
                 control,
+                portalConf: {
+                  showPortal: !currSwap,
+                },
               }}
             />
           ))}
