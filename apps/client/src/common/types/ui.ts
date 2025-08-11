@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode } from "react";
 import { FieldValues, Path } from "react-hook-form";
 import { IconType } from "react-icons";
@@ -44,5 +43,4 @@ export type FormFieldCheckT<T extends FieldValues> = {
 
 export type PortalConfT = {
   showPortal: boolean;
-  optDep?: any[];
 };

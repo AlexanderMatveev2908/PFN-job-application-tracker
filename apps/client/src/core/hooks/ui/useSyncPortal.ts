@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import { useHydration } from "./useHydration";
 
 export type CoordsT = "top" | "left" | "right" | "bottom";
 export type CoordsTooltipT = Record<CoordsT, number>;
 
-type PropsType = {
-  optDep?: any[];
-};
-
-export const useSyncPortal = (params: PropsType = {}) => {
+export const useSyncPortal = () => {
   const parentRef = useRef<HTMLElement | null>(null);
   const [coords, setCoords] = useState<CoordsTooltipT>({
     top: 0,
@@ -35,7 +30,6 @@ export const useSyncPortal = (params: PropsType = {}) => {
       });
     };
 
-    console.log(window.scrollX);
     cb();
 
     const ro = new ResizeObserver(cb);
@@ -49,8 +43,7 @@ export const useSyncPortal = (params: PropsType = {}) => {
       window.removeEventListener("resize", cb);
       window.removeEventListener("scroll", cb);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHydrated, ...(params.optDep ?? [])]);
+  }, [isHydrated]);
 
   return {
     coords,

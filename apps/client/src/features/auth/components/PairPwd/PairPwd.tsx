@@ -37,7 +37,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
     setIsConfPwdShw(!isConfPwdShw);
   };
 
-  const { coords, parentRef } = useSyncPortal({ optDep: [isCurrSwap] });
+  const { coords, parentRef } = useSyncPortal();
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
