@@ -6,9 +6,10 @@ import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 import { rulesPwd, lengthPwd } from "./uiFactory/idx";
+import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
 
 type PropsType = {
-  coords: number[];
+  coords: CoordsTooltipT;
   isCurrSwap: boolean;
 };
 
@@ -19,8 +20,8 @@ const PwdMatchTracker: FC<PropsType> = ({ coords, isCurrSwap }) => {
     <PortalWrapper
       {...{
         $CSS: css`
-          top: ${coords[0] - 50}px;
-          left: ${coords[1] - 15}px;
+          top: ${coords.top - 50}px;
+          left: ${coords.left - 15}px;
         `,
         act: "INFO",
         $trgCtmCSS: css`

@@ -29,7 +29,7 @@ const PortalWrapper: FC<PropsType> = ({
   return (
     <Portal>
       <div
-        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl pointer-events-none"
+        className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl pointer-events-none z-60"
         css={css`
           border-color: ${$clr};
           ${$CSS}

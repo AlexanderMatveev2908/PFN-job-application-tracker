@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useHydration } from "./useHydration";
 
+export type CoordsT = "top" | "left" | "right" | "bottom";
+export type CoordsTooltipT = Record<CoordsT, number>;
+
 export const useSyncPortal = () => {
   const parentRef = useRef<HTMLElement | null>(null);
-  const [coords, setCoords] = useState([0, 0]);
+  const [coords, setCoords] = useState<CoordsTooltipT>({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
 
   const { isHydrated } = useHydration();
 
@@ -12,15 +20,17 @@ export const useSyncPortal = () => {
     if (!el || !isHydrated) return;
 
     const cb = () => {
-      const { top, left } = el.getBoundingClientRect();
+      const { top, left, right, bottom } = el.getBoundingClientRect();
 
-      setCoords([top + window.scrollY, left - el.scrollWidth]);
+      setCoords({
+        top: top + window.scrollY,
+        left: left - el.scrollWidth,
+        right: right - el.scrollWidth,
+        bottom: bottom + window.scrollY,
+      });
 
-      // console.log(top);
-      // console.log(window.scrollY);
-
-      console.log(left);
-      console.log(el.scrollWidth);
+      console.log(bottom);
+      console.log(window.scrollY);
     };
     cb();
 

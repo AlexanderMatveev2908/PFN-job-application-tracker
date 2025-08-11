@@ -11,6 +11,8 @@ import {
   Path,
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
+import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import PortalErr from "../../etc/PortalErr";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
@@ -35,6 +37,8 @@ const RawField = <T extends FieldValues>({
   dynamicInputT,
   optRef,
 }: PropsType<T>) => {
+  const { coords, parentRef } = useSyncPortal();
+
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
       placeholder: el.place,
@@ -42,6 +46,7 @@ const RawField = <T extends FieldValues>({
       value: field.value ?? "",
       ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
         field.ref(node);
+        parentRef.current = node;
 
         if (optRef) optRef.current = node;
       },
@@ -59,7 +64,7 @@ const RawField = <T extends FieldValues>({
         cbChange?.(v);
       },
     }),
-    [el, cbChange, isDisabled, optRef]
+    [el, cbChange, isDisabled, optRef, parentRef]
   );
 
   return (
@@ -84,8 +89,15 @@ const RawField = <T extends FieldValues>({
 
               {children}
 
-              <ErrField
+              {/* <ErrField
                 {...{
+                  msg: fieldState?.error?.message ?? manualMsg,
+                }}
+              /> */}
+
+              <PortalErr
+                {...{
+                  coords,
                   msg: fieldState?.error?.message ?? manualMsg,
                 }}
               />
