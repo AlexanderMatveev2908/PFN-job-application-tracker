@@ -16,15 +16,15 @@ type PropsType = {
 const PortalErr: FC<PropsType> = ({ msg, coords, showPortal }) => {
   return !showPortal ? null : (
     <Portal>
-      <div
-        className="w-full h-full absolute z-60 pointer-events-none"
-        css={css`
-          top: ${coords.top}px;
-          right: ${coords.right}px;
-        `}
-      >
-        <ErrField {...{ msg }} />
-      </div>
+      <ErrField
+        {...{
+          msg,
+          $ctmCSS: css`
+            top: ${coords.top}px;
+            right: ${coords.right}px;
+          `,
+        }}
+      />
     </Portal>
   );
 };

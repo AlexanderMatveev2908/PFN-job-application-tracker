@@ -5,14 +5,21 @@ import type { Dispatch, FC, SetStateAction } from "react";
 import WrapShadow from "./buttonWrappers/WrapShadow";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SwapModeT } from "@/features/auth/pages/register/Register";
 
 type PropsType = {
   currSwap: number;
   setCurrSwap: Dispatch<SetStateAction<number>>;
   totSwaps: number;
+  setSwapMode: Dispatch<SetStateAction<SwapModeT>>;
 };
 
-const BtnsSwapper: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
+const BtnsSwapper: FC<PropsType> = ({
+  currSwap,
+  setCurrSwap,
+  setSwapMode,
+  totSwaps,
+}) => {
   const { ids } = useGenIDs({ lengths: [2] });
 
   return (
@@ -30,8 +37,10 @@ const BtnsSwapper: FC<PropsType> = ({ currSwap, setCurrSwap, totSwaps }) => {
               el: { Svg: !i ? ChevronLeft : ChevronRight },
               wrapper: "html_button",
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
-              handleClick: () =>
-                setCurrSwap((prev: number) => (!i ? prev - 1 : prev + 1)),
+              handleClick: () => {
+                setSwapMode("swapping");
+                setCurrSwap((prev: number) => (!i ? prev - 1 : prev + 1));
+              },
             }}
           />
         </div>

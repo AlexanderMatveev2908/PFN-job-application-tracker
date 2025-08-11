@@ -12,12 +12,14 @@ import { RegisterFormT } from "../schemas/register";
 import { useListenHeight } from "@/core/hooks/ui/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
 import PairPwd from "@/features/auth/components/PairPwd/PairPwd";
+import { SwapModeT } from "../Register";
 
 type PropsType = {
   currSwap: number;
+  swapMode: SwapModeT;
 };
 
-const BodyForm: FC<PropsType> = ({ currSwap }) => {
+const BodyForm: FC<PropsType> = ({ currSwap, swapMode }) => {
   const { contentRef, contentH } = useListenHeight({ opdDep: [currSwap] });
 
   const {
@@ -61,7 +63,8 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
                 el,
                 control,
                 portalConf: {
-                  showPortal: !currSwap,
+                  showPortal: !currSwap && swapMode === "swapped",
+                  optDep: [currSwap, swapMode],
                 },
               }}
             />
@@ -77,6 +80,7 @@ const BodyForm: FC<PropsType> = ({ currSwap }) => {
           <PairPwd
             {...{
               isCurrSwap: currSwap === 1,
+              swapMode,
             }}
           />
 

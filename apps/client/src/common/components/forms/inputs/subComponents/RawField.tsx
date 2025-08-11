@@ -39,7 +39,7 @@ const RawField = <T extends FieldValues>({
   optRef,
   portalConf,
 }: PropsType<T>) => {
-  const { coords, parentRef } = useSyncPortal();
+  const { coords, parentRef } = useSyncPortal(portalConf?.optDep);
 
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({

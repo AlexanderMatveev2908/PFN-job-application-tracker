@@ -43,4 +43,6 @@ export type FormFieldCheckT<T extends FieldValues> = {
 
 export type PortalConfT = {
   showPortal: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  optDep?: any[];
 };

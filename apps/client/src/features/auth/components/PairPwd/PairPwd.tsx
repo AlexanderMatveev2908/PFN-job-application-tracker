@@ -7,12 +7,14 @@ import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
+import { SwapModeT } from "../../pages/register/Register";
 
 type PropsType = {
   isCurrSwap?: boolean;
+  swapMode?: SwapModeT;
 };
 
-const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
+const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
   const formCtx = useFormContext();
   const { control, trigger } = formCtx;
   const pwd = useWatch({
@@ -37,7 +39,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
     setIsConfPwdShw(!isConfPwdShw);
   };
 
-  const { coords, parentRef } = useSyncPortal();
+  const { coords, parentRef } = useSyncPortal([swapMode]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-6">
@@ -57,7 +59,8 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
           portalConf: {
-            showPortal: isCurrSwap,
+            showPortal: isCurrSwap && swapMode === "swapped",
+            optDep: [swapMode],
           },
         }}
       />
@@ -70,7 +73,8 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true }) => {
           isShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
           portalConf: {
-            showPortal: isCurrSwap,
+            showPortal: isCurrSwap && swapMode === "swapped",
+            optDep: [swapMode],
           },
         }}
       />
