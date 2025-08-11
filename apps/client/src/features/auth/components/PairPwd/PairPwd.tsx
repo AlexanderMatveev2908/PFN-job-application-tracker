@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import { pwdFields } from "../../uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -23,10 +23,6 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
     control,
     name: "password",
   });
-
-  useEffect(() => {
-    console.log(pwd);
-  }, [pwd]);
 
   const [isPwdShw, setIsPwdShw] = useState(false);
   const [isConfPwdShw, setIsConfPwdShw] = useState(false);
@@ -51,6 +47,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           isCurrSwap,
           swapMode,
           isFocus,
+          pwd,
         }}
       />
 
