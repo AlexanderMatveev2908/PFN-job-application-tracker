@@ -3,10 +3,9 @@
 
 import PortalWrapper from "@/common/components/HOC/PortalWrapper";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
-
 import { css } from "@emotion/react";
 import type { FC } from "react";
-import { rulesPwd } from "./uiFactory/idx";
+import { rulesPwd, lengthPwd } from "./uiFactory/idx";
 
 type PropsType = {
   coords: number[];
@@ -20,7 +19,7 @@ const PwdMatchTracker: FC<PropsType> = ({ coords }) => {
       {...{
         $CSS: css`
           top: ${coords[0]}px;
-          left: ${coords[1]}px;
+          left: ${coords[1] - 15}px;
         `,
         act: "INFO",
         $trgCtmCSS: css`
@@ -28,7 +27,29 @@ const PwdMatchTracker: FC<PropsType> = ({ coords }) => {
         `,
       }}
     >
-      <div className="w-[75vw] max-w-[600px] h-[200px] p-5"></div>
+      <div className="w-[75vw] max-w-[800px] p-5 grid grid-cols-1 gap-6">
+        <div
+          className="grid justify-items-center gap-6"
+          css={css`
+            grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+          `}
+        >
+          {rulesPwd.map((el, i) => (
+            <div
+              key={ids[0][i]}
+              className="flex w-[75px] items-center justify-center border-2 rounded-xl py-2"
+            >
+              <el.Svg className="svg__sm" />
+            </div>
+          ))}
+
+          <div className="flex w-[150px] items-center justify-center gap-6 border-2 rounded-xl py-2 col-span-2">
+            <lengthPwd.Svg className="svg__sm" />
+
+            <span className="txt__lg">0/8</span>
+          </div>
+        </div>
+      </div>
     </PortalWrapper>
   );
 };

@@ -9,5 +9,6 @@ export const rulesPwd = [
   { Svg: SvgUppercase, reg: /[A-Z]/ },
   { Svg: SvgNumbers, reg: /\d/ },
   { Svg: SvgSymbols, reg: /[\W_]/ },
-  { Svg: SvgRuler, reg: /^.{8,}$/ },
 ];
+
+export const lengthPwd = { Svg: SvgRuler, reg: /^.{8,}$/ };
