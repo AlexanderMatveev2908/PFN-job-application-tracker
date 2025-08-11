@@ -33,6 +33,7 @@ const BtnIcons: FC<PropsType> = ({
       disabled={isEnabled!}
       className="btn_icons btn__app w-full transition-all duration-500 relative"
       css={css`
+        color: ${$clr};
         .btn_icons__content,
         .btn_icons__shadow {
           padding: 0.5rem 1rem;

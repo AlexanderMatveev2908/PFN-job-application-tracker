@@ -1,59 +1,65 @@
 .btn_icons {
 }
 
-/* svg */
-.btn_icons__svg_0,
-.btn_icons__svg_1,
-.btn_icons__svg_2,
-.btn_icons__svg_3,
-.btn_icons__svg_4,
-.btn_icons__svg_5 {
-  @apply absolute pointer-events-none transition-all duration-300 text-orange-500 z-50 scale-0 opacity-50;
+@for $i from 0 through 5 {
+  .btn_icons__svg_#{$i} {
+    position: absolute;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 100;
+    transform: scale(0);
+    opacity: 0.5;
+
+    @if ($i %2) {
+      width: 20px;
+      height: 20px;
+    } @else {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .btn_icons:enabled:hover .btn_icons__svg_#{$i} {
+    opacity: 1;
+    transform: scale(1.1);
+    @if ($i %2) {
+      transition-delay: 0.15s;
+    }
+  }
 }
+
+/* svg */
+
 .btn_icons__svg_0 {
-  @apply w-[20px] h-[20px] -top-[50%] -left-[10%];
+  @apply -top-[50%] -left-[10%];
 }
 .btn_icons__svg_1 {
-  @apply w-[40px] h-[40px] -top-[50%] -right-[10%];
+  @apply -top-[50%] -right-[10%];
 }
 .btn_icons__svg_2 {
-  @apply w-[20px] h-[20px] -bottom-[150%] left-0;
+  @apply -bottom-[150%] left-0;
 }
 .btn_icons__svg_3 {
-  @apply w-[30px] h-[30px] -top-[35%] left-[25%];
+  @apply -top-[35%] left-[25%];
 }
 .btn_icons__svg_4 {
-  @apply w-[25px] h-[25px] -bottom-[100%] right-[10%];
+  @apply -bottom-[100%] right-[10%];
 }
 .btn_icons__svg_5 {
-  @apply w-[35px] h-[35px] -bottom-[50%] right-[50%];
+  @apply -bottom-[50%] right-[50%];
 }
 
 /* hover  */
 
-.btn_icons:enabled:hover .btn_icons__svg_0,
-.btn_icons:enabled:hover .btn_icons__svg_1,
-.btn_icons:enabled:hover .btn_icons__svg_2,
-.btn_icons:enabled:hover .btn_icons__svg_3,
-.btn_icons:enabled:hover .btn_icons__svg_4,
-.btn_icons:enabled:hover .btn_icons__svg_5 {
-  @apply opacity-100;
-}
-.btn_icons:enabled:hover .btn_icons__svg_0 {
-  @apply scale-110 delay-100;
-}
-.btn_icons:enabled:hover .btn_icons__svg_1 {
-  @apply scale-110;
-}
 .btn_icons:enabled:hover .btn_icons__svg_2 {
-  @apply scale-110 -translate-y-[200%] delay-100;
+  @apply -translate-y-[200%];
 }
 .btn_icons:enabled:hover .btn_icons__svg_3 {
-  @apply scale-110 -translate-y-[30%] -rotate-45;
+  @apply -translate-y-[30%] -rotate-45;
 }
 .btn_icons:enabled:hover .btn_icons__svg_4 {
-  @apply scale-110  delay-100 -translate-y-[100%];
+  @apply -translate-y-[100%];
 }
 .btn_icons:enabled:hover .btn_icons__svg_5 {
-  @apply scale-110  delay-100 -rotate-45;
+  @apply -rotate-45;
 }

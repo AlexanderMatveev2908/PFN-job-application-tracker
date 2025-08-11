@@ -358,72 +358,148 @@
     opacity: 0;
   }
 }
-/* svg */
-.btn_icons__svg_0,
-.btn_icons__svg_1,
-.btn_icons__svg_2,
-.btn_icons__svg_3,
-.btn_icons__svg_4,
-.btn_icons__svg_5 {
-  @apply absolute pointer-events-none transition-all duration-300 text-orange-500 z-50 scale-0 opacity-50;
-}
-
 .btn_icons__svg_0 {
-  @apply w-[20px] h-[20px] -top-[50%] -left-[10%];
-}
-
-.btn_icons__svg_1 {
-  @apply w-[40px] h-[40px] -top-[50%] -right-[10%];
-}
-
-.btn_icons__svg_2 {
-  @apply w-[20px] h-[20px] -bottom-[150%] left-0;
-}
-
-.btn_icons__svg_3 {
-  @apply w-[30px] h-[30px] -top-[35%] left-[25%];
-}
-
-.btn_icons__svg_4 {
-  @apply w-[25px] h-[25px] -bottom-[100%] right-[10%];
-}
-
-.btn_icons__svg_5 {
-  @apply w-[35px] h-[35px] -bottom-[50%] right-[50%];
-}
-
-/* hover  */
-.btn_icons:enabled:hover .btn_icons__svg_0,
-.btn_icons:enabled:hover .btn_icons__svg_1,
-.btn_icons:enabled:hover .btn_icons__svg_2,
-.btn_icons:enabled:hover .btn_icons__svg_3,
-.btn_icons:enabled:hover .btn_icons__svg_4,
-.btn_icons:enabled:hover .btn_icons__svg_5 {
-  @apply opacity-100;
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_0 {
-  @apply scale-110 delay-100;
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+.btn_icons__svg_1 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_1 {
-  @apply scale-110;
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+.btn_icons__svg_2 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_2 {
-  @apply scale-110 -translate-y-[200%] delay-100;
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+.btn_icons__svg_3 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_3 {
-  @apply scale-110 -translate-y-[30%] -rotate-45;
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+.btn_icons__svg_4 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_4 {
-  @apply scale-110 delay-100 -translate-y-[100%];
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+.btn_icons__svg_5 {
+  position: absolute;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 100;
+  transform: scale(0);
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
 }
 
 .btn_icons:enabled:hover .btn_icons__svg_5 {
-  @apply scale-110 delay-100 -rotate-45;
+  opacity: 1;
+  transform: scale(1.1);
+  transition-delay: 0.15s;
+}
+
+/* svg */
+.btn_icons__svg_0 {
+  @apply -top-[50%] -left-[10%];
+}
+
+.btn_icons__svg_1 {
+  @apply -top-[50%] -right-[10%];
+}
+
+.btn_icons__svg_2 {
+  @apply -bottom-[150%] left-0;
+}
+
+.btn_icons__svg_3 {
+  @apply -top-[35%] left-[25%];
+}
+
+.btn_icons__svg_4 {
+  @apply -bottom-[100%] right-[10%];
+}
+
+.btn_icons__svg_5 {
+  @apply -bottom-[50%] right-[50%];
+}
+
+/* hover  */
+.btn_icons:enabled:hover .btn_icons__svg_2 {
+  @apply -translate-y-[200%];
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_3 {
+  @apply -translate-y-[30%] -rotate-45;
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_4 {
+  @apply -translate-y-[100%];
+}
+
+.btn_icons:enabled:hover .btn_icons__svg_5 {
+  @apply -rotate-45;
 }
 
 :root {
