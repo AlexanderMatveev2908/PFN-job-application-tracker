@@ -3,25 +3,67 @@
 
 import { getToastState } from "./slices";
 import { $argClr } from "@/core/uiFactory/style";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { varToast } from "./uiFactory";
 import { X } from "lucide-react";
 import { useToastStages } from "./hooks/useToastStages";
 import { useDispatch, useSelector } from "react-redux";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import BtnSvg from "@/common/components/buttons/BtnSvg";
-import { useToastAnimation } from "./hooks/useToastAnimation";
 
 const Toast: FC = () => {
   const toastState = useSelector(getToastState);
   const dispatch = useDispatch();
 
   const { clickClose } = useToastStages({ dispatch, toastState });
-  const { controls } = useToastAnimation();
 
   const clr = $argClr[toastState.toast.type ?? $argClr.NONE];
+
+  const controls = useAnimationControls();
+
+  const prevX = useRef(toastState.x);
+  const prevShown = useRef(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const open = async () => {
+      controls.stop();
+      controls.set("hidden");
+      await controls.start("open");
+    };
+
+    const closeAndOpen = async () => {
+      await controls.start("close");
+      if (cancelled || !toastState.isShow) return;
+
+      controls.set("hidden");
+      await controls.start("open");
+    };
+
+    if (!toastState.isShow) {
+      prevShown.current = false;
+      prevX.current = toastState.x;
+      return;
+    }
+
+    const changedX = toastState.x !== prevX.current;
+
+    if (prevShown.current && changedX) {
+      void closeAndOpen();
+    } else {
+      void open();
+    }
+
+    prevShown.current = true;
+    prevX.current = toastState.x;
+
+    return () => {
+      cancelled = true;
+    };
+  }, [toastState.isShow, toastState.x, controls]);
 
   const durSec = 5;
 

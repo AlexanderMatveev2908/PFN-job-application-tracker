@@ -9,30 +9,24 @@ export const useToastAnimation = () => {
 
   const prevX = useRef(toastState.x);
   const prevShown = useRef(false);
-  const cancelRef = useRef(false);
 
   const open = useCallback(async () => {
     controls.stop();
     controls.set("hidden");
-
-    if (cancelRef.current) return;
 
     await controls.start("open");
   }, [controls]);
 
   const closeAndOpen = useCallback(async () => {
     await controls.start("close");
-    if (cancelRef.current || !toastState.isShow) return;
+    if (!toastState.isShow) return;
 
     controls.set("hidden");
-    if (cancelRef.current) return;
 
     await controls.start("open");
   }, [controls, toastState.isShow]);
 
   useEffect(() => {
-    cancelRef.current = false;
-
     if (!toastState.isShow) {
       prevShown.current = false;
       prevX.current = toastState.x;
@@ -46,10 +40,6 @@ export const useToastAnimation = () => {
 
     prevShown.current = true;
     prevX.current = toastState.x;
-
-    return () => {
-      cancelRef.current = true;
-    };
   }, [toastState.isShow, toastState.x, open, closeAndOpen]);
 
   return { controls };
