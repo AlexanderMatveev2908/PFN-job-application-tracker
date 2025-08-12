@@ -27,7 +27,7 @@ type PropsType = {
   confPortal?: PortalConfT & { txt: string };
 };
 
-const SvgTooltip: FC<PropsType> = ({
+const WrapSvgTooltip: FC<PropsType> = ({
   Svg,
   act = "NONE",
   confPortal,
@@ -87,7 +87,8 @@ const SvgTooltip: FC<PropsType> = ({
 
   return wrapper === "html_button" ? (
     <button
-      disabled={propsBtn!.isEnabled!}
+      type="button"
+      disabled={!propsBtn!.isEnabled}
       onClick={propsBtn!.handleClick}
       {...(objProps as typeof objProps & { ref: RefObject<HTMLButtonElement> })}
     >
@@ -103,4 +104,4 @@ const SvgTooltip: FC<PropsType> = ({
   );
 };
 
-export default SvgTooltip;
+export default WrapSvgTooltip;
