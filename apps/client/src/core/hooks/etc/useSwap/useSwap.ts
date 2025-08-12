@@ -7,9 +7,12 @@ export const useSwap = () => {
   const [state, dispatchRCT] = useReducer(reducer, initState);
   const timerWapMode = useRef<NodeJS.Timeout | null>(null);
 
-  const startSwap = useCallback(({ swap, manualFocus }: PayloadStartSwapT) => {
-    dispatchRCT({ type: "START_SWAP", payload: { swap, manualFocus } });
-  }, []);
+  const startSwap = useCallback(
+    ({ swap }: PayloadStartSwapT & { manualFocus?: boolean }) => {
+      dispatchRCT({ type: "START_SWAP", payload: { swap } });
+    },
+    []
+  );
 
   const endSwap = useCallback(() => {
     dispatchRCT({ type: "END_SWAP" });

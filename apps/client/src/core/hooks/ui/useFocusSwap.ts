@@ -18,7 +18,6 @@ export const useFocusSwap = <T extends FieldValues>({
   const saved = useMemo(() => kwargs, []);
 
   useEffect(() => {
-    if (swapState.swapMode === "swapped" && !swapState.manualFocus)
-      setFocus(saved[swapState.currSwap]);
-  }, [swapState, setFocus, saved]);
+    if (swapState.swapMode === "swapped") setFocus(saved[swapState.currSwap]);
+  }, [swapState.currSwap, swapState.swapMode, setFocus, saved]);
 };

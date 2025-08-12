@@ -3,16 +3,14 @@ export type SwapModeT = "swapped" | "swapping" | "none";
 export interface SwapStateT {
   currSwap: number;
   swapMode: SwapModeT;
-  manualFocus: boolean;
 }
 
 export const initState: SwapStateT = {
   currSwap: 0,
   swapMode: "none",
-  manualFocus: false,
 };
 
-export type PayloadStartSwapT = { swap: number; manualFocus?: boolean };
+export type PayloadStartSwapT = { swap: number };
 
 export type SwapActionsT =
   | {
@@ -22,7 +20,4 @@ export type SwapActionsT =
   | {
       type: "END_SWAP";
       payload?: SwapModeT;
-    }
-  | {
-      type: "RESET_FOCUS";
     };

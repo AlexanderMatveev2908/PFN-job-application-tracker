@@ -7,12 +7,11 @@ export const reducer = (
 ): SwapStateT => {
   switch (action.type) {
     case "START_SWAP": {
-      const { swap, manualFocus } = action.payload;
+      const { swap } = action.payload;
 
       return {
         currSwap: swap,
         swapMode: "swapping",
-        manualFocus: !!manualFocus,
       };
     }
 
@@ -20,12 +19,6 @@ export const reducer = (
       return {
         ...state,
         swapMode: action?.payload ?? "swapped",
-      };
-
-    case "RESET_FOCUS":
-      return {
-        ...state,
-        manualFocus: false,
       };
 
     default:
