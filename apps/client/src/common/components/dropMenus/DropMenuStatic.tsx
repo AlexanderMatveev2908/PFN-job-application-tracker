@@ -13,7 +13,7 @@ type PropsType = {
 } & ChildrenT &
   TestIDT;
 
-const DropMenuStatic: FC<PropsType> = ({ el, children, t_id }) => {
+const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropRef = useRef(null);
 

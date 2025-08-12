@@ -77,7 +77,11 @@ const Register: FC = ({}) => {
       />
       <div className="auth__form">
         <FormProvider {...formCtx}>
-          <form className="w-full grid grid-cols-1" onSubmit={handleSave}>
+          <form
+            data-testid={"register_form"}
+            className="w-full grid grid-cols-1"
+            onSubmit={handleSave}
+          >
             <BodyForm
               {...{
                 swapState,
