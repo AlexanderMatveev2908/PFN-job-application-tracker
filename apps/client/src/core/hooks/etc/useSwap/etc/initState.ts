@@ -10,11 +10,14 @@ export const initState: SwapStateT = {
   swapMode: "none",
 };
 
+export type PayloadStartSwapT = { swap: number };
+
 export type SwapActionsT =
   | {
       type: "START_SWAP";
-      payload: number;
+      payload: PayloadStartSwapT;
     }
   | {
       type: "END_SWAP";
+      payload?: SwapModeT;
     };

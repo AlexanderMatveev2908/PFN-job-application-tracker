@@ -78,7 +78,7 @@ const WrapSvgTooltip: FC<PropsType> = ({
             $sizeTrg: 30,
           }}
         >
-          <span className="txt__md py-2 px-4 inline-block min-w-[250px] max-w-[400px] break-all">
+          <span className="txt__md py-2 px-4 inline-block max-w-[250px] sm:max-w-[400px] md:max-w-[450px] break-all">
             {confPortal!.txt}
           </span>
         </PortalTooltip>

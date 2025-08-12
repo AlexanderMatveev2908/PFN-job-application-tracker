@@ -6,8 +6,6 @@ import { __cg } from "@/core/lib/log";
 import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import { useFocusSwap } from "@/core/hooks/ui/useFocusSwap";
-import { useFocus } from "@/core/hooks/ui/useFocus";
 import ProgressSwap from "@/common/components/elements/ProgressSwap";
 import BodyForm from "@/features/auth/pages/register/components/BodyForm";
 import FooterForm from "@/features/auth/pages/register/components/FooterForm";
@@ -16,12 +14,11 @@ import {
   registerSchema,
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
+import { swapOnErr } from "@/core/lib/forms";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
 const Register: FC = ({}) => {
-  const { startSwap, swapState } = useSwap();
-
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
@@ -34,8 +31,14 @@ const Register: FC = ({}) => {
       terms: false,
     },
   });
-
   const { setFocus, handleSubmit } = formCtx;
+
+  const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
+
+  const { startSwap, swapState } = useSwap({
+    setFocus,
+    kwargs,
+  });
 
   const handleSave = handleSubmit(
     (data) => {
@@ -44,19 +47,24 @@ const Register: FC = ({}) => {
     (errs) => {
       __cg("errors", errs);
 
+      const res = swapOnErr({
+        errs,
+        kwargs: [
+          ["first_name", "last_name", "email"],
+          ["password", "confirm_password", "terms"],
+        ],
+      });
+
+      if (res?.field) {
+        startSwap({ swap: res!.i, lockFocus: true });
+        setTimeout(() => {
+          setFocus(res.field);
+        }, 400);
+      }
+
       return errs;
     }
   );
-
-  useFocus("first_name", { setFocus });
-
-  const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
-
-  useFocusSwap({
-    kwargs,
-    setFocus,
-    swapState,
-  });
 
   return (
     <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">

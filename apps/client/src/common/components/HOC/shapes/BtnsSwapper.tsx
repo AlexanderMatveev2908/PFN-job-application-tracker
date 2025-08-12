@@ -4,13 +4,16 @@
 import type { FC } from "react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import {
+  PayloadStartSwapT,
+  SwapStateT,
+} from "@/core/hooks/etc/useSwap/etc/initState";
 import BtnShadow from "../../buttons/BtnShadow";
 
 type PropsType = {
   totSwaps: number;
   swapState: SwapStateT;
-  startSwap: (v: number) => void;
+  startSwap: (v: PayloadStartSwapT) => void;
 };
 
 const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
@@ -34,7 +37,7 @@ const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
               handleClick: () => {
                 const val = !i ? currSwap - 1 : currSwap + 1;
-                startSwap(val);
+                startSwap({ swap: val });
               },
             }}
           />

@@ -4,11 +4,14 @@
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import BtnsSwapper from "@/common/components/HOC/shapes/BtnsSwapper";
 import type { FC } from "react";
-import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import {
+  PayloadStartSwapT,
+  SwapStateT,
+} from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
   swapState: SwapStateT;
-  startSwap: (v: number) => void;
+  startSwap: (v: PayloadStartSwapT) => void;
 };
 
 const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {

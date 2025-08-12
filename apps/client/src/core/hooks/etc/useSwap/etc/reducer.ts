@@ -6,16 +6,19 @@ export const reducer = (
   action: SwapActionsT
 ): SwapStateT => {
   switch (action.type) {
-    case "START_SWAP":
+    case "START_SWAP": {
+      const { swap } = action.payload;
+
       return {
-        currSwap: action.payload,
+        currSwap: swap,
         swapMode: "swapping",
       };
+    }
 
     case "END_SWAP":
       return {
         ...state,
-        swapMode: "swapped",
+        swapMode: action?.payload ?? "swapped",
       };
 
     default:
