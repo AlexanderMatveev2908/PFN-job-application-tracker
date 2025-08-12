@@ -33,7 +33,7 @@ export const linksNonLogged: LinkAppSvgT[] = [
   },
   {
     label: "Recover Password",
-    href: "/auth/recover-pwd",
+    href: "/auth/recover-account",
     Svg: FaKey,
     fill: "var(--white__0)",
   },

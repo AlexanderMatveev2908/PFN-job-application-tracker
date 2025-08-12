@@ -13,14 +13,16 @@ export const useListenHeight = ({ opdDep }: Params) => {
     const el = contentRef.current;
     if (!el) return;
 
-    const cb = () => setContentH(el.scrollHeight + 50);
+    const cb = () => setContentH(el.offsetHeight + 50);
     cb();
 
     const ro = new ResizeObserver(cb);
     ro.observe(el);
 
+    window.addEventListener("resize", cb);
     return () => {
       ro.disconnect();
+      window.removeEventListener("resize", cb);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...(opdDep ?? [])]);
