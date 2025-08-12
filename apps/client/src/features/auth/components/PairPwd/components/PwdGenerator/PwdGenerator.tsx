@@ -7,6 +7,7 @@ import BtnSvg from "@/common/components/buttons/BtnSvg";
 import { SwapModeT } from "@/app/auth/register/page";
 import CpyPaste from "@/common/components/elements/CpyPaste";
 import { genPwd } from "@/core/lib/etc";
+import { isStr } from "@/core/lib/dataStructure";
 
 type PropsType = {
   swapMode?: SwapModeT;
@@ -19,15 +20,13 @@ const PwdGenerator: FC<PropsType> = ({
 }) => {
   const [pwd, setPwd] = useState("");
 
-  genPwd();
-
   return (
     <div className="w-full flex items-center gap-10">
       <div className="w-fit">
         <BtnSvg
           {...{
             Svg: SvgPasswordCursor,
-            handleClick: () => null,
+            handleClick: () => setPwd(genPwd),
             confPortal: {
               optDep: [swapMode],
               showPortal: swapMode === "swapped" && isCurrSwap,
@@ -37,9 +36,11 @@ const PwdGenerator: FC<PropsType> = ({
         />
       </div>
 
-      <div className="w-fit">
-        <CpyPaste {...{ txt: pwd }} />
-      </div>
+      {isStr(pwd) && (
+        <div className="w-fit">
+          <CpyPaste {...{ txt: pwd }} />
+        </div>
+      )}
     </div>
   );
 };

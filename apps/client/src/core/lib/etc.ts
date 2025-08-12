@@ -56,16 +56,48 @@ export const calcIsCurrPath = (path: string, href: string) => {
 export const genMinMax = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+export const genIdx = (n: number): number => {
+  const MAX = 2 ** 32;
+
+  const limit = MAX - (MAX % n);
+  const buf = new Uint32Array(1);
+
+  let v: number;
+  do {
+    crypto.getRandomValues(buf);
+    v = buf[0];
+  } while (v >= limit);
+
+  return v % n;
+};
+
+export const shuffle = (arg: string): string => {
+  const arr = arg.split("");
+
+  let i = arg.length - 1;
+
+  while (i > 0) {
+    const j = genIdx(i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    i--;
+  }
+
+  return arr.join("");
+};
+
 export const genPwd = () => {
   const { upper, lower, nums, symbols } = genASCI();
-
-  const buff = [];
+  let pwd = "";
 
   for (const r of [lower, upper, nums, symbols]) {
-    const buf = new Uint32Array(1);
-    crypto.getRandomValues(buf);
-    const MAX = 2 ** 32;
+    let j = 0;
+    while (j < 4) {
+      const idx = genIdx(r.length);
+      pwd += r[idx];
 
-    console.log(buf);
+      j++;
+    }
   }
+
+  return shuffle(pwd);
 };
