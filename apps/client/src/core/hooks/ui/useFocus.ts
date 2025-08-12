@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FieldValues, Path, UseFormSetFocus } from "react-hook-form";
-import { useWrapListener } from "../etc/useWrapListener";
+import { useWrapClientListener } from "../etc/useWrapClientListener";
 
 type Params<T extends FieldValues> = {
   setFocus: UseFormSetFocus<T>;
@@ -10,7 +10,7 @@ export const useFocus = <T extends FieldValues, K extends Path<T>>(
   path: K,
   { setFocus }: Params<T>
 ) => {
-  const { wrapListener } = useWrapListener();
+  const { wrapClientListener } = useWrapClientListener();
 
   useEffect(() => {
     const cb = () =>
@@ -18,6 +18,6 @@ export const useFocus = <T extends FieldValues, K extends Path<T>>(
         setFocus(path);
       }, 250);
 
-    wrapListener(cb);
-  }, [wrapListener, setFocus, path]);
+    wrapClientListener(cb);
+  }, [wrapClientListener, setFocus, path]);
 };

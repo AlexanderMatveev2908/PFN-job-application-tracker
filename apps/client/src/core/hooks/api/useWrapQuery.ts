@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
-import { useWrapListener } from "../etc/useWrapListener";
+import { useWrapClientListener } from "../etc/useWrapClientListener";
 import { isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 
@@ -32,7 +32,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   const { handleErr } = useErrAPI();
   const hasRun = useRef(false);
 
-  const { wrapListener } = useWrapListener();
+  const { wrapClientListener } = useWrapClientListener();
 
   const handleQuery = useCallback(() => {
     if (hasRun.current) return;
@@ -69,8 +69,8 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   ]);
 
   useEffect(() => {
-    wrapListener(handleQuery);
-  }, [handleQuery, wrapListener]);
+    wrapClientListener(handleQuery);
+  }, [handleQuery, wrapClientListener]);
 
   const triggerRef = useCallback(() => (hasRun.current = false), []);
 
