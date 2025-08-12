@@ -28,7 +28,9 @@ export const useToastAnimation = () => {
       controls.stop();
       controls.set("hidden");
       await new Promise(requestAnimationFrame);
+
       if (cancelled || !toastState.isShow) return;
+
       await controls.start("open");
 
       wasShw.current = true;

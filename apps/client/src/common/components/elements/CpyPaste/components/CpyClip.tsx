@@ -38,7 +38,6 @@ const CpyClip: FC<PropsType> = ({ isCopied, x }) => {
       controls.set("hidden");
 
       await new Promise(requestAnimationFrame);
-
       if (cancelled) return;
 
       await controls.start("visible");
