@@ -1,5 +1,5 @@
 import { useAnimationControls } from "framer-motion";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getToastState } from "../slices";
 
@@ -8,63 +8,39 @@ export const useToastAnimation = () => {
   const controls = useAnimationControls();
 
   const prevX = useRef(toastState.x);
-  const prevShown = useRef(false);
-  const cancelRef = useRef(false);
-
-  const open = useCallback(async () => {
-    controls.stop();
-    controls.set("hidden");
-
-    if (cancelRef.current) return;
-
-    await controls.start("open");
-  }, [controls]);
-
-  const close = useCallback(async () => {
-    controls.stop();
-
-    if (cancelRef.current) return;
-
-    await controls.start("close");
-  }, [controls]);
-
-  const closeAndOpen = useCallback(async () => {
-    await controls.start("close");
-
-    if (cancelRef.current || !toastState.isShow) return;
-
-    controls.set("hidden");
-    if (cancelRef.current) return;
-
-    await controls.start("open");
-  }, [controls, toastState.isShow]);
+  const wasShw = useRef(false);
 
   useEffect(() => {
-    cancelRef.current = false;
+    let cancelled = false;
 
-    if (!toastState.isShow) {
-      void close();
-      prevShown.current = false;
+    const run = async () => {
+      if (!toastState.isShow) {
+        wasShw.current = false;
+        prevX.current = toastState.x;
+        return;
+      }
+
+      if (wasShw.current && toastState.x !== prevX.current) {
+        await controls.start("close");
+        if (cancelled || !toastState.isShow) return;
+      }
+
+      controls.stop();
+      controls.set("hidden");
+      await new Promise(requestAnimationFrame);
+      if (cancelled || !toastState.isShow) return;
+      await controls.start("open");
+
+      wasShw.current = true;
       prevX.current = toastState.x;
-      return () => {
-        cancelRef.current = true;
-        controls.stop();
-      };
-    }
+    };
 
-    if (prevShown.current && toastState.x !== prevX.current) {
-      void closeAndOpen();
-    } else {
-      void open();
-    }
-
-    prevShown.current = true;
-    prevX.current = toastState.x;
+    void run();
 
     return () => {
-      cancelRef.current = true;
+      cancelled = true;
     };
-  }, [toastState.isShow, toastState.x, open, closeAndOpen, close, controls]);
+  }, [toastState.isShow, toastState.x, controls]);
 
   return { controls };
 };
