@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, type FC } from "react";
+import { type FC } from "react";
 import { __cg } from "@/core/lib/log";
 import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,14 +16,11 @@ import {
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
-import { lockFocus } from "@/core/lib/style";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
 const Register: FC = ({}) => {
-  const { startSwap, swapState } = useSwap();
-
-  const lockFocusRef = useRef<boolean>(false);
+  const { startSwap, swapState, lockFocusRef } = useSwap();
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
@@ -56,8 +53,7 @@ const Register: FC = ({}) => {
       });
 
       if (res?.field) {
-        startSwap({ swap: res!.i, manualFocus: true });
-        lockFocus(lockFocusRef);
+        startSwap({ swap: res!.i, lockFocus: true });
         setTimeout(() => {
           setFocus(res.field);
         }, 400);

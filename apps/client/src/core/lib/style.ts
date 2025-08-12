@@ -10,7 +10,7 @@ export const resp = (str: keyof typeof uiBreaks | number | undefined) =>
       }px)`
     : `@media screen and (min-width: ${str}px)`;
 
-export const lockFocus = (
+export const lockFocusCb = (
   lockFocusRef: RefObject<boolean>,
   ms: number = 600
 ) => {
