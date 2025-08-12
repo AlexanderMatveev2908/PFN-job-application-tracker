@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { SVGProps } from "react";
-const SvgPasswordFl = (props: SVGProps<SVGSVGElement>) => (
+const SvgPassword = (props: SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 512 512"
     xmlns="http://www.w3.org/2000/svg"
@@ -16,4 +16,4 @@ const SvgPasswordFl = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-export default SvgPasswordFl;
+export default SvgPassword;

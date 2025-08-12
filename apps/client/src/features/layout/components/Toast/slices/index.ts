@@ -1,13 +1,23 @@
+// slices/toast.ts
 import { AppEventT } from "@/common/types/api";
-import { ToastStateT, ToastT } from "../types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { v4 } from "uuid";
 import { StoreStateT } from "@/core/store";
+
+export type ToastT = {
+  msg: string;
+  type: AppEventT;
+};
+
+export type ToastStateT = {
+  isShow: boolean;
+  toast: ToastT;
+  x: number;
+};
 
 const initState: ToastStateT = {
   isShow: false,
   toast: { msg: "", type: "" as AppEventT },
-  id: "",
+  x: 0,
 };
 
 export const toastSlice = createSlice({
@@ -17,16 +27,10 @@ export const toastSlice = createSlice({
     open: (state, action: PayloadAction<ToastT>) => {
       state.isShow = true;
       state.toast = action.payload;
-      state.id = v4();
+      state.x += 1;
     },
     close: (state) => {
       state.isShow = false;
-      state.id = "";
-    },
-    force: (state) => {
-      // ? u already set state.toast above, is enough here just to trigger a rerender
-      state.isShow = true;
-      state.id = v4();
     },
   },
 });

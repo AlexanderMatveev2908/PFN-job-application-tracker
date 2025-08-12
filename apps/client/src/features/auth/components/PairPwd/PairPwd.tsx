@@ -8,6 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
 import { SwapModeT } from "@/app/auth/register/page";
+import PwdGenerator from "./components/PwdGenerator/PwdGenerator";
 
 type PropsType = {
   isCurrSwap?: boolean;
@@ -68,6 +69,8 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           },
         }}
       />
+
+      <PwdGenerator {...{ swapMode, isCurrSwap }} />
 
       <FormFieldPwd
         {...{
