@@ -7,7 +7,6 @@ import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import { useFocusSwap } from "@/core/hooks/ui/useFocusSwap";
-import { useFocus } from "@/core/hooks/ui/useFocus";
 import ProgressSwap from "@/common/components/elements/ProgressSwap";
 import BodyForm from "@/features/auth/pages/register/components/BodyForm";
 import FooterForm from "@/features/auth/pages/register/components/FooterForm";
@@ -17,6 +16,7 @@ import {
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
+import { lockFocus } from "@/core/lib/style";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -24,14 +24,6 @@ const Register: FC = ({}) => {
   const { startSwap, swapState } = useSwap();
 
   const lockFocusRef = useRef<boolean>(false);
-
-  const lockFocus = (ms: number = 600) => {
-    lockFocusRef.current = true;
-    const t = setTimeout(() => {
-      lockFocusRef.current = false;
-      clearTimeout(t);
-    }, ms);
-  };
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
@@ -65,7 +57,7 @@ const Register: FC = ({}) => {
 
       if (res?.field) {
         startSwap({ swap: res!.i, manualFocus: true });
-        lockFocus();
+        lockFocus(lockFocusRef);
         setTimeout(() => {
           setFocus(res.field);
         }, 400);
@@ -74,8 +66,6 @@ const Register: FC = ({}) => {
       return errs;
     }
   );
-
-  useFocus("first_name", { setFocus });
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
 

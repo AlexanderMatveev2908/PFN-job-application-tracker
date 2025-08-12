@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import { uiBreaks } from "../constants/uiBreaks";
 
 export const resp = (str: keyof typeof uiBreaks | number | undefined) =>
@@ -8,3 +9,15 @@ export const resp = (str: keyof typeof uiBreaks | number | undefined) =>
         uiBreaks[str as keyof typeof uiBreaks]
       }px)`
     : `@media screen and (min-width: ${str}px)`;
+
+export const lockFocus = (
+  lockFocusRef: RefObject<boolean>,
+  ms: number = 600
+) => {
+  lockFocusRef.current = true;
+
+  const t = setTimeout(() => {
+    lockFocusRef.current = false;
+    clearTimeout(t);
+  }, ms);
+};

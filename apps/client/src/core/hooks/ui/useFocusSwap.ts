@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useMemo } from "react";
 import { SwapStateT } from "../etc/useSwap/etc/initState";
 import { FieldValues, Path, UseFormSetFocus } from "react-hook-form";
+import { useFocus } from "./useFocus";
 
 type Params<T extends FieldValues> = {
   swapState: SwapStateT;
@@ -15,6 +16,8 @@ export const useFocusSwap = <T extends FieldValues>({
   setFocus,
   lockFocusRef,
 }: Params<T>) => {
+  useFocus(kwargs[0], { setFocus });
+
   // ! do not pass dynamic variables
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const saved = useMemo(() => kwargs, []);
