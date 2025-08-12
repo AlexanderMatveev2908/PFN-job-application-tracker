@@ -58,13 +58,14 @@ const CpyClip: FC<PropsType> = ({ isCopied, x, coords }) => {
     <Portal>
       <motion.div
         css={css`
-          left: calc(${coords.left}px + 50%);
+          left: ${coords.left - 75 / 2}px;
           top: ${coords.top}px;
+          width: ${coords.width + 75}px;
         `}
         initial="hidden"
         animate={controls}
         variants={variants}
-        className="absolute w-[300px] py-2 px-4 border-2 border-neutral-600 rounded-xl flex justify-center items-center pointer-events-none z-60 bg-neutral-950 -translate-x-full"
+        className="absolute py-2 px-4 border-2 border-neutral-600 rounded-xl flex justify-center items-center pointer-events-none z-60 bg-neutral-950"
       >
         <span className="txt__sm">Copied to clipboard</span>
       </motion.div>
