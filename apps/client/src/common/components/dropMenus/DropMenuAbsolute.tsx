@@ -3,7 +3,7 @@
 
 import { useRef, useState, type FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { ChildrenT, FieldTxtSvgT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
@@ -11,13 +11,15 @@ type PropsType = {
   el: FieldTxtSvgT;
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
-} & ChildrenT;
+} & ChildrenT &
+  TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
   $SvgCls,
   children,
   $customCSS,
+  t_id,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropRef = useRef(null);
@@ -30,6 +32,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
   return (
     <div ref={dropRef} className="w-full relative">
       <button
+        data-testid={t_id}
         onClick={() => setIsOpen((prev) => !prev)}
         className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
           isOpen
@@ -46,6 +49,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
       </button>
 
       <div
+        data-testid={"drop_menu_absolute_content"}
         className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
           ${$customCSS}

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { ChildrenT, FieldTxtSvgT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
@@ -10,9 +10,10 @@ import PairTxtSvg from "../elements/PairTxtSvg";
 
 type PropsType = {
   el: FieldTxtSvgT;
-} & ChildrenT;
+} & ChildrenT &
+  TestIDT;
 
-const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
+const DropMenuStatic: FC<PropsType> = ({ el, children, t_id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropRef = useRef(null);
 
@@ -40,6 +41,8 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
       } w-full flex flex-col translate-0 duration-300`}
     >
       <div
+        data-testid={"drop_menu_static_btn_toggle"}
+        role="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${
           isOpen

@@ -33,6 +33,7 @@ const Sidebar: FC = () => {
       />
 
       <motion.div
+        data-testid={"sidebar"}
         ref={sideRef}
         className="z__sidebar txt__clr fixed border-l-3 border-w__0 right-0 w-[80vw] sm:w-[500px] md:w-[600px] bg-neutral-950"
         css={css`

@@ -43,6 +43,7 @@ const Header: FC = () => {
       <div ref={dropRef} className="w-fit flex items-center gap-14">
         <DropMenuAbsolute
           {...{
+            t_id: "header_toggle_drop",
             el: {
               Svg: TbUserFilled,
             },
@@ -65,6 +66,7 @@ const Header: FC = () => {
         </DropMenuAbsolute>
 
         <button
+          data-testid={"header_toggle_sidebar"}
           key={sideState.isOpen + ""}
           onClick={() => dispatch(sideSlice.actions.toggleSide())}
           className="btn__app"
