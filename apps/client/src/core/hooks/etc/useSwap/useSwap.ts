@@ -5,10 +5,10 @@ import { initState, PayloadStartSwapT } from "./etc/initState";
 
 export const useSwap = () => {
   const [state, dispatchRCT] = useReducer(reducer, initState);
-  const timerID = useRef<NodeJS.Timeout | null>(null);
+  const timerWapMode = useRef<NodeJS.Timeout | null>(null);
 
-  const startSwap = useCallback(({ swap }: PayloadStartSwapT) => {
-    dispatchRCT({ type: "START_SWAP", payload: { swap } });
+  const startSwap = useCallback(({ swap, manualFocus }: PayloadStartSwapT) => {
+    dispatchRCT({ type: "START_SWAP", payload: { swap, manualFocus } });
   }, []);
 
   const endSwap = useCallback(() => {
@@ -16,13 +16,15 @@ export const useSwap = () => {
   }, []);
 
   useEffect(() => {
-    timerID.current = setTimeout(() => {
+    clearTmr(timerWapMode);
+
+    timerWapMode.current = setTimeout(() => {
       endSwap();
-      clearTmr(timerID);
+      clearTmr(timerWapMode);
     }, 400);
 
     return () => {
-      clearTmr(timerID);
+      clearTmr(timerWapMode);
     };
   }, [state, endSwap]);
 

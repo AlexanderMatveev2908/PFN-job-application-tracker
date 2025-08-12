@@ -22,4 +22,7 @@ export type SwapActionsT =
   | {
       type: "END_SWAP";
       payload?: SwapModeT;
+    }
+  | {
+      type: "RESET_FOCUS";
     };

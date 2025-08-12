@@ -54,7 +54,7 @@ const Register: FC = ({}) => {
       });
 
       if (res?.field) {
-        startSwap({ swap: res!.i });
+        startSwap({ swap: res!.i, manualFocus: true });
         setTimeout(() => {
           setFocus(res.field);
         }, 400);
