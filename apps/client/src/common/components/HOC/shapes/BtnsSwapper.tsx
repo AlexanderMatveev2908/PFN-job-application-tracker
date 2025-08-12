@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
-import BtnShadow from "../buttons/BtnShadow";
+import BtnShadow from "../../buttons/BtnShadow";
 
 type PropsType = {
   totSwaps: number;

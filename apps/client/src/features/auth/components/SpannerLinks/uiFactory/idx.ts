@@ -6,7 +6,7 @@ import {
   linkRegister,
 } from "@/core/uiFactory/links";
 
-export type SpannerLinksT =
+export type SpannerLinksAuthT =
   | "register"
   | "login"
   | "confirm-email"
@@ -14,7 +14,7 @@ export type SpannerLinksT =
 
 export type SpannerLinksObjT = Record<"msg" | "link", string | LinkAppSvgT>;
 
-export type SpannerAuthT = Record<SpannerLinksT, SpannerLinksObjT[]>;
+export type SpannerAuthT = Record<SpannerLinksAuthT, SpannerLinksObjT[]>;
 
 export const spannerLinks: SpannerAuthT = {
   register: [

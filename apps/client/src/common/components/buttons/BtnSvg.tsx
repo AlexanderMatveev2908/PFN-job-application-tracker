@@ -6,7 +6,7 @@ import { css } from "@emotion/react";
 import { RefObject, useState, type FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import { IconType } from "react-icons";
-import PortalWrapper from "../HOC/PortalWrapper";
+import PortalWrapper from "../HOC/shapes/PortalWrapper";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import { PortalConfT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";

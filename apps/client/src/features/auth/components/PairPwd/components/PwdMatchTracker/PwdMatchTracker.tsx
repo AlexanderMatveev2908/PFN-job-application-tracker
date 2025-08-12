@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PortalWrapper from "@/common/components/HOC/PortalWrapper";
+import PortalWrapper from "@/common/components/HOC/shapes/PortalWrapper";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { css } from "@emotion/react";
 import type { FC } from "react";

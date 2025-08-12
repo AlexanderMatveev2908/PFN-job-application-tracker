@@ -2,7 +2,7 @@
 "use client";
 
 import type { FC } from "react";
-import WrapShadow from "../HOC/buttonWrappers/WrapShadow";
+import WrapShadow from "../HOC/shapes/WrapShadow";
 import { SerializedStyles } from "@emotion/react";
 import { FieldTxtSvgT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
