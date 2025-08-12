@@ -16,14 +16,13 @@ export const useToastAnimation = () => {
     controls.set("hidden");
 
     if (cancelRef.current) return;
-    await new Promise(requestAnimationFrame);
 
-    if (cancelRef.current) return;
     await controls.start("open");
   }, [controls]);
 
   const close = useCallback(async () => {
     controls.stop();
+
     if (cancelRef.current) return;
 
     await controls.start("close");
@@ -31,20 +30,17 @@ export const useToastAnimation = () => {
 
   const closeAndOpen = useCallback(async () => {
     await controls.start("close");
+
     if (cancelRef.current || !toastState.isShow) return;
 
     controls.set("hidden");
     if (cancelRef.current) return;
-    await new Promise(requestAnimationFrame);
 
-    if (cancelRef.current) return;
     await controls.start("open");
   }, [controls, toastState.isShow]);
 
   useEffect(() => {
     cancelRef.current = false;
-
-    const changed = toastState.x !== prevX.current;
 
     if (!toastState.isShow) {
       void close();
@@ -56,7 +52,7 @@ export const useToastAnimation = () => {
       };
     }
 
-    if (prevShown.current && changed) {
+    if (prevShown.current && toastState.x !== prevX.current) {
       void closeAndOpen();
     } else {
       void open();
@@ -67,7 +63,6 @@ export const useToastAnimation = () => {
 
     return () => {
       cancelRef.current = true;
-      controls.stop();
     };
   }, [toastState.isShow, toastState.x, open, closeAndOpen, close, controls]);
 
