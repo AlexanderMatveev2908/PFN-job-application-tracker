@@ -5,42 +5,41 @@ import { getToastState } from "../slices";
 
 export const useToastAnimation = () => {
   const toastState = useSelector(getToastState);
-
   const controls = useAnimationControls();
 
   const prevX = useRef(toastState.x);
   const prevShown = useRef(false);
+  const cancelRef = useRef(false);
 
   const open = useCallback(async () => {
     controls.stop();
     controls.set("hidden");
+
+    if (cancelRef.current) return;
+
     await controls.start("open");
   }, [controls]);
 
-  const closeAndOpen = useCallback(
-    async (cancelled: boolean) => {
-      await controls.start("close");
-      if (cancelled || !toastState.isShow) return;
+  const closeAndOpen = useCallback(async () => {
+    await controls.start("close");
+    if (cancelRef.current || !toastState.isShow) return;
 
-      controls.set("hidden");
-      await controls.start("open");
-    },
-    [controls, toastState.isShow]
-  );
+    controls.set("hidden");
+    if (cancelRef.current) return;
+
+    await controls.start("open");
+  }, [controls, toastState.isShow]);
 
   useEffect(() => {
-    let cancelled = false;
+    cancelRef.current = false;
 
     if (!toastState.isShow) {
       prevShown.current = false;
       prevX.current = toastState.x;
-      return;
     }
 
-    const changedX = toastState.x !== prevX.current;
-
-    if (prevShown.current && changedX) {
-      void closeAndOpen(cancelled);
+    if (prevShown.current && toastState.x !== prevX.current) {
+      void closeAndOpen();
     } else {
       void open();
     }
@@ -49,11 +48,9 @@ export const useToastAnimation = () => {
     prevX.current = toastState.x;
 
     return () => {
-      cancelled = true;
+      cancelRef.current = true;
     };
-  }, [toastState.isShow, toastState.x, controls, open, closeAndOpen]);
+  }, [toastState.isShow, toastState.x, open, closeAndOpen]);
 
-  return {
-    controls,
-  };
+  return { controls };
 };
