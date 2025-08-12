@@ -26,16 +26,29 @@ const CpyClip: FC<PropsType> = ({ isCopied, x }) => {
   const controls = useAnimationControls();
 
   useEffect(() => {
-    if (!isCopied) {
-      controls.start("hidden");
-      return;
-    }
+    let cancelled = false;
 
-    controls.stop();
-    controls.set("hidden");
-    requestAnimationFrame(() => {
-      controls.start("visible");
-    });
+    const run = async () => {
+      if (!isCopied) {
+        await controls.start("hidden");
+        return;
+      }
+
+      controls.stop();
+      controls.set("hidden");
+
+      await new Promise(requestAnimationFrame);
+
+      if (cancelled) return;
+
+      await controls.start("visible");
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+    };
   }, [x, isCopied, controls]);
 
   return (

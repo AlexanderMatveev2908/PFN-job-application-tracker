@@ -11,13 +11,13 @@ export type ToastT = {
 export type ToastStateT = {
   isShow: boolean;
   toast: ToastT;
-  seq: number;
+  x: number;
 };
 
 const initState: ToastStateT = {
   isShow: false,
   toast: { msg: "", type: "" as AppEventT },
-  seq: 0,
+  x: 0,
 };
 
 export const toastSlice = createSlice({
@@ -26,8 +26,8 @@ export const toastSlice = createSlice({
   reducers: {
     open: (state, action: PayloadAction<ToastT>) => {
       state.isShow = true;
-      state.toast = { ...action.payload };
-      state.seq += 1;
+      state.toast = action.payload;
+      state.x += 1;
     },
     close: (state) => {
       state.isShow = false;

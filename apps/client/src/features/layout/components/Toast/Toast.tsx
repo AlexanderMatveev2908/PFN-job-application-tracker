@@ -16,50 +16,54 @@ import BtnSvg from "@/common/components/buttons/BtnSvg";
 const Toast: FC = () => {
   const toastState = useSelector(getToastState);
   const dispatch = useDispatch();
+
   const { clickClose } = useToastStages({ dispatch, toastState });
+
   const clr = $argClr[toastState.toast.type ?? $argClr.NONE];
 
   const controls = useAnimationControls();
-  const prevSeqRef = useRef(toastState.seq);
-  const wasVisibleRef = useRef(false);
+
+  const prevX = useRef(toastState.x);
+  const prevShown = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    const animateIn = async () => {
+    const open = async () => {
       controls.stop();
       controls.set("hidden");
       await controls.start("open");
     };
 
-    const animateCloseThenOpen = async () => {
+    const closeAndOpen = async () => {
       await controls.start("close");
       if (cancelled || !toastState.isShow) return;
+
       controls.set("hidden");
       await controls.start("open");
     };
 
     if (!toastState.isShow) {
-      wasVisibleRef.current = false;
-      prevSeqRef.current = toastState.seq;
+      prevShown.current = false;
+      prevX.current = toastState.x;
       return;
     }
 
-    const seqChanged = toastState.seq !== prevSeqRef.current;
+    const changedX = toastState.x !== prevX.current;
 
-    if (wasVisibleRef.current && seqChanged) {
-      void animateCloseThenOpen();
+    if (prevShown.current && changedX) {
+      void closeAndOpen();
     } else {
-      void animateIn();
+      void open();
     }
 
-    wasVisibleRef.current = true;
-    prevSeqRef.current = toastState.seq;
+    prevShown.current = true;
+    prevX.current = toastState.x;
 
     return () => {
       cancelled = true;
     };
-  }, [toastState.isShow, toastState.seq, controls]);
+  }, [toastState.isShow, toastState.x, controls]);
 
   const durSec = 5;
 
@@ -106,7 +110,7 @@ const Toast: FC = () => {
           </div>
 
           <motion.div
-            key={toastState.seq}
+            key={toastState.x}
             className="w-full absolute bottom-0 left-0 h-[7.5px] rounded-2xl"
             css={css`
               background: ${clr};

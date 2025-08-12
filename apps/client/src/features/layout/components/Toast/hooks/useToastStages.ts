@@ -29,7 +29,7 @@ export const useToastStages = ({
     return () => {
       clearTmr(timerID);
     };
-  }, [toastState.isShow, toastState.seq, dispatch]);
+  }, [toastState.isShow, toastState.x, dispatch]);
 
   return { clickClose };
 };
