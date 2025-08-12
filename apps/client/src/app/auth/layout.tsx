@@ -13,7 +13,7 @@ const Layout: FC<ChildrenT> = ({ children }) => {
   return (
     <BaseLayoutPage
       {...{
-        title: captAll(last),
+        title: captAll(last?.replace("-", " ")),
       }}
     >
       {children}

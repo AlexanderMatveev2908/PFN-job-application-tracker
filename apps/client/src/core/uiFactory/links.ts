@@ -14,29 +14,32 @@ export const linksAll: LinkAppSvgT[] = [
   },
 ];
 
-const linkConfirmEmail: LinkAppSvgT = {
+export const linkConfirmEmail: LinkAppSvgT = {
   label: "Confirm Email",
   href: "/auth/confirm-email",
   Svg: SvgConfirmEmail,
 };
+export const linkRegister: LinkAppSvgT = {
+  label: "Register",
+  href: "/auth/register",
+  Svg: SvgRegister,
+};
+export const linkLogin: LinkAppSvgT = {
+  label: "Login",
+  href: "/auth/login",
+  Svg: FiLogIn,
+};
+export const linkRecoverPwd: LinkAppSvgT = {
+  label: "Recover Password",
+  href: "/auth/recover-account",
+  Svg: FaKey,
+  fill: "var(--white__0)",
+};
 
 export const linksNonLogged: LinkAppSvgT[] = [
-  {
-    label: "Register",
-    href: "/auth/register",
-    Svg: SvgRegister,
-  },
-  {
-    label: "Login",
-    href: "/auth/login",
-    Svg: FiLogIn,
-  },
-  {
-    label: "Recover Password",
-    href: "/auth/recover-account",
-    Svg: FaKey,
-    fill: "var(--white__0)",
-  },
+  linkRegister,
+  linkLogin,
+  linkRecoverPwd,
   linkConfirmEmail,
 ];
 
