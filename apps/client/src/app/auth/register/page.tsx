@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { type FC } from "react";
+import { useRef, type FC } from "react";
 import { __cg } from "@/core/lib/log";
 import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,16 @@ export type SwapModeT = "swapped" | "swapping" | "none";
 
 const Register: FC = ({}) => {
   const { startSwap, swapState } = useSwap();
+
+  const lockFocusRef = useRef<boolean>(false);
+
+  const lockFocus = (ms: number = 600) => {
+    lockFocusRef.current = true;
+    const t = setTimeout(() => {
+      lockFocusRef.current = false;
+      clearTimeout(t);
+    }, ms);
+  };
 
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
@@ -55,6 +65,7 @@ const Register: FC = ({}) => {
 
       if (res?.field) {
         startSwap({ swap: res!.i, manualFocus: true });
+        lockFocus();
         setTimeout(() => {
           setFocus(res.field);
         }, 400);
@@ -72,6 +83,7 @@ const Register: FC = ({}) => {
     kwargs,
     setFocus,
     swapState,
+    lockFocusRef,
   });
 
   return (
