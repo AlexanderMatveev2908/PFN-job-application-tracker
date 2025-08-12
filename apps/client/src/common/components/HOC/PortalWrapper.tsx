@@ -15,11 +15,13 @@ type PropsType = {
   isHover: boolean;
   act?: AppEventT;
   $trgCtmCSS?: SerializedStyles;
+  $sizeTrg?: number;
 } & ChildrenT;
 
 const PortalWrapper: FC<PropsType> = ({
   $CSS,
   $trgCtmCSS,
+  $sizeTrg = 50,
   children,
   act = "NONE",
   isHover,
@@ -44,7 +46,7 @@ const PortalWrapper: FC<PropsType> = ({
         <TriangleTooltip
           {...{
             $clr,
-            $sizeTrg: 50,
+            $sizeTrg,
             $trgCtmCSS,
           }}
         />

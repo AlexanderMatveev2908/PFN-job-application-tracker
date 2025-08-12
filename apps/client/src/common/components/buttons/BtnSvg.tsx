@@ -56,8 +56,12 @@ const BtnSvg: FC<PropsType> = ({
             act: "NONE",
             $CSS: css`
               top: ${coords.top - 25}px;
-              right: ${coords.right - 50}px;
+              left: ${coords.left - 25}px;
             `,
+            $trgCtmCSS: css`
+              left: 15%;
+            `,
+            $sizeTrg: 30,
           }}
         >
           <span className="txt__md py-2 px-4 inline-block min-w-[200px] max-w-[400px] break-all">

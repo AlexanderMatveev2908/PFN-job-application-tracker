@@ -30,7 +30,7 @@ const PwdGenerator: FC<PropsType> = ({
         gap: 1.5rem;
 
         ${resp(450)} {
-          grid-template-columns: 100px 1fr;
+          grid-template-columns: 75px 1fr;
         }
       `}
     >
