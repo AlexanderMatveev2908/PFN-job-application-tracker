@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  useCallback,
   useEffect,
   useReducer,
   useRef,
@@ -28,10 +29,18 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
   });
   const timerID = useRef<NodeJS.Timeout>(null);
 
+  const wrapper = useCallback((cb: () => void) => {
+    clearTmr(timerID);
+
+    cb();
+  }, []);
+
   useEffect(() => {
     const el = btnRef.current;
     if (!el) return;
 
+    // __ default handler for animation
+    // __ clear
     if (
       !state.isCopied ||
       prevData.current.id === state.id ||
@@ -40,8 +49,6 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
       return;
 
     const cb = () => {
-      clearTmr(timerID);
-
       prevData.current = {
         ...state,
         forcing: false,
@@ -53,18 +60,17 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
       }, 1500);
     };
 
-    cb();
+    wrapper(cb);
 
     return () => {
       clearTmr(timerID);
     };
-  }, [state]);
+  }, [state, wrapper]);
 
   useEffect(() => {
     if (!prevData.current.isCopied || prevData.current.id === state.id) return;
 
     const cb = () => {
-      clearTmr(timerID);
       prevData.current = {
         isCopied: false,
         id: state.id,
@@ -74,8 +80,8 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
       dispatchRCT({ type: "CLOSE" });
     };
 
-    cb();
-  }, [state]);
+    wrapper(cb);
+  }, [state, wrapper]);
 
   useEffect(() => {
     if (
@@ -86,17 +92,20 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
       return;
 
     const cb = () => {
-      clearTmr(timerID);
       prevData.current.forcing = false;
 
       timerID.current = setTimeout(() => {
         clearTmr(timerID);
         dispatchRCT({ type: "FORCE" });
-      }, 300);
+      }, 200);
     };
 
-    cb();
-  }, [state]);
+    wrapper(cb);
+
+    return () => {
+      clearTmr(timerID);
+    };
+  }, [state, wrapper]);
 
   const handleClick = async () => {
     try {

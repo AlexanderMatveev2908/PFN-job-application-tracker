@@ -16,7 +16,7 @@ const CpyClip: FC<PropsType> = ({ isCopied }) => {
         opacity: 0,
       }}
       transition={{
-        duration: 0.3,
+        duration: isCopied ? 0.3 : 0.2,
         ease: easeInOut,
       }}
       animate={{
