@@ -18,7 +18,7 @@ type PropsType = {
   $sizeTrg?: number;
 } & ChildrenT;
 
-const PortalWrapper: FC<PropsType> = ({
+const PortalTooltip: FC<PropsType> = ({
   $CSS,
   $trgCtmCSS,
   $sizeTrg = 50,
@@ -33,10 +33,10 @@ const PortalWrapper: FC<PropsType> = ({
       <div
         className="absolute w-fit h-fit bg-neutral-950 border-2 rounded-xl pointer-events-none z-60"
         css={css`
-          border-color: ${$clr};
           ${$CSS}
+          border-color: ${$clr};
           transition: transform 0.4s, opacity 0.3s;
-          transform: translateY(${isHover ? "-100" : ""}%);
+          transform: translateY(${isHover ? "-100" : "0"}%);
           opacity: ${isHover ? 1 : 0};
           z-index: 100;
         `}
@@ -55,4 +55,4 @@ const PortalWrapper: FC<PropsType> = ({
   );
 };
 
-export default PortalWrapper;
+export default PortalTooltip;

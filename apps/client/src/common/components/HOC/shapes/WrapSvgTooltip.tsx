@@ -9,7 +9,7 @@ import { $argClr } from "@/core/uiFactory/style";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
-import PortalWrapper from "./PortalWrapper";
+import PortalTooltip from "./PortalTooltip";
 import Link from "next/link";
 import { RefObject } from "react";
 
@@ -64,13 +64,13 @@ const WrapSvgTooltip: FC<PropsType> = ({
   const content = (
     <>
       {isObjOk(confPortal) && (
-        <PortalWrapper
+        <PortalTooltip
           {...{
             isHover: isHover && confPortal!.showPortal,
             act: "NONE",
             $CSS: css`
-              top: ${coords.top - 25}px;
-              left: ${coords.left - 25}px;
+              top: ${coords.top - coords.height / 2}px;
+              left: ${coords.left - coords.width}px;
             `,
             $trgCtmCSS: css`
               left: 15%;
@@ -78,10 +78,10 @@ const WrapSvgTooltip: FC<PropsType> = ({
             $sizeTrg: 30,
           }}
         >
-          <span className="txt__md py-2 px-4 inline-block min-w-[200px] max-w-[400px] break-all">
+          <span className="txt__md py-2 px-4 inline-block min-w-[250px] max-w-[400px] break-all">
             {confPortal!.txt}
           </span>
-        </PortalWrapper>
+        </PortalTooltip>
       )}
 
       <Svg className="svg__lg" />
