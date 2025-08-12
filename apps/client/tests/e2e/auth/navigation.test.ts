@@ -1,11 +1,11 @@
 import test from "@playwright/test";
-import { expectArgLinks, getByIDT, checkTxt, isShw } from "../lib/idx";
+import { expectArgLinks, getByIDT, lookTxt, isShw } from "../lib/idx";
 
 test.describe("navigation to register page", () => {
   test("with dropdown", async ({ page }) => {
     await page.goto("/");
 
-    await checkTxt(page, "Script worked ✌🏽");
+    await lookTxt(page, "Script worked ✌🏽");
 
     await page.getByTestId("header_toggle_drop").click();
 
@@ -29,7 +29,7 @@ test.describe("navigation to register page", () => {
   test("with sidebar", async ({ page }) => {
     await page.goto("/");
 
-    await checkTxt(page, "Script worked ✌🏽");
+    await lookTxt(page, "Script worked ✌🏽");
 
     await page.getByTestId("header_toggle_sidebar").click();
 

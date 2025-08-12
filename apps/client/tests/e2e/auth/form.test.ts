@@ -1,12 +1,20 @@
 import test, { expect } from "@playwright/test";
-import { checkTxt, getByIDT, isShw } from "../lib/idx";
+import {
+  checkMsg,
+  checkMsgList,
+  checkOpcMsgs,
+  lookTxt,
+  getByIDT,
+  isShw,
+} from "../lib/idx";
 
 test.describe("form register", () => {
-  test("swap 0", async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto("/auth/register");
+    await lookTxt(page, "Register");
+  });
 
-    await checkTxt(page, "Register");
-
+  test("swap 0", async ({ page }) => {
     const el = getByIDT(page, "register_form");
     await isShw(el);
 
@@ -21,9 +29,7 @@ test.describe("form register", () => {
       "invalid email",
     ];
 
-    for (const x of msgs) {
-      await expect(page.getByText(new RegExp(x, "i"))).toBeVisible();
-    }
+    await checkMsgList(page, msgs);
 
     await el.getByTestId("first_name").fill("John");
     await el.getByTestId("last_name").fill("Doe");
@@ -31,26 +37,32 @@ test.describe("form register", () => {
 
     await page.waitForTimeout(500);
 
-    await page.pause();
+    await checkOpcMsgs(page, msgs);
+  });
 
-    for (const x of msgs) {
-      const txt = page.getByText(new RegExp(x, "i"));
+  test("swap 1", async ({ page }) => {
+    const el = getByIDT(page, "register_form");
 
-      const parentOpc = await txt.evaluate((el) => {
-        let current = el.parentElement;
+    await expect(page.getByTestId("btns_swapper_next_swap")).toBeVisible();
+    await page.getByTestId("btns_swapper_next_swap").click();
 
-        while (current) {
-          const style = window.getComputedStyle(current);
+    await page.waitForTimeout(500);
 
-          if (style.opacity === "0") return true;
+    const pwd = el.getByTestId("password");
 
-          current = current.parentElement;
-        }
+    await expect(pwd).toBeFocused();
 
-        return false;
-      });
+    const msgs = ["invalid password", "you must confirm password"];
 
-      expect(parentOpc).toBe(true);
-    }
+    await pwd.fill("abc");
+
+    await checkMsgList(page, msgs);
+
+    const confPwd = await el.getByTestId("confirm_password");
+    await isShw(confPwd);
+
+    await confPwd.fill("123");
+
+    await checkMsg(page, "passwords do not match");
   });
 });
