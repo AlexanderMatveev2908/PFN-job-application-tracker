@@ -19,18 +19,21 @@ type PropsType = {
 const CpyPaste: FC<PropsType> = ({ txt }) => {
   const [isCopied, setIsCopied] = useState(false);
   const btnRef = useRef<HTMLButtonElement | null>(null);
+  const prevCopied = useRef(false);
   const timerID = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
     const el = btnRef.current;
     if (!el) return;
 
-    if (isCopied)
+    if (isCopied) {
+      prevCopied.current = true;
       timerID.current = setTimeout(() => {
         setIsCopied(false);
 
         clearTmr(timerID);
       }, 1000);
+    }
 
     return () => {
       clearTmr(timerID);
