@@ -20,7 +20,9 @@ type PropsType = {
 
 const BodyForm: FC<PropsType> = ({ swapState }) => {
   const { currSwap, swapMode } = swapState;
-  const { contentRef, contentH } = useListenHeight({ opdDep: [currSwap] });
+  const { contentRef, contentH } = useListenHeight({
+    opdDep: [currSwap],
+  });
 
   const {
     control,

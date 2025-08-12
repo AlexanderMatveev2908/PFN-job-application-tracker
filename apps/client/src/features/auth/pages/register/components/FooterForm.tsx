@@ -13,7 +13,7 @@ type PropsType = {
 
 const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
   return (
-    <div className="w-full grid grid-cols-1 gap-14 p-5">
+    <div className="w-full grid grid-cols-1 gap-8 p-5">
       <BtnsSwapper
         {...{
           swapState,
