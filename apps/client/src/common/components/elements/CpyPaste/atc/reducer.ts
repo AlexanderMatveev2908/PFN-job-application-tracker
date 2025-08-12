@@ -1,30 +1,18 @@
+// atc/reducer.ts
 import { __cg } from "@/core/lib/log";
-import { CpyPasteActionsT, CpyPasteStateT, initState } from "./initState";
-import { v4 } from "uuid";
+import { CpyPasteActionsT, CpyPasteStateT } from "./initState";
 
 export const reducer = (
-  _: CpyPasteStateT,
-  action: CpyPasteActionsT
+  s: CpyPasteStateT,
+  a: CpyPasteActionsT
 ): CpyPasteStateT => {
-  switch (action.type) {
+  switch (a.type) {
     case "OPEN":
-      return {
-        id: v4(),
-        isCopied: true,
-      };
-
+      return { isCopied: true, x: s.x + 1 };
     case "CLOSE":
-      return initState;
-
-    case "FORCE":
-      return {
-        id: v4(),
-        isCopied: true,
-      };
-
+      return { ...s, isCopied: false };
     default:
-      __cg("invalid action", action);
-
+      __cg("invalid action", a);
       throw new Error("Invalid action 😡");
   }
 };
