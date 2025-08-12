@@ -16,6 +16,7 @@ import {
   registerSchema,
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
+import { swapOnErr } from "@/core/lib/forms";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -43,6 +44,21 @@ const Register: FC = ({}) => {
     },
     (errs) => {
       __cg("errors", errs);
+
+      const res = swapOnErr({
+        errs,
+        kwargs: [
+          ["first_name", "last_name", "email"],
+          ["password", "confirm_password", "terms"],
+        ],
+      });
+
+      if (res?.field) {
+        startSwap({ swap: res!.i });
+        setTimeout(() => {
+          setFocus(res.field);
+        }, 400);
+      }
 
       return errs;
     }

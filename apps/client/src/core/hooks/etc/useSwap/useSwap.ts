@@ -1,14 +1,14 @@
 import { clearTmr } from "@/core/lib/etc";
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import { reducer } from "./etc/reducer";
-import { initState } from "./etc/initState";
+import { initState, PayloadStartSwapT } from "./etc/initState";
 
 export const useSwap = () => {
   const [state, dispatchRCT] = useReducer(reducer, initState);
   const timerID = useRef<NodeJS.Timeout | null>(null);
 
-  const startSwap = useCallback((val: number) => {
-    dispatchRCT({ type: "START_SWAP", payload: val });
+  const startSwap = useCallback(({ swap }: PayloadStartSwapT) => {
+    dispatchRCT({ type: "START_SWAP", payload: { swap } });
   }, []);
 
   const endSwap = useCallback(() => {
@@ -24,7 +24,7 @@ export const useSwap = () => {
     return () => {
       clearTmr(timerID);
     };
-  }, [state.currSwap, endSwap]);
+  }, [state, endSwap]);
 
   return {
     swapState: state,
