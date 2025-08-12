@@ -2,7 +2,7 @@
 "use client";
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
-import BtnsSwapper from "@/common/components/HOC/BtnsSwapper";
+import BtnsSwapper from "@/common/components/HOC/shapes/BtnsSwapper";
 import type { FC } from "react";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 

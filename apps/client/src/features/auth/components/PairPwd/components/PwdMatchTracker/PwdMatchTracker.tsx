@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PortalWrapper from "@/common/components/HOC/PortalWrapper";
+import PortalTooltip from "@/common/components/HOC/shapes/PortalTooltip";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { css } from "@emotion/react";
 import type { FC } from "react";
@@ -30,7 +30,7 @@ const PwdMatchTracker: FC<PropsType> = ({
   const { ids } = useGenIDs({ lengths: [rulesPwd.length] });
 
   return (
-    <PortalWrapper
+    <PortalTooltip
       {...{
         $CSS: css`
           top: ${coords.top - 50}px;
@@ -72,7 +72,7 @@ const PwdMatchTracker: FC<PropsType> = ({
           </div>
         </div>
       </div>
-    </PortalWrapper>
+    </PortalTooltip>
   );
 };
 

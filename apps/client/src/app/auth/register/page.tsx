@@ -15,6 +15,7 @@ import {
   RegisterFormT,
   registerSchema,
 } from "@/features/auth/pages/register/schemas/register";
+import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -81,6 +82,8 @@ const Register: FC = ({}) => {
                 startSwap,
               }}
             />
+
+            <SpannerLinks />
           </form>
         </FormProvider>
       </div>
