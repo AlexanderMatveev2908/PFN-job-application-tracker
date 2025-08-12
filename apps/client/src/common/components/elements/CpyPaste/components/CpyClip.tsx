@@ -20,12 +20,12 @@ const CpyClip: FC<PropsType> = ({ isCopied }) => {
         ease: easeInOut,
       }}
       animate={{
-        y: isCopied ? "-125%" : "0",
+        y: isCopied ? "-150%" : "0",
         opacity: isCopied ? 1 : 0,
       }}
-      className="absolute w-[200px] h-[40px] border-2 border-blue_pmr top-0 right-0 rounded-xl bg-white_sec flex justify-center items-center pointer-events-none"
+      className="absolute w-[300px] py-2 px-4 h-[40px] border-2 border-neutral-600 top-0 left-1/2 rounded-xl flex justify-center items-center pointer-events-none z-60 bg-neutral-950 -translate-x-1/2 "
     >
-      <span className="txt__h_xxs text-black_sec">Copied to clipboard</span>
+      <span className="txt__sm">Copied to clipboard</span>
     </motion.div>
   );
 };
