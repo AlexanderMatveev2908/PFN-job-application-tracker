@@ -3,10 +3,14 @@
 
 import { useEffect, type FC } from "react";
 import { easeInOut, motion, useAnimationControls } from "framer-motion";
+import Portal from "../../Portal";
+import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
+import { css } from "@emotion/react";
 
 type PropsType = {
   isCopied: boolean;
   x: number;
+  coords: CoordsTooltipT;
 };
 
 const variants = {
@@ -22,7 +26,7 @@ const variants = {
   },
 };
 
-const CpyClip: FC<PropsType> = ({ isCopied, x }) => {
+const CpyClip: FC<PropsType> = ({ isCopied, x, coords }) => {
   const controls = useAnimationControls();
 
   useEffect(() => {
@@ -51,14 +55,20 @@ const CpyClip: FC<PropsType> = ({ isCopied, x }) => {
   }, [x, isCopied, controls]);
 
   return (
-    <motion.div
-      initial="hidden"
-      animate={controls}
-      variants={variants}
-      className="absolute w-[300px] py-2 px-4 h-[40px] border-2 border-neutral-600 top-0 left-1/2 rounded-xl flex justify-center items-center pointer-events-none z-60 bg-neutral-950 -translate-x-1/2 "
-    >
-      <span className="txt__sm">Copied to clipboard</span>
-    </motion.div>
+    <Portal>
+      <motion.div
+        css={css`
+          left: ${coords.left}px;
+          top: ${coords.top}px;
+        `}
+        initial="hidden"
+        animate={controls}
+        variants={variants}
+        className="absolute w-[300px] py-2 px-4 border-2 border-neutral-600 rounded-xl flex justify-center items-center pointer-events-none z-60 bg-neutral-950"
+      >
+        <span className="txt__sm">Copied to clipboard</span>
+      </motion.div>
+    </Portal>
   );
 };
 

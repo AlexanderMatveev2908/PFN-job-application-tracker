@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  RefObject,
   useEffect,
   useReducer,
   useRef,
@@ -13,10 +14,12 @@ import { __cg } from "@/core/lib/log";
 import { reducer } from "./atc/reducer";
 import { initState } from "./atc/initState";
 import { clearTmr } from "@/core/lib/etc";
+import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import { PortalConfT } from "@/common/types/ui";
 
-type PropsType = { txt: string };
+type PropsType = { txt: string; portalConf?: PortalConfT };
 
-const CpyPaste: FC<PropsType> = ({ txt }) => {
+const CpyPaste: FC<PropsType> = ({ txt, portalConf }) => {
   const [state, dispatch] = useReducer(reducer, initState);
   const timerID = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -40,14 +43,19 @@ const CpyPaste: FC<PropsType> = ({ txt }) => {
     }
   };
 
+  const { coords, parentRef } = useSyncPortal(portalConf?.optDep);
+
   return (
     <button
+      ref={parentRef as RefObject<HTMLButtonElement>}
       onClick={handleClick}
       type="button"
       className="btn__app w-fit py-2 px-4 border-2 border-w__0 rounded-xl relative"
       style={{ "--scale__up": 1.15 } as CSSProperties}
     >
-      <CpyClip {...state} />
+      {(portalConf?.showPortal ?? true) && (
+        <CpyClip {...{ ...state, coords }} />
+      )}
       <span className="txt__md">{txt}</span>
     </button>
   );

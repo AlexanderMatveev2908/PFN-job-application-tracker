@@ -8,6 +8,8 @@ import { SwapModeT } from "@/app/auth/register/page";
 import CpyPaste from "@/common/components/elements/CpyPaste/CpyPaste";
 import { genPwd } from "@/core/lib/etc";
 import { isStr } from "@/core/lib/dataStructure";
+import { css } from "@emotion/react";
+import { resp } from "@/core/lib/style";
 
 type PropsType = {
   swapMode?: SwapModeT;
@@ -21,7 +23,17 @@ const PwdGenerator: FC<PropsType> = ({
   const [pwd, setPwd] = useState("");
 
   return (
-    <div className="w-full flex items-center gap-10">
+    <div
+      className="w-full grid"
+      css={css`
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+
+        ${resp(450)} {
+          grid-template-columns: 100px 1fr;
+        }
+      `}
+    >
       <div className="w-fit">
         <BtnSvg
           {...{
@@ -38,7 +50,15 @@ const PwdGenerator: FC<PropsType> = ({
 
       {isStr(pwd) && (
         <div className="w-fit">
-          <CpyPaste {...{ txt: pwd }} />
+          <CpyPaste
+            {...{
+              txt: pwd,
+              portalConf: {
+                optDep: [swapMode],
+                showPortal: swapMode === "swapped" && isCurrSwap,
+              },
+            }}
+          />
         </div>
       )}
     </div>
