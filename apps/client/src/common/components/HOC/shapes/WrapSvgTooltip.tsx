@@ -13,9 +13,14 @@ import PortalWrapper from "./PortalWrapper";
 import Link from "next/link";
 import { RefObject } from "react";
 
+export type WrapSvgTltPropsT = {
+  Svg: IconType;
+  act?: AppEventT;
+  confPortal?: PortalConfT & { txt: string };
+};
+
 type PropsType = {
   wrapper: "html_button" | "next_link";
-  Svg: IconType;
   propsLink?: {
     href: string;
   };
@@ -23,9 +28,7 @@ type PropsType = {
     isEnabled?: boolean;
     handleClick: () => void;
   };
-  act?: AppEventT;
-  confPortal?: PortalConfT & { txt: string };
-};
+} & WrapSvgTltPropsT;
 
 const WrapSvgTooltip: FC<PropsType> = ({
   Svg,

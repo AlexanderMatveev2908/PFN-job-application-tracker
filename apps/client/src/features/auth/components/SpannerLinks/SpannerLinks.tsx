@@ -6,6 +6,7 @@ import type { FC } from "react";
 import { spannerLinks, SpannerLinksAuthT } from "./uiFactory/idx";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { LinkAppSvgT } from "@/common/types/ui";
+import LinkSvg from "@/common/components/links/LinkSvg";
 
 const SpannerLinks: FC = () => {
   const p = usePathname();
@@ -20,10 +21,17 @@ const SpannerLinks: FC = () => {
         const Svg = (el.link as LinkAppSvgT).Svg;
 
         return (
-          <div key={ids[0][i]} className="flex">
-            <Svg className="svg__md" />
-            <span></span>
-          </div>
+          <LinkSvg
+            key={ids[0][i]}
+            {...{
+              href: (el.link as LinkAppSvgT).href,
+              Svg,
+              confPortal: {
+                showPortal: true,
+                txt: el.msg as string,
+              },
+            }}
+          />
         );
       })}
     </div>
