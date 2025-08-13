@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     # await get_all()
     # await gen_list_assets()
+    # await get_cost()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)

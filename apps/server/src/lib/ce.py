@@ -32,8 +32,8 @@ def format_p(arg: str) -> str:
 async def get_cost() -> None:
 
     async with gen_ce_session() as ce:
-        start = (date.today() - timedelta(days=7)).isoformat()
-        end = (date.today()).isoformat()
+        start = (date.today() - timedelta(days=29)).isoformat()
+        end = (date.today() + timedelta(days=1)).isoformat()
 
         res = await ce.get_cost_and_usage(
             TimePeriod={"Start": start, "End": end},
@@ -42,7 +42,11 @@ async def get_cost() -> None:
             Filter={
                 "Dimensions": {
                     "Key": "SERVICE",
-                    "Values": ["Amazon Simple Storage Service"],
+                    "Values": [
+                        "Amazon Simple Storage Service",
+                        "Amazon Simple Email Service",
+                        "AWS Cost Explorer",
+                    ],
                 }
             },
         )
