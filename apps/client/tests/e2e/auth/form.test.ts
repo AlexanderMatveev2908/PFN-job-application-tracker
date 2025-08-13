@@ -5,6 +5,7 @@ import {
   checkTxt,
   getByID,
   clickByID,
+  checkTxtOpc,
 } from "../lib/idx";
 import { closeToast } from "../lib/sideActions";
 
@@ -63,5 +64,16 @@ test.describe("form register", () => {
     await confPwd.fill("123");
 
     await checkTxt(page, "passwords do not match");
+
+    await clickByID(el, "body__form_terms");
+    await clickByID(el, "body__form_terms");
+
+    const msg = "you must accept terms & conditions";
+
+    await checkTxt(el, msg);
+
+    await clickByID(el, "body__form_terms");
+
+    await checkTxtOpc(page, msg);
   });
 });
