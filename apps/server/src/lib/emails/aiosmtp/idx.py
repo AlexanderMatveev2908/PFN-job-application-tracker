@@ -1,8 +1,8 @@
 from email.message import EmailMessage
 
 import aiosmtplib
-from src.conf.email.template import gen_html_template
 from src.conf.env import env_var
+from src.lib.emails.idx import gen_html_template
 from src.lib.logger import clg
 
 

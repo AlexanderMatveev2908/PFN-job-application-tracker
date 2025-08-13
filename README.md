@@ -13,48 +13,49 @@ So I decided to build a proper application to track them:
 
 ## 🧱 Tech Stack
 
-### 🖥️ Client
+### 🖥️ **Client**
 
-- **Next.js** (App Router) — React framework for SSR, ISR, and routing
-- **React** + **TypeScript** — Component-based UI with static typing
-- **React Hook Form** + **Zod** — Form handling and schema validation
-- **Redux Toolkit** (with **RTK Query**) — Global state management and API caching
-- **Axios** — Configured as a reusable API client for RTK
-- **Framer Motion** — Animations and transitions
-- **Tailwind CSS** + **Sass** — Utility-first and custom styling
-
----
-
-### 💾 Server
-
-- **Python** `>=3.12, <4.0` — Main backend language
-- **FastAPI** — Async API framework
-- **SQLAlchemy** + **Alembic** — ORM with migration support
-- **Pydantic** — Data parsing and validation
-- **Mypy** — Static type checker
-- **Poetry** — Dependency & project management
-- **Gunicorn** + **Uvicorn** — ASGI server stack for development & production
-- **Aiosmtplib** — Async email sending
-- **Amazon S3** — Cloud file storage
+- **Next.js** (App Router) — Framework for React with built-in SSR, ISR, routing, and SEO optimization
+- **React** + **TypeScript** — Component-based UI with static typing for maintainable, scalable front-ends
+- **React Hook Form** + **Zod** — Type-safe form handling with schema-based validation
+- **Redux Toolkit** + **RTK Query** — Centralized state and API caching
+- **Axios** — Preconfigured HTTP client integrated with RTK Query
+- **Framer Motion** — Smooth, customizable UI animations
+- **Tailwind CSS** + **Sass** — Utility-first styling with support for custom, complex styles
 
 ---
 
-### 🧪 Testing
+### 💾 **Server**
 
-- **Playwright** — End-to-end (E2E) testing for client
-- **Vitest** — Unit testing for client
-- **Pytest** — Unit testing for server
+- **Python** `>=3.12` — Primary backend language with strong async support
+- **FastAPI** — High-performance async API framework
+- **SQLAlchemy** + **Alembic** — ORM and schema migrations for relational DBs
+- **Pydantic** — Data validation and parsing
+- **Mypy** — Static type checking for Python code quality
+- **Poetry** — Dependency and environment management
+- **Gunicorn** + **Uvicorn** — ASGI stack for running FastAPI in production
+- **Amazon SES** — Transactional & notification email service
+- **Aiosmtplib** — Async SMTP client
+- **Amazon S3** — Cloud object storage for files and assets
+
+---
+
+### 🧪 **Testing**
+
+- **Playwright** — End-to-end testing for UI flows
+- **Vitest** — Unit testing for the client
+- **Pytest** — Unit and integration testing for the server
 - **Postman** — API testing
 
 ---
 
-### 🛠️ DevOps & Deployment
+### 🛠️ **DevOps & Deployment**
 
-- **Turborepo** — Manages client and server in a monorepo architecture
-- **Docker** — Containerization for local and production builds
-- **GitHub Actions** — CI/CD automation
-- **Fly.io** — Hosting and deployment platform
-- **Zsh** — Custom scripts for scaffold boilerplate and development helpers
+- **Turborepo** — Monorepo project structure for managing client and server together, with coordinated scripts and parallel builds
+- **Docker** — Ensures consistent environments for development and production across both client and server
+- **GitHub Actions** — Automated pipelines for testing, building, and deploying both apps
+- **Fly.io** — Hosting platform (client and server deployed as separate services)
+- **Zsh** — Custom shell scripts for scaffolding and developer productivity
 
 ## 📦 Setup
 

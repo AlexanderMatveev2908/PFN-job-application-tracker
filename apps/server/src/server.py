@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     # await get_all()
     # await gen_list_assets()
+    # await get_cost()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)
@@ -32,7 +33,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     cent("💣 server shutting down")
 
 
+# wrap_async(send_email)
+
 app = FastAPI(lifespan=lifespan)
+
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
