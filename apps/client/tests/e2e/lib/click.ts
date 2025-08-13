@@ -8,8 +8,8 @@ export const clickByID = async (page: Page, id: string) => {
   await el.click();
 };
 
-export const clickByTxt = async (el: Locator, txt: string) => {
-  const elTxt = await checkTxt(el, txt);
+export const clickByTxt = async (loc: Locator, txt: string) => {
+  const el = await checkTxt(loc, txt);
 
-  await elTxt.click();
+  await el.click();
 };
