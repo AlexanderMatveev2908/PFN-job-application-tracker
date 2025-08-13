@@ -1,22 +1,25 @@
 import test, { expect } from "@playwright/test";
 import {
-  checkMsg,
-  checkMsgList,
+  checkTxtReg,
+  checkTxtList,
   checkOpcMsgs,
-  lookTxt,
-  getByIDT,
+  checkTxt,
+  getByID,
   isShw,
 } from "../lib/idx";
 
 test.describe("form register", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/auth/register");
-    await lookTxt(page, "Register");
+    await checkTxt(page, "Register");
+
+    const el = getByID(page, "register_form");
+    await el.waitFor({ state: "visible" });
+    await isShw(el);
   });
 
   test("swap 0", async ({ page }) => {
-    const el = getByIDT(page, "register_form");
-    await isShw(el);
+    const el = getByID(page, "register_form");
 
     await el.getByTestId("first_name").fill("<>!");
     await el.getByTestId("last_name").fill("...");
@@ -29,7 +32,7 @@ test.describe("form register", () => {
       "invalid email",
     ];
 
-    await checkMsgList(page, msgs);
+    await checkTxtList(page, msgs);
 
     await el.getByTestId("first_name").fill("John");
     await el.getByTestId("last_name").fill("Doe");
@@ -41,7 +44,7 @@ test.describe("form register", () => {
   });
 
   test("swap 1", async ({ page }) => {
-    const el = getByIDT(page, "register_form");
+    const el = getByID(page, "register_form");
 
     await expect(page.getByTestId("btns_swapper_next_swap")).toBeVisible();
     await page.getByTestId("btns_swapper_next_swap").click();
@@ -57,13 +60,13 @@ test.describe("form register", () => {
 
     await pwd.fill("abc");
 
-    await checkMsgList(page, msgs);
+    await checkTxtList(page, msgs);
 
     const confPwd = await el.getByTestId("confirm_password");
     await isShw(confPwd);
 
     await confPwd.fill("123");
 
-    await checkMsg(page, "passwords do not match");
+    await checkTxtReg(page, "passwords do not match");
   });
 });

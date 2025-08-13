@@ -1,25 +1,23 @@
 import test from "@playwright/test";
-import { expectArgLinks, getByIDT, lookTxt, isShw } from "../lib/idx";
+import {
+  checkLinksList,
+  checkTxt,
+  clickByID,
+  getWithTByID,
+  clickByTxt,
+} from "../lib/idx";
 
 test.describe("navigation to register page", () => {
   test("with dropdown", async ({ page }) => {
     await page.goto("/");
 
-    await lookTxt(page, "Script worked ✌🏽");
+    await checkTxt(page, "Script worked ✌🏽");
 
-    const drop = page.getByTestId("header_toggle_drop");
+    await clickByID(page, "header_toggle_drop");
 
-    await drop.waitFor({ state: "visible" });
+    const el = await getWithTByID(page, "drop_menu_absolute_content");
 
-    await drop.click();
-
-    const el = getByIDT(page, "drop_menu_absolute_content");
-
-    await page.waitForTimeout(500);
-
-    await isShw(el);
-
-    await expectArgLinks(el, [
+    await checkLinksList(el, [
       "Home",
       "Register",
       "Login",
@@ -27,7 +25,7 @@ test.describe("navigation to register page", () => {
       "Confirm Email",
     ]);
 
-    await el.getByRole("link", { name: "Register" }).click();
+    await clickByTxt(el, "register");
 
     await page.waitForURL("/auth/register");
   });
@@ -35,25 +33,17 @@ test.describe("navigation to register page", () => {
   test("with sidebar", async ({ page }) => {
     await page.goto("/");
 
-    await lookTxt(page, "Script worked ✌🏽");
+    await checkTxt(page, "Script worked ✌🏽");
 
-    const toggle = page.getByTestId("header_toggle_sidebar");
+    await clickByID(page, "header_toggle_sidebar");
 
-    await toggle.waitFor({ state: "visible" });
+    const el = await getWithTByID(page, "sidebar");
 
-    await toggle.click();
-
-    const el = getByIDT(page, "sidebar");
-
-    await page.waitForTimeout(500);
-
-    await isShw(el);
-
-    await expectArgLinks(el, ["Home", "Applications", "Add application"]);
+    await checkLinksList(el, ["Home", "Applications", "Add application"]);
 
     await el.getByTestId("drop_menu_static_btn_toggle").click();
 
-    await expectArgLinks(el, [
+    await checkLinksList(el, [
       "Home",
       "Register",
       "Login",

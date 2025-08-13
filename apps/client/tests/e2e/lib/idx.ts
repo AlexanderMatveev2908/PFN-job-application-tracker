@@ -1,31 +1,56 @@
 import { expect, Locator, Page } from "@playwright/test";
 
-export const getByIDT = (page: Page, id: string) =>
+export const getByID = (page: Page, id: string) =>
   page.locator(`[data-testid='${id}']`);
 
-export const lookTxt = async (page: Page, txt: string) => {
+export const checkTxt = async (page: Page, txt: string) => {
   await page.waitForSelector(`text=${txt}`);
   await expect(page.locator(`text=${txt}`).first()).toBeVisible();
 };
 
-export const expectArgLinks = async (parent: Locator, arg: string[]) => {
+export const checkLinksList = async (parent: Locator, arg: string[]) => {
   for (const name of arg)
     await expect(parent.getByRole("link", { name })).toBeVisible();
 };
 
 export const isShw = async (el: Locator) => {
+  await el.waitFor({ state: "visible" });
   await expect(el).toBeVisible();
   await expect(el).toBeInViewport();
 };
 
-export const checkMsg = async (page: Page, x: string) => {
-  await expect(page.getByText(new RegExp(x, "i"))).toBeVisible();
+export const checkTxtReg = async (loc: Locator | Page, x: string) => {
+  const el = loc.getByText(new RegExp(x, "i"));
+  await el.waitFor({ state: "visible" });
+  await expect(el).toBeVisible();
+
+  return el;
 };
 
-export const checkMsgList = async (page: Page, msgs: string[]) => {
+export const checkTxtList = async (page: Page, msgs: string[]) => {
   for (const x of msgs) {
-    await checkMsg(page, x);
+    await checkTxtReg(page, x);
   }
+};
+
+export const clickByID = async (page: Page, id: string) => {
+  const el = page.getByTestId(id);
+  await el.waitFor({ state: "visible" });
+  await el.click();
+};
+
+export const clickByTxt = async (el: Locator, txt: string) => {
+  const elTxt = await checkTxtReg(el, txt);
+  await elTxt.click();
+};
+
+export const getWithTByID = async (page: Page, id: string) => {
+  const el = getByID(page, id);
+  await page.waitForTimeout(500);
+  await el.waitFor({ state: "visible" });
+  await isShw(el);
+
+  return el;
 };
 
 export const checkOpcMsgs = async (page: Page, msgs: string[]) => {
