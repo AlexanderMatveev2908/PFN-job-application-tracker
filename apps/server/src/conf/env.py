@@ -44,10 +44,18 @@ class EnvVar(BaseSettings):
     # __ test only
     secret: str = Field(..., alias="SECRET")
 
-    # __ email provider
+    # __ email gmail provider
 
     my_email: str = Field(..., alias="MY_EMAIL")
     email_pwd: str = Field(..., alias="EMAIL_PWD")
+
+    # __ provider brevo
+
+    brevo_smpt_server: str = Field(..., alias="BREVO_SMPT_SERVER")
+    brevo_smpt_port: int = Field(..., alias="BREVO_SMPT_PORT")
+    brevo_smpt_user: str = Field(..., alias="BREVO_SMPT_USER")
+    brevo_smpt_pwd: str = Field(..., alias="BREVO_SMPT_PWD")
+    smpt_from: str = Field(..., alias="SMPT_FROM")
 
     # __ tests CI/CD
 
