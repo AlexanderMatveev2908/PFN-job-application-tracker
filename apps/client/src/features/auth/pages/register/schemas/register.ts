@@ -17,7 +17,7 @@ export const registerSchema = z
     email: z
       .email({ message: "Invalid email" })
       .min(1, "Email is required")
-      .max(100, "Max length exceed"),
+      .max(254, "Max length exceed"),
 
     password: z
       .string({ error: "Password required" })
