@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 import {
   checkTxtReg,
-  checkTxtList,
+  checkTxtRegList,
   checkTxtListOpc,
   checkTxt,
   getByID,
@@ -32,7 +32,7 @@ test.describe("form register", () => {
       "invalid email",
     ];
 
-    await checkTxtList(page, msgs);
+    await checkTxtRegList(page, msgs);
 
     await el.getByTestId("first_name").fill("John");
     await el.getByTestId("last_name").fill("Doe");
@@ -60,7 +60,7 @@ test.describe("form register", () => {
 
     await pwd.fill("abc");
 
-    await checkTxtList(page, msgs);
+    await checkTxtRegList(page, msgs);
 
     const confPwd = await el.getByTestId("confirm_password");
     await isShw(confPwd);
