@@ -47,7 +47,7 @@ const Header: FC = () => {
         <DropMenuAbsolute
           {...{
             isEnabled: isHydrated,
-            t_id: "header_toggle_drop",
+            t_id: "header__toggle_drop",
             el: {
               Svg: TbUserFilled,
             },
@@ -71,7 +71,7 @@ const Header: FC = () => {
 
         <button
           disabled={!isHydrated}
-          data-testid={"header_toggle_sidebar"}
+          data-testid={"header__toggle_sidebar"}
           key={sideState.isOpen + ""}
           onClick={() => dispatch(sideSlice.actions.toggleSide())}
           className="btn__app"

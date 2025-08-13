@@ -7,6 +7,6 @@ export const closeToast = async (page: Page) => {
 
     await el.waitFor({ state: "visible" });
 
-    await el.getByTestId("toast_close_btn").click();
+    await el.getByTestId("toast__close_btn").click();
   } catch {}
 };

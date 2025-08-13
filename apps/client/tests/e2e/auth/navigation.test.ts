@@ -18,9 +18,9 @@ test.describe("navigation to register page", () => {
   });
 
   test("with dropdown", async ({ page }) => {
-    await clickByID(page, "header_toggle_drop");
+    await clickByID(page, "header__toggle_drop");
 
-    const el = await getByID(page, "drop_menu_absolute_content");
+    const el = await getByID(page, "drop_menu_absolute__content");
 
     await checkLinksList(el, [
       "Home",
@@ -36,13 +36,13 @@ test.describe("navigation to register page", () => {
   });
 
   test("with sidebar", async ({ page }) => {
-    await clickByID(page, "header_toggle_sidebar");
+    await clickByID(page, "header__toggle_sidebar");
 
     const el = await getByID(page, "sidebar");
 
     await checkLinksList(el, ["Home", "Applications", "Add application"]);
 
-    await clickByID(el, "drop_menu_static_btn_toggle");
+    await clickByID(el, "drop_menu_static__btn_toggle");
 
     await checkLinksList(el, [
       "Home",

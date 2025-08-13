@@ -64,7 +64,7 @@ const Toast: FC = () => {
                 handleClick: clickClose,
                 act: "ERR",
                 Svg: X,
-                t_id: "toast_close_btn",
+                t_id: "toast__close_btn",
               }}
             />
           </div>

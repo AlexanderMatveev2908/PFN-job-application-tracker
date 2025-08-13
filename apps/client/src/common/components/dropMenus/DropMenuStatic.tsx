@@ -41,7 +41,7 @@ const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
       } w-full flex flex-col translate-0 duration-300`}
     >
       <div
-        data-testid={"drop_menu_static_btn_toggle"}
+        data-testid={"drop_menu_static__btn_toggle"}
         role="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={`${

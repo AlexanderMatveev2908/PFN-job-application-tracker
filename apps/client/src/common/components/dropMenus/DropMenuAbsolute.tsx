@@ -52,7 +52,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
       </button>
 
       <div
-        data-testid={"drop_menu_absolute_content"}
+        data-testid={"drop_menu_absolute__content"}
         className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
           ${$customCSS}
