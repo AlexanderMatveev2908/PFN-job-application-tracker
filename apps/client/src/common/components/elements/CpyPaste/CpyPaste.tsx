@@ -15,9 +15,9 @@ import { reducer } from "./atc/reducer";
 import { initState } from "./atc/initState";
 import { clearTmr } from "@/core/lib/etc";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import { PortalConfT, TestIDT } from "@/common/types/ui";
+import { PortalConfT, TestIdT } from "@/common/types/ui";
 
-type PropsType = { txt: string; portalConf?: PortalConfT } & TestIDT;
+type PropsType = { txt: string; portalConf?: PortalConfT } & TestIdT;
 
 const CpyPaste: FC<PropsType> = ({ txt, portalConf, t_id }) => {
   const [state, dispatch] = useReducer(reducer, initState);

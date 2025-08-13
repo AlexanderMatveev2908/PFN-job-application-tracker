@@ -30,6 +30,7 @@ const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
           {...{
             type: "submit",
             label: "Submit",
+            t_id: "register__footer_form__submit_btn",
           }}
         />
       </div>

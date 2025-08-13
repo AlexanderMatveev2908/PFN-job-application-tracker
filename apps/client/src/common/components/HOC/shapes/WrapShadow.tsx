@@ -7,7 +7,7 @@ import { CSSProperties, useMemo, type FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import Link from "next/link";
 import WrapBtnAPI from "../buttonWrappers/WrapBtnAPI";
-import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIdT } from "@/common/types/ui";
 
 type PropsType = {
   wrapper: "next_link" | "html_button";
@@ -18,7 +18,7 @@ type PropsType = {
   isLoading?: boolean;
   el: FieldTxtSvgT;
   act: AppEventT;
-} & TestIDT;
+} & TestIdT;
 
 const WrapShadow: FC<PropsType> = ({
   wrapper,

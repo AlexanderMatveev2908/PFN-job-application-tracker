@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldCheckT, TestIDT } from "@/common/types/ui";
+import { FormFieldCheckT, TestIdT } from "@/common/types/ui";
 import {
   FieldErrors,
   FieldValues,
@@ -19,7 +19,7 @@ type PropsType<T extends FieldValues> = {
   setValue: UseFormSetValue<T>;
   manualErr?: string;
   optTxt?: string;
-} & TestIDT;
+} & TestIdT;
 
 const FormFieldCheck = <T extends FieldValues>({
   el,

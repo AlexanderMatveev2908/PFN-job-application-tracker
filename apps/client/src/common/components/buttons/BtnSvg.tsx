@@ -3,13 +3,13 @@
 
 import { type FC } from "react";
 import WrapSvgTooltip, { WrapSvgTltPropsT } from "../HOC/shapes/WrapSvgTooltip";
-import { TestIDT } from "@/common/types/ui";
+import { TestIdT } from "@/common/types/ui";
 
 type PropsType = {
   handleClick: () => void;
   isEnabled?: boolean;
 } & WrapSvgTltPropsT &
-  TestIDT;
+  TestIdT;
 
 const BtnSvg: FC<PropsType> = ({
   handleClick,

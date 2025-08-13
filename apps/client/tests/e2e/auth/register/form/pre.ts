@@ -7,5 +7,5 @@ export const pre = async (page: Page) => {
 
   await closeToast(page);
 
-  await getByID(page, "register_form");
+  return await getByID(page, "register_form");
 };

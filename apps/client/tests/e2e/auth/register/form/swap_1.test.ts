@@ -6,9 +6,7 @@ import { checkTxtOpc } from "../../../lib/style";
 import { pre } from "./pre";
 
 test("swap 1", async ({ page }) => {
-  await pre(page);
-
-  const el = await getByID(page, "register_form");
+  const el = await pre(page);
 
   await clickByID(el, "btns_swapper_next_swap");
 

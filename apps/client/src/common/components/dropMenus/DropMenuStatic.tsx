@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT, TestIdT } from "@/common/types/ui";
 import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
@@ -11,7 +11,7 @@ import PairTxtSvg from "../elements/PairTxtSvg";
 type PropsType = {
   el: FieldTxtSvgT;
 } & ChildrenT &
-  TestIDT;
+  TestIdT;
 
 const DropMenuStatic: FC<PropsType> = ({ el, children }) => {
   const [isOpen, setIsOpen] = useState(false);

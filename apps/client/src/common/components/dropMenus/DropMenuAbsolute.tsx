@@ -3,7 +3,7 @@
 
 import { useRef, useState, type FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT, TestIdT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
@@ -13,7 +13,7 @@ type PropsType = {
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
 } & ChildrenT &
-  TestIDT;
+  TestIdT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,

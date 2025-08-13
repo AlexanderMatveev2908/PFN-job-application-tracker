@@ -63,6 +63,6 @@ export type RawFieldPropsT<T extends FieldValues> = {
 
 export type RawEventT = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-export type TestIDT = {
+export type TestIdT = {
   t_id?: string;
 };

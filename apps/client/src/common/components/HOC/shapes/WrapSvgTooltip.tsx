@@ -2,7 +2,7 @@
 "use client";
 
 import { AppEventT } from "@/common/types/api";
-import { PortalConfT, TestIDT } from "@/common/types/ui";
+import { PortalConfT, TestIdT } from "@/common/types/ui";
 import { CSSProperties, useMemo, useState, type FC } from "react";
 import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
@@ -29,7 +29,7 @@ type PropsType = {
     handleClick: () => void;
   };
 } & WrapSvgTltPropsT &
-  TestIDT;
+  TestIdT;
 
 const WrapSvgTooltip: FC<PropsType> = ({
   Svg,

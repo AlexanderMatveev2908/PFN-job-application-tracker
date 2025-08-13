@@ -1,13 +1,10 @@
 import test from "@playwright/test";
-import { getByID } from "../../../lib/get";
 import { checkTxtList } from "../../../lib/check";
 import { checkTxtListOpc } from "../../../lib/style";
 import { pre } from "./pre";
 
 test("swap 0", async ({ page }) => {
-  await pre(page);
-
-  const el = await getByID(page, "register_form");
+  const el = await pre(page);
 
   await el.getByTestId("first_name").fill("<>!");
   await el.getByTestId("last_name").fill("...");
