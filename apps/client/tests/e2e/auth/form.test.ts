@@ -13,13 +13,11 @@ test.describe("form register", () => {
     await page.goto("/auth/register");
     await checkTxt(page, "Register");
 
-    const el = getByID(page, "register_form");
-    await el.waitFor({ state: "visible" });
-    await isShw(el);
+    await getByID(page, "register_form");
   });
 
   test("swap 0", async ({ page }) => {
-    const el = getByID(page, "register_form");
+    const el = await getByID(page, "register_form");
 
     await el.getByTestId("first_name").fill("<>!");
     await el.getByTestId("last_name").fill("...");
@@ -44,7 +42,7 @@ test.describe("form register", () => {
   });
 
   test("swap 1", async ({ page }) => {
-    const el = getByID(page, "register_form");
+    const el = await getByID(page, "register_form");
 
     await expect(page.getByTestId("btns_swapper_next_swap")).toBeVisible();
     await page.getByTestId("btns_swapper_next_swap").click();

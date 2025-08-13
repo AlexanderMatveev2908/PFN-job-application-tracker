@@ -3,8 +3,8 @@ import {
   checkLinksList,
   checkTxt,
   clickByID,
-  getWithTByID,
   clickByTxt,
+  getByID,
 } from "../lib/idx";
 
 test.describe("navigation to register page", () => {
@@ -17,7 +17,7 @@ test.describe("navigation to register page", () => {
   test("with dropdown", async ({ page }) => {
     await clickByID(page, "header_toggle_drop");
 
-    const el = await getWithTByID(page, "drop_menu_absolute_content");
+    const el = await getByID(page, "drop_menu_absolute_content");
 
     await checkLinksList(el, [
       "Home",
@@ -35,7 +35,7 @@ test.describe("navigation to register page", () => {
   test("with sidebar", async ({ page }) => {
     await clickByID(page, "header_toggle_sidebar");
 
-    const el = await getWithTByID(page, "sidebar");
+    const el = await getByID(page, "sidebar");
 
     await checkLinksList(el, ["Home", "Applications", "Add application"]);
 
