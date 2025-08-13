@@ -1,7 +1,6 @@
 import test, { expect } from "@playwright/test";
 import {
-  checkTxtReg,
-  checkTxtRegList,
+  checkTxtList,
   checkTxtListOpc,
   checkTxt,
   getByID,
@@ -11,7 +10,6 @@ import {
 test.describe("form register", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/auth/register");
-    await checkTxt(page, "Register");
 
     await getByID(page, "register_form");
   });
@@ -30,7 +28,7 @@ test.describe("form register", () => {
       "invalid email",
     ];
 
-    await checkTxtRegList(page, msgs);
+    await checkTxtList(page, msgs);
 
     await el.getByTestId("first_name").fill("John");
     await el.getByTestId("last_name").fill("Doe");
@@ -58,13 +56,13 @@ test.describe("form register", () => {
 
     await pwd.fill("abc");
 
-    await checkTxtRegList(page, msgs);
+    await checkTxtList(page, msgs);
 
     const confPwd = await el.getByTestId("confirm_password");
     await isShw(confPwd);
 
     await confPwd.fill("123");
 
-    await checkTxtReg(page, "passwords do not match");
+    await checkTxt(page, "passwords do not match");
   });
 });

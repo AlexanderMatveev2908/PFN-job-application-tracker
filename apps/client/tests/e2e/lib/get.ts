@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { isShw } from "./check";
 
 export const getByID = async (page: Page | Locator, id: string) => {
@@ -6,6 +6,8 @@ export const getByID = async (page: Page | Locator, id: string) => {
 
   await el.waitFor({ state: "visible" });
   await isShw(el);
+
+  await expect(el).toHaveCSS("opacity", "1", { timeout: 15000 });
 
   return el;
 };

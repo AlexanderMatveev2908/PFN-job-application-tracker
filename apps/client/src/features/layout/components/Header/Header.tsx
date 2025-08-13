@@ -17,10 +17,13 @@ import HeaderLink from "./components/HeaderLink";
 import { calcIsCurrPath } from "@/core/lib/etc";
 import { usePathname } from "next/navigation";
 import { headerHight } from "@/core/constants/style";
+import { useHydration } from "@/core/hooks/ui/useHydration";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
   const dropRef = useRef(null);
+
+  const { isHydrated } = useHydration();
 
   const path = usePathname();
   const dispatch = useDispatch();
@@ -43,6 +46,7 @@ const Header: FC = () => {
       <div ref={dropRef} className="w-fit flex items-center gap-14">
         <DropMenuAbsolute
           {...{
+            isEnabled: isHydrated,
             t_id: "header_toggle_drop",
             el: {
               Svg: TbUserFilled,
@@ -66,6 +70,7 @@ const Header: FC = () => {
         </DropMenuAbsolute>
 
         <button
+          disabled={!isHydrated}
           data-testid={"header_toggle_sidebar"}
           key={sideState.isOpen + ""}
           onClick={() => dispatch(sideSlice.actions.toggleSide())}

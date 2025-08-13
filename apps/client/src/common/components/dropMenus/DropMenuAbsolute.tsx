@@ -9,6 +9,7 @@ import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
 type PropsType = {
   el: FieldTxtSvgT;
+  isEnabled?: boolean;
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
 } & ChildrenT &
@@ -17,6 +18,7 @@ type PropsType = {
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
   $SvgCls,
+  isEnabled = true,
   children,
   $customCSS,
   t_id,
@@ -32,13 +34,14 @@ const DropMenuAbsolute: FC<PropsType> = ({
   return (
     <div ref={dropRef} className="w-full relative">
       <button
+        disabled={!isEnabled}
         data-testid={t_id}
         onClick={() => setIsOpen((prev) => !prev)}
         className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
-            : "text-neutral-300 hover:text-neutral-950"
-        } hover:bg-neutral-300`}
+            : "text-neutral-300 enabled:hover:text-neutral-950"
+        } enabled:hover:bg-neutral-300`}
         style={
           {
             "--scale__up": 1.2,
