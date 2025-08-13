@@ -1,10 +1,12 @@
 import re
 
-import regex
-
-
-REG_TXT = regex.compile(r"^[\p{L}\d\s\-\'\",;!?]*$", flags=regex.UNICODE)
-
+REG_NAME = re.compile(r"^[\p{L}\s`']*$")
+REG_PWD = re.compile(
+    rf"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])\S{8,}$"  # noqa: E231
+)
+REG_TXT = re.compile(
+    r"^[\p{L}\d\s\-\'\",;!?]*$",
+)
 REG_INT = re.compile(r"^\d+$")
 REG_FLOAT = re.compile(r"(^\d+(\.\d{1,2})?$)|(^\.\d{1,2}$)")
 REG_ID = re.compile(
