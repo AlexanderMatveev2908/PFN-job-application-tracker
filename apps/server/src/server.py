@@ -34,6 +34,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(lifespan=lifespan)
 
+
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
 app.add_middleware(FormDataParser)
