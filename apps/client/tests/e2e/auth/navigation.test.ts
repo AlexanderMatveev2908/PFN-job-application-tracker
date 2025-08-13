@@ -7,9 +7,15 @@ test.describe("navigation to register page", () => {
 
     await lookTxt(page, "Script worked ✌🏽");
 
-    await page.getByTestId("header_toggle_drop").click();
+    const drop = page.getByTestId("header_toggle_drop");
+
+    await drop.waitFor({ state: "visible" });
+
+    await drop.click();
 
     const el = getByIDT(page, "drop_menu_absolute_content");
+
+    await page.waitForTimeout(500);
 
     await isShw(el);
 
@@ -31,9 +37,15 @@ test.describe("navigation to register page", () => {
 
     await lookTxt(page, "Script worked ✌🏽");
 
-    await page.getByTestId("header_toggle_sidebar").click();
+    const toggle = page.getByTestId("header_toggle_sidebar");
+
+    await toggle.waitFor({ state: "visible" });
+
+    await toggle.click();
 
     const el = getByIDT(page, "sidebar");
+
+    await page.waitForTimeout(500);
 
     await isShw(el);
 

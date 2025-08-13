@@ -50,6 +50,7 @@ test.describe("form register", () => {
 
     const pwd = el.getByTestId("password");
 
+    await expect(pwd).toBeVisible();
     await expect(pwd).toBeFocused();
 
     const msgs = ["invalid password", "you must confirm password"];
