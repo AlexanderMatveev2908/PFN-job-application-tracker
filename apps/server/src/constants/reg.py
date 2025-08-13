@@ -4,7 +4,7 @@ import regex
 REG_NAME = regex.compile(r"^[\p{L}\s`']*$", flags=regex.UNICODE)
 
 REG_PWD = regex.compile(
-    rf"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])\S{8,}$",  # noqa: E231
+    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])\S{8,}$",  # noqa: E231
     flags=regex.UNICODE,
 )
 
