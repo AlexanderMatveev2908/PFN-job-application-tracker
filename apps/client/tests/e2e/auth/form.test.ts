@@ -6,10 +6,13 @@ import {
   getByID,
   isShw,
 } from "../lib/idx";
+import { closeToast } from "../lib/sideActions";
 
 test.describe("form register", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/auth/register");
+
+    await closeToast(page);
 
     await getByID(page, "register_form");
   });

@@ -5,6 +5,8 @@ export const closeToast = async (page: Page) => {
   try {
     const el = await getByID(page, "toast");
 
-    (await el.getByTestId("toast_close_btn")).click();
+    await el.waitFor({ state: "visible" });
+
+    await el.getByTestId("toast_close_btn").click();
   } catch {}
 };

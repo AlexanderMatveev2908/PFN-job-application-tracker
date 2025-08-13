@@ -6,10 +6,13 @@ import {
   clickByTxt,
   getByID,
 } from "../lib/idx";
+import { closeToast } from "../lib/sideActions";
 
 test.describe("navigation to register page", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
+
+    await closeToast(page);
 
     await checkTxt(page, "Script worked ✌🏽");
   });
