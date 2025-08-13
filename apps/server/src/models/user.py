@@ -1,19 +1,7 @@
-from typing import TYPE_CHECKING, List
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import (
-    declarative_base,
-    Mapped,
-    mapped_column,
-    relationship,
-)
+from sqlalchemy import Boolean, String
+from sqlalchemy.orm import Mapped, mapped_column, validates
+from src.decorators.err import ErrAPI
 from src.models.root import RootTable
-from .job import Job
-
-Base = declarative_base()
-
-if TYPE_CHECKING:
-    # from .company import Company
-    from .car import Car
 
 
 class User(RootTable):
@@ -22,12 +10,17 @@ class User(RootTable):
     first_name: Mapped[str] = mapped_column(String(50), nullable=False)
     last_name: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str] = mapped_column(
-        String(50), nullable=False, unique=True, index=True
+        String(254), nullable=False, unique=True, index=True
     )
-    age: Mapped[int] = mapped_column(Integer, nullable=False)
-
-    jobs: Mapped[List["Job"]] = relationship(
-        back_populates="user",
+    password: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
     )
+    terms: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
-    cars: Mapped[List["Car"]] = relationship(back_populates="user")
+    @validates("terms")
+    def check_terms(self, k: str, v: bool) -> bool:
+        if v is not True:
+            raise ErrAPI(msg="User must accepts terms", status=422)
+
+        return v
