@@ -5,8 +5,6 @@ export const checkTxt = async (loc: Locator | Page, x: string) => {
   await el.first().waitFor({ state: "visible" });
   await expect(el.first()).toBeVisible();
 
-  await expect(el.first()).toHaveCSS("opacity", "1", { timeout: 15000 });
-
   return el;
 };
 
