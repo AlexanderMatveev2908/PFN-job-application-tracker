@@ -12,9 +12,10 @@ import {
 type PropsType = {
   swapState: SwapStateT;
   startSwap: (v: PayloadStartSwapT) => void;
+  isLoading: boolean;
 };
 
-const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
+const FooterForm: FC<PropsType> = ({ startSwap, swapState, isLoading }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-8 p-5">
       <BtnsSwapper
@@ -31,6 +32,7 @@ const FooterForm: FC<PropsType> = ({ startSwap, swapState }) => {
             type: "submit",
             label: "Submit",
             t_id: "register__footer_form__submit_btn",
+            isLoading,
           }}
         />
       </div>

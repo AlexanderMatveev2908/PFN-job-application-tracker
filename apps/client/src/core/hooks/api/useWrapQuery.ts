@@ -45,14 +45,13 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
       if (
         showToast &&
         !((data as UnwrappedResApiT<{ blob: Blob }>)?.blob instanceof Blob)
-      ) {
+      )
         dispatch(
           toastSlice.actions.open({
             msg: isStr(data?.msg) ? data!.msg! : "Things went good ✅",
             type: "OK",
           })
         );
-      }
     } else if (isError) {
       handleErr({ err: error, hideErr, throwErr });
     }

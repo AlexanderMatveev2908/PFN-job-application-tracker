@@ -15,6 +15,8 @@ import {
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
+import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
+import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -33,6 +35,9 @@ const Register: FC = ({}) => {
   });
   const { setFocus, handleSubmit } = formCtx;
 
+  const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
+  const { wrapMutation } = useWrapMutation();
+
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
 
   const { startSwap, swapState } = useSwap({
@@ -41,8 +46,12 @@ const Register: FC = ({}) => {
   });
 
   const handleSave = handleSubmit(
-    (data) => {
-      __cg(data);
+    async (data) => {
+      const res = await wrapMutation({
+        cbAPI: () => mutate(data),
+      });
+
+      __cg("res api", res);
     },
     (errs) => {
       __cg("errors", errs);
@@ -92,6 +101,7 @@ const Register: FC = ({}) => {
               {...{
                 swapState,
                 startSwap,
+                isLoading,
               }}
             />
 
