@@ -35,6 +35,11 @@ jobs:
       NEXT_PUBLIC_BACK_URL_TEST: ${{secrets.NEXT_PUBLIC_BACK_URL_TEST}}
       NEXT_PUBLIC_FRONT_URL_TEST: ${{secrets.NEXT_PUBLIC_FRONT_URL_TEST}}
       FRONT_URL_TEST: ${{secrets.FRONT_URL_TEST}}
+      BREVO_SMPT_SERVER: ${{secrets.BREVO_SMPT_SERVER}}
+      BREVO_SMPT_PORT: ${{secrets.BREVO_SMPT_PORT}}
+      BREVO_SMPT_USER: ${{secrets.BREVO_SMPT_USER}}
+      BREVO_SMPT_PWD: ${{secrets.BREVO_SMPT_PWD}}
+      SMPT_FROM: ${{secrets.SMPT_FROM}}
 
     steps:
       - name: 📂 clone code
