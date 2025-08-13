@@ -8,11 +8,13 @@ import {
 } from "../lib/idx";
 
 test.describe("navigation to register page", () => {
-  test("with dropdown", async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto("/");
 
     await checkTxt(page, "Script worked ✌🏽");
+  });
 
+  test("with dropdown", async ({ page }) => {
     await clickByID(page, "header_toggle_drop");
 
     const el = await getWithTByID(page, "drop_menu_absolute_content");
@@ -31,10 +33,6 @@ test.describe("navigation to register page", () => {
   });
 
   test("with sidebar", async ({ page }) => {
-    await page.goto("/");
-
-    await checkTxt(page, "Script worked ✌🏽");
-
     await clickByID(page, "header_toggle_sidebar");
 
     const el = await getWithTByID(page, "sidebar");

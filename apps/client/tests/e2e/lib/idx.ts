@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 
-export const getByID = (page: Page, id: string) =>
+export const getByID = (page: Page | Locator, id: string) =>
   page.locator(`[data-testid='${id}']`);
 
 export const checkTxt = async (page: Page, txt: string) => {
@@ -46,34 +46,36 @@ export const clickByTxt = async (el: Locator, txt: string) => {
 
 export const getWithTByID = async (page: Page, id: string) => {
   const el = getByID(page, id);
-  await page.waitForTimeout(500);
   await el.waitFor({ state: "visible" });
   await isShw(el);
 
   return el;
 };
 
-export const checkOpcMsgs = async (page: Page, msgs: string[]) => {
+export const checkTxtOpc = async (loc: Page | Locator, txt: string) => {
+  const txtEl = loc.getByText(new RegExp(txt, "i"));
+
+  return await txtEl.evaluate((el) => {
+    const own = parseFloat(getComputedStyle(el).opacity);
+    if (!own) return true;
+
+    let curr = el.parentElement;
+
+    while (curr) {
+      const s = getComputedStyle(curr);
+
+      if (!parseFloat(s.opacity)) return true;
+
+      curr = curr.parentElement;
+    }
+
+    return false;
+  });
+};
+
+export const checkTxtListOpc = async (page: Page, msgs: string[]) => {
   for (const x of msgs) {
-    const txt = page.getByText(new RegExp(x, "i"));
-
-    const hidOpc = await txt.evaluate((el) => {
-      const own = parseFloat(getComputedStyle(el).opacity);
-      if (!own) return true;
-
-      let curr = el.parentElement;
-
-      while (curr) {
-        const s = getComputedStyle(curr);
-
-        if (!parseFloat(s.opacity)) return true;
-
-        curr = curr.parentElement;
-      }
-
-      return false;
-    });
-
-    expect(hidOpc).toBe(true);
+    const res = await checkTxtOpc(page, x);
+    expect(res).toBe(true);
   }
 };

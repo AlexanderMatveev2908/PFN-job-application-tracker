@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test";
 import {
   checkTxtReg,
   checkTxtList,
-  checkOpcMsgs,
+  checkTxtListOpc,
   checkTxt,
   getByID,
   isShw,
@@ -40,7 +40,7 @@ test.describe("form register", () => {
 
     await page.waitForTimeout(500);
 
-    await checkOpcMsgs(page, msgs);
+    await checkTxtListOpc(page, msgs);
   });
 
   test("swap 1", async ({ page }) => {
