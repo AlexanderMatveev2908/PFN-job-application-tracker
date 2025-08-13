@@ -4,7 +4,7 @@ import {
   checkTxtListOpc,
   checkTxt,
   getByID,
-  isShw,
+  clickByID,
 } from "../lib/idx";
 import { closeToast } from "../lib/sideActions";
 
@@ -45,14 +45,11 @@ test.describe("form register", () => {
   test("swap 1", async ({ page }) => {
     const el = await getByID(page, "register_form");
 
-    await expect(page.getByTestId("btns_swapper_next_swap")).toBeVisible();
-    await page.getByTestId("btns_swapper_next_swap").click();
+    await clickByID(el, "btns_swapper_next_swap");
 
     await page.waitForTimeout(500);
 
-    const pwd = el.getByTestId("password");
-
-    await expect(pwd).toBeVisible();
+    const pwd = await getByID(el, "password");
     await expect(pwd).toBeFocused();
 
     const msgs = ["invalid password", "you must confirm password"];
@@ -61,8 +58,7 @@ test.describe("form register", () => {
 
     await checkTxtList(page, msgs);
 
-    const confPwd = await el.getByTestId("confirm_password");
-    await isShw(confPwd);
+    const confPwd = await getByID(el, "confirm_password");
 
     await confPwd.fill("123");
 

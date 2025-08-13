@@ -42,7 +42,7 @@ test.describe("navigation to register page", () => {
 
     await checkLinksList(el, ["Home", "Applications", "Add application"]);
 
-    await el.getByTestId("drop_menu_static_btn_toggle").click();
+    await clickByID(el, "drop_menu_static_btn_toggle");
 
     await checkLinksList(el, [
       "Home",
@@ -52,7 +52,7 @@ test.describe("navigation to register page", () => {
       "Confirm Email",
     ]);
 
-    await el.getByRole("link", { name: "Register" }).click();
+    await clickByTxt(el, "register");
 
     await page.waitForURL("/auth/register");
   });

@@ -1,8 +1,8 @@
 import { Locator, Page } from "@playwright/test";
 import { checkTxt } from "./check";
 
-export const clickByID = async (page: Page, id: string) => {
-  const el = page.getByTestId(id);
+export const clickByID = async (loc: Page | Locator, id: string) => {
+  const el = loc.getByTestId(id);
   await el.waitFor({ state: "visible" });
 
   await el.click();
