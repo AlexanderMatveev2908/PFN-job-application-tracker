@@ -1,12 +1,12 @@
 import test from "@playwright/test";
 import {
   checkLinksList,
-  checkTxt,
+  getByTxt,
   clickByID,
   clickByTxt,
   getByID,
-} from "../lib/idx";
-import { closeToast } from "../lib/sideActions";
+} from "../../lib/idx";
+import { closeToast } from "../../lib/sideActions";
 
 test.describe("navigation to register page", () => {
   test.beforeEach(async ({ page }) => {
@@ -14,7 +14,7 @@ test.describe("navigation to register page", () => {
 
     await closeToast(page);
 
-    await checkTxt(page, "Script worked ✌🏽");
+    await getByTxt(page, "Script worked ✌🏽");
   });
 
   test("with dropdown", async ({ page }) => {

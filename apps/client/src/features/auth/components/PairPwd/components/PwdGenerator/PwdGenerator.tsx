@@ -37,6 +37,7 @@ const PwdGenerator: FC<PropsType> = ({
       <div className="w-fit">
         <BtnSvg
           {...{
+            t_id: "pwd_generator__btn",
             Svg: SvgPasswordCursor,
             handleClick: () => setPwd(genPwd),
             confPortal: {
@@ -52,6 +53,7 @@ const PwdGenerator: FC<PropsType> = ({
         <div className="w-fit">
           <CpyPaste
             {...{
+              t_id: "pwd_generator__result",
               txt: pwd,
               portalConf: {
                 optDep: [swapMode],

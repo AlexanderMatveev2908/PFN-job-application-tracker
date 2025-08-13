@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-import { checkTxt } from "./check";
+import { getByTxt } from "./get";
 
 export const clickByID = async (loc: Page | Locator, id: string) => {
   const el = loc.getByTestId(id);
@@ -9,7 +9,7 @@ export const clickByID = async (loc: Page | Locator, id: string) => {
 };
 
 export const clickByTxt = async (loc: Locator, txt: string) => {
-  const el = await checkTxt(loc, txt);
+  const el = await getByTxt(loc, txt);
 
   await el.click();
 };
