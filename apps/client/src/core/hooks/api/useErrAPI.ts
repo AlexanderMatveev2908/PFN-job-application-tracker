@@ -23,13 +23,14 @@ export const useErrAPI = () => {
 
       const { data } = err;
 
-      if (!hideErr)
-        dispatch(
-          toastSlice.actions.open({
-            msg: isStr(data?.msg) ? data.msg! : "Ops something went wrong ❌",
-            type: "ERR",
-          })
-        );
+      if (hideErr) return;
+
+      dispatch(
+        toastSlice.actions.open({
+          msg: isStr(data?.msg) ? data.msg! : "Ops something went wrong ❌",
+          type: "ERR",
+        })
+      );
 
       if (throwErr) throw err;
     },

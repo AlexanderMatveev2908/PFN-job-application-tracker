@@ -7,7 +7,7 @@ from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
 from src.middleware.json_logger import LoggerJSON
 from src.middleware.wrap_api import WrapAPI
-from src.routes.index import api
+from src.routes.idx import api
 from .middleware.query_parser import ParserQuery
 from src.conf.env import env_var
 from fastapi.middleware.cors import CORSMiddleware
