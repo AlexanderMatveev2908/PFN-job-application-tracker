@@ -1,5 +1,5 @@
 from src.conf.aws.ses import ses_session
-from src.conf.email.template import gen_html_template
+from src.lib.emails.idx import gen_html_template
 
 
 async def send_email() -> None:

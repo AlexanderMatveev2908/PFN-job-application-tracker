@@ -32,6 +32,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     cent("💣 server shutting down")
 
 
+# wrap_async(send_email)
+
 app = FastAPI(lifespan=lifespan)
 
 
