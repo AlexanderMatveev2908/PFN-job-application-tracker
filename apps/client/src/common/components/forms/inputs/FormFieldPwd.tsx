@@ -45,6 +45,7 @@ const FormFieldPwd = <T extends FieldValues>({
       }}
     >
       <button
+        data-testid={`form_field_pwd__toggle_${el.name}`}
         onClick={handleSvgClick}
         type="button"
         className="btn__app absolute top-1/2 -translate-y-1/2 right-4"

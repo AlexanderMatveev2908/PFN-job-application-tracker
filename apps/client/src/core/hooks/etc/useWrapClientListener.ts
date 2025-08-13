@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { useHydration } from "../ui/useHydration";
 
-export const useWrapListener = () => {
+export const useWrapClientListener = () => {
   const { isHydrated } = useHydration();
 
-  const wrapListener = useCallback(
+  const wrapClientListener = useCallback(
     (cb: () => void) => {
       if (!isHydrated) return;
       cb();
@@ -13,6 +13,6 @@ export const useWrapListener = () => {
   );
 
   return {
-    wrapListener,
+    wrapClientListener,
   };
 };

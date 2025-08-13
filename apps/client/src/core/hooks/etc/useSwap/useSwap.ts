@@ -3,7 +3,7 @@ import { useCallback, useEffect, useReducer, useRef } from "react";
 import { reducer } from "./etc/reducer";
 import { initState, PayloadStartSwapT } from "./etc/initState";
 import { lockFocusCb } from "@/core/lib/style";
-import { useFocusSwap } from "../../ui/useFocusSwap";
+import { useFocusSwap } from "./subHooks/useFocusSwap";
 import { FieldValues, Path, UseFormSetFocus } from "react-hook-form";
 
 type Params<T extends FieldValues> = {

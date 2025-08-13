@@ -3,11 +3,13 @@
 
 import { type FC } from "react";
 import WrapSvgTooltip, { WrapSvgTltPropsT } from "../HOC/shapes/WrapSvgTooltip";
+import { TestIdT } from "@/common/types/ui";
 
 type PropsType = {
   handleClick: () => void;
   isEnabled?: boolean;
-} & WrapSvgTltPropsT;
+} & WrapSvgTltPropsT &
+  TestIdT;
 
 const BtnSvg: FC<PropsType> = ({
   handleClick,
@@ -15,6 +17,7 @@ const BtnSvg: FC<PropsType> = ({
   Svg,
   isEnabled = true,
   confPortal,
+  t_id,
 }) => {
   return (
     <WrapSvgTooltip
@@ -27,6 +30,7 @@ const BtnSvg: FC<PropsType> = ({
         confPortal,
         act,
         Svg,
+        t_id,
       }}
     />
   );

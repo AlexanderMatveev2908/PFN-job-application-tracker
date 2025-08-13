@@ -37,6 +37,7 @@ const RawField = <T extends FieldValues>({
 
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
+      "data-testid": el.name,
       placeholder: el.place,
       disabled: !!isDisabled,
       value: field.value ?? "",

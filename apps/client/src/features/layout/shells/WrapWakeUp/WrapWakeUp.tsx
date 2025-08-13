@@ -3,12 +3,11 @@
 
 import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
-import { useWrapListener } from "@/core/hooks/etc/useWrapListener";
+import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
 import { wakeUpSliceAPI } from "./slices/api";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";
-import { useHydration } from "@/core/hooks/ui/useHydration";
 import SpinBtn from "@/common/components/spinners/SpinBtn";
 import { isStr } from "@/core/lib/dataStructure";
 
@@ -23,8 +22,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
   const isAwakeRef = useRef<boolean>(false);
   const timerID = useRef<NodeJS.Timeout | null>(null);
 
-  const { wrapListener } = useWrapListener();
-  const { isHydrated } = useHydration();
+  const { wrapClientListener } = useWrapClientListener();
 
   const [triggerRTK, res] = wakeUpSliceAPI.useLazyWakeServerQuery();
   const { triggerRef } = useWrapQuery({
@@ -61,8 +59,8 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
       setIsPop(true);
     };
 
-    wrapListener(listener);
-  }, [wrapListener, isHydrated]);
+    wrapClientListener(listener);
+  }, [wrapClientListener]);
 
   useEffect(() => {
     const listener = async () => {
@@ -96,12 +94,12 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
       }
     };
 
-    wrapListener(listener);
+    wrapClientListener(listener);
 
     return () => {
       clearTmr(timerID);
     };
-  }, [triggerAPI, triggerRTK, canGo, wrapListener]);
+  }, [triggerAPI, triggerRTK, canGo, wrapClientListener]);
 
   return (
     <div className="w-full h-full pt-[25px] pb-[200px] px-[25px] sm:px-[50px]">

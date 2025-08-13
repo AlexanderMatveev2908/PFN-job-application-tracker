@@ -30,6 +30,7 @@ const Toast: FC = () => {
     <AnimatePresence>
       {toastState.isShow && (
         <motion.div
+          data-testid="toast"
           className="z__toast fixed top-5 right-5 pb-6 px-5 rounded-2xl bg-[#000] grid grid-cols-1 gap-3 overflow-hidden"
           css={css`
             width: 90%;
@@ -58,7 +59,14 @@ const Toast: FC = () => {
             >
               {toastState.toast.type?.toUpperCase()}
             </span>
-            <BtnSvg {...{ handleClick: clickClose, act: "ERR", Svg: X }} />
+            <BtnSvg
+              {...{
+                handleClick: clickClose,
+                act: "ERR",
+                Svg: X,
+                t_id: "toast__close_btn",
+              }}
+            />
           </div>
 
           <div className="w-full flex justify-center">
