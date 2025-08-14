@@ -1,10 +1,15 @@
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class EnvVar(BaseSettings):
     # __ I pass also client env cause I copy paste them in every environment
     #  __ so I do not lost pieces during road
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="forbid",
+    )
 
     app_name: str = Field(..., alias="APP_NAME")
 
@@ -66,10 +71,6 @@ class EnvVar(BaseSettings):
         None, alias="NEXT_PUBLIC_FRONT_URL_TEST"
     )
     front_url_test: str | None = Field(None, alias="FRONT_URL_TEST")
-
-    class Config:
-        env_file = ".env"
-        extra = "forbid"
 
 
 env_var = EnvVar()  # type: ignore
