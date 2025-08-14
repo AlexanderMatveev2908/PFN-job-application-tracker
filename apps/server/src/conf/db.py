@@ -1,17 +1,21 @@
-from typing import AsyncIterator
+from typing import AsyncIterator, cast
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     async_sessionmaker,
     AsyncSession,
 )
-from src.conf.env import env_var
+from src.conf.env import get_env
 from contextlib import asynccontextmanager
-
 from src.lib.logger import clg
 
+env_var = get_env()
+
 engine = create_async_engine(
-    env_var.db_url,
+    cast(str, env_var.db_url),
     echo=False,
+    pool_pre_ping=True,
+    poolclass=(NullPool if env_var.next_public_front_url_test else None),
 )
 
 db_session: async_sessionmaker[AsyncSession] = async_sessionmaker(

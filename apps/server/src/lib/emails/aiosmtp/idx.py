@@ -1,9 +1,11 @@
 from email.message import EmailMessage
 
 import aiosmtplib
-from src.conf.env import env_var
+from src.conf.env import get_env
 from src.lib.emails.idx import gen_html_template
 from src.lib.logger import clg
+
+env_var = get_env()
 
 
 async def send_email_gmail(user_mail: str) -> None:

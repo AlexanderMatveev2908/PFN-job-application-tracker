@@ -1,15 +1,13 @@
 from logging.config import fileConfig
-import os
 from sqlalchemy import pool, create_engine
 from alembic import context
-from dotenv import load_dotenv
 from src import models
+from src.conf.env import get_env
 
 target_metadata = models.Base.metadata
 
 
-load_dotenv()
-db_url = os.getenv("DB_URL")
+db_url = get_env().db_url
 if not db_url:
     raise RuntimeError("💣 missing db_url")
 

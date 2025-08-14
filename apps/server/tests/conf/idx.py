@@ -2,8 +2,11 @@ from typing import AsyncGenerator, cast
 from httpx import ASGITransport, AsyncClient
 import pytest_asyncio
 from src.__dev_only.db.delete import clean_tables
+from src.conf.env import get_env
 from src.server import app
-from src.conf.env import env_var
+
+
+env_var = get_env()
 
 
 async def client(clean: bool = True) -> AsyncGenerator[AsyncClient, None]:

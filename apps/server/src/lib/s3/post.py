@@ -1,11 +1,14 @@
-from typing import Any, Mapping, TypedDict
+from typing import Any, Mapping, TypedDict, cast
 import datetime
 from io import BytesIO
 from pathlib import Path
 from types_aiobotocore_s3 import S3Client
 
 from src.conf.aws.s3 import gen_s3_session
-from src.conf.env import env_var
+from src.conf.env import get_env
+
+
+env_var = get_env()
 
 
 class UploadRecord(TypedDict):
@@ -38,7 +41,7 @@ async def upload_single(file: UploadRecord, s3: S3Client) -> dict:
         assert file["path"] is not None
         await s3.upload_file(
             file["path"],
-            env_var.aws_bucket_name,
+            cast(str, env_var.aws_bucket_name),
             public_id,
             ExtraArgs=extra_args,
         )
@@ -47,7 +50,7 @@ async def upload_single(file: UploadRecord, s3: S3Client) -> dict:
         buff_stream = BytesIO(file["buffer"])
         await s3.upload_fileobj(
             buff_stream,
-            env_var.aws_bucket_name,
+            cast(str, env_var.aws_bucket_name),
             public_id,
             ExtraArgs=extra_args,
         )

@@ -1,5 +1,7 @@
 from typing import cast
-from src.conf.env import env_var
+from src.conf.env import get_env
+
+env_var = get_env()
 
 whitelist: list[str] = [
     cast(

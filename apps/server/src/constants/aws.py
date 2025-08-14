@@ -1,5 +1,5 @@
-from typing import TypedDict, Union
-from src.conf import env
+from typing import TypedDict, Union, cast
+from src.conf.env import get_env
 
 
 class AwsClientKwargs(TypedDict, total=False):
@@ -12,8 +12,10 @@ class AwsClientKwargs(TypedDict, total=False):
     verify: Union[bool, str]
 
 
+env_var = get_env()
+
 aws_keys: AwsClientKwargs = {
-    "aws_access_key_id": env.env_var.aws_access_key,
-    "aws_secret_access_key": env.env_var.aws_access_secret_key,
-    "region_name": env.env_var.aws_region_name,
+    "aws_access_key_id": cast(str, env_var.aws_access_key),
+    "aws_secret_access_key": cast(str, env_var.aws_access_secret_key),
+    "region_name": cast(str, env_var.aws_region_name),
 }

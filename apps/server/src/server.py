@@ -13,14 +13,14 @@ from src.middleware.json_logger import LoggerJSON
 from src.middleware.wrap_api import WrapAPI
 from src.routes.idx import api
 from .middleware.query_parser import ParserQuery
-from src.conf.env import env_var
+from src.conf.env import get_env
 from fastapi.middleware.cors import CORSMiddleware
 from .constants.api import whitelist
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    cent(f"🚀 server running on {env_var.port}...")
+    cent(f"🚀 server running on {get_env().port}...")
 
     # await get_all()
     # await gen_list_assets()

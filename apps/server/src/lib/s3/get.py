@@ -1,19 +1,25 @@
 from pathlib import Path
 from typing import Mapping, TypedDict, cast
 from src.conf.aws.s3 import gen_s3_session
+from src.conf.env import get_env
 from src.lib.logger import clg
-from src.conf.env import env_var
 from types_aiobotocore_s3.type_defs import (
     GetObjectOutputTypeDef,
     ObjectTypeDef,
 )
 
 
+env_var = get_env()
+
+
 async def gen_presigned_url(public_id: str) -> str:
     async with gen_s3_session() as s3:
         res = await s3.generate_presigned_url(
             ClientMethod="get_object",
-            Params={"Bucket": env_var.aws_bucket_name, "Key": public_id},
+            Params={
+                "Bucket": cast(str, env_var.aws_bucket_name),
+                "Key": public_id,
+            },
             ExpiresIn=60**2 * 24,
         )
 
@@ -47,7 +53,7 @@ async def save_asset(res: GetObjectOutputTypeDef, public_id: str) -> None:
 async def get_asset(public_id: str) -> None:
     async with gen_s3_session() as s3:
         res = await s3.get_object(
-            Bucket=env_var.aws_bucket_name, Key=public_id
+            Bucket=cast(str, env_var.aws_bucket_name), Key=public_id
         )
 
         clg(res, ttl="📷 asset")
@@ -58,8 +64,8 @@ async def get_asset(public_id: str) -> None:
 async def gen_list_assets() -> None:
     async with gen_s3_session() as s3:
         res = await s3.list_objects_v2(
-            Bucket=env_var.aws_bucket_name,
-            Prefix=str(Path(env_var.app_name)),
+            Bucket=cast(str, env_var.aws_bucket_name),
+            Prefix=str(Path(cast(str, env_var.app_name))),
         )
 
         contents = cast(list[ObjectTypeDef], res.get("Contents", []))
