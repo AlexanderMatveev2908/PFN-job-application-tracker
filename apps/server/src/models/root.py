@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Optional, cast
 import uuid
 from sqlalchemy import TIMESTAMP, MetaData, func, inspect
@@ -46,7 +46,7 @@ class RootTable(Base):
             val = getattr(self, col.key)
             if isinstance(val, uuid.UUID):
                 val = str(val)
-            elif isinstance(val, datetime):
+            elif isinstance(val, (datetime, date)):
                 val = val.isoformat()
             out[col.key] = val
 

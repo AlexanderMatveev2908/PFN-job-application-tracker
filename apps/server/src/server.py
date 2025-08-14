@@ -2,6 +2,9 @@ from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.decorators.err import ErrAPI
+
+# from src.__dev_only.db.delete import clean_tables
+# from src.lib.etc import wrap_loop
 from src.lib.logger import cent
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
@@ -33,7 +36,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     cent("💣 server shutting down")
 
 
-# wrap_async(send_email)
+# wrap_loop(send_email)
+# wrap_loop(clean_tables)
 
 app = FastAPI(lifespan=lifespan)
 

@@ -30,6 +30,17 @@ class RegisterForm(BaseModel):
         ...,
     )
 
+    @field_validator("password")
+    def validate_password(cls, v: str) -> str:
+
+        if not REG_PWD.match(v):
+            raise ErrAPI(
+                msg="Password must have at least 1 lowercase, 1 uppercase, "
+                "1 number, 1 symbol, and be 8+ chars long",
+                status=422,
+            )
+        return v
+
     @model_validator(mode="after")
     def check_passwords_match(self) -> Self:
         if self.password != self.confirm_password:
@@ -40,15 +51,6 @@ class RegisterForm(BaseModel):
     def check_terms(cls, v: bool) -> bool:
         if v is not True:
             raise ErrAPI(msg="user must accept terms", status=422)
-        return v
-
-    @field_validator("password")
-    def validate_password(cls, v: str) -> str:
-        if not REG_PWD.match(v):
-            raise ValueError(
-                "Password must have at least 1 lowercase, 1 uppercase, "
-                "1 number, 1 symbol, and be 8+ chars long"
-            )
         return v
 
 
