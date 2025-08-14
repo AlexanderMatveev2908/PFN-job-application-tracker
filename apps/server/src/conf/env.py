@@ -70,7 +70,6 @@ class EnvVar(BaseSettings):
     next_public_front_url_test: str | None = Field(
         None, alias="NEXT_PUBLIC_FRONT_URL_TEST"
     )
-    front_url_test: str | None = Field(None, alias="FRONT_URL_TEST")
 
 
 env_var = EnvVar()  # type: ignore

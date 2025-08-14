@@ -10,5 +10,9 @@ whitelist: list[str] = [
             else env_var.front_url
         ),
     ),
-    *([env_var.front_url_test] if env_var.front_url_test else []),
+    *(
+        [env_var.next_public_front_url_test]
+        if env_var.next_public_front_url_test
+        else []
+    ),
 ]
