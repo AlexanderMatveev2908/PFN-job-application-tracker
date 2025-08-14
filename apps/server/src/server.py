@@ -1,6 +1,7 @@
 from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from src.conf.redis import check_redis
 from src.decorators.err import ErrAPI
 
 from src.__dev_only.db.delete import clean_tables  # noqa: F401
@@ -25,6 +26,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # await get_all()
     # await gen_list_assets()
     # await get_cost()
+
+    await check_redis()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)
