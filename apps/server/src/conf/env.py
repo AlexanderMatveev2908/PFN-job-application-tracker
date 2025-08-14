@@ -71,6 +71,10 @@ class EnvVar(BaseSettings):
     brevo_smpt_pwd: str = Field(..., validation_alias="BREVO_SMPT_PWD")
     smpt_from: str = Field(..., validation_alias="SMPT_FROM")
 
+    # __ redis upstash
+
+    redis_url: str = Field(..., validation_alias="REDIS_URL")
+
     # __ tests CI/CD
     next_public_back_url_test: str | None = Field(
         None, validation_alias="NEXT_PUBLIC_BACK_URL_TEST"

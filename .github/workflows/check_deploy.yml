@@ -39,6 +39,7 @@ jobs:
       BREVO_SMPT_USER: ${{secrets.BREVO_SMPT_USER}}
       BREVO_SMPT_PWD: ${{secrets.BREVO_SMPT_PWD}}
       SMPT_FROM: ${{secrets.SMPT_FROM}}
+      REDIS_URL: ${{secrets.REDIS_URL}}
 
     steps:
       - name: 📂 clone code
@@ -133,6 +134,7 @@ jobs:
               "BREVO_SMPT_USER",
               "BREVO_SMPT_PWD",
               "SMPT_FROM",
+              "REDIS_URL",
             ];
 
             const envPath = path.join(process.cwd(), "apps/server/.env");
