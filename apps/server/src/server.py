@@ -15,7 +15,7 @@ from src.routes.idx import api
 from .middleware.query_parser import ParserQuery
 from src.conf.env import get_env
 from fastapi.middleware.cors import CORSMiddleware
-from .constants.api import whitelist
+from .constants.api import EXPOSE_HEADERS, whitelist
 
 
 @asynccontextmanager
@@ -46,13 +46,6 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(lifespan=lifespan)
 
 
-EXPOSE = [
-    "RateLimit-Limit",
-    "RateLimit-Remaining",
-    "RateLimit-Reset",
-    "Retry-After",
-]
-
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
 app.add_middleware(FormDataParser)
@@ -63,7 +56,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=EXPOSE,
+    expose_headers=EXPOSE_HEADERS,
 )
 app.add_middleware(CorsMDW, whitelist=whitelist)
 

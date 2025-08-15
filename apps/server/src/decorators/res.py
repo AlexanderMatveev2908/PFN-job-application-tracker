@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import inspect
 
+from src.constants.api import EXPOSE_HEADERS
 from src.lib.logger import clg
 
 
@@ -81,7 +82,34 @@ class ResAPI(JSONResponse):
 
         content = _serialize(payload, depth=0)
 
-        super().__init__(status_code=status, content=content, headers=headers)
+        merged_headers = dict(headers or {})
+        expose_vals = ", ".join(EXPOSE_HEADERS)
+
+        if "Access-Control-Expose-Headers" in merged_headers:
+            existing = set(
+                map(
+                    str.strip,
+                    merged_headers["Access-Control-Expose-Headers"].split(","),
+                )
+            )
+            merged_headers["Access-Control-Expose-Headers"] = ", ".join(
+                sorted(existing.union(EXPOSE_HEADERS))
+            )
+        else:
+            merged_headers["Access-Control-Expose-Headers"] = expose_vals
+
+        super().__init__(
+            status_code=status,
+            content={
+                **content,
+            },
+            # content={
+            #     **content,
+            #     **{k: v for k, v in (headers or {}).items()},
+            #     **merged_headers,
+            # },
+            headers=headers,
+        )
 
     @classmethod
     def ok_200(
