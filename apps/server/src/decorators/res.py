@@ -1,11 +1,7 @@
-from datetime import datetime, date
-from enum import Enum
 import traceback
-from typing import Any, Literal, Mapping, Optional, Sequence, TypedDict, cast
-import uuid
+from typing import Any, Literal, Mapping, Optional, TypedDict, cast
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from sqlalchemy import inspect
+from src.lib.data_structure import serialize
 from src.lib.logger import clg
 
 
@@ -33,69 +29,8 @@ class ResAPI(JSONResponse):
         clear_cookies: ClearCookieT = None,
     ) -> None:
         payload = data or {}
-        max_depth: int = 5
 
-        def _serialize(obj: Any, depth: int) -> Any:
-            if depth > max_depth:
-                return f"max_depth => {type(obj).__name__}"
-
-            if obj is None or isinstance(obj, (bool, int, float, str)):
-                return obj
-
-            try:
-                state = inspect(obj)
-                if hasattr(state, "mapper"):
-                    mapper = state.mapper
-                    d: dict[str, Any] = {}
-
-                    for col in mapper.columns:
-                        v = getattr(obj, col.key)
-
-                        if isinstance(v, uuid.UUID):
-                            v = str(v)
-                        elif isinstance(v, (datetime, date)):
-                            v = v.isoformat()
-
-                        d[col.key] = v
-                    return _serialize(d, depth + 1)
-            except Exception:
-                pass
-
-            if isinstance(obj, BaseModel):
-                return _serialize(obj.model_dump(), depth + 1)
-
-            if isinstance(obj, (bytes, bytearray)):
-                try:
-                    return "some long string 👻"
-                    # return obj.decode("utf-8")
-                except Exception:
-                    return list(obj)
-
-            if isinstance(obj, (datetime, date)):
-                return obj.isoformat()
-
-            if isinstance(obj, Enum):
-                return obj.value
-
-            if isinstance(obj, (set)):
-                return [_serialize(v, depth + 1) for v in obj]
-
-            if isinstance(obj, Mapping):
-                return {
-                    str(k): _serialize(v, depth + 1) for k, v in obj.items()
-                }
-
-            if isinstance(obj, Sequence) and not isinstance(
-                obj, (str, bytes, bytearray)
-            ):
-                return [_serialize(v, depth + 1) for v in obj]
-
-            if hasattr(obj, "__dict__"):
-                return _serialize(vars(obj), depth + 1)
-
-            return obj
-
-        content = _serialize(payload, depth=0)
+        content = serialize(payload, depth=0, max_depth=5)
 
         super().__init__(
             status_code=status,
