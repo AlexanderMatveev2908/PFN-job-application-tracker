@@ -1,7 +1,7 @@
 from datetime import datetime, date
 from enum import Enum
 import traceback
-from typing import Any, Literal, Mapping, Optional, Sequence, TypedDict
+from typing import Any, Literal, Mapping, Optional, Sequence, TypedDict, cast
 import uuid
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -20,7 +20,7 @@ class CookieD(TypedDict, total=False):
 
 
 CookieT = Optional[list[CookieD]]
-ClearCookieT = Optional[list[str]]
+ClearCookieT = Optional[list[str | dict[str, Any]]]
 
 
 class ResAPI(JSONResponse):
@@ -114,8 +114,11 @@ class ResAPI(JSONResponse):
                 self.set_cookie(**c)
 
         if clear_cookies:
-            for c in clear_cookies:
-                self.delete_cookie(c)
+            for cc in clear_cookies:
+                if isinstance(cc, str):
+                    self.delete_cookie(cast(str, cc))
+                else:
+                    self.delete_cookie(cast(dict, cc)["key"])
 
     @classmethod
     def ok_200(
