@@ -7,7 +7,7 @@ from typing import Callable
 
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.lib.logger import cent
+from src.lib.logger import log_err
 
 
 class WrapAPI(BaseHTTPMiddleware):
@@ -21,9 +21,7 @@ class WrapAPI(BaseHTTPMiddleware):
             return await call_next(request)
         except Exception as err:
 
-            cent("🥩 raw 🥩")
-
-            ResAPI._log(err)
+            log_err(err)
 
             data = None
 

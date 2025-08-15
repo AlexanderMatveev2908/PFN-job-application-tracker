@@ -85,7 +85,7 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
         except Exception:
             return list(obj)
 
-    if isinstance(obj, (datetime, datetime.date)):
+    if isinstance(obj, (datetime.datetime, datetime.date)):
         return obj.isoformat()
 
     if isinstance(obj, Enum):

@@ -1,8 +1,6 @@
-import traceback
 from typing import Any, Literal, Mapping, Optional, TypedDict, cast
 from fastapi.responses import JSONResponse
 from src.lib.data_structure import serialize
-from src.lib.logger import clg
 
 
 class CookieD(TypedDict, total=False):
@@ -90,8 +88,17 @@ class ResAPI(JSONResponse):
         return cls(status=400, data={"msg": msg, **kwargs})
 
     @classmethod
-    def err_401(cls, msg: str = "Unauthorized 🔒", **kwargs: Any) -> "ResAPI":
-        return cls(status=401, data={"msg": msg, **kwargs})
+    def err_401(
+        cls,
+        msg: str = "Unauthorized 🔒",
+        clear_cookies: ClearCookieT = None,
+        **kwargs: Any,
+    ) -> "ResAPI":
+        return cls(
+            status=401,
+            clear_cookies=clear_cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def err_403(cls, msg: str = "Forbidden 🚫", **kwargs: Any) -> "ResAPI":
@@ -119,9 +126,14 @@ class ResAPI(JSONResponse):
         cls,
         msg: str = "Our hamster-powered server took a break"
         " — try again later! 🐹",
+        clear_cookies: ClearCookieT = None,
         **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=429, data={"msg": msg, **kwargs})
+        return cls(
+            status=429,
+            clear_cookies=clear_cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def err_500(
@@ -137,24 +149,14 @@ class ResAPI(JSONResponse):
         status: int,
         msg: str,
         headers: Optional[Mapping[str, str]] = None,
+        cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
         **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=status, data={"msg": msg, **kwargs}, headers=headers)
-
-    @staticmethod
-    def _log(err: Exception) -> None:
-        frames = traceback.extract_tb(err.__traceback__)
-        src_frames = []
-
-        for f in frames:
-            if "src/" in f.filename:
-                src_frames.append(
-                    f"📂 {f.filename} => 🔢 {f.lineno}"
-                    f" | 🆎 {f.name} | ☢️ {f.line}"
-                )
-
-        clg(
-            *src_frames,
-            "\t",
-            ttl=f"💣 {type(err).__name__}",
+        return cls(
+            status=status,
+            cookies=cookies,
+            clear_cookies=clear_cookies,
+            headers=headers,
+            data={"msg": msg, **kwargs},
         )
