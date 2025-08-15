@@ -36,13 +36,21 @@ class RootTable(Base):
         TIMESTAMP(timezone=True), nullable=True
     )
 
-    def to_d(self, joins: bool = False, max_depth: int = 0) -> dict[str, Any]:
+    def to_d(
+        self,
+        joins: bool = False,
+        max_depth: int = 0,
+        exclude_keys: list[str] = [],
+    ) -> dict[str, Any]:
         state = cast(InstanceState[Any], inspect(self))
         mapper: Mapper[Any] = state.mapper
 
         out: dict[str, Any] = {}
 
         for col in mapper.columns:
+            if col.key in exclude_keys:
+                continue
+
             val = getattr(self, col.key)
             if isinstance(val, uuid.UUID):
                 val = str(val)
@@ -54,7 +62,7 @@ class RootTable(Base):
             for rel in mapper.relationships:
                 attr = state.attrs[rel.key]
 
-                if rel.key in state.unloaded:
+                if rel.key in state.unloaded or rel.key in exclude_keys:
                     continue
 
                 v = attr.value
@@ -62,9 +70,17 @@ class RootTable(Base):
                     out[rel.key] = None
                 elif rel.uselist:
                     out[rel.key] = [
-                        item.to_d(joins=True, max_depth=max_depth - 1)
+                        item.to_d(
+                            joins=True,
+                            max_depth=max_depth - 1,
+                            exclude_keys=exclude_keys,
+                        )
                         for item in v
                     ]
                 else:
-                    out[rel.key] = v.to_d(joins=True, max_depth=max_depth - 1)
+                    out[rel.key] = v.to_d(
+                        joins=True,
+                        max_depth=max_depth - 1,
+                        exclude_keys=exclude_keys,
+                    )
         return out
