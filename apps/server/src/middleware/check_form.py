@@ -31,7 +31,7 @@ def check_form_mdw(model: Type[FormT], data: dict[str, Any] | bytes) -> FormT:
         arg_errs = err.errors()
 
         raise ErrAPI(
-            msg=f'📌 {arg_errs[0]["loc"][0]} => 💣 {arg_errs[0]["msg"]}',
+            msg=f'{arg_errs[0]["loc"][0]} => {arg_errs[0]["msg"]}',
             status=422,
             list_errs=arg_errs,
         )

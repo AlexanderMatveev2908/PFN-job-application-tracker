@@ -1,7 +1,7 @@
 from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.conf.redis import get_all_redis  # noqa: F401
+from src.conf.redis import clean_redis, get_all_redis  # noqa: F401
 from src.decorators.err import ErrAPI
 from src.__dev_only.db.delete import clean_tables  # noqa: F401
 from src.lib.emails.aiosmtp.idx import send_email  # noqa: F401
@@ -15,7 +15,7 @@ from src.routes.idx import api
 from .middleware.query_parser import ParserQuery
 from src.conf.env import get_env
 from fastapi.middleware.cors import CORSMiddleware
-from .constants.api import whitelist
+from .constants.api import EXPOSE_HEADERS, whitelist
 
 
 @asynccontextmanager
@@ -27,12 +27,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # await get_cost()
     # await get_all_redis()
     # await clean_tables()
+    # await clean_redis()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)
 
     if not whitelist:
-        raise ErrAPI(msg="☢️ missing whitelist var", status=500)
+        raise ErrAPI(msg="missing whitelist var ☢️", status=500)
 
     yield
 
@@ -55,6 +56,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=EXPOSE_HEADERS,
 )
 app.add_middleware(CorsMDW, whitelist=whitelist)
 

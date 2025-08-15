@@ -18,3 +18,11 @@ whitelist: list[str] = [
         else []
     ),
 ]
+
+
+EXPOSE_HEADERS = [
+    "RateLimit-Limit",
+    "RateLimit-Remaining",
+    "RateLimit-Window",
+    "RateLimit-Reset",
+]

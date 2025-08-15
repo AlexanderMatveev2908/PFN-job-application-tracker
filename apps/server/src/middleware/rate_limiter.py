@@ -1,51 +1,86 @@
+import math
 import time
-from typing import Awaitable, Callable
 import uuid
-from fastapi import Request
-from src.conf.redis import redis_db
+from typing import Awaitable, Callable
+from fastapi import Request, Response
+from src.conf.redis import redis_session
+from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
 
 
+def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
+
+    merged = {**base}
+    expose_vals = ", ".join(EXPOSE_HEADERS)
+
+    if "Access-Control-Expose-Headers" in merged:
+        existing = set(
+            map(str.strip, merged["Access-Control-Expose-Headers"].split(","))
+        )
+        merged["Access-Control-Expose-Headers"] = ", ".join(
+            sorted(existing.union(EXPOSE_HEADERS))
+        )
+    else:
+        merged["Access-Control-Expose-Headers"] = expose_vals
+
+    return merged
+
+
 def rate_limit(
-    limit: int = 5, window_ms: float = 900000
-) -> Callable[[Request], Awaitable[None]]:
-    async def _dep(req: Request) -> None:
-        ip = (
-            (req.headers.get("x-forwarded-for", "")).split(",")[0]
-            or (getattr(req.client, "host", ""))
-        ).strip() or "unknown"
+    limit: int = 5, window_ms: int = 1000 * 60 * 15
+) -> Callable[[Request, Response], Awaitable[None]]:
+    async def _dep(req: Request, res: Response) -> None:
+        async with redis_session() as r:
+            ip = (
+                (req.headers.get("x-forwarded-for", "")).split(",")[0]
+                or getattr(req.client, "host", "")
+            ).strip() or "unknown"
 
-        now = int(time.time() * 1000)
+            now_ms = int(time.time() * 1000)
 
-        k = f"rl:{ip}:{req.url.path}"
-        v = f"{now}:{uuid.uuid4()}"
+            k = f"rl:{ip}:{req.url.path}"
+            v = f"{now_ms}:{uuid.uuid4()}"
 
-        await redis_db.execute_command(
-            "ZREMRANGEBYSCORE", k, 0, now - window_ms
-        )
-
-        await redis_db.execute_command("ZADD", k, now, v)
-
-        count = await redis_db.execute_command("ZCARD", k) or 0
-
-        await redis_db.execute_command(
-            "EXPIRE", k, int((window_ms / 1000) + 1)
-        )
-
-        opt = {
-            "X-RateLimit-Limit": str(limit),
-            "X-RateLimit-Remaining": str(max(0, limit - count)),
-            "X-RateLimit-Window": str(int(window_ms)),
-        }
-
-        req.state.rate_limit_headers = {**opt}
-
-        if (count or 0) > limit:
-            raise ErrAPI(
-                status=429,
-                msg="Our hamster-powered server took a break"
-                " — try again later! 🐹",
-                opt=opt,
+            await r.execute_command(
+                "ZREMRANGEBYSCORE", k, 0, now_ms - window_ms
             )
+
+            await r.execute_command("ZADD", k, now_ms, v)
+
+            count = await r.execute_command("ZCARD", k) or 0
+
+            await r.execute_command("EXPIRE", k, int((window_ms / 1000) + 1))
+
+            remaining = max(0, limit - count)
+
+            req.state.res_hdr = merge_exp_hdr(
+                {
+                    **getattr(req.state, "res_hdr", {}),
+                    "RateLimit-Limit": str(limit),
+                    "RateLimit-Remaining": str(remaining),
+                    "RateLimit-Window": str(window_ms),
+                }
+            )
+
+            if count > limit:
+                oldest_req = await r.execute_command(
+                    "ZRANGE", k, 0, 0, "WITHSCORES"
+                )
+
+                if oldest_req:
+                    oldest_ms = int(float(oldest_req[1]))
+                    reset_s = max(
+                        0, math.ceil((oldest_ms + window_ms - now_ms) / 1000)
+                    )
+                else:
+                    reset_s = int(window_ms / 1000)
+
+                req.state.res_hdr["RateLimit-Reset"] = str(reset_s)
+
+                raise ErrAPI(
+                    status=429,
+                    msg="Our hamster-powered server took a break"
+                    " — try again later! 🐹",
+                )
 
     return _dep

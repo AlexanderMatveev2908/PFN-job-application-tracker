@@ -11,4 +11,6 @@ async def register_ctrl(
 
     new_user = await register_user_svc(user_data)
 
-    return ResAPI.ok_200(new_user=new_user)
+    return ResAPI.ok_200(
+        new_user=new_user,
+    )
