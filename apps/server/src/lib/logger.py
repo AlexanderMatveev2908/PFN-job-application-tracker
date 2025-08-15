@@ -1,6 +1,7 @@
 import inspect
 from pathlib import Path
 from datetime import datetime
+import traceback
 from typing import Any, Optional
 
 
@@ -44,3 +45,24 @@ def clg(
     print(f"📌 => from {caller_file}")
 
     print("\t")
+
+
+def log_err(err: Exception) -> None:
+    cent("🥩 raw 🥩")
+    print(err)
+
+    frames = traceback.extract_tb(err.__traceback__)
+    src_frames = []
+
+    for f in frames:
+        if "src/" in f.filename:
+            src_frames.append(
+                f"📂 {f.filename} => 🔢 {f.lineno}"
+                f" | 🆎 {f.name} | ☢️ {f.line}"
+            )
+
+    clg(
+        *src_frames,
+        "\t",
+        ttl=f"💣 {type(err).__name__}",
+    )
