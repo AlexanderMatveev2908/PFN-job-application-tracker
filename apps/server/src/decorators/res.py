@@ -1,14 +1,25 @@
 from datetime import datetime, date
 from enum import Enum
 import traceback
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any, Literal, Mapping, Optional, Sequence, TypedDict
 import uuid
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import inspect
 from src.lib.logger import clg
 
-CookieT = Optional[list[dict[str, Any]]]
+
+class CookieD(TypedDict, total=False):
+    key: str
+    value: str
+    httponly: bool
+    secure: bool
+    samesite: Literal["lax", "strict", "none"]
+    max_age: int
+    path: str
+
+
+CookieT = Optional[list[CookieD]]
 
 
 class ResAPI(JSONResponse):
@@ -21,10 +32,6 @@ class ResAPI(JSONResponse):
     ) -> None:
         payload = data or {}
         max_depth: int = 5
-
-        if cookies:
-            for c in cookies:
-                self.set_cookie(**c)
 
         def _serialize(obj: Any, depth: int) -> Any:
             if depth > max_depth:
@@ -99,6 +106,10 @@ class ResAPI(JSONResponse):
             # },
             headers=headers,
         )
+
+        if cookies:
+            for c in cookies:
+                self.set_cookie(**c)
 
     @classmethod
     def ok_200(

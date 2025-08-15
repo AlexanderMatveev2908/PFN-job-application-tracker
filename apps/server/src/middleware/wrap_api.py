@@ -20,6 +20,7 @@ class WrapAPI(BaseHTTPMiddleware):
             return await call_next(request)
         except Exception as err:
 
+            print(str(err))
             ResAPI._log(err)
 
             data = None

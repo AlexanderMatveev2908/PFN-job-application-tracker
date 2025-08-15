@@ -1,13 +1,14 @@
-from fastapi import Depends, Request, Response
+from fastapi import Depends, Request
 
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.register_user import register_user_svc
+from src.lib.tokens.jwe import gen_jwe
 from src.lib.tokens.jwt import gen_jwt
 
 
 async def register_ctrl(
-    _: Request, res: Response, user_data: RegisterFormT = Depends(register_mdw)
+    _: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
     new_user = (await register_user_svc(user_data)).to_d(
@@ -15,7 +16,7 @@ async def register_ctrl(
     )
 
     access_token = gen_jwt(id=str(new_user["id"]))
-    refresh_token = gen_jwt(id=str(new_user["id"]))
+    refresh_token = await gen_jwe(id=str(new_user["id"]))
 
     return ResAPI.ok_200(
         new_user=new_user,
