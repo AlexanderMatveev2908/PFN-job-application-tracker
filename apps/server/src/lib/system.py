@@ -9,6 +9,15 @@ script_dir = script_file.parent
 app_dir = Path.cwd()
 
 
+def read_f(rel: str) -> str:
+    joined = app_dir / rel
+    print(joined)
+
+    with open(joined, "r", encoding="utf-8") as f:
+        content = f.read()
+        return content
+
+
 def write_f(relative: str, content: str) -> None:
     joined = app_dir.joinpath(relative)
     joined.parent.mkdir(parents=True, exist_ok=True)

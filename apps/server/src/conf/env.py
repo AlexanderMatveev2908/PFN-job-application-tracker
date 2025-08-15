@@ -72,8 +72,10 @@ class EnvVar(BaseSettings):
     smpt_from: str = Field(..., validation_alias="SMPT_FROM")
 
     # __ redis upstash
-
     redis_url: str = Field(..., validation_alias="REDIS_URL")
+
+    # __ supabase ca
+    supabase_ca: str = Field(..., validation_alias="SUPABASE_CA")
 
     # __ tests CI/CD
     next_public_back_url_test: str | None = Field(
