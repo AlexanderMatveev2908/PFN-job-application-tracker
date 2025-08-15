@@ -37,6 +37,7 @@ So I decided to build a proper application to track them:
 - **Amazon SES** — Transactional & notification email service
 - **Aiosmtplib** — Async SMTP client
 - **Amazon S3** — Cloud object storage for files and assets
+- **Redis** — In-memory key-value store for caching, rate limiting, and temporary data
 
 ---
 
@@ -55,6 +56,8 @@ So I decided to build a proper application to track them:
 - **Docker** — Ensures consistent environments for development and production across both client and server
 - **GitHub Actions** — Automated pipelines for testing, building, and deploying both apps
 - **Fly.io** — Hosting platform (client and server deployed as separate services)
+- **Supabase** — PostgreSQL hosting
+- **Upstash** — Hosting platform for Redis
 - **Zsh** — Custom shell scripts for scaffolding and developer productivity
 
 ## 📦 Setup
