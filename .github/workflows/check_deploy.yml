@@ -42,6 +42,8 @@ jobs:
       REDIS_URL: ${{secrets.REDIS_URL}}
       SUPABASE_CA: ${{secrets.SUPABASE_CA}}
       JWT_SECRET: ${{secrets.JWT_SECRET}}
+      JWE_PUBLIC: ${{secrets.JWE_PUBLIC}}
+      JWE_PRIVATE: ${{secrets.JWE_PRIVATE}}
 
     steps:
       - name: 📂 clone code
@@ -139,6 +141,8 @@ jobs:
               "REDIS_URL",
               "SUPABASE_CA",
               "JWT_SECRET",
+              "JWE_PUBLIC",
+              "JWE_PRIVATE",
             ];
 
             const envPath = path.join(process.cwd(), "apps/server/.env");
