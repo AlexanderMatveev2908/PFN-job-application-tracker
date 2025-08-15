@@ -20,6 +20,7 @@ class CookieD(TypedDict, total=False):
 
 
 CookieT = Optional[list[CookieD]]
+ClearCookieT = Optional[list[str]]
 
 
 class ResAPI(JSONResponse):
@@ -29,6 +30,7 @@ class ResAPI(JSONResponse):
         data: Optional[dict[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
         cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
     ) -> None:
         payload = data or {}
         max_depth: int = 5
@@ -111,16 +113,22 @@ class ResAPI(JSONResponse):
             for c in cookies:
                 self.set_cookie(**c)
 
+        if clear_cookies:
+            for c in clear_cookies:
+                self.delete_cookie(c)
+
     @classmethod
     def ok_200(
         cls,
         msg: str = "GET operation successful ✅",
         cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
         **kwargs: Any,
     ) -> "ResAPI":
         return cls(
             status=200,
             cookies=cookies,
+            clear_cookies=clear_cookies,
             data={"msg": msg, **kwargs},
         )
 
@@ -129,9 +137,15 @@ class ResAPI(JSONResponse):
         cls,
         msg: str = "POST operation successful ✅",
         cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
         **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=201, cookies=cookies, data={"msg": msg, **kwargs})
+        return cls(
+            status=201,
+            cookies=cookies,
+            clear_cookies=clear_cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def err_400(cls, msg: str = "Bad request 😡", **kwargs: Any) -> "ResAPI":
