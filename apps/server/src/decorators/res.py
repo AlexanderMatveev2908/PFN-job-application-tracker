@@ -1,10 +1,13 @@
 from datetime import datetime, date
 from enum import Enum
+import traceback
 from typing import Any, Mapping, Optional, Sequence
 import uuid
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import inspect
+
+from src.lib.logger import clg
 
 
 class ResAPI(JSONResponse):
@@ -134,16 +137,34 @@ class ResAPI(JSONResponse):
     def err_500(
         cls,
         msg: str = "A wild slime appeared" " — the server took 30% damage! ⚔️",
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=500, data={"msg": msg})
+        return cls(status=500, data={"msg": msg, **kwargs})
 
     @classmethod
     def err_ctm(
         cls,
         status: int,
         msg: str,
-        *,
-        data: dict = {},
-        headers: Optional[Mapping[str, str]],
+        headers: Optional[Mapping[str, str]] = None,
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=status, data={"msg": msg, **data}, headers=headers)
+        return cls(status=status, data={"msg": msg, **kwargs}, headers=headers)
+
+    @staticmethod
+    def _log(err: Exception) -> None:
+        frames = traceback.extract_tb(err.__traceback__)
+        src_frames = []
+
+        for f in frames:
+            if "src/" in f.filename:
+                src_frames.append(
+                    f"📂 {f.filename} => 🔢 {f.lineno}"
+                    f" | 🆎 {f.name} | ☢️ {f.line}"
+                )
+
+        clg(
+            *src_frames,
+            "\t",
+            ttl=f"💣 {type(err).__name__}",
+        )

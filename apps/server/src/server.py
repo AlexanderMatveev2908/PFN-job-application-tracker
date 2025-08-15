@@ -46,6 +46,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(lifespan=lifespan)
 
 
+EXPOSE = [
+    "RateLimit-Limit",
+    "RateLimit-Remaining",
+    "RateLimit-Reset",
+    "Retry-After",
+]
+
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)
 app.add_middleware(FormDataParser)
@@ -56,6 +63,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=EXPOSE,
 )
 app.add_middleware(CorsMDW, whitelist=whitelist)
 
