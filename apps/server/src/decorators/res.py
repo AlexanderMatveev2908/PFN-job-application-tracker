@@ -8,6 +8,8 @@ from pydantic import BaseModel
 from sqlalchemy import inspect
 from src.lib.logger import clg
 
+CookieT = Optional[list[dict[str, Any]]]
+
 
 class ResAPI(JSONResponse):
     def __init__(
@@ -15,9 +17,14 @@ class ResAPI(JSONResponse):
         status: int = 204,
         data: Optional[dict[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
+        cookies: CookieT = None,
     ) -> None:
         payload = data or {}
         max_depth: int = 5
+
+        if cookies:
+            for c in cookies:
+                self.set_cookie(**c)
 
         def _serialize(obj: Any, depth: int) -> Any:
             if depth > max_depth:
@@ -95,15 +102,25 @@ class ResAPI(JSONResponse):
 
     @classmethod
     def ok_200(
-        cls, msg: str = "GET operation successful ✅", **kwargs: Any
+        cls,
+        msg: str = "GET operation successful ✅",
+        cookies: CookieT = None,
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=200, data={"msg": msg, **kwargs})
+        return cls(
+            status=200,
+            cookies=cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def ok_201(
-        cls, msg: str = "POST operation successful ✅", **kwargs: Any
+        cls,
+        msg: str = "POST operation successful ✅",
+        cookies: CookieT = None,
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=201, data={"msg": msg, **kwargs})
+        return cls(status=201, cookies=cookies, data={"msg": msg, **kwargs})
 
     @classmethod
     def err_400(cls, msg: str = "Bad request 😡", **kwargs: Any) -> "ResAPI":

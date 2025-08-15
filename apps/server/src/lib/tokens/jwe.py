@@ -16,7 +16,7 @@ P_ALG = "A256GCM"
 def gen_jwe(**kwargs: Any) -> str:
     payload = {**kwargs}
     payload["exp"] = int(
-        (datetime.now(timezone.utc) + timedelta(minutes=15)).timestamp()
+        (datetime.now(timezone.utc) + timedelta(days=1)).timestamp()
     )
 
     enc_bytes: bytes = jwe.encrypt(
@@ -27,9 +27,6 @@ def gen_jwe(**kwargs: Any) -> str:
     )
 
     return binascii.hexlify(enc_bytes).decode("utf-8")
-
-
-# print(gen_jwe(id=12345))
 
 
 def check_jwe(hex_token: str) -> dict | None:
