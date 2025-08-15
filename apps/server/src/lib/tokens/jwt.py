@@ -1,30 +1,30 @@
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 import jwt
 
+from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 
-JWT_SECRET = "12345"
 ALG = "HS256"
 
+env_var = get_env()
 
-def gen_jwt(data: dict) -> None:
-    payload = {**data}
+
+def gen_jwt(**kwargs: Any) -> str:
+    payload = {**kwargs}
     payload["exp"] = datetime.now(timezone.utc) - timedelta(minutes=15)
 
-    token = jwt.encode(payload, JWT_SECRET, algorithm=ALG)
+    token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 
-    print(token)
-
-
-# gen_jwt({"id": "abcdefg"})
+    return token
 
 
-def verify_jwt(token: str) -> None:
+def verify_jwt(token: str) -> str:
     try:
-        decoded = jwt.decode(token, JWT_SECRET, algorithms=[ALG])
+        decoded = jwt.decode(token, env_var.jwt_secret, algorithms=[ALG])
 
-        print(decoded)
+        return decoded
     except jwt.ExpiredSignatureError:
         raise ErrAPI(msg="ACCESS_TOKEN_EXPIRED", status=401)
     except jwt.InvalidTokenError:

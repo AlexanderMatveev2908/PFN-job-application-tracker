@@ -77,6 +77,10 @@ class EnvVar(BaseSettings):
     # __ supabase ca
     supabase_ca: str = Field(..., validation_alias="SUPABASE_CA")
 
+    # __ tokens
+
+    jwt_secret: str = Field(..., validation_alias="JWT_SECRET")
+
     # __ tests CI/CD
     next_public_back_url_test: str | None = Field(
         None, validation_alias="NEXT_PUBLIC_BACK_URL_TEST"
