@@ -13,7 +13,7 @@ env_var = get_env()
 
 def gen_jwt(**kwargs: Any) -> str:
     payload = {**kwargs}
-    payload["exp"] = datetime.now(timezone.utc) - timedelta(minutes=15)
+    payload["exp"] = datetime.now(timezone.utc) + timedelta(minutes=15)
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 

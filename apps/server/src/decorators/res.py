@@ -1,12 +1,26 @@
 from datetime import datetime, date
 from enum import Enum
 import traceback
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any, Literal, Mapping, Optional, Sequence, TypedDict, cast
 import uuid
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import inspect
 from src.lib.logger import clg
+
+
+class CookieD(TypedDict, total=False):
+    key: str
+    value: str
+    httponly: bool
+    secure: bool
+    samesite: Literal["lax", "strict", "none"]
+    max_age: int
+    path: str
+
+
+CookieT = Optional[list[CookieD]]
+ClearCookieT = Optional[list[str | dict[str, Any]]]
 
 
 class ResAPI(JSONResponse):
@@ -15,6 +29,8 @@ class ResAPI(JSONResponse):
         status: int = 204,
         data: Optional[dict[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
+        cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
     ) -> None:
         payload = data or {}
         max_depth: int = 5
@@ -93,17 +109,46 @@ class ResAPI(JSONResponse):
             headers=headers,
         )
 
+        if cookies:
+            for c in cookies:
+                self.set_cookie(**c)
+
+        if clear_cookies:
+            for cc in clear_cookies:
+                if isinstance(cc, str):
+                    self.delete_cookie(cast(str, cc))
+                else:
+                    self.delete_cookie(cast(dict, cc)["key"])
+
     @classmethod
     def ok_200(
-        cls, msg: str = "GET operation successful ✅", **kwargs: Any
+        cls,
+        msg: str = "GET operation successful ✅",
+        cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=200, data={"msg": msg, **kwargs})
+        return cls(
+            status=200,
+            cookies=cookies,
+            clear_cookies=clear_cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def ok_201(
-        cls, msg: str = "POST operation successful ✅", **kwargs: Any
+        cls,
+        msg: str = "POST operation successful ✅",
+        cookies: CookieT = None,
+        clear_cookies: ClearCookieT = None,
+        **kwargs: Any,
     ) -> "ResAPI":
-        return cls(status=201, data={"msg": msg, **kwargs})
+        return cls(
+            status=201,
+            cookies=cookies,
+            clear_cookies=clear_cookies,
+            data={"msg": msg, **kwargs},
+        )
 
     @classmethod
     def err_400(cls, msg: str = "Bad request 😡", **kwargs: Any) -> "ResAPI":

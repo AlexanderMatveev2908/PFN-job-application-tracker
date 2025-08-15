@@ -80,6 +80,8 @@ class EnvVar(BaseSettings):
     # __ tokens
 
     jwt_secret: str = Field(..., validation_alias="JWT_SECRET")
+    jwe_public: str = Field(..., validation_alias="JWE_PUBLIC")
+    jwe_private: str = Field(..., validation_alias="JWE_PRIVATE")
 
     # __ tests CI/CD
     next_public_back_url_test: str | None = Field(
