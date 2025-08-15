@@ -71,12 +71,12 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
                     v = v.isoformat()
 
                 d[col.key] = v
-            return serialize(d, depth + 1)
+            return serialize(d, depth + 1, max_depth)
     except Exception:
         pass
 
     if isinstance(obj, BaseModel):
-        return serialize(obj.model_dump(), depth + 1)
+        return serialize(obj.model_dump(), depth + 1, max_depth)
 
     if isinstance(obj, (bytes, bytearray)):
         try:
@@ -92,17 +92,19 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
         return obj.value
 
     if isinstance(obj, (set)):
-        return [serialize(v, depth + 1) for v in obj]
+        return [serialize(v, depth + 1, max_depth) for v in obj]
 
     if isinstance(obj, Mapping):
-        return {str(k): serialize(v, depth + 1) for k, v in obj.items()}
+        return {
+            str(k): serialize(v, depth + 1, max_depth) for k, v in obj.items()
+        }
 
     if isinstance(obj, Sequence) and not isinstance(
         obj, (str, bytes, bytearray)
     ):
-        return [serialize(v, depth + 1) for v in obj]
+        return [serialize(v, depth + 1, max_depth) for v in obj]
 
     if hasattr(obj, "__dict__"):
-        return serialize(vars(obj), depth + 1)
+        return serialize(vars(obj), depth + 1, max_depth)
 
     return obj

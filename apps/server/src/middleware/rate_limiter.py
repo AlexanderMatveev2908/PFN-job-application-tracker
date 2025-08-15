@@ -3,6 +3,7 @@ import time
 import uuid
 from typing import Awaitable, Callable
 from fastapi import Request, Response
+from src.conf.env import get_env
 from src.conf.redis import redis_session
 from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
@@ -30,6 +31,11 @@ def rate_limit(
     limit: int = 5, window_ms: int = 1000 * 60 * 15
 ) -> Callable[[Request, Response], Awaitable[None]]:
     async def _dep(req: Request, res: Response) -> None:
+        env_var = get_env()
+
+        if env_var.next_public_back_url_test:
+            return
+
         async with redis_session() as r:
             ip = (
                 (req.headers.get("x-forwarded-for", "")).split(",")[0]
