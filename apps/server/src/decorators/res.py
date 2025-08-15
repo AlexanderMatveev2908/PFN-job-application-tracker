@@ -17,7 +17,7 @@ class ResAPI(JSONResponse):
         headers: Optional[Mapping[str, str]] = None,
     ) -> None:
         payload = data or {}
-        max_depth: int = 10
+        max_depth: int = 5
 
         def _serialize(obj: Any, depth: int) -> Any:
             if depth > max_depth:
@@ -50,7 +50,8 @@ class ResAPI(JSONResponse):
 
             if isinstance(obj, (bytes, bytearray)):
                 try:
-                    return obj.decode("utf-8")
+                    return "some long string 👻"
+                    # return obj.decode("utf-8")
                 except Exception:
                     return list(obj)
 

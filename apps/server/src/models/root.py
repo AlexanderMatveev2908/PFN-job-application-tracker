@@ -62,7 +62,7 @@ class RootTable(Base):
             for rel in mapper.relationships:
                 attr = state.attrs[rel.key]
 
-                if rel.key in state.unloaded:
+                if rel.key in state.unloaded or rel.key in exclude_keys:
                     continue
 
                 v = attr.value
