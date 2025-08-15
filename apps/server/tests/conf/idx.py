@@ -3,6 +3,7 @@ from httpx import ASGITransport, AsyncClient
 import pytest_asyncio
 from src.__dev_only.db.delete import clean_tables
 from src.conf.env import get_env
+from src.conf.redis import clean_redis
 from src.server import app
 
 
@@ -17,6 +18,7 @@ async def client(clean: bool = True) -> AsyncGenerator[AsyncClient, None]:
     ) as c:
         if clean:
             await clean_tables()
+            await clean_redis()
         yield c
 
 

@@ -12,6 +12,7 @@ class ResAPI(JSONResponse):
         self,
         status: int = 204,
         data: Optional[dict[str, Any]] = None,
+        headers: Optional[Mapping[str, str]] = None,
     ) -> None:
         payload = data or {}
         max_depth: int = 10
@@ -77,10 +78,7 @@ class ResAPI(JSONResponse):
 
         content = _serialize(payload, depth=0)
 
-        super().__init__(
-            status_code=status,
-            content=content,
-        )
+        super().__init__(status_code=status, content=content, headers=headers)
 
     @classmethod
     def ok_200(
@@ -140,5 +138,12 @@ class ResAPI(JSONResponse):
         return cls(status=500, data={"msg": msg})
 
     @classmethod
-    def err_ctm(cls, status: int, msg: str, *, data: dict = {}) -> "ResAPI":
-        return cls(status, {"msg": msg, **data})
+    def err_ctm(
+        cls,
+        status: int,
+        msg: str,
+        *,
+        data: dict = {},
+        headers: Optional[Mapping[str, str]],
+    ) -> "ResAPI":
+        return cls(status=status, data={"msg": msg, **data}, headers=headers)

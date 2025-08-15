@@ -1,7 +1,7 @@
 from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.conf.redis import get_all_redis  # noqa: F401
+from src.conf.redis import clean_redis, get_all_redis  # noqa: F401
 from src.decorators.err import ErrAPI
 from src.__dev_only.db.delete import clean_tables  # noqa: F401
 from src.lib.emails.aiosmtp.idx import send_email  # noqa: F401
@@ -27,12 +27,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # await get_cost()
     # await get_all_redis()
     # await clean_tables()
+    # await clean_redis()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)
 
     if not whitelist:
-        raise ErrAPI(msg="☢️ missing whitelist var", status=500)
+        raise ErrAPI(msg="missing whitelist var ☢️", status=500)
 
     yield
 

@@ -84,3 +84,40 @@ async def register_err_terms_t(api) -> None:
 
     assert res.status_code == 422
     assert "user must accept terms" in data["msg"].lower()
+
+
+@pytest.mark.asyncio
+async def register_err_limit_t(api) -> None:
+
+    payload = {
+        **def_payload,
+        "first_name": "<>!@#$%^",
+    }
+
+    for _ in range(0, 10):
+        res = await api.post("/auth/register", json=payload)
+        data = res.json()
+
+        assert res.status_code == 422
+        assert "string should match pattern".lower() in data["msg"].lower()
+
+    res = await api.post("/auth/register", json=payload)
+    data = res.json()
+
+    clg(
+        f"🚦 => {res.status_code}",
+        data,
+        res.headers["RateLimit-Limit"],
+        res.headers["RateLimit-Remaining"],
+        res.headers["RateLimit-Window"],
+        ttl="res",
+    )
+
+    assert res.status_code == 429
+    assert res.headers["RateLimit-Limit"] == "10"
+    assert res.headers["RateLimit-Remaining"] == "0"
+    assert res.headers["RateLimit-Window"] == str(1000 * 60 * 15)
+    assert (
+        "Our hamster-powered server took a break".lower()
+        in data["msg"].lower()
+    )

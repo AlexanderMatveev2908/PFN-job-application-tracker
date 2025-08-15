@@ -52,4 +52,9 @@ class WrapAPI(BaseHTTPMiddleware):
                 status = 500
                 msg = str(err)
 
-            return ResAPI.err_ctm(status=status, msg=msg, data=data or {})
+            return ResAPI.err_ctm(
+                status=status,
+                msg=msg,
+                data=data or {},
+                headers=getattr(request.state, "rate_limit_headers", None),
+            )
