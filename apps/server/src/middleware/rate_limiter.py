@@ -8,6 +8,24 @@ from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
 
 
+def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
+
+    merged = {**base}
+    expose_vals = ", ".join(EXPOSE_HEADERS)
+
+    if "Access-Control-Expose-Headers" in merged:
+        existing = set(
+            map(str.strip, merged["Access-Control-Expose-Headers"].split(","))
+        )
+        merged["Access-Control-Expose-Headers"] = ", ".join(
+            sorted(existing.union(EXPOSE_HEADERS))
+        )
+    else:
+        merged["Access-Control-Expose-Headers"] = expose_vals
+
+    return merged
+
+
 def rate_limit(
     limit: int = 5, window_ms: int = 1000 * 60 * 15
 ) -> Callable[[Request, Response], Awaitable[None]]:
@@ -35,31 +53,14 @@ def rate_limit(
 
             remaining = max(0, limit - count)
 
-            req.state.res_hdr = {
-                "RateLimit-Limit": str(limit),
-                "RateLimit-Remaining": str(remaining),
-                "RateLimit-Window": str(window_ms),
-            }
-
-            merged_headers = {**getattr(req.state, "res_hdr")}
-            expose_vals = ", ".join(EXPOSE_HEADERS)
-
-            if "Access-Control-Expose-Headers" in merged_headers:
-                existing = set(
-                    map(
-                        str.strip,
-                        merged_headers["Access-Control-Expose-Headers"].split(
-                            ","
-                        ),
-                    )
-                )
-                merged_headers["Access-Control-Expose-Headers"] = ", ".join(
-                    sorted(existing.union(EXPOSE_HEADERS))
-                )
-            else:
-                merged_headers["Access-Control-Expose-Headers"] = expose_vals
-
-            req.state.res_hdr = merged_headers
+            req.state.res_hdr = merge_exp_hdr(
+                {
+                    **getattr(req.state, "res_hdr", {}),
+                    "RateLimit-Limit": str(limit),
+                    "RateLimit-Remaining": str(remaining),
+                    "RateLimit-Window": str(window_ms),
+                }
+            )
 
             if count > limit:
                 oldest_req = await r.execute_command(
