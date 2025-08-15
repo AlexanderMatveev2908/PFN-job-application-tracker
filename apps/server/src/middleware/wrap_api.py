@@ -39,5 +39,7 @@ class WrapAPI(BaseHTTPMiddleware):
                 status=status,
                 msg=msg,
                 data=data or {},
-                headers=getattr(request.state, "rate_limit_headers", None),
+                headers={
+                    **getattr(request.state, "res_hdr", {}),
+                },
             )

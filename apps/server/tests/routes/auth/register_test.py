@@ -117,6 +117,17 @@ async def register_err_limit_t(api) -> None:
     assert res.headers["RateLimit-Limit"] == "10"
     assert res.headers["RateLimit-Remaining"] == "0"
     assert res.headers["RateLimit-Window"] == str(1000 * 60 * 15)
+    assert int(res.headers["RateLimit-Reset"]) > 800
+    assert all(
+        h in res.headers["Access-Control-Expose-Headers"]
+        for h in [
+            "RateLimit-Limit",
+            "RateLimit-Remaining",
+            "RateLimit-Window",
+            "RateLimit-Reset",
+        ]
+    )
+
     assert (
         "Our hamster-powered server took a break".lower()
         in data["msg"].lower()
