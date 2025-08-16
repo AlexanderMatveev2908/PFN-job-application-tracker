@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta
 import json
 import os
 import hmac
+from time import time
 from typing import Any
 from src.decorators.err import ErrAPI
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b
@@ -13,13 +13,11 @@ from src.lib.tokens.sha import gen_sha256
 ALG = "AES-CBC-HMAC-SHA256"
 
 
-payload: bytes = d_to_b({"id": "12345"})
-payload_utf_8 = b_to_d(payload)
-v = "0"
-
-
 def gen_cbc_sha() -> str:
 
+    payload: bytes = d_to_b({"id": "12345"})
+    payload_utf_8 = b_to_d(payload)
+    v = "0"
     shared_info = {
         "alg": ALG,
         "v": v,
@@ -31,15 +29,13 @@ def gen_cbc_sha() -> str:
 
     derived = derive_hkdf(master=MASTERS[0], info=info, salt=salt)
 
-    aad = json.dumps(
+    aad = d_to_b(
         {
             **shared_info,
             "salt": b_to_h(salt),
-            "exp": str(
-                int((datetime.now() + timedelta(minutes=15)).timestamp())
-            ),
+            "exp": int(time()) + 15 * 60,
         }
-    ).encode("utf-8")
+    )
 
     iv, ct = gen_aes_cbc(derived["k_0"], payload)
 
@@ -61,24 +57,29 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
 
     aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
-    info = d_to_b(
+    aad_d: dict = json.loads(h_to_b(aad_hex).decode("utf-8"))
+
+    if int(aad_d["exp"]) < int(time()):
+        raise ErrAPI(msg="expired token", status=401)
+
+    info_b: bytes = d_to_b(
         {
-            "alg": ALG,
-            "v": v,
-            "user_id": payload_utf_8["id"],
+            "alg": aad_d["alg"],
+            "v": aad_d["v"],
+            "user_id": aad_d["user_id"],
         }
     )
 
     derived = derive_hkdf(
         master=MASTERS[0],
-        info=info,
-        salt=h_to_b(json.loads((h_to_b(aad_hex)).decode("utf-8"))["salt"]),
+        info=info_b,
+        salt=h_to_b(aad_d["salt"]),
     )
 
-    aad = h_to_b(aad_hex)
-    iv = h_to_b(iv_hex)
-    ct = h_to_b(ct_hex)
-    tag = h_to_b(tag_hex)
+    aad: bytes = h_to_b(aad_hex)
+    iv: bytes = h_to_b(iv_hex)
+    ct: bytes = h_to_b(ct_hex)
+    tag: bytes = h_to_b(tag_hex)
 
     comp_tag = gen_sha256(derived["k_1"], aad=aad, iv=iv, ciphertext=ct)
 
@@ -93,6 +94,6 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
 print(gen_cbc_sha())
 print(
     check_cbc_sha(
-        "7b22616c67223a20224145532d4342432d484d41432d534841323536222c202276223a202230222c2022757365725f6964223a20223132333435222c202273616c74223a202265633832353961363831373038383664306464623133363263336462333632326432383036623861323635646261343538316435386562623763643766326630222c2022657870223a202231373535333230323932227d.f7bd2286f407c940ae5f5a1443e5776a.d75a6ceddb6c1b79e0c9bc4a6f0d9ff5.0179286dec8b111730ba32aaf2f1dc5693a2d3677fce3ef0452eb4a55e018459"  # noqa: E501
+        "7b22616c67223a20224145532d4342432d484d41432d534841323536222c2022657870223a20313735353332313535322c202273616c74223a202232643165386437643438383338363261353330653539393261313334653565396238363737363733353737656239373830666162316331356161613134303233222c2022757365725f6964223a20223132333435222c202276223a202230227d.64a27da48c650e4dc74767a6c5f868be.026a708f33c383d4aeabc4fc609af216.2989468024679e30cbd45277e3c755611a4c80793ff82fa636fbf6662e1cf4d5"  # noqa: E501
     )
 )
