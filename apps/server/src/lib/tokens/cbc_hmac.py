@@ -21,9 +21,8 @@ class PayloadT(MainPayloadT, total=False):
 ALG = "AES-CBC-HMAC-SHA256"
 
 
-def gen_cbc_sha(payload: PayloadT) -> str:
+def gen_cbc_sha(payload: PayloadT, v: str) -> str:
 
-    v: str = "0"
     shared_info = {
         "alg": ALG,
         "v": v,
@@ -61,11 +60,14 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
 
 def check_cbc_sha(token: str) -> dict[str, Any]:
 
-    aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
+    try:
+        aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
+    except Exception:
+        raise ErrAPI(msg="invalid token format", status=401)
 
     aad_d: dict = json.loads(h_to_b(aad_hex).decode("utf-8"))
 
-    if int(aad_d["exp"]) < int(time()):
+    if int(aad_d["exp"]) <= int(time()):
         raise ErrAPI(msg="expired token", status=401)
 
     info_b: bytes = d_to_b(
@@ -101,11 +103,12 @@ print(
     gen_cbc_sha(
         {
             "user_id": "abcdef",
-        }
+        },
+        v="0",
     )
 )
 print(
     check_cbc_sha(
-        "7b22616c67223a20224145532d4342432d484d41432d534841323536222c2022657870223a20313735353332323836372c202273616c74223a202232663861656135373434383032313131653961306330346162303362626366653161373936306531613866336462376665313266373964353466613036396430222c2022757365725f6964223a2022616263646566222c202276223a202230227d.c5cc099e3d0017385a695c65260c32e6.e296c4a88867638fa4d15f8a9e7422fc70008255b85d37013d4c7b8cc3ad3109.4cfd81bbd90c6ec2148fc15a6fda5eec9cd63d472afa1e3725c81b7ff33eb8b1"  # noqa: E501
+        "7b22616c67223a224145532d4342432d484d41432d534841323536222c22657870223a313735353332333538382c2273616c74223a2235303634343236343730346531646361376362393066306233333339396334656335376131636134373564393036356662333333656163633863313766346666222c22757365725f6964223a22616263646566222c2276223a2230227d.8f568fb425d6869a626c4ecf0c070d9e.6b47bc674ee4a8477287309b31bd28f7b6a927ba58750b34637bc887c6f56d46.ac804a35076d39dfdb9bcb1acba956a986c90b601ee0eae2fa0240f074dcd291"  # noqa: E501
     )
 )

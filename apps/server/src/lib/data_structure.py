@@ -120,7 +120,9 @@ def b_to_h(b: bytes) -> str:
 
 
 def d_to_b(obj: dict[str, Any]) -> bytes:
-    return json.dumps(obj, sort_keys=True).encode("utf-8")
+    return json.dumps(obj, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
 
 
 def b_to_d(b: bytes) -> dict:
