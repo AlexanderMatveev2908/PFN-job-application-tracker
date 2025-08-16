@@ -108,3 +108,11 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
         return serialize(vars(obj), depth + 1, max_depth)
 
     return obj
+
+
+def to_b(txt_hex: str) -> bytes:
+    return bytes.fromhex(txt_hex)
+
+
+def to_h(b: bytes) -> str:
+    return b.hex()
