@@ -5,9 +5,9 @@ from time import time
 from typing import Any
 from src.decorators.err import ErrAPI
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b
-from src.lib.tokens.cbc import dec_aes_cbc, gen_aes_cbc
-from src.lib.tokens.hkdf import MASTERS, derive_hkdf
-from src.lib.tokens.sha import gen_sha256
+from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
+from src.lib.algs.hkdf import MASTERS, derive_hkdf
+from src.lib.algs.sha import gen_sha256
 
 
 ALG = "AES-CBC-HMAC-SHA256"
