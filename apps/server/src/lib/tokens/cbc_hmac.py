@@ -2,44 +2,19 @@ from datetime import datetime, timedelta
 import json
 import os
 import hmac
-from typing import Any, Tuple
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives import hashes, hmac as chmac, padding
+from typing import Any
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import to_b, to_h
+from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b
+from src.lib.tokens.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.tokens.hkdf import MASTERS, derive_hkdf
+from src.lib.tokens.sha import gen_sha256
 
 
-BLOCK_BITS = 128
 ALG = "AES-CBC-HMAC-SHA256"
 
 
-def gen_aes_cbc(k: bytes, plain_txt: bytes) -> Tuple[bytes, bytes]:
-    if len(k) not in (16, 24, 32):
-        raise ErrAPI(msg="k not in range 16 • 24 • 32", status=500)
-
-    iv = os.urandom(16)
-    padder = padding.PKCS7(BLOCK_BITS).padder()
-    padded = padder.update(plain_txt) + padder.finalize()
-
-    cipher = Cipher(algorithms.AES(k), modes.CBC(iv))
-    enc = cipher.encryptor()
-    ct = enc.update(padded) + enc.finalize()
-    return iv, ct
-
-
-def gen_sha256(
-    mac_key: bytes, *, aad: bytes, iv: bytes, ciphertext: bytes
-) -> bytes:
-    h = chmac.HMAC(mac_key, hashes.SHA256())
-    h.update(aad)
-    h.update(iv)
-    h.update(ciphertext)
-    return h.finalize()
-
-
-payload: bytes = json.dumps({"id": "12345"}).encode("utf-8")
-payload_utf_8 = json.loads(payload.decode("utf-8"))
+payload: bytes = d_to_b({"id": "12345"})
+payload_utf_8 = b_to_d(payload)
 v = "0"
 
 
@@ -59,7 +34,7 @@ def gen_cbc_sha() -> str:
     aad = json.dumps(
         {
             **shared_info,
-            "salt": to_h(salt),
+            "salt": b_to_h(salt),
             "exp": str(
                 int((datetime.now() + timedelta(minutes=15)).timestamp())
             ),
@@ -75,24 +50,11 @@ def gen_cbc_sha() -> str:
         ciphertext=ct,
     )
 
-    return f"{to_h(aad)}.{to_h(iv)}.{to_h(ct)}.{to_h(tag)}"
+    return f"{b_to_h(aad)}.{b_to_h(iv)}.{b_to_h(ct)}.{b_to_h(tag)}"
 
 
 def constant_time_check(a: bytes, b: bytes) -> bool:
     return hmac.compare_digest(a, b)
-
-
-def dec_aes_cbc(k: bytes, iv: bytes, ciphertext: bytes) -> bytes:
-    cipher = Cipher(algorithms.AES(k), modes.CBC(iv))
-    dec = cipher.decryptor()
-    padded = dec.update(ciphertext) + dec.finalize()
-
-    unpadder = padding.PKCS7(BLOCK_BITS).unpadder()
-    try:
-        pt = unpadder.update(padded) + unpadder.finalize()
-    except Exception:
-        raise ErrAPI(msg="invalid ciphertext", status=401)
-    return pt
 
 
 def check_cbc_sha(token: str) -> dict[str, Any]:
@@ -110,13 +72,13 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
     derived = derive_hkdf(
         master=MASTERS[0],
         info=info,
-        salt=to_b(json.loads((to_b(aad_hex)).decode("utf-8"))["salt"]),
+        salt=h_to_b(json.loads((h_to_b(aad_hex)).decode("utf-8"))["salt"]),
     )
 
-    aad = to_b(aad_hex)
-    iv = to_b(iv_hex)
-    ct = to_b(ct_hex)
-    tag = to_b(tag_hex)
+    aad = h_to_b(aad_hex)
+    iv = h_to_b(iv_hex)
+    ct = h_to_b(ct_hex)
+    tag = h_to_b(tag_hex)
 
     comp_tag = gen_sha256(derived["k_1"], aad=aad, iv=iv, ciphertext=ct)
 
