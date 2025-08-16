@@ -39,3 +39,7 @@ def calc_exp(param: ParamExpT, reverse: bool = False) -> int:
         raise ErrAPI(msg="invalid param", status=500)
 
     return (base + (-add if reverse else add)) * 1000
+
+
+def lt_now(v: int) -> bool:
+    return v < time() * 1000
