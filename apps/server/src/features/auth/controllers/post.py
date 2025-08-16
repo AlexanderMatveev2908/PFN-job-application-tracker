@@ -14,6 +14,7 @@ async def register_ctrl(
         new_user=result["new_user"],
         access_token=result["access_token"],
         refresh_token=result["refresh_token"],
+        confirm_email_token=result["confirm_email_token"],
         cookies=[
             {
                 "key": "refresh_token",
