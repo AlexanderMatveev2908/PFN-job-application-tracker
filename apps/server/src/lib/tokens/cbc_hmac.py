@@ -1,7 +1,7 @@
 import json
 import os
 import hmac
-from typing import Any, Literal, TypedDict, cast
+from typing import Any, TypedDict, cast
 import uuid
 
 from sqlalchemy import select
@@ -37,13 +37,15 @@ class AadT(TypedDict):
     salt: str
 
 
-def gen_cbc_hmac(
-    payload: dict[Literal["user_id"] | str, uuid.UUID | str], hdr: HdrT
-) -> CbcHmacResT:
+class CbcHmacPayloadT(TypedDict):
+    user_id: str | uuid.UUID
+
+
+def gen_cbc_hmac(payload: CbcHmacPayloadT, hdr: HdrT) -> CbcHmacResT:
 
     info_d: dict = {
-        "alg": hdr["alg"].value,
-        "token_t": hdr["token_t"].value,
+        "alg": parse_enum(hdr["alg"]),
+        "token_t": parse_enum(hdr["token_t"]),
         "user_id": parse_id(payload["user_id"]),
     }
 

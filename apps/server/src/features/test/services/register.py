@@ -54,8 +54,6 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         access_token: str = gen_jwt(id=parse_id(us.id))
         result_jwe = await gen_jwe(user_id=parse_id(us.id), trx=trx)
 
-        print(result_jwe["refresh_server"].to_d())
-
         hdr: HdrT = {
             "alg": AlgT.AES_CBC_HMAC_SHA256,
             "token_t": TokenT.CONF_EMAIL,
