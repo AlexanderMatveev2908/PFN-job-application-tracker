@@ -16,7 +16,6 @@ def hmac_from_cbc(
 
 def gen_hmac(mac_key: bytes, pt: bytes) -> bytes:
     h = hmac.HMAC(mac_key, hashes.SHA256())
-
     h.update(pt)
     return h.finalize()
 

@@ -8,8 +8,8 @@ from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.algs.cbc import dec_aes_cbc
 from src.lib.algs.hkdf import derive_hkdf_cbc_hmac
-from src.lib.algs.hmac import gen_hmac, hash_db_hmac
-from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_enum, parse_id
+from src.lib.algs.hmac import gen_hmac
+from src.lib.data_structure import d_to_b, h_to_b, parse_enum, parse_id
 from src.lib.etc import calc_exp, lt_now
 from src.lib.tokens.cbc_hmac import (
     AadT,
@@ -39,8 +39,8 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             us = await trx.get(User, row.id)
         else:
             data = {k: v for k, v in user_data.items() if k != "password"}
-            plain_pwd = user_data["password"]
             user_id = uuid.uuid4()
+            plain_pwd = user_data["password"]
 
             us = User(**data, id=user_id)
             await us.set_pwd(plain_pwd)
@@ -52,19 +52,9 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             raise ErrAPI(msg="👻 user disappeared", status=500)
 
         access_token: str = gen_jwt(id=parse_id(us.id))
-        refresh_token: bytes = await gen_jwe(id=parse_id(us.id))
+        result_jwe = await gen_jwe(user_id=parse_id(us.id), trx=trx)
 
-        refresh_db = Token(
-            user_id=us.id,
-            alg=AlgT.RSA_OAEP_256_A256GCM,
-            exp=calc_exp("1d"),
-            token_t=TokenT.REFRESH,
-            hashed=hash_db_hmac(refresh_token),
-        )
-
-        trx.add(refresh_db)
-        await trx.flush([refresh_db])
-        await trx.refresh(refresh_db)
+        print(result_jwe["refresh_server"].to_d())
 
         hdr: HdrT = {
             "alg": AlgT.AES_CBC_HMAC_SHA256,
@@ -137,8 +127,8 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             "access_decoded": verify_jwt(
                 access_token,
             ),
-            "refresh_token": b_to_h(refresh_token),
-            "refresh_decrypted": await check_jwe(refresh_token),
+            "refresh_token": result_jwe["refresh_client"],
+            "refresh_decrypted": await check_jwe(result_jwe["refresh_client"]),
             "client_token": result_cbc_hmac["client_token"],
             "client_token_saved": new_cbc_hmac.to_d(),
             "client_token_decrypted": json.loads(pt.decode("utf-8")),
