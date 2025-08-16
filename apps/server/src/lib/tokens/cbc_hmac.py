@@ -2,27 +2,21 @@ import json
 import os
 import hmac
 from time import time
-from typing import Any, TypedDict, cast
+from typing import Any, Literal, cast
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.data_structure import b_to_h, d_to_b, h_to_b
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
-from src.lib.algs.hkdf import derive_hkdf
+from src.lib.algs.hkdf import derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import gen_hmac
-
-
-class MainPayloadT(TypedDict):
-    user_id: str
-
-
-class PayloadT(MainPayloadT, total=False):
-    opt: Any
 
 
 master_key = h_to_b(get_env().master_key)
 
 
-def gen_cbc_sha(payload: PayloadT, aad_d: dict) -> str:
+def gen_cbc_sha(
+    payload: dict[Literal["user_id"] | str, str], aad_d: dict
+) -> str:
 
     shared_info = {
         **aad_d,
@@ -32,7 +26,7 @@ def gen_cbc_sha(payload: PayloadT, aad_d: dict) -> str:
 
     salt: bytes = os.urandom(32)
 
-    derived = derive_hkdf(master=master_key, info=info, salt=salt)
+    derived = derive_hkdf_cbc_hmac(master=master_key, info=info, salt=salt)
 
     aad: bytes = d_to_b(
         {
@@ -73,12 +67,11 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
     info_b: bytes = d_to_b(
         {
             "alg": aad_d["alg"],
-            "v": aad_d["v"],
             "user_id": aad_d["user_id"],
         }
     )
 
-    derived = derive_hkdf(
+    derived = derive_hkdf_cbc_hmac(
         master=master_key,
         info=info_b,
         salt=h_to_b(aad_d["salt"]),
@@ -104,11 +97,11 @@ print(
         {
             "user_id": "abcdef",
         },
-        {"v": "0", "alg": "AES-CBC-HMAC-SHA256"},
+        {"alg": "AES-CBC-HMAC-SHA256"},
     )
 )
 print(
     check_cbc_sha(
-        "7b22616c67223a224145532d4342432d484d41432d534841323536222c22657870223a313735353332393836322c2273616c74223a2261313536373236303866366431396262613238656330666533323861316534393538346632396463313339386239626563323532653163666632356330353735222c22757365725f6964223a22616263646566222c2276223a2230227d.db4e1667d0cfa1ea7fa6d276d6b175f5.065382db13680bd47ab0fa3d513a0ae4f703762ac35d753ba233f7f6035f068d.c2f85d84705b5f3f29fadd77c2ab2ece0eb7926945726f9251c621f1b810a8c8"  # noqa: E501
+        "7b22616c67223a224145532d4342432d484d41432d534841323536222c22657870223a313735353333333535352c2273616c74223a2230396562386133323761663934656538353662343737376434313337313766633235626462383961326231643734633538363161306431336366626536616430222c22757365725f6964223a22616263646566227d.0f88922b9b0d31ff01946dfb8460397d.4f6af1d83260e611a1609376d5524660a62b74afdb4cf439121e5d769bf59f2b.631b70fdbe55ec24d5dd6d6d14e94b1141232254ce98b591cc540485191798e7"  # noqa: E501
     )
 )
