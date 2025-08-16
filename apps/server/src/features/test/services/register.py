@@ -51,7 +51,7 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         if not us:
             raise ErrAPI(msg="👻 user disappeared", status=500)
 
-        access_token: str = gen_jwt(id=parse_id(us.id))
+        access_token: str = gen_jwt({"user_id": parse_id(us.id)})
         result_jwe = await gen_jwe(user_id=parse_id(us.id), trx=trx)
 
         hdr: HdrT = {

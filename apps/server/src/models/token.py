@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TypedDict
+from typing import Any, TypedDict
 import uuid
 
 from sqlalchemy import (
@@ -28,8 +28,13 @@ class AlgT(Enum):
     HMAC_SHA256 = "HMAC-SHA256"
 
 
-class PayloadTokenT(TypedDict):
+class PayloadTokenT(
+    TypedDict,
+):
     user_id: str
+
+
+PayloadT = dict[str, Any] | PayloadTokenT
 
 
 class Token(RootTable):
