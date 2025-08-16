@@ -10,7 +10,7 @@ from src.lib.algs.cbc import dec_aes_cbc
 from src.lib.algs.hkdf import derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import gen_hmac
 from src.lib.data_structure import d_to_b, h_to_b, parse_enum, parse_id
-from src.lib.etc import calc_exp, lt_now
+from src.lib.etc import lt_now
 from src.lib.tokens.cbc_hmac import (
     AadT,
     HdrT,
@@ -59,22 +59,11 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             "token_t": TokenT.CONF_EMAIL,
         }
 
-        result_cbc_hmac = gen_cbc_hmac(
-            payload={"user_id": parse_id(us.id)}, hdr=hdr
+        result_cbc_hmac = await gen_cbc_hmac(
+            payload={"user_id": parse_id(us.id)}, hdr=hdr, trx=trx
         )
 
-        new_cbc_hmac = Token(
-            id=str(result_cbc_hmac["token_id"]),
-            user_id=us.id,
-            exp=calc_exp("15m"),
-            **hdr,
-        )
         client_token = result_cbc_hmac["client_token"]
-
-        trx.add(new_cbc_hmac)
-
-        await trx.flush([new_cbc_hmac])
-        await trx.refresh(new_cbc_hmac)
 
         aad_hex, iv_hex, ct_hex, tag_hex = client_token.split(".")
 
@@ -128,6 +117,6 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             "refresh_token": result_jwe["refresh_client"],
             "refresh_decrypted": await check_jwe(result_jwe["refresh_client"]),
             "client_token": result_cbc_hmac["client_token"],
-            "client_token_saved": new_cbc_hmac.to_d(),
+            "client_token_saved": result_cbc_hmac["server_token"].to_d(),
             "client_token_decrypted": json.loads(pt.decode("utf-8")),
         }

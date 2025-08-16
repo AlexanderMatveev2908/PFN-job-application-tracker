@@ -12,9 +12,9 @@ from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_enum, parse_id
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import gen_hmac
-from src.lib.etc import lt_now
-from src.models.token import AlgT, Token, TokenT
-
+from src.lib.etc import calc_exp, lt_now
+from src.models.token import AlgT, PayloadTokenT, Token, TokenT
+from sqlalchemy.ext.asyncio import AsyncSession
 
 master_key = h_to_b(get_env().master_key)
 
@@ -26,22 +26,20 @@ class HdrT(TypedDict):
 
 class CbcHmacResT(TypedDict):
     client_token: str
-    token_id: uuid.UUID
+    server_token: Token
 
 
 class AadT(TypedDict):
     alg: str
-    token_t: str
-    user_id: str
     token_id: str
+    token_t: str
     salt: str
+    user_id: str
 
 
-class CbcHmacPayloadT(TypedDict):
-    user_id: str | uuid.UUID
-
-
-def gen_cbc_hmac(payload: CbcHmacPayloadT, hdr: HdrT) -> CbcHmacResT:
+async def gen_cbc_hmac(
+    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession
+) -> CbcHmacResT:
 
     info_d: dict = {
         "alg": parse_enum(hdr["alg"]),
@@ -55,12 +53,12 @@ def gen_cbc_hmac(payload: CbcHmacPayloadT, hdr: HdrT) -> CbcHmacResT:
     derived: DerivedKeysCbcHmacT = derive_hkdf_cbc_hmac(
         master=master_key, info=info, salt=salt
     )
-    token_id = uuid.uuid4()
+    token_id = parse_id(uuid.uuid4())
 
     aad: bytes = d_to_b(
         {
             **info_d,
-            "token_id": parse_id(token_id),
+            "token_id": token_id,
             "salt": b_to_h(salt),
         }
     )
@@ -74,9 +72,20 @@ def gen_cbc_hmac(payload: CbcHmacPayloadT, hdr: HdrT) -> CbcHmacResT:
         ),
     )
 
+    new_cbc_hmac = Token(
+        id=token_id,
+        exp=calc_exp("15m"),
+        user_id=payload["user_id"],
+        **hdr,
+    )
+    trx.add(new_cbc_hmac)
+
+    await trx.flush([new_cbc_hmac])
+    await trx.refresh(new_cbc_hmac)
+
     return {
         "client_token": f"{b_to_h(aad)}.{b_to_h(iv)}.{b_to_h(ct)}.{b_to_h(tag)}",  # noqa: E501
-        "token_id": token_id,
+        "server_token": new_cbc_hmac,
     }
 
 
