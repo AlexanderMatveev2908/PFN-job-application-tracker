@@ -13,6 +13,7 @@ async def register_ctrl(
     return ResAPI.ok_200(
         new_user=result["new_user"],
         access_token=result["access_token"],
+        refresh_token=result["refresh_token"],
         cookies=[
             {
                 "key": "refresh_token",

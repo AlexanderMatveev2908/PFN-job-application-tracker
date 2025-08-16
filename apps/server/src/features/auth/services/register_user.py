@@ -1,13 +1,12 @@
-from time import time
 from typing import TypedDict
 import uuid
 from sqlalchemy import select
 from src.conf.db import db_trx
-from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
-from src.lib.algs.hmac import gen_hmac
-from src.lib.data_structure import b_to_h, h_to_b
+from src.lib.algs.hmac import hash_db_hmac
+from src.lib.data_structure import b_to_h
+from src.lib.etc import calc_exp
 from src.lib.tokens.jwe import gen_jwe
 from src.lib.tokens.jwt import gen_jwt
 from src.models.token import AlgT, Token, TokenT
@@ -15,12 +14,9 @@ from src.models.user import User
 
 
 class RegisterSvcReturnT(TypedDict):
-    new_user: User
+    new_user: dict
     access_token: str
     refresh_token: str
-
-
-PEPPER_K = get_env().pepper_key
 
 
 async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
@@ -45,9 +41,9 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         refresh_db = Token(
             user_id=user_id,
             alg=AlgT.RSA_OAEP_256_A256GCM,
-            exp=(time() + 1000 * 60**2 * 24),
+            exp=calc_exp("1d"),
             token_t=TokenT.REFRESH,
-            hashed=gen_hmac(h_to_b(PEPPER_K), refresh_token),
+            hashed=hash_db_hmac(refresh_token),
         )
 
         trx.add_all([new_user, refresh_db])
@@ -55,10 +51,8 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         await trx.refresh(new_user)
         await trx.refresh(refresh_db)
 
-        print(refresh_db.to_d())
-
         return {
-            "new_user": new_user,
+            "new_user": new_user.to_d(exclude_keys=["password"]),
             "access_token": access_token,
             "refresh_token": b_to_h(refresh_token),
         }
