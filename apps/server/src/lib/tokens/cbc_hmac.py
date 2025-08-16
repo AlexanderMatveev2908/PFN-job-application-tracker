@@ -25,9 +25,9 @@ def gen_cbc_sha() -> str:
         "v": v,
         "user_id": payload_utf_8["id"],
     }
-    info = json.dumps(shared_info).encode("utf-8")
+    info = d_to_b(shared_info)
 
-    salt = os.urandom(16)
+    salt = os.urandom(32)
 
     derived = derive_hkdf(master=MASTERS[0], info=info, salt=salt)
 
@@ -61,13 +61,13 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
 
     aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
-    info = json.dumps(
+    info = d_to_b(
         {
             "alg": ALG,
             "v": v,
             "user_id": payload_utf_8["id"],
         }
-    ).encode("utf-8")
+    )
 
     derived = derive_hkdf(
         master=MASTERS[0],
@@ -93,6 +93,6 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
 print(gen_cbc_sha())
 print(
     check_cbc_sha(
-        "7b22616c67223a20224145532d4342432d484d41432d534841323536222c202276223a202230222c2022757365725f6964223a20223132333435222c202273616c74223a20226232666266663238656234663732373032663630366335353839303561303933222c2022657870223a202231373535333137333736227d.fe59ca1f163e44f87b982d4d8c8135c4.14541f10afe6a5a9602e93360ef958c5.751e0f47bfda47213bf6b6eb16077185f979f1ebb533d58ab10bdb12e53ef265"  # noqa: E501
+        "7b22616c67223a20224145532d4342432d484d41432d534841323536222c202276223a202230222c2022757365725f6964223a20223132333435222c202273616c74223a202265633832353961363831373038383664306464623133363263336462333632326432383036623861323635646261343538316435386562623763643766326630222c2022657870223a202231373535333230323932227d.f7bd2286f407c940ae5f5a1443e5776a.d75a6ceddb6c1b79e0c9bc4a6f0d9ff5.0179286dec8b111730ba32aaf2f1dc5693a2d3677fce3ef0452eb4a55e018459"  # noqa: E501
     )
 )
