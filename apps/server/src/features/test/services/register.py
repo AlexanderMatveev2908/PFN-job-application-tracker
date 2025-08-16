@@ -59,14 +59,16 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         return {
             "new_user": us.to_d(exclude_keys=["password"]),
             "access_token": access_token,
-            "access_decoded": verify_jwt(
+            "access_token_decoded": verify_jwt(
                 access_token,
             ),
             "refresh_token": result_jwe["refresh_client"],
-            "refresh_decrypted": await check_jwe(result_jwe["refresh_client"]),
-            "client_token": result_cbc_hmac["client_token"],
-            "client_token_saved": result_cbc_hmac["server_token"].to_d(),
-            "client_token_decrypted": await check_cbc_hmac(
+            "refresh_token_decrypted": await check_jwe(
+                result_jwe["refresh_client"]
+            ),
+            "cbc_hmac": result_cbc_hmac["client_token"],
+            "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
+            "cbc_hmac_decrypted": await check_cbc_hmac(
                 result_cbc_hmac["client_token"], trx=trx
             ),
         }
