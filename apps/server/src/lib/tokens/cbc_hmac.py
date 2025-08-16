@@ -6,10 +6,10 @@ from typing import Any, Literal, TypedDict, cast
 import uuid
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import b_to_h, d_to_b, h_to_b
+from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_id
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
-from src.lib.algs.hmac import hmac_from_cbc
+from src.lib.algs.hmac import gen_hmac, hmac_from_cbc
 from src.models.token import AlgT, TokenT
 
 
@@ -26,14 +26,14 @@ class CbcHmacResT(TypedDict):
     token_id: uuid.UUID
 
 
-async def gen_cbc_hmac(
-    payload: dict[Literal["user_id"] | str, str], hdr: HdrT
+def gen_cbc_hmac(
+    payload: dict[Literal["user_id"] | str, uuid.UUID | str], hdr: HdrT
 ) -> CbcHmacResT:
 
     info_d: dict = {
         "alg": hdr["alg"].value,
         "token_t": hdr["token_t"].value,
-        "user_id": payload["user_id"],
+        "user_id": parse_id(payload["user_id"]),
     }
 
     info: bytes = d_to_b(info_d)
@@ -42,23 +42,23 @@ async def gen_cbc_hmac(
     derived: DerivedKeysCbcHmacT = derive_hkdf_cbc_hmac(
         master=master_key, info=info, salt=salt
     )
-    token_id: uuid.UUID = uuid.uuid4()
+    token_id = uuid.uuid4()
 
     aad: bytes = d_to_b(
         {
             **info_d,
-            "token_id": str(token_id),
+            "token_id": parse_id(token_id),
             "salt": b_to_h(salt),
         }
     )
 
     iv, ct = gen_aes_cbc(derived["k_0"], d_to_b(cast(dict, payload)))
 
-    tag: bytes = hmac_from_cbc(
+    tag: bytes = gen_hmac(
         derived["k_1"],
-        aad=aad,
-        iv=iv,
-        ciphertext=ct,
+        d_to_b(
+            {"aad": b_to_h(aad), "iv": b_to_h(iv), "ciphertext": b_to_h(ct)}
+        ),
     )
 
     return {
