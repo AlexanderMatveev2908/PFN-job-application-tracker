@@ -1,5 +1,4 @@
 import asyncio
-import binascii
 import json
 import time
 from typing import Any, cast
@@ -7,6 +6,7 @@ from jose import jwe
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
+from src.lib.data_structure import h_to_b
 from src.lib.etc import calc_exp
 from src.lib.logger import clg
 
@@ -23,7 +23,7 @@ async def gen_jwe(**kwargs: Any) -> bytes:
     enc_bytes: bytes = await asyncio.to_thread(
         jwe.encrypt,
         json.dumps(payload),
-        binascii.unhexlify(env_var.jwe_public),
+        h_to_b(env_var.jwe_public),
         algorithm=K_ALG,
         encryption=P_ALG,
     )
@@ -31,19 +31,16 @@ async def gen_jwe(**kwargs: Any) -> bytes:
     return enc_bytes
 
 
-async def check_jwe(hex_token: str) -> dict | None:
-    jwe_bytes = binascii.unhexlify(hex_token)
+async def check_jwe(token: bytes) -> dict | None:
 
     try:
         decrypted_bytes = await asyncio.to_thread(
-            jwe.decrypt,
-            jwe_bytes,
-            binascii.unhexlify(env_var.jwe_private),
+            jwe.decrypt, token, h_to_b(env_var.jwe_private)
         )
 
         payload = json.loads(cast(bytes, decrypted_bytes).decode("utf-8"))
 
-        if payload["exp"] < time.time():
+        if payload["exp"] < (time.time() * 1000):
             raise ErrAPI(msg="REFRESH_TOKEN_EXPIRED", status=401)
 
         return payload

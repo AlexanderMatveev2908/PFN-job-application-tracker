@@ -13,16 +13,20 @@ env_var = get_env()
 
 def gen_jwt(**kwargs: Any) -> str:
     payload = {**kwargs}
-    payload["exp"] = calc_exp("15m")
+    payload["exp"] = calc_exp("15m") // 1000
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 
     return token
 
 
-def verify_jwt(token: str) -> str:
+def verify_jwt(token: str, dirty: bool = False) -> str:
     try:
-        decoded = jwt.decode(token, env_var.jwt_secret, algorithms=[ALG])
+        decoded = jwt.decode(
+            token + ("👻 some random text for fun" if dirty else ""),
+            env_var.jwt_secret,
+            algorithms=[ALG],
+        )
 
         return decoded
     except jwt.ExpiredSignatureError:

@@ -31,11 +31,11 @@ mp: dict[ParamExpT, int] = {
 }
 
 
-def calc_exp(param: ParamExpT) -> int:
+def calc_exp(param: ParamExpT, reverse: bool = False) -> int:
     base = int(time())
 
     add = mp.get(param)
     if add is None:
         raise ErrAPI(msg="invalid param", status=500)
 
-    return (base + add) * 1000
+    return (base + (-add if reverse else add)) * 1000
