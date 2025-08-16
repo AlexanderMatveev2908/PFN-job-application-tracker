@@ -1,7 +1,6 @@
 import json
 import os
 import hmac
-from time import time
 from typing import Any, Literal, TypedDict, cast
 import uuid
 
@@ -9,10 +8,11 @@ from sqlalchemy import select
 from src.conf.db import db_trx
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_id
+from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_enum, parse_id
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
-from src.lib.algs.hmac import gen_hmac, hmac_from_cbc
+from src.lib.algs.hmac import gen_hmac
+from src.lib.etc import lt_now
 from src.models.token import AlgT, Token, TokenT
 
 
@@ -96,32 +96,39 @@ async def check_cbc_hmac(token: str) -> dict[str, Any]:
             Token.id == uuid.UUID(aad_d["token_id"])
             and Token.token_t == TokenT(aad_d["token_t"])
         )
-        existing = (await trx.execute(stm)).scalar_one_or_none()
-        print(existing)
-    # info_b: bytes = d_to_b(
-    #     {
-    #         "alg": aad_d["alg"],
-    #         "token_t": aad_d["token_t"],
-    #         "user_id": aad_d["user_id"],
-    #     }
-    # )
+        existing = cast(
+            Token, (await trx.execute(stm)).scalar_one_or_none()
+        ).to_d()
 
-    # derived = derive_hkdf_cbc_hmac(
-    #     master=master_key,
-    #     info=info_b,
-    #     salt=h_to_b(aad_d["salt"]),
-    # )
+        if lt_now(existing["exp"]):
+            raise ErrAPI(msg="token expired", status=401)
 
-    # aad: bytes = h_to_b(aad_hex)
-    # iv: bytes = h_to_b(iv_hex)
-    # ct: bytes = h_to_b(ct_hex)
-    # tag: bytes = h_to_b(tag_hex)
+        info_b: bytes = d_to_b(
+            {
+                "alg": parse_enum(existing["alg"]),
+                "token_t": parse_enum(existing["token_t"]),
+                "user_id": parse_id(existing["user_id"]),
+            }
+        )
 
-    # comp_tag = hmac_from_cbc(derived["k_1"], aad=aad, iv=iv, ciphertext=ct)
+        derived = derive_hkdf_cbc_hmac(
+            master=h_to_b(get_env().master_key),
+            info=info_b,
+            salt=h_to_b(aad_d["salt"]),
+        )
 
-    # if not constant_time_check(tag, comp_tag):
-    #     raise ErrAPI(msg="invalid token", status=401)
+        comp_tag = gen_hmac(
+            derived["k_1"],
+            d_to_b(
+                {"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex},
+            ),
+        )
 
-    # pt = dec_aes_cbc(derived["k_0"], iv=iv, ciphertext=ct)
+        pt = dec_aes_cbc(
+            derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
+        )
 
-    # return json.loads(pt.decode("utf-8"))
+        if not constant_time_check(h_to_b(tag_hex), comp_tag):
+            raise ErrAPI(msg="invalid token", status=401)
+
+        return json.loads(pt.decode("utf-8"))
