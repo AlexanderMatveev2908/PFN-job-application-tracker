@@ -11,6 +11,7 @@ from src.decorators.err import ErrAPI
 from src.lib.logger import clg
 
 env_var = get_env()
+
 K_ALG = "RSA-OAEP-256"
 P_ALG = "A256GCM"
 
