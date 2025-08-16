@@ -1,4 +1,5 @@
-from cryptography.hazmat.primitives import hashes, hmac as chmac
+from typing import Literal
+from cryptography.hazmat.primitives import hashes, hmac
 from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
 
 from src.lib.data_structure import h_to_b
@@ -6,19 +7,19 @@ from src.lib.data_structure import h_to_b
 
 MASTERS: dict[int, bytes] = {
     0: h_to_b(
-        "da8d5119a6850ce5415f7602e01228fefd96d74092922a21aef8da09f60412f3dfa3362f00488733aeaf6a87e15c39446ce31c06c51d74e9621be5b271e0f680ffa23200fd26e34b45ce258bb648db7aeb3f578c92b1407c3d2d755766c23fd53ec14bbd"  # noqa: E501
+        "bdbbc28606c8c51f58a3bf38ae2d94042a07f3651fb585691440895595b42d8e0edc4dbbf73f4ccb89e76acb92a9c50d59742524c0eec7026cfb096cdb257d6a"  # noqa: E501
     )
 }
 
 
 def derive_hkdf(
     *, master: bytes, info: bytes, salt: bytes
-) -> dict[str, bytes]:
-    h = chmac.HMAC(salt, hashes.SHA256())
+) -> dict[Literal["k_0", "k_1"], bytes]:
+    h = hmac.HMAC(salt, hashes.SHA256())
     h.update(master)
-    prk = h.finalize()
+    prk: bytes = h.finalize()
 
-    okm = HKDFExpand(
+    okm: bytes = HKDFExpand(
         algorithm=hashes.SHA256(),
         length=64,
         info=info,
