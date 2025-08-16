@@ -1,8 +1,8 @@
-"""migration for tokens
+"""=> 0 mig
 
-Revision ID: 908040a407dd
+Revision ID: a407370da7e0
 Revises: 
-Create Date: 2025-08-16 13:07:26.043582
+Create Date: 2025-08-16 14:24:15.322485
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '908040a407dd'
+revision: str = 'a407370da7e0'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -38,7 +38,8 @@ def upgrade() -> None:
     op.create_table('tokens',
     sa.Column('user_id', sa.UUID(), nullable=False),
     sa.Column('token_t', sa.Enum('REFRESH', 'CONF_EMAIL', 'RECOVER_PWD', 'CHANGE_EMAIL', 'CHANGE_PWD', 'MANAGE_ACC', name='token_type'), nullable=False),
-    sa.Column('hashed', sa.LargeBinary(length=32), nullable=False),
+    sa.Column('alg', sa.Enum('AES_CBC_HMAC_SHA256', 'RSA_OAEP_256_A256GCM', 'HMAC_SHA256', name='alg_type'), nullable=False),
+    sa.Column('hashed', sa.LargeBinary(length=32), nullable=True),
     sa.Column('exp', sa.BigInteger(), nullable=False),
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.BigInteger(), server_default=sa.text('(extract(epoch from now()) * 1000)::bigint'), nullable=False),
@@ -46,7 +47,6 @@ def upgrade() -> None:
     sa.Column('deleted_at', sa.BigInteger(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['public.users.id'], name='fk_tokens_user', ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('hashed'),
     schema='public'
     )
     op.create_index(op.f('ix_public_tokens_user_id'), 'tokens', ['user_id'], unique=False, schema='public')

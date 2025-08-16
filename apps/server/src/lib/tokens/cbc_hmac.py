@@ -3,44 +3,52 @@ import os
 import hmac
 from time import time
 from typing import Any, Literal, TypedDict, cast
+import uuid
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
-from src.lib.algs.types import AlgT
 from src.lib.data_structure import b_to_h, d_to_b, h_to_b
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
-from src.lib.algs.hkdf import derive_hkdf_cbc_hmac
+from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import hmac_from_cbc
-from src.models.token import TokenT
+from src.models.token import AlgT, TokenT
 
 
 master_key = h_to_b(get_env().master_key)
 
 
-class InfoT(TypedDict):
+class HdrT(TypedDict):
     alg: AlgT
     token_t: TokenT
 
 
-def gen_cbc_sha(
-    payload: dict[Literal["user_id"] | str, str], aad_d: InfoT
-) -> str:
+class CbcHmacResT(TypedDict):
+    client_token: str
+    token_id: uuid.UUID
 
-    shared_info = {
-        "alg": aad_d["alg"],
-        "token_t": aad_d["token_t"].value,
+
+async def gen_cbc_hmac(
+    payload: dict[Literal["user_id"] | str, str], hdr: HdrT
+) -> CbcHmacResT:
+
+    info_d: dict = {
+        "alg": hdr["alg"].value,
+        "token_t": hdr["token_t"].value,
         "user_id": payload["user_id"],
     }
-    info: bytes = d_to_b(shared_info)
 
+    info: bytes = d_to_b(info_d)
     salt: bytes = os.urandom(32)
 
-    derived = derive_hkdf_cbc_hmac(master=master_key, info=info, salt=salt)
+    derived: DerivedKeysCbcHmacT = derive_hkdf_cbc_hmac(
+        master=master_key, info=info, salt=salt
+    )
+    token_id: uuid.UUID = uuid.uuid4()
 
     aad: bytes = d_to_b(
         {
-            **shared_info,
+            **info_d,
+            "token_id": str(token_id),
             "salt": b_to_h(salt),
-            "exp": int(time()) + 15 * 60,
         }
     )
 
@@ -53,37 +61,40 @@ def gen_cbc_sha(
         ciphertext=ct,
     )
 
-    return f"{b_to_h(aad)}.{b_to_h(iv)}.{b_to_h(ct)}.{b_to_h(tag)}"
+    return {
+        "client_token": f"{b_to_h(aad)}.{b_to_h(iv)}.{b_to_h(ct)}.{b_to_h(tag)}",  # noqa: E501
+        "token_id": token_id,
+    }
 
 
 def constant_time_check(a: bytes, b: bytes) -> bool:
     return hmac.compare_digest(a, b)
 
 
-def check_cbc_sha(token: str) -> dict[str, Any]:
+def check_cbc_hmac(token: str) -> dict[str, Any]:
 
     try:
         aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
     except Exception:
         raise ErrAPI(msg="invalid token format", status=401)
 
-    aad_d: dict = json.loads(h_to_b(aad_hex).decode("utf-8"))
+    hdr: dict = json.loads(h_to_b(aad_hex).decode("utf-8"))
 
-    if int(aad_d["exp"]) <= int(time()):
+    if int(hdr["exp"]) <= int(time()):
         raise ErrAPI(msg="expired token", status=401)
 
     info_b: bytes = d_to_b(
         {
-            "alg": aad_d["alg"],
-            "token_t": aad_d["token_t"],
-            "user_id": aad_d["user_id"],
+            "alg": hdr["alg"],
+            "token_t": hdr["token_t"],
+            "user_id": hdr["user_id"],
         }
     )
 
     derived = derive_hkdf_cbc_hmac(
         master=master_key,
         info=info_b,
-        salt=h_to_b(aad_d["salt"]),
+        salt=h_to_b(hdr["salt"]),
     )
 
     aad: bytes = h_to_b(aad_hex)
@@ -99,18 +110,3 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
     pt = dec_aes_cbc(derived["k_0"], iv=iv, ciphertext=ct)
 
     return json.loads(pt.decode("utf-8"))
-
-
-print(
-    gen_cbc_sha(
-        {
-            "user_id": "abcdef",
-        },
-        {"alg": "AES-CBC-HMAC-SHA256", "token_t": TokenT.CHANGE_EMAIL},
-    )
-)
-print(
-    check_cbc_sha(
-        "7b22616c67223a224145532d4342432d484d41432d534841323536222c22657870223a313735353333383931322c2273616c74223a2235643738306161643638393066333039376535383234363161326565643834666666653338626238303935613039646630313862656630353732636534663331222c22746f6b656e5f74223a224348414e47455f454d41494c222c22757365725f6964223a22616263646566227d.8d3d7e999c9367e4cae3f81c48cb908a.fbb1a21a8c278964c7d48aa890fe5d17cd6da89b1475c0afec9aa121c837806d.dba17760085a25c0ce427437bf60c7dbdfbee1de82e55540701f931734233437"  # noqa: E501
-    )
-)

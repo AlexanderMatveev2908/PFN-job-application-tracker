@@ -22,9 +22,12 @@ def expand_okm(prk: bytes, length: int, info: bytes) -> bytes:
     return okm
 
 
+DerivedKeysCbcHmacT = dict[Literal["k_0", "k_1"], bytes]
+
+
 def derive_hkdf_cbc_hmac(
     *, master: bytes, info: bytes, salt: bytes
-) -> dict[Literal["k_0", "k_1"], bytes]:
+) -> DerivedKeysCbcHmacT:
     prk = extract_prk(master, salt)
 
     okm = expand_okm(prk, length=64, info=info)
@@ -32,7 +35,7 @@ def derive_hkdf_cbc_hmac(
     return {"k_0": okm[:32], "k_1": okm[32:]}
 
 
-def derive_hmac(master: bytes, salt: bytes, info: bytes) -> bytes:
+def derive_hmac(*, master: bytes, salt: bytes, info: bytes) -> bytes:
     prk = extract_prk(master, salt)
 
     okm = expand_okm(prk, length=32, info=info)

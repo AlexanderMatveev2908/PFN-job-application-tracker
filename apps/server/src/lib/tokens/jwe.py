@@ -16,7 +16,7 @@ K_ALG = "RSA-OAEP-256"
 P_ALG = "A256GCM"
 
 
-async def gen_jwe(**kwargs: Any) -> str:
+async def gen_jwe(**kwargs: Any) -> bytes:
     payload = {**kwargs}
     payload["exp"] = int(
         (datetime.now(timezone.utc) + timedelta(days=1)).timestamp()
@@ -30,7 +30,7 @@ async def gen_jwe(**kwargs: Any) -> str:
         encryption=P_ALG,
     )
 
-    return binascii.hexlify(enc_bytes).decode("utf-8")
+    return enc_bytes
 
 
 async def check_jwe(hex_token: str) -> dict | None:

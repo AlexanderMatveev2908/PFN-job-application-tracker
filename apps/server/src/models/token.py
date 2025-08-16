@@ -21,6 +21,12 @@ class TokenT(Enum):
     MANAGE_ACC = "MANAGE_ACC"
 
 
+class AlgT(Enum):
+    AES_CBC_HMAC_SHA256 = "AES-CBC-HMAC-SHA256"
+    RSA_OAEP_256_A256GCM = "RSA-OAEP-256-A256GCM"
+    HMAC_SHA256 = "HMAC-SHA256"
+
+
 class Token(RootTable):
     __tablename__ = "tokens"
 
@@ -39,9 +45,9 @@ class Token(RootTable):
         nullable=False,
     )
 
-    hashed: Mapped[bytes] = mapped_column(
-        LargeBinary(32), unique=True, nullable=False
-    )
+    alg: Mapped[AlgT] = mapped_column(PgEnum(AlgT, name="alg_type"))
+
+    hashed: Mapped[bytes] = mapped_column(LargeBinary(32), nullable=True)
 
     exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
