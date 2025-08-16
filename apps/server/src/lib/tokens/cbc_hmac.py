@@ -1,19 +1,25 @@
 import json
 import os
 import hmac
-from typing import Any, TypedDict, cast
+from typing import TypedDict, cast
 import uuid
 
 from sqlalchemy import select
-from src.conf.db import db_trx
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import b_to_h, d_to_b, h_to_b, parse_enum, parse_id
+from src.lib.data_structure import (
+    b_to_d,
+    b_to_h,
+    d_to_b,
+    h_to_b,
+    parse_enum,
+    parse_id,
+)
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import gen_hmac
 from src.lib.etc import calc_exp, lt_now
-from src.models.token import AlgT, PayloadTokenT, Token, TokenT
+from src.models.token import AlgT, PayloadT, PayloadTokenT, Token, TokenT
 from sqlalchemy.ext.asyncio import AsyncSession
 
 master_key = h_to_b(get_env().master_key)
@@ -93,53 +99,61 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
     return hmac.compare_digest(a, b)
 
 
-async def check_cbc_hmac(token: str) -> dict[str, Any]:
+async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
 
     try:
         aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
     except Exception:
         raise ErrAPI(msg="invalid token format", status=401)
 
-    aad_d: AadT = json.loads(h_to_b(aad_hex).decode("utf-8"))
+    aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
-    async with db_trx() as trx:
-        stm = select(Token).where(
-            Token.id == uuid.UUID(aad_d["token_id"])
-            and Token.token_t == TokenT(aad_d["token_t"])
-        )
-        existing = cast(
-            Token, (await trx.execute(stm)).scalar_one_or_none()
-        ).to_d()
+    stm = select(Token).where(
+        (Token.id == uuid.UUID(aad_d["token_id"]))
+        & (Token.token_t == TokenT(aad_d["token_t"]))
+    )
 
-        if lt_now(existing["exp"]):
-            raise ErrAPI(msg="token expired", status=401)
+    stm = select(Token).where(
+        Token.id == uuid.UUID(aad_d["token_id"])
+        and Token.token_t == TokenT(aad_d["token_t"])
+    )
 
-        info_b: bytes = d_to_b(
-            {
-                "alg": parse_enum(existing["alg"]),
-                "token_t": parse_enum(existing["token_t"]),
-                "user_id": parse_id(existing["user_id"]),
-            }
-        )
+    existing = (await trx.execute(stm)).scalar_one_or_none()
 
-        derived = derive_hkdf_cbc_hmac(
-            master=h_to_b(get_env().master_key),
-            info=info_b,
-            salt=h_to_b(aad_d["salt"]),
-        )
+    if not existing:
+        raise ErrAPI(msg="token not found", status=401)
 
-        comp_tag = gen_hmac(
-            derived["k_1"],
-            d_to_b(
-                {"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex},
-            ),
-        )
+    existing = existing.to_d()
 
-        pt = dec_aes_cbc(
-            derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
-        )
+    if lt_now(existing["exp"]):
+        raise ErrAPI(msg="token expired", status=401)
 
-        if not constant_time_check(h_to_b(tag_hex), comp_tag):
-            raise ErrAPI(msg="invalid token", status=401)
+    info_b: bytes = d_to_b(
+        {
+            "alg": parse_enum(existing["alg"]),
+            "token_t": parse_enum(existing["token_t"]),
+            "user_id": parse_id(existing["user_id"]),
+        }
+    )
 
-        return json.loads(pt.decode("utf-8"))
+    derived = derive_hkdf_cbc_hmac(
+        master=h_to_b(get_env().master_key),
+        info=info_b,
+        salt=h_to_b(aad_d["salt"]),
+    )
+
+    comp_tag = gen_hmac(
+        derived["k_1"],
+        d_to_b(
+            {"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex},
+        ),
+    )
+
+    pt = dec_aes_cbc(
+        derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
+    )
+
+    if not constant_time_check(h_to_b(tag_hex), comp_tag):
+        raise ErrAPI(msg="invalid token", status=401)
+
+    return json.loads(pt.decode("utf-8"))
