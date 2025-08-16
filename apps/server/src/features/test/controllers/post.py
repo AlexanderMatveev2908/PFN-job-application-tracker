@@ -2,7 +2,7 @@ import asyncio
 import json
 from fastapi import Depends, Request
 from src.decorators.res import ResAPI
-from src.features.auth.middleware.register import register_mdw
+from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.test.services.register import register_flow_test_ctrl
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
@@ -35,8 +35,10 @@ async def post_msg_ctrl(req: Request) -> ResAPI:
     return ResAPI.ok_200()
 
 
-async def post_tokens_ctrl(req: Request, user=Depends(register_mdw)) -> ResAPI:
+async def post_tokens_ctrl(
+    _: Request, user_data: RegisterFormT = Depends(register_mdw)
+) -> ResAPI:
 
-    res = await register_flow_test_ctrl(user)
+    res = await register_flow_test_ctrl(user_data)
 
     return ResAPI.ok_200(res=res)
