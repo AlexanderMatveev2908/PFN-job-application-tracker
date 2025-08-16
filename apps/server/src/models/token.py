@@ -4,9 +4,9 @@ import uuid
 from sqlalchemy import (
     UUID,
     BigInteger,
-    Boolean,
     ForeignKey,
     Enum as PgEnum,
+    LargeBinary,
 )
 from src.models.root import RootTable
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -32,13 +32,17 @@ class Token(RootTable):
     )
 
     token_t: Mapped[TokenT] = mapped_column(
-        PgEnum(TokenT, name="token_type", create_constraint=True),
+        PgEnum(
+            TokenT,
+            name="token_type",
+        ),
         nullable=False,
     )
 
-    is_valid: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=True
+    hashed: Mapped[bytes] = mapped_column(
+        LargeBinary(32), unique=True, nullable=False
     )
+
     exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
     user = relationship("User", back_populates="tokens")
