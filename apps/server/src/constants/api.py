@@ -13,8 +13,8 @@ whitelist: list[str] = [
         ),
     ),
     *(
-        [env_var.next_public_front_url_test]
-        if env_var.next_public_front_url_test
+        [cast(str, env_var.next_public_front_url_test)]
+        if env_var.py_env == "test"
         else []
     ),
 ]

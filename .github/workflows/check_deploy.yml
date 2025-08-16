@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_NAME: ${{secrets.APP_NAME}}
-      NEXT_PUBLIC_ENV: ${{secrets.NEXT_PUBLIC_ENV}}
+      NEXT_PUBLIC_ENV: "test"
       NEXT_PUBLIC_BACK_URL: ${{secrets.NEXT_PUBLIC_BACK_URL}}
       NEXT_PUBLIC_BACK_URL_DEV: ${{secrets.NEXT_PUBLIC_BACK_URL_DEV}}
       NEXT_PUBLIC_FRONT_URL: ${{secrets.NEXT_PUBLIC_FRONT_URL}}
       NEXT_PUBLIC_FRONT_URL_DEV: ${{secrets.NEXT_PUBLIC_FRONT_URL_DEV}}
-      PY_ENV: ${{secrets.PY_ENV}}
+      PY_ENV: "test"
       PORT: ${{secrets.PORT}}
       FRONT_URL: ${{secrets.FRONT_URL}}
       FRONT_URL_DEV: ${{secrets.FRONT_URL_DEV}}
@@ -44,6 +44,8 @@ jobs:
       JWT_SECRET: ${{secrets.JWT_SECRET}}
       JWE_PUBLIC: ${{secrets.JWE_PUBLIC}}
       JWE_PRIVATE: ${{secrets.JWE_PRIVATE}}
+      MASTER_KEY: ${{secrets.MASTER_KEY}}
+      PEPPER_KEY: ${{secrets.PEPPER_KEY}}
 
     steps:
       - name: 📂 clone code
@@ -143,6 +145,8 @@ jobs:
               "JWT_SECRET",
               "JWE_PUBLIC",
               "JWE_PRIVATE",
+              "MASTER_KEY",
+              "PEPPER_KEY",
             ];
 
             const envPath = path.join(process.cwd(), "apps/server/.env");

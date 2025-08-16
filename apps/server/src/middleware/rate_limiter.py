@@ -33,7 +33,7 @@ def rate_limit(
     async def _dep(req: Request, res: Response) -> None:
         env_var = get_env()
 
-        if env_var.next_public_front_url_test:
+        if env_var.py_env == "test":
             return
 
         async with redis_session() as r:
