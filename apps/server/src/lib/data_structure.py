@@ -1,5 +1,6 @@
 import datetime
 from enum import Enum
+import json
 import re
 from typing import Any, Mapping, Optional, Sequence
 import uuid
@@ -108,3 +109,23 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
         return serialize(vars(obj), depth + 1, max_depth)
 
     return obj
+
+
+def h_to_b(txt_hex: str) -> bytes:
+    return bytes.fromhex(txt_hex)
+
+
+def b_to_h(b: bytes) -> str:
+    return b.hex()
+
+
+def d_to_b(obj: dict[str, Any]) -> bytes:
+    return json.dumps(obj, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
+
+
+def b_to_d(b: bytes) -> dict:
+    return json.loads(
+        b.decode("utf-8"),
+    )

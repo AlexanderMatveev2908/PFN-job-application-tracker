@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Any, Optional, cast
 import uuid
-from sqlalchemy import TIMESTAMP, MetaData, func, inspect
+from sqlalchemy import BigInteger, MetaData, inspect, text
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -23,17 +23,22 @@ class RootTable(Base):
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
 
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
-    )
-    updated_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True),
-        server_default=func.now(),
-        server_onupdate=func.now(),
+    created_at: Mapped[int] = mapped_column(
+        BigInteger,
+        server_default=text("(extract(epoch from now()) * 1000)::bigint"),
         nullable=False,
     )
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(
-        TIMESTAMP(timezone=True), nullable=True
+
+    updated_at: Mapped[int] = mapped_column(
+        BigInteger,
+        server_default=text("(extract(epoch from now()) * 1000)::bigint"),
+        server_onupdate=text("(extract(epoch from now()) * 1000)::bigint"),
+        nullable=False,
+    )
+
+    deleted_at: Mapped[Optional[int]] = mapped_column(
+        BigInteger,
+        nullable=True,
     )
 
     def to_d(

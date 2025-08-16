@@ -2,24 +2,23 @@ import asyncio
 import binascii
 import json
 import time
-from datetime import datetime, timedelta, timezone
 from typing import Any, cast
 from jose import jwe
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
+from src.lib.etc import calc_exp
 from src.lib.logger import clg
 
 env_var = get_env()
+
 K_ALG = "RSA-OAEP-256"
 P_ALG = "A256GCM"
 
 
-async def gen_jwe(**kwargs: Any) -> str:
+async def gen_jwe(**kwargs: Any) -> bytes:
     payload = {**kwargs}
-    payload["exp"] = int(
-        (datetime.now(timezone.utc) + timedelta(days=1)).timestamp()
-    )
+    payload["exp"] = calc_exp("1d")
 
     enc_bytes: bytes = await asyncio.to_thread(
         jwe.encrypt,
@@ -29,7 +28,7 @@ async def gen_jwe(**kwargs: Any) -> str:
         encryption=P_ALG,
     )
 
-    return binascii.hexlify(enc_bytes).decode("utf-8")
+    return enc_bytes
 
 
 async def check_jwe(hex_token: str) -> dict | None:

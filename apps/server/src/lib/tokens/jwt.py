@@ -1,10 +1,10 @@
-from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import jwt
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
+from src.lib.etc import calc_exp
 
 ALG = "HS256"
 
@@ -13,7 +13,7 @@ env_var = get_env()
 
 def gen_jwt(**kwargs: Any) -> str:
     payload = {**kwargs}
-    payload["exp"] = datetime.now(timezone.utc) + timedelta(minutes=15)
+    payload["exp"] = calc_exp("15m")
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 

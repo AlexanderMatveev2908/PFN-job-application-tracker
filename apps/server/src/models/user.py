@@ -1,9 +1,10 @@
 import asyncio
 import concurrent.futures
+from typing import TYPE_CHECKING
 from argon2 import PasswordHasher
 import concurrent
 from sqlalchemy import Boolean, String
-from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
 from src.lib.logger import clg
 from src.models.root import RootTable
@@ -13,6 +14,10 @@ PH = PasswordHasher(
 )
 
 HASH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+
+
+if TYPE_CHECKING:
+    from .token import Token
 
 
 class User(RootTable):
@@ -28,6 +33,10 @@ class User(RootTable):
         nullable=False,
     )
     terms: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+    tokens: Mapped[list["Token"]] = relationship(
+        "Token", back_populates="user"
+    )
 
     @validates("terms")
     def check_terms(self, k: str, v: bool) -> bool:

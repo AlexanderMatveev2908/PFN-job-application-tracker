@@ -22,7 +22,7 @@ engine = create_async_engine(
     cast(str, env_var.db_url),
     echo=False,
     pool_pre_ping=True,
-    poolclass=(NullPool if env_var.next_public_front_url_test else None),
+    poolclass=(NullPool if env_var.py_env == "test" else None),
     connect_args={"ssl": ssl_ctx},
 )
 

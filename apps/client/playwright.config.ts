@@ -11,8 +11,9 @@ export default defineConfig({
   workers: 8,
   use: {
     baseURL:
-      process.env.NEXT_PUBLIC_FRONT_URL_TEST ??
-      process.env.NEXT_PUBLIC_FRONT_URL_DEV,
+      process.env.NEXT_PUBLIC_ENV === "test"
+        ? process.env.NEXT_PUBLIC_FRONT_URL_TEST
+        : process.env.NEXT_PUBLIC_FRONT_URL_DEV,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
     video: "retain-on-failure",
