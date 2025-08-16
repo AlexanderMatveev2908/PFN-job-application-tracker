@@ -148,3 +148,15 @@ def parse_enum(v: Enum | str) -> str:
         return v.value
     else:
         raise ErrAPI(msg="invalid v, neither enum or str", status=500)
+
+
+def pick(
+    obj: dict,
+    keys_in: list[str] | None = None,
+    keys_off: list[str] | None = None,
+) -> dict:
+    return {
+        k: obj[k]
+        for k in obj.keys()
+        if (keys_in is None or k in keys_in) and k not in keys_off
+    }
