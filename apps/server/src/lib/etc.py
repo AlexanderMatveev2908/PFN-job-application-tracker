@@ -22,16 +22,20 @@ def wrap_loop(
         asyncio.run(fn)
 
 
-ParamExpT = Literal["15m", "1d"]
+ParamExpT = Literal["15m", "1h", "1d"]
+
+mp: dict[ParamExpT, int] = {
+    "15m": 15 * 60,
+    "1h": 60**2,
+    "1d": 24 * 60**2,
+}
 
 
 def calc_exp(param: ParamExpT) -> int:
     base = int(time())
-    if param == "15m":
-        add = 60 * 15
-    elif param == "1d":
-        add = (60**2) * 24
-    else:
+
+    add = mp.get(param)
+    if add is None:
         raise ErrAPI(msg="invalid param", status=500)
 
-    return base + add * 100
+    return (base + add) * 1000
