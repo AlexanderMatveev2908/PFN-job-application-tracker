@@ -19,6 +19,7 @@ def gen_aes_cbc(k: bytes, plain_txt: bytes) -> Tuple[bytes, bytes]:
     cipher = Cipher(algorithms.AES(k), modes.CBC(iv))
     enc = cipher.encryptor()
     ct = enc.update(padded) + enc.finalize()
+
     return iv, ct
 
 
@@ -30,6 +31,6 @@ def dec_aes_cbc(k: bytes, iv: bytes, ciphertext: bytes) -> bytes:
     unpadder = padding.PKCS7(BLOCK_BITS).unpadder()
     try:
         pt = unpadder.update(padded) + unpadder.finalize()
+        return pt
     except Exception:
         raise ErrAPI(msg="invalid ciphertext", status=401)
-    return pt

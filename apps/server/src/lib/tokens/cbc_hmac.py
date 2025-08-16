@@ -8,7 +8,7 @@ from src.decorators.err import ErrAPI
 from src.lib.data_structure import b_to_h, d_to_b, h_to_b
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import derive_hkdf
-from src.lib.algs.sha import gen_sha256
+from src.lib.algs.hmac import gen_hmac
 
 
 class MainPayloadT(TypedDict):
@@ -44,7 +44,7 @@ def gen_cbc_sha(payload: PayloadT, aad_d: dict) -> str:
 
     iv, ct = gen_aes_cbc(derived["k_0"], d_to_b(cast(dict, payload)))
 
-    tag: bytes = gen_sha256(
+    tag: bytes = gen_hmac(
         derived["k_1"],
         aad=aad,
         iv=iv,
@@ -89,7 +89,7 @@ def check_cbc_sha(token: str) -> dict[str, Any]:
     ct: bytes = h_to_b(ct_hex)
     tag: bytes = h_to_b(tag_hex)
 
-    comp_tag = gen_sha256(derived["k_1"], aad=aad, iv=iv, ciphertext=ct)
+    comp_tag = gen_hmac(derived["k_1"], aad=aad, iv=iv, ciphertext=ct)
 
     if not constant_time_check(tag, comp_tag):
         raise ErrAPI(msg="invalid token", status=401)

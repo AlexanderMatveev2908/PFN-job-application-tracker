@@ -26,7 +26,7 @@ class Token(RootTable):
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
-        ForeignKey("users.id", ondelete="CASCADE"),
+        ForeignKey("users.id", name="fk_tokens_user", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
