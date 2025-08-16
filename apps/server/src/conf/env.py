@@ -83,6 +83,7 @@ class EnvVar(BaseSettings):
     jwe_public: str = Field(..., validation_alias="JWE_PUBLIC")
     jwe_private: str = Field(..., validation_alias="JWE_PRIVATE")
 
+    master_key: str = Field(..., validation_alias="MASTER_KEY")
     # __ tests CI/CD
     next_public_back_url_test: str | None = Field(
         None, validation_alias="NEXT_PUBLIC_BACK_URL_TEST"
