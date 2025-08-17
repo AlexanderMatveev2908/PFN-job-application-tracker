@@ -82,8 +82,7 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
 
     if isinstance(obj, (bytes, bytearray)):
         try:
-            return "some long string 👻"
-            # return obj.decode("utf-8")
+            return obj.hex()
         except Exception:
             return list(obj)
 
