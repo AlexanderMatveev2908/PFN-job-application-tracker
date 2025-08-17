@@ -47,6 +47,14 @@ class RegisterForm(BaseModel):
             raise ErrAPI(msg="Passwords do not match", status=422)
         return self
 
+    @model_validator(mode="after")
+    def check_email(self) -> Self:
+        if self.email == self.password:
+            raise ErrAPI(
+                msg="password can not be the same as the email", status=400
+            )
+        return self
+
     @field_validator("terms")
     def check_terms(cls, v: bool) -> bool:
         if v is not True:

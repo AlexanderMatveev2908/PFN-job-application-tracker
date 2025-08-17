@@ -1,6 +1,9 @@
 import asyncio
+import json
 from time import time
 from typing import Callable, Coroutine, Literal, TypeVar
+
+from fastapi import Request
 
 from src.decorators.err import ErrAPI
 
@@ -22,24 +25,35 @@ def wrap_loop(
         asyncio.run(fn)
 
 
-ParamExpT = Literal["15m", "1h", "1d"]
+ParamExpT = Literal["15m", "30m", "1h", "1d"]
 
-mp: dict[ParamExpT, int] = {
+mapper: dict[ParamExpT, int] = {
     "15m": 15 * 60,
+    "30m": 30 * 60,
     "1h": 60**2,
     "1d": 24 * 60**2,
 }
 
+FormatCalcExpT = Literal["ms", "sec"]
 
-def calc_exp(param: ParamExpT, reverse: bool = False) -> int:
+
+def calc_exp(
+    param: ParamExpT, reverse: bool = False, format: FormatCalcExpT = "ms"
+) -> int:
     base = int(time())
 
-    add = mp.get(param)
-    if add is None:
+    add = mapper.get(param)
+    if not add:
         raise ErrAPI(msg="invalid param", status=500)
 
-    return (base + (-add if reverse else add)) * 1000
+    return (base + (-add if reverse else add)) * (
+        1000 if format == "ms" else 1
+    )
 
 
 def lt_now(v: int) -> bool:
     return v < time() * 1000
+
+
+async def load_bd(req: Request) -> dict:
+    return json.loads(await req.body())

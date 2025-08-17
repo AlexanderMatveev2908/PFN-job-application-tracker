@@ -3,6 +3,7 @@ import json
 from fastapi import Depends, Request
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
+from src.features.test.services.tokens_expired import tokens_expired_svc
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
@@ -42,5 +43,13 @@ async def tokens_health_ctrl(
 ) -> ResAPI:
 
     res = await tokens_health_svc(user_data)
+
+    return ResAPI.ok_200(**res)
+
+
+async def tokens_expired_ctrl(
+    req: Request, user_data: RegisterFormT = Depends(register_mdw)
+) -> ResAPI:
+    res = await tokens_expired_svc(user_data)
 
     return ResAPI.ok_200(**res)
