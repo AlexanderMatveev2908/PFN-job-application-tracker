@@ -32,7 +32,7 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             us = await trx.get(User, row.id)
         else:
             data = {k: v for k, v in user_data.items() if k != "password"}
-            user_id = uuid.uuid4()
+            user_id = parse_id(uuid.uuid4())
             plain_pwd = user_data["password"]
 
             us = User(**data, id=user_id)
@@ -44,8 +44,10 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         if not us:
             raise ErrAPI(msg="👻 user disappeared", status=500)
 
-        access_token: str = gen_jwt({"user_id": parse_id(us.id)})
-        result_jwe = await gen_jwe(user_id=parse_id(us.id), trx=trx)
+        parsed_us_id: str = parse_id(us.id)
+
+        access_token: str = gen_jwt({"user_id": parsed_us_id})
+        result_jwe = await gen_jwe(user_id=parsed_us_id, trx=trx)
 
         hdr: HdrT = {
             "alg": AlgT.AES_CBC_HMAC_SHA256,
@@ -53,7 +55,7 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         }
 
         result_cbc_hmac = await gen_cbc_hmac(
-            payload={"user_id": parse_id(us.id)}, hdr=hdr, trx=trx
+            payload={"user_id": parsed_us_id}, hdr=hdr, trx=trx
         )
 
         return {
