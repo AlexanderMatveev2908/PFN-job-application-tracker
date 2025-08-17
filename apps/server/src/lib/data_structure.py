@@ -84,7 +84,7 @@ def serialize(obj: Any, depth: int, max_depth: int = 0) -> Any:
         try:
             return obj.hex()
         except Exception:
-            return list(obj)
+            return "👻"
 
     if isinstance(obj, (datetime.datetime, datetime.date)):
         return obj.isoformat()
