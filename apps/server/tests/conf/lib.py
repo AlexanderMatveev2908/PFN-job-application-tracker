@@ -11,7 +11,6 @@ def parse_res(res: Response) -> dict:
 
     clg(
         data,
-        res.cookies.get("refresh_token", "N/A refresh_token"),
         ttl=f"💾 {part} — 🚦 {res.status_code}",
     )
 

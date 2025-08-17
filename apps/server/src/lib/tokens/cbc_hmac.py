@@ -6,6 +6,7 @@ import uuid
 
 from sqlalchemy import select
 from src.conf.env import get_env
+from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
 from src.lib.data_structure import (
     b_to_d,
@@ -123,10 +124,10 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
 
 async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
-    try:
-        aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
-    except Exception:
+    if not REG_CBC_HMAC.fullmatch(token):
         raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+
+    aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 

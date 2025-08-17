@@ -62,7 +62,7 @@ async def tokens_expired_ctrl(
     return ResAPI.ok_200(**res)
 
 
-async def get_err_expired_ctrl(req: Request) -> ResAPI:
+async def get_err_ctrl(req: Request) -> ResAPI:
     data = await parse_bd(req)
 
     act, token = dest_d(data, keys=["act", "token"])
