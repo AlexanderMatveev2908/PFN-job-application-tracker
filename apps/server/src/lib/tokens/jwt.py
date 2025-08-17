@@ -1,28 +1,31 @@
-from typing import Any
-
 import jwt
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.etc import calc_exp
+from src.models.token import PayloadT
 
 ALG = "HS256"
 
 env_var = get_env()
 
 
-def gen_jwt(**kwargs: Any) -> str:
-    payload = {**kwargs}
-    payload["exp"] = calc_exp("15m")
+def gen_jwt(arg: PayloadT) -> str:
+    payload = {**arg}
+    payload["exp"] = calc_exp("15m") // 1000
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 
     return token
 
 
-def verify_jwt(token: str) -> str:
+def verify_jwt(token: str, dirty: bool = False) -> str:
     try:
-        decoded = jwt.decode(token, env_var.jwt_secret, algorithms=[ALG])
+        decoded = jwt.decode(
+            token + ("👻 some random text for fun" if dirty else ""),
+            env_var.jwt_secret,
+            algorithms=[ALG],
+        )
 
         return decoded
     except jwt.ExpiredSignatureError:

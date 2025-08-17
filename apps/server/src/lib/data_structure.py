@@ -8,6 +8,7 @@ import uuid
 from pydantic import BaseModel
 from sqlalchemy import inspect
 from src.constants.data_structure import BoolParser
+from src.decorators.err import ErrAPI
 
 
 def parse_bool(v: str) -> bool | str:
@@ -129,3 +130,38 @@ def b_to_d(b: bytes) -> dict:
     return json.loads(
         b.decode("utf-8"),
     )
+
+
+def parse_id(id: str | uuid.UUID) -> str:
+    if isinstance(id, str):
+        return id
+    elif isinstance(id, uuid.UUID):
+        return str(id)
+    else:
+        raise ErrAPI(msg="invalid id passed as arg", status=500)
+
+
+def parse_enum(v: Enum | str) -> str:
+    if isinstance(v, str):
+        return v
+    if isinstance(v, Enum) or issubclass(v, Enum):
+        return v.value
+    else:
+        raise ErrAPI(msg="invalid v, neither enum or str", status=500)
+
+
+def pick(
+    obj: dict,
+    keys_in: Optional[list[str]] = None,
+    keys_off: Optional[list[str]] = None,
+) -> dict:
+    return {
+        k: obj[k]
+        for k in obj.keys()
+        if (keys_in is None or k in keys_in)
+        and (keys_off is None or k not in keys_off)
+    }
+
+
+def dest_d(d: dict, keys: list[str]) -> tuple:
+    return tuple(d[k] for k in keys if k in d)

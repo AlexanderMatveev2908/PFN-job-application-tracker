@@ -6,20 +6,16 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
 def extract_prk(master: bytes, salt: bytes) -> bytes:
     h = hmac.HMAC(salt, hashes.SHA256())
     h.update(master)
-    prk: bytes = h.finalize()
-
-    return prk
+    return h.finalize()
 
 
 def expand_okm(prk: bytes, length: int, info: bytes) -> bytes:
 
-    okm: bytes = HKDFExpand(
+    return HKDFExpand(
         algorithm=hashes.SHA256(),
         length=length,
         info=info,
     ).derive(prk)
-
-    return okm
 
 
 DerivedKeysCbcHmacT = dict[Literal["k_0", "k_1"], bytes]

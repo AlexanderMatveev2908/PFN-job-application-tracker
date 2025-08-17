@@ -7,6 +7,7 @@ from src.conf.env import get_env
 from src.conf.redis import redis_session
 from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
+from src.lib.etc import calc_exp
 
 
 def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
@@ -28,7 +29,7 @@ def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
 
 
 def rate_limit(
-    limit: int = 5, window_ms: int = 1000 * 60 * 15
+    limit: int = 5, window_ms: int = calc_exp("15m")
 ) -> Callable[[Request, Response], Awaitable[None]]:
     async def _dep(req: Request, res: Response) -> None:
         env_var = get_env()

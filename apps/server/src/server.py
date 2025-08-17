@@ -19,7 +19,7 @@ from .constants.api import EXPOSE_HEADERS, whitelist
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     cent(f"🚀 server running on {get_env().port}...")
 
     # await get_all()
