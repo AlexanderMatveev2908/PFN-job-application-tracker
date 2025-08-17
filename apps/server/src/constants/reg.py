@@ -17,3 +17,9 @@ REG_FLOAT = re.compile(r"(^\d+(\.\d{1,2})?$)|(^\.\d{1,2}$)")
 REG_ID = re.compile(
     r"^([a-f0-9]{8})-([a-f0-9]{4})-4[a-f0-9]{3}-([a-f0-9]{4})-([a-f0-9]{12})$"
 )
+
+REG_JWE = re.compile(r"^[A-Fa-f0-9]{1058}$")
+REG_CBC_HMAC = re.compile(r"^[A-Fa-f0-9]{677}$")
+REG_JWT = re.compile(
+    r"^(?=.{171}$)[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$"
+)
