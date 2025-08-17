@@ -38,6 +38,12 @@ class User(RootTable):
         "Token", back_populates="user"
     )
 
+    is_verified: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+    )
+
     @validates("terms")
     def check_terms(self, k: str, v: bool) -> bool:
         if v is not True:
