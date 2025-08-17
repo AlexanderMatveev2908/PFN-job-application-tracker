@@ -2,5 +2,5 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def cb() -> None:
+async def cb(api) -> None:
     pass

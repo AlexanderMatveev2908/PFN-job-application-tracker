@@ -8,7 +8,7 @@ from src.lib.data_structure import parse_id
 from src.lib.tokens.cbc_hmac import CbcHmacResT, HdrT, gen_cbc_hmac
 from src.lib.tokens.jwe import gen_jwe
 from src.lib.tokens.jwt import gen_jwt
-from src.models.token import AlgT, TokenT
+from src.models.token import TokenT
 from src.models.user import User
 
 
@@ -43,7 +43,6 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         result_jwe = await gen_jwe(user_id=user_id, trx=trx)
 
         hdr: HdrT = {
-            "alg": AlgT.RSA_OAEP_256_A256GCM,
             "token_t": TokenT.REFRESH,
         }
 

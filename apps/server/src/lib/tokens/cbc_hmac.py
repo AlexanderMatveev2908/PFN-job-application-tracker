@@ -25,8 +25,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 master_key = h_to_b(get_env().master_key)
 
 
-class HdrT(TypedDict):
-    alg: AlgT
+class HdrT(
+    TypedDict,
+):
     token_t: TokenT
 
 
@@ -50,7 +51,7 @@ class BuildCbcHmacReturnT(TypedDict):
 
 def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
     info_d: dict = {
-        "alg": parse_enum(hdr["alg"]),
+        "alg": AlgT.AES_CBC_HMAC_SHA256.value,
         "token_t": parse_enum(hdr["token_t"]),
         "user_id": payload["user_id"],
     }
@@ -100,6 +101,7 @@ async def gen_cbc_hmac(
         id=result["token_id"],
         exp=calc_exp("15m"),
         user_id=payload["user_id"],
+        alg=AlgT.AES_CBC_HMAC_SHA256,
         **hdr,
     )
     trx.add(new_cbc_hmac)

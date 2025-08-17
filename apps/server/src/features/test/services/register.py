@@ -12,7 +12,7 @@ from src.lib.tokens.cbc_hmac import (
 )
 from src.lib.tokens.jwe import check_jwe, gen_jwe
 from src.lib.tokens.jwt import gen_jwt, verify_jwt
-from src.models.token import AlgT, TokenT
+from src.models.token import TokenT
 from src.models.user import User
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -55,7 +55,6 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         result_jwe = await gen_jwe(user_id=parsed_us_id, trx=trx)
 
         hdr: HdrT = {
-            "alg": AlgT.AES_CBC_HMAC_SHA256,
             "token_t": TokenT.CONF_EMAIL,
         }
 
