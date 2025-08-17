@@ -14,36 +14,41 @@ from src.lib.tokens.jwe import check_jwe, gen_jwe
 from src.lib.tokens.jwt import gen_jwt, verify_jwt
 from src.models.token import AlgT, TokenT
 from src.models.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
-    async with db_trx() as trx:
-        stm = """
+async def handle_user(user_data: RegisterFormT, trx: AsyncSession) -> User:
+    stm = """
         SELECT us.*
         FROM users us
         WHERE us.email = :email
         LIMIT 1
         """
-        row = (
-            await trx.execute(text(stm), {"email": user_data["email"]})
-        ).first()
+    row = (await trx.execute(text(stm), {"email": user_data["email"]})).first()
 
-        if row:
-            us = await trx.get(User, row.id)
-        else:
-            data = {k: v for k, v in user_data.items() if k != "password"}
-            user_id = parse_id(uuid.uuid4())
-            plain_pwd = user_data["password"]
+    if row:
+        us = await trx.get(User, row.id)
+    else:
+        data = {k: v for k, v in user_data.items() if k != "password"}
+        user_id = parse_id(uuid.uuid4())
+        plain_pwd = user_data["password"]
 
-            us = User(**data, id=user_id)
-            await us.set_pwd(plain_pwd)
-            trx.add(us)
-            await trx.flush([us])
-            await trx.refresh(us)
+        us = User(**data, id=user_id)
+        await us.set_pwd(plain_pwd)
+        trx.add(us)
+        await trx.flush([us])
+        await trx.refresh(us)
 
-        if not us:
-            raise ErrAPI(msg="👻 user disappeared", status=500)
+    if not us:
+        raise ErrAPI(msg="👻 user disappeared", status=500)
 
+    return us
+
+
+async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
+    async with db_trx() as trx:
+
+        us = await handle_user(user_data, trx)
         parsed_us_id: str = parse_id(us.id)
 
         access_token: str = gen_jwt({"user_id": parsed_us_id})
