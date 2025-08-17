@@ -25,7 +25,7 @@ async def tokens_expired_svc(user_data: RegisterFormT) -> dict:
                 "token_t": TokenT.MANAGE_ACC,
             },
             trx=trx,
-            reverse=False,
+            reverse=True,
         )
 
         return {
