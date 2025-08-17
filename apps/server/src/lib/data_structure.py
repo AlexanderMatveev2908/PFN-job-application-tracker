@@ -161,3 +161,7 @@ def pick(
         if (keys_in is None or k in keys_in)
         and (keys_off is None or k not in keys_off)
     }
+
+
+def dest_d(d: dict, keys: list[str]) -> tuple:
+    return tuple(d[k] for k in keys if k in d)
