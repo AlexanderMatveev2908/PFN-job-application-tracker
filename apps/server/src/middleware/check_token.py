@@ -7,7 +7,7 @@ from src.models.token import CheckTokenReturnT
 
 
 async def check_cbc_hmac_mdw(req: Request) -> CheckTokenReturnT:
-    token = req.query_params.get("cbc_hmac", None)
+    token = req.query_params.get("cbc_hmac_token", None)
 
     if not token:
         raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
