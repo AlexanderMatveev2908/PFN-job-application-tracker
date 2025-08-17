@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, TypedDict, cast
+from typing import Any, cast
 from jose import jwe
 from sqlalchemy import select
 
@@ -9,7 +9,13 @@ from src.lib.algs.hmac import hash_db_hmac
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b
 from src.lib.etc import calc_exp, lt_now
 from src.lib.logger import clg
-from src.models.token import AlgT, PayloadT, Token, TokenT
+from src.models.token import (
+    AlgT,
+    CheckTokenReturnT,
+    GenTokenReturnT,
+    Token,
+    TokenT,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 env_var = get_env()
@@ -18,14 +24,9 @@ K_ALG = "RSA-OAEP-256"
 P_ALG = "A256GCM"
 
 
-class JweReturnT(TypedDict):
-    client_token: str
-    server_token: Token
-
-
 async def gen_jwe(
     user_id: str, trx: AsyncSession, reverse: bool = False, **kwargs: Any
-) -> JweReturnT:
+) -> GenTokenReturnT:
     payload = {"user_id": user_id, **kwargs}
     payload["exp"] = calc_exp("1d", reverse)
 
@@ -52,12 +53,7 @@ async def gen_jwe(
     return {"client_token": b_to_h(enc_bytes), "server_token": refresh_db}
 
 
-class CheckJweReturnT(TypedDict):
-    token_d: dict
-    decrypted: PayloadT
-
-
-async def check_jwe(token: str, trx: AsyncSession) -> CheckJweReturnT:
+async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
     try:
         stm = select(Token).where(Token.hashed == hash_db_hmac(h_to_b(token)))
@@ -77,9 +73,6 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckJweReturnT:
         )
 
         payload = b_to_d(cast(bytes, decrypted_bytes))
-
-        if lt_now(payload["exp"]):
-            raise ErrAPI(msg="REFRESH_TOKEN_EXPIRED", status=401)
 
         return {"decrypted": payload, "token_d": token_d}
 

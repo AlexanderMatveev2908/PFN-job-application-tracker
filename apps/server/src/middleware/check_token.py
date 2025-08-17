@@ -3,10 +3,11 @@ from src.conf.db import db_trx
 from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
 from src.lib.etc import load_bd
-from src.lib.tokens.cbc_hmac import CheckCbcHmacReturnT, check_cbc_hmac
+from src.lib.tokens.cbc_hmac import check_cbc_hmac
+from src.models.token import CheckTokenReturnT
 
 
-async def check_cbc_hmac_mdw(req: Request) -> CheckCbcHmacReturnT:
+async def check_cbc_hmac_mdw(req: Request) -> CheckTokenReturnT:
     token = (await load_bd(req)).get("token", None)
 
     if not token:

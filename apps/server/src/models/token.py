@@ -62,3 +62,13 @@ class Token(RootTable):
     exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
     user = relationship("User", back_populates="tokens")
+
+
+class GenTokenReturnT(TypedDict):
+    client_token: str
+    server_token: Token
+
+
+class CheckTokenReturnT(TypedDict):
+    token_d: dict
+    decrypted: PayloadT

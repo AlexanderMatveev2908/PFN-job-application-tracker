@@ -4,13 +4,12 @@ from src.features.auth.middleware.register import RegisterFormT
 from src.features.test.lib.register_user import handle_user_lib
 from src.lib.data_structure import parse_id
 from src.lib.tokens.cbc_hmac import (
-    CbcHmacReturnT,
     check_cbc_hmac,
     gen_cbc_hmac,
 )
-from src.lib.tokens.jwe import JweReturnT, check_jwe, gen_jwe
+from src.lib.tokens.jwe import check_jwe, gen_jwe
 from src.lib.tokens.jwt import gen_jwt, verify_jwt
-from src.models.token import TokenT
+from src.models.token import GenTokenReturnT, TokenT
 
 
 async def tokens_health_svc(user_data: RegisterFormT) -> Any:
@@ -20,9 +19,11 @@ async def tokens_health_svc(user_data: RegisterFormT) -> Any:
         parsed_us_id: str = parse_id(us.id)
 
         access_token: str = gen_jwt({"user_id": parsed_us_id})
-        result_jwe: JweReturnT = await gen_jwe(user_id=parsed_us_id, trx=trx)
+        result_jwe: GenTokenReturnT = await gen_jwe(
+            user_id=parsed_us_id, trx=trx
+        )
 
-        result_cbc_hmac: CbcHmacReturnT = await gen_cbc_hmac(
+        result_cbc_hmac: GenTokenReturnT = await gen_cbc_hmac(
             payload={"user_id": parsed_us_id},
             hdr={
                 "token_t": TokenT.MANAGE_ACC,

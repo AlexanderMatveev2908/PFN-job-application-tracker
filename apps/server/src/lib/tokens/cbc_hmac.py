@@ -19,15 +19,17 @@ from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import gen_hmac
 from src.lib.etc import calc_exp, lt_now
-from src.models.token import AlgT, PayloadT, PayloadTokenT, Token, TokenT
+from src.models.token import (
+    AlgT,
+    CheckTokenReturnT,
+    GenTokenReturnT,
+    PayloadTokenT,
+    Token,
+    TokenT,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 master_key = h_to_b(get_env().master_key)
-
-
-class CbcHmacReturnT(TypedDict):
-    client_token: str
-    server_token: Token
 
 
 class AadT(TypedDict):
@@ -92,7 +94,7 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
 
 async def gen_cbc_hmac(
     payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession, reverse: bool = False
-) -> CbcHmacReturnT:
+) -> GenTokenReturnT:
 
     result = build_cbc_hmac(payload=payload, hdr=hdr)
     client_token = result["token"]
@@ -119,12 +121,7 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
     return hmac.compare_digest(a, b)
 
 
-class CheckCbcHmacReturnT(TypedDict):
-    decrypted: PayloadT
-    token_d: dict
-
-
-async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckCbcHmacReturnT:
+async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
     try:
         aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
