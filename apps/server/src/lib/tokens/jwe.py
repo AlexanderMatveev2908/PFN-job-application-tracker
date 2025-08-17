@@ -18,8 +18,8 @@ P_ALG = "A256GCM"
 
 
 class JweReturnT(TypedDict):
-    refresh_client: str
-    refresh_server: Token
+    client_token: str
+    server_token: Token
 
 
 async def gen_jwe(
@@ -48,7 +48,7 @@ async def gen_jwe(
     await trx.flush([refresh_db])
     await trx.refresh(refresh_db)
 
-    return {"refresh_client": b_to_h(enc_bytes), "refresh_server": refresh_db}
+    return {"client_token": b_to_h(enc_bytes), "server_token": refresh_db}
 
 
 async def check_jwe(token: str) -> dict | None:

@@ -53,6 +53,6 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         return {
             "new_user": new_user.to_d(exclude_keys=["password"]),
             "access_token": access_token,
-            "refresh_token": result_jwe["refresh_client"],
+            "refresh_token": result_jwe["client_token"],
             "cbc_hmac_token": cbc_hmac_res["client_token"],
         }
