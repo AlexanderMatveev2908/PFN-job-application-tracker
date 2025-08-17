@@ -17,6 +17,7 @@ async def register_ok_t(api) -> None:
     assert "new_user" in data
     assert REG_JWT.fullmatch(data["access_token"])
     assert REG_JWE.fullmatch(res.cookies["refresh_token"])
+    assert isinstance(data["cbc_hmac_token"], str)
     assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
     assert data["new_user"]["email"] == PAYLOAD_REGISTER["email"]
 

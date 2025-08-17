@@ -55,7 +55,7 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
         result_jwe = await gen_jwe(user_id=parsed_us_id, trx=trx)
 
         hdr: HdrT = {
-            "token_t": TokenT.CONF_EMAIL,
+            "token_t": TokenT.MANAGE_ACC,
         }
 
         result_cbc_hmac = await gen_cbc_hmac(
@@ -72,7 +72,11 @@ async def register_flow_test_ctrl(user_data: RegisterFormT) -> Any:
             "refresh_token_decrypted": await check_jwe(
                 result_jwe["refresh_client"]
             ),
-            "cbc_hmac": result_cbc_hmac["client_token"],
+            "cbc_hmac_token": result_cbc_hmac["client_token"],
+            "cbc_hmac_token_len": len(result_cbc_hmac["client_token"]),
+            "cbc_hmac_token_parts_len": list(
+                map(len, (result_cbc_hmac["client_token"]).split("."))
+            ),
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_decrypted": await check_cbc_hmac(
                 result_cbc_hmac["client_token"], trx=trx

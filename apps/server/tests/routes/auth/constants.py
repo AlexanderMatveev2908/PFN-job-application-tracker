@@ -1,8 +1,8 @@
 PAYLOAD_REGISTER = {
     "first_name": "John",
     "last_name": "Doe",
-    "email": "john@example.com",
-    "password": "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)juV2726439d",
-    "confirm_password": "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)juV2726439d",
+    "email": "matveevalexander470@gmail.com",
+    "password": "qcxd-0KK64BVu5Z84DY5@czE6{!^zI_a2e9^{P(#",
+    "confirm_password": "qcxd-0KK64BVu5Z84DY5@czE6{!^zI_a2e9^{P(#",
     "terms": True,
 }
