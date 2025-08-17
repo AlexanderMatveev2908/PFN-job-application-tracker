@@ -3,7 +3,9 @@ import json
 from fastapi import Depends, Request
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
-from src.features.test.services.register import register_flow_test_ctrl
+from src.features.test.services.tokens_health import (
+    tokens_health_svc,
+)
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
 
@@ -35,10 +37,10 @@ async def post_msg_ctrl(req: Request) -> ResAPI:
     return ResAPI.ok_200()
 
 
-async def post_tokens_ctrl(
+async def tokens_health_ctrl(
     _: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
-    res = await register_flow_test_ctrl(user_data)
+    res = await tokens_health_svc(user_data)
 
-    return ResAPI.ok_200(res=res)
+    return ResAPI.ok_200(**res)

@@ -1,6 +1,6 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
-from src.lib.logger import clg
+from tests.conf.lib import parse_res
 from tests.routes.auth.constants import PAYLOAD_REGISTER
 
 
@@ -9,9 +9,7 @@ async def register_ok_t(api) -> None:
 
     res = await api.post("/auth/register", json=PAYLOAD_REGISTER)
 
-    data = res.json()
-
-    clg(data, res.cookies, ttl=f"🚦 => {res.status_code}")
+    data = parse_res(res)
 
     assert res.status_code == 200
     assert "new_user" in data
@@ -27,9 +25,8 @@ async def register_err_existing_t(api) -> None:
 
     # _ expect all good as above
     res_0 = await api.post("/auth/register", json=PAYLOAD_REGISTER)
-    data_0 = res_0.json()
 
-    clg(data_0, ttl=f"🚦 => {res_0.status_code}")
+    data_0 = parse_res(res_0)
 
     assert res_0.status_code == 200
     assert "new_user" in data_0
@@ -37,9 +34,8 @@ async def register_err_existing_t(api) -> None:
 
     # ! expect crash
     res_1 = await api.post("/auth/register", json=PAYLOAD_REGISTER)
-    data_1 = res_1.json()
 
-    clg(data_1, ttl=f"🚦 => {res_1.status_code}")
+    data_1 = parse_res(res_1)
 
     assert res_1.status_code == 409
     assert "user already exists" in data_1["msg"]
@@ -56,9 +52,7 @@ async def register_err_mismatch_t(api) -> None:
 
     res = await api.post("/auth/register", json=payload)
 
-    data = res.json()
-
-    clg(data, ttl=f"🚦 => {res.status_code}")
+    data = parse_res(res)
 
     assert res.status_code == 422
     assert "passwords do not match" in data["msg"].lower()
@@ -74,9 +68,7 @@ async def register_err_terms_t(api) -> None:
 
     res = await api.post("/auth/register", json=payload)
 
-    data = res.json()
-
-    clg(data, ttl=f"🚦 => {res.status_code}")
+    data = parse_res(res)
 
     assert res.status_code == 422
     assert "user must accept terms" in data["msg"].lower()

@@ -5,7 +5,7 @@ from src.features.test.controllers.get import (
 from ..controllers.post import (
     post_form_ctrl,
     post_msg_ctrl,
-    post_tokens_ctrl,
+    tokens_health_ctrl,
 )
 
 router_test = APIRouter(prefix="/test")
@@ -17,4 +17,4 @@ router_test.get(
 router_test.post("/")(post_msg_ctrl)
 router_test.post("/form")(post_form_ctrl)
 
-router_test.post("/tokens")(post_tokens_ctrl)
+router_test.post("/tokens-health")(tokens_health_ctrl)
