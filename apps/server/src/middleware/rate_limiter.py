@@ -28,7 +28,7 @@ def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
     return merged
 
 
-def rate_limit(
+def rate_limit_mdw(
     limit: int = 5, window_ms: int = calc_exp("15m")
 ) -> Callable[[Request, Response], Awaitable[None]]:
     async def _dep(req: Request, res: Response) -> None:

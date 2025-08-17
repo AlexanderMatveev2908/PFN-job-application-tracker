@@ -22,10 +22,11 @@ def wrap_loop(
         asyncio.run(fn)
 
 
-ParamExpT = Literal["15m", "1h", "1d"]
+ParamExpT = Literal["15m", "30m", "1h", "1d"]
 
 mp: dict[ParamExpT, int] = {
     "15m": 15 * 60,
+    "30m": 30 * 60,
     "1h": 60**2,
     "1d": 24 * 60**2,
 }

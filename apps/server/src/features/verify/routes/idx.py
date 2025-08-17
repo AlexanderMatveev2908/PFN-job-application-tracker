@@ -1,7 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from src.features.verify.controllers.post import confirm_email_ctrl
+from src.middleware.rate_limiter import rate_limit_mdw
 
 
 verify_router = APIRouter(prefix="/verify")
 
-verify_router.post("/confirm-email")(confirm_email_ctrl)
+verify_router.post("/confirm-email", dependencies=[Depends(rate_limit_mdw())])(
+    confirm_email_ctrl
+)
