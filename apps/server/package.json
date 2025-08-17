@@ -6,7 +6,7 @@
     "install_pkg": "poetry install",
     "dev": "poetry run uvicorn src.server:app --reload --reload-dir src/ --host 0.0.0.0 --port 3000 --log-level warning",
     "check": "echo '⏳ start check' && poetry run mypy src && echo '✅ mypy types passed' || { echo '❌ type check failed'; exit 1; } && poetry run ruff check src && echo '✅ ruff lint passed' || { echo '❌ lint failed'; exit 1; } && echo '🎉 py check passed'",
-    "test": "poetry run pytest -v",
+    "test": "poetry run pytest -v -n auto",
     "build": "poetry build -f wheel && mkdir -p app_wheel && cp .env app_wheel/ && cd app_wheel && python -m venv .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install --force-reinstall --no-cache-dir ../dist/server-*.whl",
     "start": "cd app_wheel && .venv/bin/gunicorn src.server:app -w 8 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:3000"
   }
