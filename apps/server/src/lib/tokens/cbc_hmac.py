@@ -18,7 +18,7 @@ from src.lib.data_structure import (
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
-from src.lib.etc import calc_exp, lt_now
+from src.lib.etc import calc_exp, get_now, lt_now
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
@@ -141,10 +141,11 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
     comp_hash = hash_db_hmac((token).encode("utf-8"))
     if not check_hmac(comp_hash, existing_d["hashed"]):
+        existing.deleted_at = get_now()
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     if lt_now(existing_d["exp"]):
-        # await trx.delete(existing)
+        existing.deleted_at = get_now()
         raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     info_b: bytes = d_to_b(
