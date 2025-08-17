@@ -5,7 +5,7 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id
-from src.lib.tokens.cbc_hmac import HdrT, gen_cbc_hmac
+from src.lib.tokens.cbc_hmac import CbcHmacResT, HdrT, gen_cbc_hmac
 from src.lib.tokens.jwe import gen_jwe
 from src.lib.tokens.jwt import gen_jwt
 from src.models.token import AlgT, TokenT
@@ -16,7 +16,7 @@ class RegisterSvcReturnT(TypedDict):
     new_user: dict
     access_token: str
     refresh_token: str
-    confirm_email_token: str
+    cbc_hmac_token: str
 
 
 async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
@@ -47,7 +47,7 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             "token_t": TokenT.REFRESH,
         }
 
-        cbc_hmac_res = await gen_cbc_hmac(
+        cbc_hmac_res: CbcHmacResT = await gen_cbc_hmac(
             hdr=hdr,
             payload={"user_id": user_id},
             trx=trx,
@@ -57,5 +57,5 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             "new_user": new_user.to_d(exclude_keys=["password"]),
             "access_token": access_token,
             "refresh_token": result_jwe["refresh_client"],
-            "confirm_email_token": cbc_hmac_res["client_token"],
+            "cbc_hmac_token": cbc_hmac_res["client_token"],
         }

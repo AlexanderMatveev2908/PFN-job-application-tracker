@@ -50,7 +50,7 @@ async def gen_cbc_hmac(
     info_d: dict = {
         "alg": parse_enum(hdr["alg"]),
         "token_t": parse_enum(hdr["token_t"]),
-        "user_id": parse_id(payload["user_id"]),
+        "user_id": payload["user_id"],
     }
 
     info: bytes = d_to_b(info_d)
@@ -71,11 +71,15 @@ async def gen_cbc_hmac(
 
     iv, ct = gen_aes_cbc(derived["k_0"], d_to_b(cast(dict, payload)))
 
-    tag: bytes = gen_hmac(
-        derived["k_1"],
-        d_to_b(
-            {"aad": b_to_h(aad), "iv": b_to_h(iv), "ciphertext": b_to_h(ct)}
-        ),
+    aad_hex = b_to_h(aad)
+    iv_hex = b_to_h(iv)
+    ct_hex = b_to_h(ct)
+
+    tag_hex: str = b_to_h(
+        gen_hmac(
+            derived["k_1"],
+            d_to_b({"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex}),
+        )
     )
 
     new_cbc_hmac = Token(
@@ -90,7 +94,7 @@ async def gen_cbc_hmac(
     await trx.refresh(new_cbc_hmac)
 
     return {
-        "client_token": f"{b_to_h(aad)}.{b_to_h(iv)}.{b_to_h(ct)}.{b_to_h(tag)}",  # noqa: E501
+        "client_token": f"{aad_hex}.{iv_hex}.{ct_hex}.{tag_hex}",  # noqa: E501
         "server_token": new_cbc_hmac,
     }
 
@@ -110,12 +114,7 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
 
     stm = select(Token).where(
         (Token.id == uuid.UUID(aad_d["token_id"]))
-        & (Token.token_t == TokenT(aad_d["token_t"]))
-    )
-
-    stm = select(Token).where(
-        Token.id == uuid.UUID(aad_d["token_id"])
-        and Token.token_t == TokenT(aad_d["token_t"])
+        & (Token.user_id == uuid.UUID(aad_d["user_id"]))
     )
 
     existing = (await trx.execute(stm)).scalar_one_or_none()
@@ -123,16 +122,16 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
     if not existing:
         raise ErrAPI(msg="token not found", status=401)
 
-    existing = existing.to_d()
+    existing_d = existing.to_d()
 
-    if lt_now(existing["exp"]):
+    if lt_now(existing_d["exp"]):
         raise ErrAPI(msg="token expired", status=401)
 
     info_b: bytes = d_to_b(
         {
-            "alg": parse_enum(existing["alg"]),
-            "token_t": parse_enum(existing["token_t"]),
-            "user_id": parse_id(existing["user_id"]),
+            "alg": parse_enum(existing_d["alg"]),
+            "token_t": parse_enum(existing_d["token_t"]),
+            "user_id": parse_id(existing_d["user_id"]),
         }
     )
 

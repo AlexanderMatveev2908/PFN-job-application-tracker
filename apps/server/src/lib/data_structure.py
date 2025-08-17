@@ -152,11 +152,12 @@ def parse_enum(v: Enum | str) -> str:
 
 def pick(
     obj: dict,
-    keys_in: list[str] | None = None,
-    keys_off: list[str] | None = None,
+    keys_in: Optional[list[str]] = None,
+    keys_off: Optional[list[str]] = None,
 ) -> dict:
     return {
         k: obj[k]
         for k in obj.keys()
-        if (keys_in is None or k in keys_in) and k not in keys_off
+        if (keys_in is None or k in keys_in)
+        and (keys_off is None or k not in keys_off)
     }
