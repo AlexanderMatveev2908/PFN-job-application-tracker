@@ -8,7 +8,7 @@ from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,
 )
 from src.lib.tokens.jwe import check_jwe, gen_jwe
-from src.lib.tokens.jwt import gen_jwt, verify_jwt
+from src.lib.tokens.jwt import gen_jwt, check_jwt
 from src.models.token import GenTokenReturnT, TokenT
 
 
@@ -34,7 +34,7 @@ async def tokens_health_svc(user_data: RegisterFormT) -> Any:
         return {
             "new_user": us.to_d(exclude_keys=["password"]),
             "access_token": access_token,
-            "access_token_decoded": verify_jwt(
+            "access_token_decoded": check_jwt(
                 access_token,
             ),
             "refresh_token": result_jwe["client_token"],

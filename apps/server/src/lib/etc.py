@@ -55,5 +55,5 @@ def lt_now(v: int) -> bool:
     return v < time() * 1000
 
 
-async def load_bd(req: Request) -> dict:
+async def parse_bd(req: Request) -> dict:
     return json.loads(await req.body())

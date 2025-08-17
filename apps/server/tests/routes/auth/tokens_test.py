@@ -1,3 +1,4 @@
+from httpx import AsyncClient
 import pytest
 
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
@@ -28,3 +29,12 @@ async def tokens_health_t(api) -> None:
         == data["refresh_token_decrypted"]["user_id"]
         == data["access_token_decoded"]["user_id"]
     )
+
+
+@pytest.mark.asyncio
+async def checkExpired_t(api: AsyncClient) -> None:
+    res_expired = await api.post("/test/tokens-expired", json=PAYLOAD_REGISTER)
+
+    data = parse_res(res_expired)
+
+    assert data["access_token"] and data["refresh_token"] and data["cbc_hmac"]
