@@ -43,10 +43,12 @@ class AadT(TypedDict):
     user_id: str
 
 
-async def gen_cbc_hmac(
-    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession
-) -> CbcHmacResT:
+class BuildCbcHmacReturnT(TypedDict):
+    token_id: str
+    token: str
 
+
+def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
     info_d: dict = {
         "alg": parse_enum(hdr["alg"]),
         "token_t": parse_enum(hdr["token_t"]),
@@ -55,11 +57,11 @@ async def gen_cbc_hmac(
 
     info: bytes = d_to_b(info_d)
     salt: bytes = os.urandom(32)
+    token_id = parse_id(uuid.uuid4())
 
     derived: DerivedKeysCbcHmacT = derive_hkdf_cbc_hmac(
         master=master_key, info=info, salt=salt
     )
-    token_id = parse_id(uuid.uuid4())
 
     aad: bytes = d_to_b(
         {
@@ -74,7 +76,6 @@ async def gen_cbc_hmac(
     aad_hex = b_to_h(aad)
     iv_hex = b_to_h(iv)
     ct_hex = b_to_h(ct)
-
     tag_hex: str = b_to_h(
         gen_hmac(
             derived["k_1"],
@@ -82,8 +83,21 @@ async def gen_cbc_hmac(
         )
     )
 
+    return {
+        "token": f"{aad_hex}.{iv_hex}.{ct_hex}.{tag_hex}",
+        "token_id": token_id,
+    }
+
+
+async def gen_cbc_hmac(
+    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession
+) -> CbcHmacResT:
+
+    result = build_cbc_hmac(payload=payload, hdr=hdr)
+    client_token = result["token"]
+
     new_cbc_hmac = Token(
-        id=token_id,
+        id=result["token_id"],
         exp=calc_exp("15m"),
         user_id=payload["user_id"],
         **hdr,
@@ -94,7 +108,7 @@ async def gen_cbc_hmac(
     await trx.refresh(new_cbc_hmac)
 
     return {
-        "client_token": f"{aad_hex}.{iv_hex}.{ct_hex}.{tag_hex}",  # noqa: E501
+        "client_token": client_token,  # noqa: E501
         "server_token": new_cbc_hmac,
     }
 
