@@ -1,6 +1,6 @@
 import asyncio
 import concurrent.futures
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 from argon2 import PasswordHasher
 import concurrent
 from sqlalchemy import Boolean, String
@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
 from src.lib.logger import clg
 from src.models.root import RootTable
+
 
 PH = PasswordHasher(
     time_cost=3, memory_cost=64 * 1024, parallelism=1, hash_len=32, salt_len=16
@@ -66,3 +67,10 @@ class User(RootTable):
         except Exception as err:
             clg(err, ttl="err check pwd")
             return False
+
+    def verify_email(
+        self,
+    ) -> Self:
+        self.is_verified = True
+
+        return self
