@@ -38,9 +38,9 @@ async def tokens_health_svc(user_data: RegisterFormT) -> Any:
             ),
             "refresh_token": result_jwe["client_token"],
             "refresh_token_db": result_jwe["server_token"].to_d(),
-            "refresh_token_decrypted": await check_jwe(
-                result_jwe["client_token"]
-            ),
+            "refresh_token_decrypted": (
+                await check_jwe(result_jwe["client_token"], trx)
+            )["decrypted"],
             "cbc_hmac_token": result_cbc_hmac["client_token"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_token_len": len(result_cbc_hmac["client_token"]),

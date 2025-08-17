@@ -121,7 +121,7 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
 
 class CheckCbcHmacReturnT(TypedDict):
     decrypted: PayloadT
-    token_db: dict
+    token_d: dict
 
 
 async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckCbcHmacReturnT:
@@ -178,6 +178,6 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckCbcHmacReturnT:
     )
 
     return {
-        "token_db": existing_d,
+        "token_d": existing_d,
         "decrypted": json.loads(pt.decode("utf-8")),
     }
