@@ -5,8 +5,8 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id
-from src.lib.tokens.cbc_hmac import CbcHmacResT, gen_cbc_hmac
-from src.lib.tokens.jwe import GenJweReturnT, gen_jwe
+from src.lib.tokens.cbc_hmac import CbcHmacReturnT, gen_cbc_hmac
+from src.lib.tokens.jwe import JweReturnT, gen_jwe
 from src.lib.tokens.jwt import gen_jwt
 from src.models.token import TokenT
 from src.models.user import User
@@ -40,9 +40,9 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         await trx.refresh(new_user)
 
         access_token: str = gen_jwt({"user_id": user_id})
-        result_jwe: GenJweReturnT = await gen_jwe(user_id=user_id, trx=trx)
+        result_jwe: JweReturnT = await gen_jwe(user_id=user_id, trx=trx)
 
-        cbc_hmac_res: CbcHmacResT = await gen_cbc_hmac(
+        cbc_hmac_res: CbcHmacReturnT = await gen_cbc_hmac(
             hdr={
                 "token_t": TokenT.REFRESH,
             },

@@ -25,13 +25,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 master_key = h_to_b(get_env().master_key)
 
 
-class HdrT(
-    TypedDict,
-):
-    token_t: TokenT
-
-
-class CbcHmacResT(TypedDict):
+class CbcHmacReturnT(TypedDict):
     client_token: str
     server_token: Token
 
@@ -42,6 +36,12 @@ class AadT(TypedDict):
     token_t: str
     salt: str
     user_id: str
+
+
+class HdrT(
+    TypedDict,
+):
+    token_t: TokenT
 
 
 class BuildCbcHmacReturnT(TypedDict):
@@ -91,15 +91,15 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
 
 
 async def gen_cbc_hmac(
-    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession
-) -> CbcHmacResT:
+    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession, reverse: bool = False
+) -> CbcHmacReturnT:
 
     result = build_cbc_hmac(payload=payload, hdr=hdr)
     client_token = result["token"]
 
     new_cbc_hmac = Token(
         id=result["token_id"],
-        exp=calc_exp("15m"),
+        exp=calc_exp("15m", reverse),
         user_id=payload["user_id"],
         alg=AlgT.AES_CBC_HMAC_SHA256,
         **hdr,
@@ -119,12 +119,17 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
     return hmac.compare_digest(a, b)
 
 
-async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
+class CheckCbcHmacReturnT(TypedDict):
+    decrypted: PayloadT
+    token_db: dict
+
+
+async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckCbcHmacReturnT:
 
     try:
         aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
     except Exception:
-        raise ErrAPI(msg="invalid token format", status=401)
+        raise ErrAPI(msg="token format invalid", status=401)
 
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
@@ -141,6 +146,7 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
     existing_d = existing.to_d()
 
     if lt_now(existing_d["exp"]):
+        # await trx.delete(existing)
         raise ErrAPI(msg="token expired", status=401)
 
     info_b: bytes = d_to_b(
@@ -164,11 +170,14 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> PayloadT:
         ),
     )
 
+    if not constant_time_check(h_to_b(tag_hex), comp_tag):
+        raise ErrAPI(msg="token invalid", status=401)
+
     pt = dec_aes_cbc(
         derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
     )
 
-    if not constant_time_check(h_to_b(tag_hex), comp_tag):
-        raise ErrAPI(msg="invalid token", status=401)
-
-    return json.loads(pt.decode("utf-8"))
+    return {
+        "token_db": existing_d,
+        "decrypted": json.loads(pt.decode("utf-8")),
+    }

@@ -17,16 +17,16 @@ K_ALG = "RSA-OAEP-256"
 P_ALG = "A256GCM"
 
 
-class GenJweReturnT(TypedDict):
+class JweReturnT(TypedDict):
     refresh_client: str
     refresh_server: Token
 
 
 async def gen_jwe(
-    user_id: str, trx: AsyncSession, **kwargs: Any
-) -> GenJweReturnT:
+    user_id: str, trx: AsyncSession, reverse: bool = False, **kwargs: Any
+) -> JweReturnT:
     payload = {"user_id": user_id, **kwargs}
-    payload["exp"] = calc_exp("1d")
+    payload["exp"] = calc_exp("1d", reverse)
 
     enc_bytes: bytes = await asyncio.to_thread(
         jwe.encrypt,

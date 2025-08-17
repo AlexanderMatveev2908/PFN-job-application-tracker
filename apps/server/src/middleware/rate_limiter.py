@@ -31,7 +31,7 @@ def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
 def rate_limit_mdw(
     limit: int = 5, window_ms: int = calc_exp("15m")
 ) -> Callable[[Request, Response], Awaitable[None]]:
-    async def _dep(req: Request, res: Response) -> None:
+    async def _dep(req: Request, _: Response) -> None:
         env_var = get_env()
 
         if env_var.py_env == "test":
