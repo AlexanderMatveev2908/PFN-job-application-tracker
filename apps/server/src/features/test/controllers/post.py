@@ -1,6 +1,5 @@
 import asyncio
 import json
-from typing import Literal
 from fastapi import Depends, Request
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
@@ -63,9 +62,6 @@ async def tokens_expired_ctrl(
     return ResAPI.ok_200(**res)
 
 
-ActExpiredTokenT = Literal["JWT", "JWE", "CBC_HMAC"]
-
-
 async def get_err_expired_ctrl(req: Request) -> ResAPI:
     data = await parse_bd(req)
 
@@ -76,7 +72,12 @@ async def get_err_expired_ctrl(req: Request) -> ResAPI:
             case "JWT":
                 payload = check_jwt(token)
             case "JWE":
-                payload = (await check_jwe(token=token, trx=trx))["decrypted"]
+                payload = (
+                    await check_jwe(
+                        token=token,
+                        trx=trx,
+                    )
+                )["decrypted"]
             case "CBC_HMAC":
                 payload = (await check_cbc_hmac(token=token, trx=trx))[
                     "decrypted"

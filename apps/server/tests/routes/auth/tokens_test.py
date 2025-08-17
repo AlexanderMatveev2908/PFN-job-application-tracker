@@ -36,15 +36,24 @@ async def checkExpired_t(api: AsyncClient) -> None:
     res_expired = await api.post("/test/tokens-expired", json=PAYLOAD_REGISTER)
 
     data = parse_res(res_expired)
-
     assert data["access_token"] and data["refresh_token"] and data["cbc_hmac"]
 
+    url: str = "/test/get-err-expired"
+
     res_jwt = await api.post(
-        "/test/get-err-expired",
+        url,
         json={"token": data["access_token"], "act": "JWT"},
     )
-
     data_jwt = parse_res(res_jwt)
 
     assert res_jwt.status_code == 401
     assert "ACCESS_TOKEN_EXPIRED" in data_jwt["msg"]
+
+    res_jwe = await api.post(
+        url,
+        json={"token": data["refresh_token"], "act": "JWE"},
+    )
+    data_jwe = parse_res(res_jwe)
+
+    assert res_jwe.status_code == 401
+    assert "REFRESH_TOKEN_EXPIRED" in data_jwe["msg"]
