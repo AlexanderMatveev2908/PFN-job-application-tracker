@@ -19,7 +19,7 @@ def gen_jwt(arg: PayloadT, reverse: bool = False) -> str:
     return token
 
 
-def verify_jwt(token: str, dirty: bool = False) -> str:
+def check_jwt(token: str, dirty: bool = False) -> PayloadT:
     try:
         decoded = jwt.decode(
             token + ("👻 some random text for fun" if dirty else ""),

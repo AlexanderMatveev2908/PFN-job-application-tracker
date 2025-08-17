@@ -25,11 +25,11 @@ async def tokens_expired_svc(user_data: RegisterFormT) -> dict:
                 "token_t": TokenT.MANAGE_ACC,
             },
             trx=trx,
-            reverse=False,
+            reverse=True,
         )
 
         return {
             "access_token": access_token,
             "refresh_token": result_jwe["client_token"],
-            "cbc_hmac": result_cbc_hmac["client_token"],
+            "cbc_hmac_token": result_cbc_hmac["client_token"],
         }

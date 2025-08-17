@@ -1,3 +1,5 @@
+import re
+from httpx import AsyncClient
 import pytest
 
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
@@ -19,7 +21,6 @@ async def tokens_health_t(api) -> None:
     assert REG_ID.fullmatch(data["refresh_token_decrypted"]["user_id"])
 
     assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
-    assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
     assert REG_ID.fullmatch(data["cbc_hmac_db"]["user_id"])
     assert REG_ID.fullmatch(data["cbc_hmac_decrypted"]["user_id"])
 
@@ -28,3 +29,75 @@ async def tokens_health_t(api) -> None:
         == data["refresh_token_decrypted"]["user_id"]
         == data["access_token_decoded"]["user_id"]
     )
+
+
+@pytest.mark.asyncio
+async def check_expired_t(api: AsyncClient) -> None:
+    res_expired = await api.post("/test/tokens-expired", json=PAYLOAD_REGISTER)
+
+    data = parse_res(res_expired)
+    assert (
+        data["access_token"]
+        and data["refresh_token"]
+        and data["cbc_hmac_token"]
+    )
+
+    url: str = "/test/get-err-expired"
+
+    res_jwt = await api.post(
+        url,
+        json={"token": data["access_token"], "act": "JWT"},
+    )
+    data_jwt = parse_res(res_jwt)
+    assert res_jwt.status_code == 401
+    assert "ACCESS_TOKEN_EXPIRED" in data_jwt["msg"]
+
+    res_jwe = await api.post(
+        url,
+        json={"token": data["refresh_token"], "act": "JWE"},
+    )
+    data_jwe = parse_res(res_jwe)
+    assert res_jwe.status_code == 401
+    assert "REFRESH_TOKEN_EXPIRED" in data_jwe["msg"]
+
+    res_cbc_hmac = await api.post(
+        url, json={"token": data["cbc_hmac_token"], "act": "CBC_HMAC"}
+    )
+    data_cbc_hmac = parse_res(res_cbc_hmac)
+    assert res_cbc_hmac.status_code == 401
+    assert "CBC_HMAC_EXPIRED" in data_cbc_hmac["msg"]
+
+
+@pytest.mark.asyncio
+async def check_invalid_t(api: AsyncClient) -> None:
+    res = await api.post("/test/tokens-health", json=PAYLOAD_REGISTER)
+    data = parse_res(res)
+    url: str = "/test/get-err-invalid"
+
+    res_jwt = await api.post(
+        url,
+        json={"token": data["access_token"][:-4] + "hack", "act": "JWT"},
+    )
+    data_jwt = parse_res(res_jwt)
+    assert res_jwt.status_code == 401
+    assert "ACCESS_TOKEN_INVALID" in data_jwt["msg"]
+
+    res_jwe = await api.post(
+        url,
+        json={"token": data["refresh_token"][:-4] + "hack", "act": "JWE"},
+    )
+    data_jwe = parse_res(res_jwe)
+    data_jwe = parse_res(res_jwe)
+    assert res_jwe.status_code == 401
+    assert "REFRESH_TOKEN_INVALID" in data_jwe["msg"]
+
+    res_cbc_hmac = await api.post(
+        url,
+        json={
+            "token": data["cbc_hmac_token"][:-4] + "aaaa",
+            "act": "CBC_HMAC",
+        },
+    )
+    data_cbc_hmac = parse_res(res_cbc_hmac)
+    assert res_cbc_hmac.status_code == 401
+    assert re.compile(r".*\sCBC_HMAC_INVALID$").fullmatch(data_cbc_hmac["msg"])

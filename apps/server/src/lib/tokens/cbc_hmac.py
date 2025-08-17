@@ -6,6 +6,7 @@ import uuid
 
 from sqlalchemy import select
 from src.conf.env import get_env
+from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
 from src.lib.data_structure import (
     b_to_d,
@@ -123,10 +124,10 @@ def constant_time_check(a: bytes, b: bytes) -> bool:
 
 async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
-    try:
-        aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
-    except Exception:
-        raise ErrAPI(msg="token format invalid", status=401)
+    if not REG_CBC_HMAC.fullmatch(token):
+        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+
+    aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
@@ -138,13 +139,13 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
     existing = (await trx.execute(stm)).scalar_one_or_none()
 
     if not existing:
-        raise ErrAPI(msg="token not found", status=401)
+        raise ErrAPI(msg="CBC_HMAC_NOT_FOUND", status=401)
 
     existing_d = existing.to_d()
 
     if lt_now(existing_d["exp"]):
         # await trx.delete(existing)
-        raise ErrAPI(msg="token expired", status=401)
+        raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     info_b: bytes = d_to_b(
         {
@@ -168,7 +169,7 @@ async def check_cbc_hmac(token: str, trx: AsyncSession) -> CheckTokenReturnT:
     )
 
     if not constant_time_check(h_to_b(tag_hex), comp_tag):
-        raise ErrAPI(msg="token invalid", status=401)
+        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     pt = dec_aes_cbc(
         derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)

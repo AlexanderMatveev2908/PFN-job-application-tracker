@@ -46,6 +46,6 @@ async def db_trx() -> AsyncIterator[AsyncSession]:
             print("✅ trx 200")
         except Exception as err:
             await db.rollback()
-            clg(err, ttl="err transaction")
+            clg(str(err), ttl="err transaction")
 
             raise (err)
