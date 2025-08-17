@@ -32,8 +32,6 @@ jobs:
       DB_URL: ${{secrets.DB_URL}}
       MY_EMAIL: ${{secrets.MY_EMAIL}}
       EMAIL_PWD: ${{secrets.EMAIL_PWD}}
-      NEXT_PUBLIC_BACK_URL_TEST: ${{secrets.NEXT_PUBLIC_BACK_URL_TEST}}
-      NEXT_PUBLIC_FRONT_URL_TEST: ${{secrets.NEXT_PUBLIC_FRONT_URL_TEST}}
       BREVO_SMPT_SERVER: ${{secrets.BREVO_SMPT_SERVER}}
       BREVO_SMPT_PORT: ${{secrets.BREVO_SMPT_PORT}}
       BREVO_SMPT_USER: ${{secrets.BREVO_SMPT_USER}}
@@ -46,6 +44,8 @@ jobs:
       JWE_PRIVATE: ${{secrets.JWE_PRIVATE}}
       MASTER_KEY: ${{secrets.MASTER_KEY}}
       PEPPER_KEY: ${{secrets.PEPPER_KEY}}
+      NEXT_PUBLIC_BACK_URL_TEST: ${{secrets.NEXT_PUBLIC_BACK_URL_TEST}}
+      NEXT_PUBLIC_FRONT_URL_TEST: ${{secrets.NEXT_PUBLIC_FRONT_URL_TEST}}
 
     steps:
       - name: 📂 clone code
@@ -133,8 +133,6 @@ jobs:
               "DB_URL",
               "MY_EMAIL",
               "EMAIL_PWD",
-              "NEXT_PUBLIC_BACK_URL_TEST",
-              "NEXT_PUBLIC_FRONT_URL_TEST",
               "BREVO_SMPT_SERVER",
               "BREVO_SMPT_PORT",
               "BREVO_SMPT_USER",
@@ -147,6 +145,8 @@ jobs:
               "JWE_PRIVATE",
               "MASTER_KEY",
               "PEPPER_KEY",
+              "NEXT_PUBLIC_BACK_URL_TEST",
+              "NEXT_PUBLIC_FRONT_URL_TEST",
             ];
 
             const envPath = path.join(process.cwd(), "apps/server/.env");
