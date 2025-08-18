@@ -19,6 +19,7 @@ from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
 from src.lib.etc import calc_exp, get_now, lt_now
+from src.lib.serialize_data import serialize
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
@@ -52,11 +53,14 @@ class BuildCbcHmacReturnT(TypedDict):
 
 
 def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
-    info_d: dict = {
-        "alg": AlgT.AES_CBC_HMAC_SHA256.value,
-        "token_t": parse_enum(hdr["token_t"]),
-        "user_id": payload["user_id"],
-    }
+    info_d: dict = serialize(
+        {
+            "alg": AlgT.AES_CBC_HMAC_SHA256,
+            "token_t": hdr["token_t"],
+            "user_id": payload["user_id"],
+        },
+        max_depth=1,
+    )
 
     info: bytes = d_to_b(info_d)
     salt: bytes = os.urandom(32)
@@ -99,7 +103,7 @@ async def gen_cbc_hmac(
     reverse: bool = False,
 ) -> GenTokenReturnT:
 
-    parsed_id = user_id if isinstance(user_id, str) else str(user_id)
+    parsed_id = parse_id(user_id)
 
     result: BuildCbcHmacReturnT = build_cbc_hmac(
         payload={"user_id": parsed_id}, hdr=hdr

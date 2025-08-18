@@ -1,6 +1,5 @@
 from fastapi import Depends, Request
 from sqlalchemy import select
-
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -8,6 +7,8 @@ from src.features.require_email.middleware.require_email import (
     RequireEmailForm,
     require_email_mdw,
 )
+from src.lib.tokens.cbc_hmac import gen_cbc_hmac
+from src.models.token import TokenT
 from src.models.user import User
 
 
@@ -26,6 +27,8 @@ async def require_email_forgot_pwd_ctrl(
         if not us:
             raise ErrAPI(msg="user not found", status=404)
 
-        # cbc_hmac_result = await gen_cbc_hmac()
+        cbc_hmac_result = await gen_cbc_hmac(
+            user_id=us.id, trx=trx, hdr={"token_t": TokenT.RECOVER_PWD}
+        )
 
     return ResAPI.ok_200(**us.to_d(exclude_keys=["password"]))
