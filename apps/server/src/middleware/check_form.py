@@ -1,5 +1,6 @@
 import json
-from typing import Any, Type, TypeVar
+from typing import Type, TypeVar
+from fastapi import Request
 from pydantic import BaseModel, ValidationError
 from src.decorators.err import ErrAPI
 from src.lib.logger import clg
@@ -7,21 +8,17 @@ from src.lib.logger import clg
 FormT = TypeVar("FormT", bound=BaseModel)
 
 
-def check_form_mdw(model: Type[FormT], data: dict[str, Any] | bytes) -> FormT:
+async def check_form_mdw(model: Type[FormT], req: Request) -> FormT:
 
     parsed: dict | None = None
 
     try:
-        if isinstance(data, dict):
-            parsed = data
-
-        else:
-            parsed = json.loads(bytes(data))
+        parsed = json.loads(await req.body())
     except Exception as err:
         clg(err, ttl="err parse body")
 
     if parsed is None:
-        raise ErrAPI(msg="Provided wrong data", status=422)
+        raise ErrAPI(msg="wrong data format", status=422)
 
     try:
 

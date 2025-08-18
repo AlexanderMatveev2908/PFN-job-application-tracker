@@ -8,8 +8,9 @@ from pydantic import (
     model_validator,
 )
 
-from src.constants.reg import REG_NAME, REG_PWD
+from src.constants.reg import REG_NAME
 from src.decorators.err import ErrAPI
+from src.lib.validators.idx import validate_password_lib
 from src.middleware.check_form import check_form_mdw
 
 
@@ -31,15 +32,9 @@ class RegisterForm(BaseModel):
     )
 
     @field_validator("password")
-    def validate_password(cls, v: str) -> str:
+    def _validate_password(cls, v: str) -> str:
 
-        if not REG_PWD.match(v):
-            raise ErrAPI(
-                msg="Password must have at least 1 lowercase, 1 uppercase, "
-                "1 number, 1 symbol, and be 8+ chars long",
-                status=422,
-            )
-        return v
+        return validate_password_lib(v)
 
     @model_validator(mode="after")
     def check_passwords_match(self) -> Self:
@@ -71,6 +66,6 @@ class RegisterFormT(TypedDict):
 
 
 async def register_mdw(req: Request) -> RegisterFormT:
-    data = check_form_mdw(RegisterForm, await req.body())
+    data = await check_form_mdw(RegisterForm, req)
 
     return cast(RegisterFormT, data.model_dump(exclude={"confirm_password"}))
