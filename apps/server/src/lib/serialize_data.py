@@ -1,4 +1,4 @@
-from collections.abc import Mapping, Sequence, Iterable  # ✅ runtime ABCs
+from collections.abc import Mapping, Sequence, Iterable
 from typing import Any, Optional, cast
 from datetime import date, datetime
 from enum import Enum
@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from sqlalchemy import inspect
 from sqlalchemy.orm.state import InstanceState
 from sqlalchemy.orm import Mapper
+
+from src.lib.logger import clg
 
 
 def serialize(
@@ -51,14 +53,14 @@ def _ser(
     seen: set[int],
 ) -> Any:
     if depth > max_depth:
-        return f"max_depth => {type(obj).__name__}"
+        return f"reached_max_depth => {type(obj).__name__}"
 
     if obj is None or isinstance(obj, (bool, int, float, str)):
         return obj
 
     obj_id = id(obj)
     if obj_id in seen:
-        return f"cycle => {type(obj).__name__}"
+        return f"circular_ref => {type(obj).__name__}"
 
     track = isinstance(obj, (Mapping, Sequence)) or hasattr(obj, "__dict__")
     if track:
@@ -110,7 +112,8 @@ def _ser(
                             seen=seen,
                         )
             return out
-    except Exception:
+    except Exception as err:
+        clg(err, ttl="err serialize data")
         pass
 
     if isinstance(obj, BaseModel):
