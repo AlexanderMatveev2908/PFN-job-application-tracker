@@ -1,10 +1,14 @@
 from fastapi import Depends, Request
+from sqlalchemy import select
 
+from src.conf.db import db_trx
+from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.require_email.middleware.require_email import (
     RequireEmailForm,
     require_email_mdw,
 )
+from src.models.user import User
 
 
 async def require_email_forgot_pwd_ctrl(
@@ -12,4 +16,14 @@ async def require_email_forgot_pwd_ctrl(
     require_email_data: RequireEmailForm = Depends(require_email_mdw),
 ) -> ResAPI:
 
-    return ResAPI.ok_200(**require_email_data.model_dump())
+    async with db_trx() as trx:
+        us = (
+            await trx.execute(
+                select(User).where(User.email == require_email_data.email)
+            )
+        ).scalar_one_or_none()
+
+        if not us:
+            raise ErrAPI(msg="user not found", status=404)
+
+    return ResAPI.ok_200(**us.to_d(exclude_keys=["password"]))
