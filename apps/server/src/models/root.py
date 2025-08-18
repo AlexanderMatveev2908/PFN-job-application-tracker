@@ -1,15 +1,14 @@
-from datetime import date, datetime
-from typing import Any, Optional, cast
+from typing import Any, Optional
 import uuid
-from sqlalchemy import BigInteger, MetaData, inspect, text
+from sqlalchemy import BigInteger, MetaData, text
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
     mapped_column,
-    Mapper,
 )
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm.state import InstanceState
+
+from src.lib.serialize_data import serialize
 
 
 class Base(DeclarativeBase):
@@ -43,49 +42,12 @@ class RootTable(Base):
 
     def to_d(
         self,
-        joins: bool = False,
+        *,
+        join: bool = False,
         max_depth: int = 0,
         exclude_keys: list[str] = [],
     ) -> dict[str, Any]:
-        state = cast(InstanceState[Any], inspect(self))
-        mapper: Mapper[Any] = state.mapper
 
-        out: dict[str, Any] = {}
-
-        for col in mapper.columns:
-            if col.key in exclude_keys:
-                continue
-
-            val = getattr(self, col.key)
-            if isinstance(val, uuid.UUID):
-                val = str(val)
-            elif isinstance(val, (datetime, date)):
-                val = val.isoformat()
-            out[col.key] = val
-
-        if joins and max_depth > 0:
-            for rel in mapper.relationships:
-                attr = state.attrs[rel.key]
-
-                if rel.key in state.unloaded or rel.key in exclude_keys:
-                    continue
-
-                v = attr.value
-                if v is None:
-                    out[rel.key] = None
-                elif rel.uselist:
-                    out[rel.key] = [
-                        item.to_d(
-                            joins=True,
-                            max_depth=max_depth - 1,
-                            exclude_keys=exclude_keys,
-                        )
-                        for item in v
-                    ]
-                else:
-                    out[rel.key] = v.to_d(
-                        joins=True,
-                        max_depth=max_depth - 1,
-                        exclude_keys=exclude_keys,
-                    )
-        return out
+        return serialize(
+            self, join=join, max_depth=max_depth, exclude_keys=exclude_keys
+        )

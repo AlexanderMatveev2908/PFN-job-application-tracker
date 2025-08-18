@@ -1,20 +1,22 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
-from tests.conf.lib import parse_res
-from tests.routes.auth.constants import PAYLOAD_REGISTER
+from tests.conf.lib import wrap_httpx
+from tests.conf.constants import PAYLOAD_REGISTER
 
 
 @pytest.mark.asyncio
 async def register_ok_t(api) -> None:
 
-    res = await api.post("/auth/register", json=PAYLOAD_REGISTER)
+    data, refresh_token = await wrap_httpx(
+        api,
+        data=PAYLOAD_REGISTER,
+        url="/auth/register",
+        expected_code=201,
+    )
 
-    data = parse_res(res)
-
-    assert res.status_code == 200
     assert "new_user" in data
     assert REG_JWT.fullmatch(data["access_token"])
-    assert REG_JWE.fullmatch(res.cookies["refresh_token"])
+    assert REG_JWE.fullmatch(refresh_token)
     assert isinstance(data["cbc_hmac_token"], str)
     assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
     assert data["new_user"]["email"] == PAYLOAD_REGISTER["email"]
@@ -22,56 +24,59 @@ async def register_ok_t(api) -> None:
 
 @pytest.mark.asyncio
 async def register_err_existing_t(api) -> None:
-
-    # _ expect all good as above
-    res_0 = await api.post("/auth/register", json=PAYLOAD_REGISTER)
-
-    data_0 = parse_res(res_0)
-
-    assert res_0.status_code == 200
+    # _ First call: should succeed
+    data_0, refresh_0 = await wrap_httpx(
+        api,
+        url="/auth/register",
+        data=PAYLOAD_REGISTER,
+        expected_code=201,
+    )
     assert "new_user" in data_0
     assert data_0["new_user"]["email"] == PAYLOAD_REGISTER["email"]
+    assert isinstance(refresh_0, str)
 
-    # ! expect crash
-    res_1 = await api.post("/auth/register", json=PAYLOAD_REGISTER)
-
-    data_1 = parse_res(res_1)
-
-    assert res_1.status_code == 409
-    assert "user already exists" in data_1["msg"]
+    # ! Second call: same payload → conflict
+    data_1, refresh_1 = await wrap_httpx(
+        api,
+        url="/auth/register",
+        data=PAYLOAD_REGISTER,
+        expected_code=409,
+    )
+    assert "user already exists" in data_1.get("msg", "").lower()
+    assert isinstance(refresh_1, str)  # likely "N/A" per wrapper
 
 
 @pytest.mark.asyncio
 async def register_err_mismatch_t(api) -> None:
-
     payload = {
         **PAYLOAD_REGISTER,
-        "confirm_password": "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)"
-        "juV2726439d_wrong_password_mismatch",
+        "confirm_password": (
+            "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)juV2726439d_wrong_password_mismatch"
+        ),
     }
 
-    res = await api.post("/auth/register", json=payload)
-
-    data = parse_res(res)
-
-    assert res.status_code == 422
-    assert "passwords do not match" in data["msg"].lower()
+    data, refresh = await wrap_httpx(
+        api,
+        url="/auth/register",
+        data=payload,
+        expected_code=422,
+    )
+    assert "passwords do not match" in data.get("msg", "").lower()
+    assert isinstance(refresh, str)
 
 
 @pytest.mark.asyncio
 async def register_err_terms_t(api) -> None:
+    payload = {**PAYLOAD_REGISTER, "terms": False}
 
-    payload = {
-        **PAYLOAD_REGISTER,
-        "terms": False,
-    }
-
-    res = await api.post("/auth/register", json=payload)
-
-    data = parse_res(res)
-
-    assert res.status_code == 422
-    assert "user must accept terms" in data["msg"].lower()
+    data, refresh = await wrap_httpx(
+        api,
+        url="/auth/register",
+        data=payload,
+        expected_code=422,
+    )
+    assert "user must accept terms" in data.get("msg", "").lower()
+    assert isinstance(refresh, str)
 
 
 # @pytest.mark.asyncio

@@ -1,5 +1,4 @@
 import math
-import time
 import uuid
 from typing import Awaitable, Callable
 from fastapi import Request, Response
@@ -7,7 +6,7 @@ from src.conf.env import get_env
 from src.conf.redis import redis_session
 from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
-from src.lib.etc import calc_exp
+from src.lib.etc import calc_exp, get_now
 
 
 def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
@@ -43,7 +42,7 @@ def rate_limit_mdw(
                 or getattr(req.client, "host", "")
             ).strip() or "unknown"
 
-            now_ms = int(time.time() * 1000)
+            now_ms = get_now()
 
             k = f"rl:{ip}:{req.url.path}"
             v = f"{now_ms}:{uuid.uuid4()}"

@@ -28,7 +28,7 @@ async def send_email_gmail(user_mail: str) -> None:
             use_tls=False,
         )
 
-        print("✅ email sent")
+        print("✅ smtp")
     except Exception as err:
         clg(err, ttl="err sending email")
 
@@ -53,6 +53,6 @@ async def send_email() -> None:
             use_tls=False,
         )
 
-        print("✅ email sent")
+        print("✅ smtp")
     except Exception as err:
         clg(err, ttl="err sending email")

@@ -25,4 +25,4 @@ async def send_email_ses() -> None:
             },
         )
 
-        print("✅ 200")
+        print("✅ ses 200")

@@ -57,7 +57,7 @@ class Token(RootTable):
 
     alg: Mapped[AlgT] = mapped_column(PgEnum(AlgT, name="alg_type"))
 
-    hashed: Mapped[bytes] = mapped_column(LargeBinary(32), nullable=True)
+    hashed: Mapped[bytes] = mapped_column(LargeBinary(32), nullable=False)
 
     exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
 

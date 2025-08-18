@@ -34,14 +34,15 @@ db_session: async_sessionmaker[AsyncSession] = async_sessionmaker(
 
 
 @asynccontextmanager
-async def db_trx() -> AsyncIterator[AsyncSession]:
+async def db_trx(auto_commit: bool = True) -> AsyncIterator[AsyncSession]:
     async with db_session() as db:
         try:
-            await db.begin()
+            trx = await db.begin()
 
             yield db
 
-            await db.commit()
+            if trx.is_active and auto_commit:
+                await db.commit()
 
             print("✅ trx 200")
         except Exception as err:

@@ -7,6 +7,7 @@ from src.__dev_only.db.delete import clean_tables  # noqa: F401
 from src.lib.emails.aiosmtp.idx import send_email  # noqa: F401
 from src.lib.etc import wrap_loop  # noqa: F401
 from src.lib.logger import cent
+from src.lib.scheduler import clear_exp_tokens, scheduler_ctx
 from src.middleware.cors import CorsMDW
 from src.middleware.form_data_parser import FormDataParser
 from src.middleware.json_logger import LoggerJSON
@@ -22,22 +23,23 @@ from .constants.api import EXPOSE_HEADERS, whitelist
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     cent(f"🚀 server running on {get_env().port}...")
 
-    # await get_all()
-    # await gen_list_assets()
-    # await get_cost()
-    # await get_all_redis()
-    # await clean_tables()
-    # await clean_redis()
+    async with scheduler_ctx(cb=clear_exp_tokens, hours=12, job_id="some_id"):
+        # await get_all()
+        # await gen_list_assets()
+        # await get_cost()
+        # await get_all_redis()
+        # await clean_tables()
+        # await clean_redis()
 
-    cent("⬜ whitelist ⬜", False)
-    print(whitelist)
+        cent("⬜ whitelist ⬜", False)
+        print(whitelist)
 
-    if not whitelist:
-        raise ErrAPI(msg="missing whitelist var ☢️", status=500)
+        if not whitelist:
+            raise ErrAPI(msg="missing whitelist var ☢️", status=500)
 
-    yield
+        yield
 
-    cent("💣 server shutting down")
+        cent("💣 server shutting down")
 
 
 # wrap_loop(send_email)

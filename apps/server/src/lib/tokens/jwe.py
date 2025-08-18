@@ -41,7 +41,7 @@ async def gen_jwe(
     refresh_db = Token(
         user_id=user_id,
         alg=AlgT.RSA_OAEP_256_A256GCM,
-        exp=calc_exp("1d", reverse),
+        exp=calc_exp("1h", reverse),
         token_t=TokenT.REFRESH,
         hashed=hash_db_hmac(enc_bytes),
     )
@@ -58,14 +58,12 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
     try:
         stm = select(Token).where(Token.hashed == hash_db_hmac(h_to_b(token)))
 
-        result = (await trx.execute(stm)).scalar_one_or_none()
+        existing = (await trx.execute(stm)).scalar_one_or_none()
 
-        if not result:
+        if not existing:
             raise ErrAPI(msg="REFRESH_TOKEN_NOT_FOUND", status=401)
 
-        token_d = result.to_d()
-
-        if lt_now(token_d["exp"]):
+        if lt_now(existing.exp):
             raise ErrAPI(msg="REFRESH_TOKEN_EXPIRED", status=401)
 
         decrypted_bytes = await asyncio.to_thread(
@@ -74,7 +72,7 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
         payload = b_to_d(cast(bytes, decrypted_bytes))
 
-        return {"decrypted": payload, "token_d": token_d}
+        return {"decrypted": payload, "token_d": existing.to_d()}
 
     except ErrAPI:
         raise

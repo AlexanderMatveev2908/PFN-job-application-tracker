@@ -26,7 +26,7 @@ async def tokens_health_svc(user_data: RegisterFormT) -> Any:
         result_cbc_hmac: GenTokenReturnT = await gen_cbc_hmac(
             payload={"user_id": parsed_us_id},
             hdr={
-                "token_t": TokenT.MANAGE_ACC,
+                "token_t": TokenT.CONF_EMAIL,
             },
             trx=trx,
         )
