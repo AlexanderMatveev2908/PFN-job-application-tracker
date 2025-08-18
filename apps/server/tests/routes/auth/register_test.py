@@ -1,7 +1,7 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from tests.conf.lib import wrap_httpx
-from tests.conf.constants import PAYLOAD_REGISTER
+from tests.conf.constants import get_payload_register
 
 
 @pytest.mark.asyncio
@@ -9,7 +9,7 @@ async def register_ok_t(api) -> None:
 
     data, refresh_token = await wrap_httpx(
         api,
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         url="/auth/register",
         expected_code=201,
     )
@@ -19,7 +19,7 @@ async def register_ok_t(api) -> None:
     assert REG_JWE.fullmatch(refresh_token)
     assert isinstance(data["cbc_hmac_token"], str)
     assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
-    assert data["new_user"]["email"] == PAYLOAD_REGISTER["email"]
+    assert data["new_user"]["email"] == get_payload_register()["email"]
 
 
 @pytest.mark.asyncio
@@ -28,18 +28,18 @@ async def register_err_existing_t(api) -> None:
     data_0, refresh_0 = await wrap_httpx(
         api,
         url="/auth/register",
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         expected_code=201,
     )
     assert "new_user" in data_0
-    assert data_0["new_user"]["email"] == PAYLOAD_REGISTER["email"]
+    assert data_0["new_user"]["email"] == get_payload_register()["email"]
     assert isinstance(refresh_0, str)
 
     # ! Second call: same payload → conflict
     data_1, refresh_1 = await wrap_httpx(
         api,
         url="/auth/register",
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         expected_code=409,
     )
     assert "user already exists" in data_1.get("msg", "").lower()
@@ -49,7 +49,7 @@ async def register_err_existing_t(api) -> None:
 @pytest.mark.asyncio
 async def register_err_mismatch_t(api) -> None:
     payload = {
-        **PAYLOAD_REGISTER,
+        **get_payload_register(),
         "confirm_password": (
             "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)juV2726439d_wrong_password_mismatch"
         ),
@@ -67,7 +67,7 @@ async def register_err_mismatch_t(api) -> None:
 
 @pytest.mark.asyncio
 async def register_err_terms_t(api) -> None:
-    payload = {**PAYLOAD_REGISTER, "terms": False}
+    payload = {**get_payload_register(), "terms": False}
 
     data, refresh = await wrap_httpx(
         api,
@@ -83,7 +83,7 @@ async def register_err_terms_t(api) -> None:
 # async def register_err_limit_t(api) -> None:
 
 #     payload = {
-#         **PAYLOAD_REGISTER,
+#         **get_payload_register(),
 #         "first_name": "<>!@#$%^",
 #     }
 

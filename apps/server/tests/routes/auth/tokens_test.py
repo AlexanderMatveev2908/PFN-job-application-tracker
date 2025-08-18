@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient
 
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
-from tests.conf.constants import PAYLOAD_REGISTER
+from tests.conf.constants import get_payload_register
 
 from tests.conf.lib import wrap_httpx
 
@@ -13,7 +13,7 @@ async def tokens_health_t(api: AsyncClient) -> None:
     data, _ = await wrap_httpx(
         api,
         url="/test/tokens-health",
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         expected_code=200,
     )
 
@@ -40,7 +40,7 @@ async def check_expired_t(api: AsyncClient) -> None:
     data_exp, _ = await wrap_httpx(
         api,
         url="/test/get-tokens-expired",
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         expected_code=200,
     )
 
@@ -82,7 +82,7 @@ async def check_invalid_t(api: AsyncClient) -> None:
     tokens, _ = await wrap_httpx(
         api,
         url="/test/tokens-health",
-        data=PAYLOAD_REGISTER,
+        data=get_payload_register(),
         expected_code=200,
     )
 
