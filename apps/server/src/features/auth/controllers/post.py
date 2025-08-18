@@ -13,7 +13,7 @@ async def register_ctrl(
 
     result = await register_user_svc(user_data)
 
-    return ResAPI.ok_200(
+    return ResAPI.ok_201(
         **pick(obj=cast(dict, result), keys_off=["refresh_token"]),
         cookies=[
             gen_refresh_cookie(result["refresh_token"]),

@@ -11,7 +11,7 @@ async def register_ok_t(api) -> None:
         api,
         data=PAYLOAD_REGISTER,
         url="/auth/register",
-        expected_code=200,
+        expected_code=201,
     )
 
     assert "new_user" in data
@@ -29,7 +29,7 @@ async def register_err_existing_t(api) -> None:
         api,
         url="/auth/register",
         data=PAYLOAD_REGISTER,
-        expected_code=200,
+        expected_code=201,
     )
     assert "new_user" in data_0
     assert data_0["new_user"]["email"] == PAYLOAD_REGISTER["email"]

@@ -8,7 +8,7 @@ from sqlalchemy import inspect
 from sqlalchemy.orm.state import InstanceState
 from sqlalchemy.orm import Mapper
 
-from src.lib.logger import clg
+from src.lib.logger import clg  # noqa: F401
 
 
 def serialize(
@@ -112,8 +112,8 @@ def _ser(
                             seen=seen,
                         )
             return out
-    except Exception as err:
-        clg(err, ttl="err serialize data")
+    except Exception:
+        # clg(err, ttl="err serialize data")
         pass
 
     if isinstance(obj, BaseModel):
