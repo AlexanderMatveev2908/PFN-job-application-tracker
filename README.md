@@ -38,6 +38,11 @@ So I decided to build a proper application to track them:
 - **Aiosmtplib** — Async SMTP client
 - **Amazon S3** — Cloud object storage for files and assets
 - **Redis** — In-memory key-value store for caching, rate limiting, and temporary data
+- **Argon2** — Modern memory-hard password hashing algorithm, used to securely store user passwords and protect against brute-force or GPU attacks
+- **JWT** — Used as short-lived access tokens for authenticating user requests.
+- **JWE—** Used as refresh tokens, securely storing session renewal data.
+- **CBC-HMAC tokens with HKDF-derived keys** — Special short-lived tokens, mainly for sensitive actions like account verification, password resets, or email confirmation.
+- **APScheduler** — Schedules recurring tasks, e.g. a 24h cleanup job that bulk-deletes expired tokens flagged with `deleted_at`.
 
 ---
 
@@ -58,6 +63,9 @@ So I decided to build a proper application to track them:
 - **Fly.io** — Hosting platform (client and server deployed as separate services)
 - **Supabase** — PostgreSQL hosting
 - **Upstash** — Hosting platform for Redis
+- **Brevo (SMTP)** — Outbound transactional email deliver
+- **Zoho Mail** — Inbound email hosting for custom domain addresses
+- **Namecheap** — Domain provider, configured with DNS records (SPF, DKIM, DMARC) to support both Brevo + Zoho
 - **Zsh** — Custom shell scripts for scaffolding and developer productivity
 
 ## 📦 Setup
