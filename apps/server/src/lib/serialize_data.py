@@ -13,14 +13,14 @@ def serialize(
     obj: Any,
     *,
     max_depth: int = 0,
-    joins: bool = False,
+    join: bool = False,
     exclude_keys: Optional[Iterable[str]] = None,
 ) -> Any:
     return _ser(
         obj,
         depth=0,
         max_depth=max_depth,
-        joins=joins,
+        join=join,
         exclude=set(exclude_keys or []),
         seen=set(),
     )
@@ -46,7 +46,7 @@ def _ser(
     *,
     depth: int,
     max_depth: int,
-    joins: bool,
+    join: bool,
     exclude: set[str],
     seen: set[int],
 ) -> Any:
@@ -80,7 +80,7 @@ def _ser(
                     continue
                 out[k] = serialize_tricky(sd[k])
 
-            if joins and depth < max_depth:
+            if join and depth < max_depth:
                 for rel in mapper.relationships:
                     k = rel.key
                     if k in exclude or k not in sd:
@@ -94,7 +94,7 @@ def _ser(
                                 item,
                                 depth=depth + 1,
                                 max_depth=max_depth,
-                                joins=joins,
+                                join=join,
                                 exclude=exclude,
                                 seen=seen,
                             )
@@ -105,7 +105,7 @@ def _ser(
                             v,
                             depth=depth + 1,
                             max_depth=max_depth,
-                            joins=joins,
+                            join=join,
                             exclude=exclude,
                             seen=seen,
                         )
@@ -118,7 +118,7 @@ def _ser(
             obj.model_dump(),
             depth=depth + 1,
             max_depth=max_depth,
-            joins=joins,
+            join=join,
             exclude=exclude,
             seen=seen,
         )
@@ -133,7 +133,7 @@ def _ser(
                 v,
                 depth=depth + 1,
                 max_depth=max_depth,
-                joins=joins,
+                join=join,
                 exclude=exclude,
                 seen=seen,
             )
@@ -149,7 +149,7 @@ def _ser(
                 v,
                 depth=depth + 1,
                 max_depth=max_depth,
-                joins=joins,
+                join=join,
                 exclude=exclude,
                 seen=seen,
             )
@@ -161,7 +161,7 @@ def _ser(
             vars(obj),
             depth=depth + 1,
             max_depth=max_depth,
-            joins=joins,
+            join=join,
             exclude=exclude,
             seen=seen,
         )

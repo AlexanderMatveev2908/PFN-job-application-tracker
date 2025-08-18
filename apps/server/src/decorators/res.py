@@ -29,7 +29,7 @@ class ResAPI(JSONResponse):
     ) -> None:
         payload = data or {}
 
-        content = serialize(payload, max_depth=5)
+        content = serialize(payload, max_depth=3)
 
         super().__init__(
             status_code=status,

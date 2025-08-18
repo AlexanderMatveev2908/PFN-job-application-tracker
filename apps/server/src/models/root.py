@@ -43,11 +43,11 @@ class RootTable(Base):
     def to_d(
         self,
         *,
-        joins: bool = False,
+        join: bool = False,
         max_depth: int = 0,
         exclude_keys: list[str] = [],
     ) -> dict[str, Any]:
 
         return serialize(
-            self, joins=joins, max_depth=max_depth, exclude_keys=exclude_keys
+            self, join=join, max_depth=max_depth, exclude_keys=exclude_keys
         )
