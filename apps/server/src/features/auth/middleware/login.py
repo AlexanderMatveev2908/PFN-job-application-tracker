@@ -1,12 +1,11 @@
 from fastapi import Request
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import Field, field_validator
 
-from src.lib.validators.idx import validate_password_lib
+from src.lib.validators.idx import EmailForm, validate_password_lib
 from src.middleware.check_form import check_form_mdw
 
 
-class LoginForm(BaseModel):
-    email: EmailStr = Field(min_length=1, max_length=254)
+class LoginForm(EmailForm):
     password: str = Field(min_length=1, max_length=100)
 
     @field_validator("password")

@@ -19,10 +19,20 @@ async def grab_html() -> str | None:
     return None if parsed is None else parsed.group(0)
 
 
-async def gen_html_template() -> str:
+async def gen_html_template(first_name: str, url: str) -> str:
     html = await grab_html()
 
-    if html is None:
+    if not html:
         raise ErrAPI(msg="missing html email template", status=500)
 
-    return re.sub(r"\$1", "John", html)
+    replacements = {
+        "first_name": first_name,
+        "url": url,
+    }
+
+    updated: str = html
+
+    for k, v in replacements.items():
+        updated = re.sub(rf"\${{{k}}}", v, updated)
+
+    return updated

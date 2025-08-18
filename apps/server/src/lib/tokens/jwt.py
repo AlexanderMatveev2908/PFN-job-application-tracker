@@ -1,7 +1,9 @@
+import uuid
 import jwt
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
+from src.lib.data_structure import parse_id
 from src.lib.etc import calc_exp
 from src.models.token import PayloadT
 
@@ -10,8 +12,10 @@ ALG = "HS256"
 env_var = get_env()
 
 
-def gen_jwt(user_id: str, reverse: bool = False) -> str:
-    payload: dict[str, str | int] = {"user_id": user_id}
+def gen_jwt(user_id: str | uuid.UUID, reverse: bool = False) -> str:
+
+    parsed_id: str = parse_id(user_id)
+    payload: dict[str, str | int] = {"user_id": parsed_id}
     payload["exp"] = calc_exp("15m", reverse=reverse, format="sec")
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)

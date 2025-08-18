@@ -1,12 +1,13 @@
 import asyncio
 from typing import Any, cast
+import uuid
 from jose import jwe
 from sqlalchemy import delete, select
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.algs.hmac import hash_db_hmac
-from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b
+from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b, parse_id
 from src.lib.etc import calc_exp, lt_now
 from src.lib.logger import clg
 from src.models.token import (
@@ -25,16 +26,21 @@ P_ALG = "A256GCM"
 
 
 async def gen_jwe(
-    user_id: str, trx: AsyncSession, reverse: bool = False, **kwargs: Any
+    user_id: str | uuid.UUID,
+    trx: AsyncSession,
+    reverse: bool = False,
+    **kwargs: Any,
 ) -> GenTokenReturnT:
+
+    parsed_id: str = parse_id(user_id)
 
     await trx.execute(
         delete(Token).where(
-            (Token.user_id == user_id) & (Token.token_t == TokenT.REFRESH)
+            (Token.user_id == parsed_id) & (Token.token_t == TokenT.REFRESH)
         )
     )
 
-    payload = {"user_id": user_id, **kwargs}
+    payload = {"user_id": parsed_id, **kwargs}
 
     enc_bytes: bytes = await asyncio.to_thread(
         jwe.encrypt,
@@ -45,7 +51,7 @@ async def gen_jwe(
     )
 
     refresh_db = Token(
-        user_id=user_id,
+        user_id=parsed_id,
         alg=AlgT.RSA_OAEP_256_A256GCM,
         exp=calc_exp("1h", reverse),
         token_t=TokenT.REFRESH,

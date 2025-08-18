@@ -16,6 +16,6 @@ auth_router.post(
         )
     ],
 )(register_ctrl)
-auth_router.post("/login", dependencies=[Depends(rate_limit_mdw(limit=5))])(
-    login_ctrl
-)
+auth_router.post(
+    "/login", dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))]
+)(login_ctrl)
