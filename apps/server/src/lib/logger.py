@@ -49,7 +49,7 @@ def clg(
 
 def log_err(err: Exception) -> None:
     cent("🥩 raw 🥩")
-    print(err)
+    print(str(err))
 
     frames = traceback.extract_tb(err.__traceback__)
     src_frames = []
