@@ -13,6 +13,6 @@ async def gen_tokens_session(
     user_id: str, trx: AsyncSession, reverse: bool = False, **kwargs: Any
 ) -> TokensSessionsReturnT:
     result_jwe = await gen_jwe(user_id=user_id, trx=trx, reverse=reverse)
-    access_token: str = gen_jwt({"user_id": user_id}, reverse=reverse)
+    access_token: str = gen_jwt(user_id, reverse=reverse)
 
     return (access_token, result_jwe)

@@ -65,7 +65,7 @@ class User(RootTable):
                 HASH_POOL, PH.verify, self.password, plain
             )
         except Exception as err:
-            clg(err, ttl="err check pwd")
+            clg(err, ttl="invalid password")
             return False
 
     def verify_email(

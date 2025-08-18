@@ -18,7 +18,7 @@ REG_ID = re.compile(
     r"^([a-f0-9]{8})-([a-f0-9]{4})-4[a-f0-9]{3}-([a-f0-9]{4})-([a-f0-9]{12})$"
 )
 
-REG_JWE = re.compile(r"^[A-Fa-f0-9]{1058}$")
+REG_JWE = re.compile(r"^[A-Fa-f0-9]{1004}$")
 
 REG_CBC_HMAC = re.compile(
     r"^(?=.{600,}$)[A-Fa-f0-9]{400,}\.[A-Fa-f0-9]{32}\.[A-Fa-f0-9]{128}\.[A-Fa-f0-9]{64}$"  # noqa: E501

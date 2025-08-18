@@ -3,7 +3,8 @@ from fastapi import Depends, Request
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
-from src.features.auth.services.register_user import register_user_svc
+from src.features.auth.services.login import login_svc
+from src.features.auth.services.register import register_user_svc
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import pick
 
@@ -25,5 +26,7 @@ async def register_ctrl(
 async def login_ctrl(
     _: Request, login_data: LoginForm = Depends(login_mdw)
 ) -> ResAPI:
+
+    await login_svc(login_data)
 
     return ResAPI.ok_200(**login_data.model_dump())

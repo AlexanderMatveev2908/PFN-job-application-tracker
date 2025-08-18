@@ -1,7 +1,7 @@
 import asyncio
 from typing import Any, cast
 from jose import jwe
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
@@ -27,8 +27,14 @@ P_ALG = "A256GCM"
 async def gen_jwe(
     user_id: str, trx: AsyncSession, reverse: bool = False, **kwargs: Any
 ) -> GenTokenReturnT:
+
+    await trx.execute(
+        delete(Token).where(
+            (Token.user_id == user_id) & (Token.token_t == TokenT.REFRESH)
+        )
+    )
+
     payload = {"user_id": user_id, **kwargs}
-    payload["exp"] = calc_exp("1d", reverse)
 
     enc_bytes: bytes = await asyncio.to_thread(
         jwe.encrypt,

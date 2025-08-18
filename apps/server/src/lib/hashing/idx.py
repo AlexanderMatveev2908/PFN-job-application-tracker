@@ -24,5 +24,5 @@ async def check_pwd(hashed: str, plain: str) -> bool:
     try:
         return await loop.run_in_executor(HASH_POOL, PH.verify, hashed, plain)
     except Exception as err:
-        clg(err, ttl="err check pwd")
+        clg(err, ttl="invalid password")
         return False
