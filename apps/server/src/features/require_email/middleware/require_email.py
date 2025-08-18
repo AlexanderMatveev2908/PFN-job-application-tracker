@@ -8,11 +8,11 @@ from src.middleware.check_form import check_form_mdw
 ActRequireEmailT = Literal["FORGOT_PWD", "CONFIRM_EMAIL"]
 
 
-class RequestEmailForm(EmailForm):
+class RequireEmailForm(EmailForm):
     act: ActRequireEmailT = Field(...)
 
 
-async def require_email_mdw(req: Request) -> RequestEmailForm:
-    data = await check_form_mdw(RequestEmailForm, req)
+async def require_email_mdw(req: Request) -> RequireEmailForm:
+    data = await check_form_mdw(RequireEmailForm, req)
 
     return data
