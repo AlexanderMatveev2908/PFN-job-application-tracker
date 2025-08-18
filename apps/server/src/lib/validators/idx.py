@@ -1,5 +1,10 @@
+from pydantic import BaseModel, EmailStr, Field
 from src.constants.reg import REG_PWD
 from src.decorators.err import ErrAPI
+
+
+class EmailForm(BaseModel):
+    email: EmailStr = Field(min_length=1, max_length=254)
 
 
 def validate_password_lib(v: str) -> str:

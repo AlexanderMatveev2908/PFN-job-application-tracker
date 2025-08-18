@@ -1,8 +1,6 @@
 from typing import Self, TypedDict, cast
 from fastapi import Request
 from pydantic import (
-    BaseModel,
-    EmailStr,
     Field,
     field_validator,
     model_validator,
@@ -10,19 +8,17 @@ from pydantic import (
 
 from src.constants.reg import REG_NAME
 from src.decorators.err import ErrAPI
-from src.lib.validators.idx import validate_password_lib
+from src.lib.validators.idx import EmailForm, validate_password_lib
 from src.middleware.check_form import check_form_mdw
 
 
-class RegisterForm(BaseModel):
+class RegisterForm(EmailForm):
     first_name: str = Field(
         min_length=1, max_length=50, pattern=REG_NAME.pattern
     )
     last_name: str = Field(
         min_length=1, max_length=50, pattern=REG_NAME.pattern
     )
-
-    email: EmailStr = Field(min_length=1, max_length=254)
 
     password: str = Field(min_length=1, max_length=100)
     confirm_password: str = Field(min_length=1, max_length=100)
