@@ -143,7 +143,7 @@ async def check_cbc_hmac(
     existing_d = existing.to_d()
 
     comp_hash = hash_db_hmac((token).encode("utf-8"))
-    if not check_hmac(comp_hash, existing_d["hashed"]):
+    if not check_hmac(comp_hash, h_to_b(existing_d["hashed"])):
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     if lt_now(existing_d["exp"]):

@@ -1,6 +1,7 @@
 from typing import Any, Literal, Mapping, Optional, TypedDict, cast
 from fastapi.responses import JSONResponse
-from src.lib.data_structure import serialize
+
+from src.lib.serialize_data import serialize
 
 
 class CookieD(TypedDict, total=False):
@@ -28,7 +29,7 @@ class ResAPI(JSONResponse):
     ) -> None:
         payload = data or {}
 
-        content = serialize(payload, depth=0, max_depth=5)
+        content = serialize(payload, max_depth=5)
 
         super().__init__(
             status_code=status,
