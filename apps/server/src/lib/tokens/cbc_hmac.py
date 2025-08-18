@@ -140,13 +140,11 @@ async def check_cbc_hmac(
     if not existing:
         raise ErrAPI(msg="CBC_HMAC_NOT_FOUND", status=401)
 
-    existing_d = existing.to_d()
-
     comp_hash = hash_db_hmac((token).encode("utf-8"))
-    if not check_hmac(comp_hash, h_to_b(existing_d["hashed"])):
+    if not check_hmac(comp_hash, existing.hashed):
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
-    if lt_now(existing_d["exp"]):
+    if lt_now(existing.exp):
         if commit_soft_delete:
             existing.deleted_at = get_now()
             await trx.commit()
@@ -154,9 +152,9 @@ async def check_cbc_hmac(
 
     info_b: bytes = d_to_b(
         {
-            "alg": parse_enum(existing_d["alg"]),
-            "token_t": parse_enum(existing_d["token_t"]),
-            "user_id": parse_id(existing_d["user_id"]),
+            "alg": parse_enum(existing.alg),
+            "token_t": parse_enum(existing.token_t),
+            "user_id": parse_id(existing.user_id),
         }
     )
 
@@ -180,6 +178,6 @@ async def check_cbc_hmac(
     )
 
     return {
-        "token_d": existing_d,
+        "token_d": existing.to_d(),
         "decrypted": json.loads(pt.decode("utf-8")),
     }

@@ -6,15 +6,12 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy import delete
 
 from src.conf.db import db_trx
-from src.conf.env import get_env
 from src.lib.etc import get_now
 from src.models.token import Token
 
 
 async def clear_exp_tokens() -> None:
     async with db_trx() as trx:
-        if get_env().py_env == "test":
-            return
         stmt = delete(Token).where(
             (Token.exp < get_now()) & (Token.deleted_at.is_not(None))
         )
