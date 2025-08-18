@@ -1,4 +1,5 @@
-from httpx import Response
+from typing import Any
+from httpx import AsyncClient, Response
 
 from src.lib.logger import clg
 
@@ -15,3 +16,21 @@ def parse_res(res: Response) -> dict:
     )
 
     return data
+
+
+async def wrap_httpx(
+    api: AsyncClient, *, url: str, data: Any, expected_code: int = 200
+) -> tuple[dict, str]:
+    res = await api.post(url, json=data)
+
+    assert res.status_code == expected_code
+
+    parsed = parse_res(res)
+    refresh = (
+        res.cookies.get(
+            "refresh_token",
+        )
+        or "N/A"
+    )
+
+    return (parsed, refresh)
