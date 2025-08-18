@@ -39,7 +39,7 @@ async def tokens_health_t(api: AsyncClient) -> None:
 async def check_expired_t(api: AsyncClient) -> None:
     data_exp, _ = await wrap_httpx(
         api,
-        url="/test/tokens-expired",
+        url="/test/get-tokens-expired",
         data=PAYLOAD_REGISTER,
         expected_code=200,
     )

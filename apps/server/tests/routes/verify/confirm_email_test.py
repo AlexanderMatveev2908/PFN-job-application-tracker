@@ -30,7 +30,7 @@ async def confirm_email_expired_t(api: AsyncClient) -> None:
     data_register, *_ = await wrap_httpx(
         api,
         data=PAYLOAD_REGISTER,
-        url="/test/tokens-expired",
+        url="/test/get-tokens-expired",
         expected_code=200,
     )
 
@@ -51,7 +51,7 @@ async def confirm_email_invalid_t(api: AsyncClient) -> None:
     data_register, *_ = await wrap_httpx(
         api,
         data=PAYLOAD_REGISTER,
-        url="/test/tokens-expired",
+        url="/test/get-tokens-expired",
         expected_code=200,
     )
 
