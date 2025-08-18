@@ -19,8 +19,8 @@ def wrap_loop(
         fn = cb()
 
     try:
-        asyncio.get_running_loop()
-        asyncio.create_task(fn)
+        loop = asyncio.get_running_loop()
+        loop.create_task(fn)
     except RuntimeError:
         asyncio.run(fn)
 
