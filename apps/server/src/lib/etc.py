@@ -6,6 +6,7 @@ from typing import Callable, Coroutine, Literal, TypeVar
 from fastapi import Request
 
 from src.decorators.err import ErrAPI
+from src.types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
 
 T = TypeVar("T")
 
@@ -25,24 +26,17 @@ def wrap_loop(
         asyncio.run(fn)
 
 
-ParamExpT = Literal["15m", "30m", "1h", "1d"]
-
-mapper: dict[ParamExpT, int] = {
-    "15m": 15 * 60,
-    "30m": 30 * 60,
-    "1h": 60**2,
-    "1d": 24 * 60**2,
-}
-
 FormatCalcExpT = Literal["ms", "sec"]
 
 
 def calc_exp(
-    param: ParamExpT, reverse: bool = False, format: FormatCalcExpT = "ms"
+    param: ParamWindowTime,
+    reverse: bool = False,
+    format: FormatCalcExpT = "ms",
 ) -> int:
     base = int(time())
 
-    add = mapper.get(param)
+    add = MAPPER_WINDOW_TIME.get(param)
     if not add:
         raise ErrAPI(msg="invalid param", status=500)
 

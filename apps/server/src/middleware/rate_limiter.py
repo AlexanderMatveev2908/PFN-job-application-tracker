@@ -1,12 +1,13 @@
 import math
 import uuid
-from typing import Awaitable, Callable
+from typing import Awaitable, Callable, cast
 from fastapi import Request, Response
 from src.conf.env import get_env
 from src.conf.redis import redis_session
 from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
-from src.lib.etc import calc_exp, get_now
+from src.lib.etc import get_now
+from src.types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
 
 
 def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
@@ -28,9 +29,12 @@ def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:
 
 
 def rate_limit_mdw(
-    limit: int = 5, window_ms: int = calc_exp("15m")
+    limit: int = 5, window_arg: ParamWindowTime = "30m"
 ) -> Callable[[Request, Response], Awaitable[None]]:
     async def _dep(req: Request, _: Response) -> None:
+
+        window_ms = cast(int, MAPPER_WINDOW_TIME.get(window_arg)) * 1000
+
         env_var = get_env()
 
         if env_var.py_env == "test":
