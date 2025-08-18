@@ -44,7 +44,7 @@ class RootTable(Base):
         self,
         *,
         join: bool = False,
-        max_depth: int = 0,
+        max_depth: int = 3,
         exclude_keys: list[str] = [],
     ) -> dict[str, Any]:
 

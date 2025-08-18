@@ -1,7 +1,8 @@
-from typing import Literal
+from typing import Any, Literal
 from httpx import AsyncClient, Response
 
 from src.lib.logger import clg
+from tests.conf.constants import RegisterPayloadT
 
 
 def parse_res(res: Response) -> dict:
@@ -26,9 +27,9 @@ async def wrap_httpx(
     *,
     url: str,
     method: Literal["POST", "GET"] = "POST",
-    data: dict | None = None,
+    data: Any | None = None,
     expected_code: int = 200,
-) -> tuple[dict, str]:
+) -> tuple[dict[Literal["msg"] | str, Any], str]:
 
     if method == "POST":
         res = await api.post(url, json=data)
@@ -53,3 +54,12 @@ async def wrap_httpx(
         raise err
 
     return (parsed, refresh)
+
+
+def extract_login_payload(
+    payload_register: RegisterPayloadT,
+) -> dict[Literal["email", "password"], str]:
+    return {
+        "email": payload_register["email"],
+        "password": payload_register["password"],
+    }
