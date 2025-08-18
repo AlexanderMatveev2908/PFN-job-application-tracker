@@ -93,16 +93,23 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
 
 
 async def gen_cbc_hmac(
-    payload: PayloadTokenT, hdr: HdrT, trx: AsyncSession, reverse: bool = False
+    user_id: str | uuid.UUID,
+    hdr: HdrT,
+    trx: AsyncSession,
+    reverse: bool = False,
 ) -> GenTokenReturnT:
 
-    result: BuildCbcHmacReturnT = build_cbc_hmac(payload=payload, hdr=hdr)
+    parsed_id = user_id if isinstance(user_id, str) else str(user_id)
+
+    result: BuildCbcHmacReturnT = build_cbc_hmac(
+        payload={"user_id": parsed_id}, hdr=hdr
+    )
     client_token = result["token"]
 
     new_cbc_hmac = Token(
         id=result["token_id"],
         exp=calc_exp("15m", reverse),
-        user_id=payload["user_id"],
+        user_id=parsed_id,
         alg=AlgT.AES_CBC_HMAC_SHA256,
         hashed=hash_db_hmac((result["token"]).encode("utf-8")),
         **hdr,

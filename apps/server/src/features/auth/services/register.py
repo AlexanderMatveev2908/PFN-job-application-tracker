@@ -46,7 +46,7 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             hdr={
                 "token_t": TokenT.CONF_EMAIL,
             },
-            payload={"user_id": user_id},
+            user_id=new_user.id,
             trx=trx,
         )
 
