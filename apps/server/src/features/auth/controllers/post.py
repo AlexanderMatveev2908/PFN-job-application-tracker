@@ -19,3 +19,7 @@ async def register_ctrl(
             gen_refresh_cookie(result["refresh_token"]),
         ],
     )
+
+
+async def login_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
