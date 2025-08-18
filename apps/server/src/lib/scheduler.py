@@ -12,7 +12,9 @@ from src.models.token import Token
 
 async def clear_exp_tokens() -> None:
     async with db_trx() as trx:
-        stmt = delete(Token).where(Token.exp < get_now())
+        stmt = delete(Token).where(
+            (Token.exp < get_now()) & (Token.deleted_at.is_not(None))
+        )
         await trx.execute(stmt)
 
 

@@ -43,38 +43,44 @@ class RootTable(Base):
 
     def to_d(
         self,
+        *,
         joins: bool = False,
         max_depth: int = 0,
         exclude_keys: list[str] = [],
     ) -> dict[str, Any]:
         state = cast(InstanceState[Any], inspect(self))
         mapper: Mapper[Any] = state.mapper
+        sd = state.dict
+
+        def _ser(v: Any) -> Any:
+            if isinstance(v, uuid.UUID):
+                return str(v)
+            if isinstance(v, (datetime, date)):
+                return v.isoformat()
+            return v
 
         out: dict[str, Any] = {}
 
         for col in mapper.columns:
-            if col.key in exclude_keys:
+            k = col.key
+            if k in exclude_keys:
                 continue
-
-            val = getattr(self, col.key)
-            if isinstance(val, uuid.UUID):
-                val = str(val)
-            elif isinstance(val, (datetime, date)):
-                val = val.isoformat()
-            out[col.key] = val
+            if k in sd:
+                out[k] = _ser(sd[k])
 
         if joins and max_depth > 0:
             for rel in mapper.relationships:
-                attr = state.attrs[rel.key]
-
-                if rel.key in state.unloaded or rel.key in exclude_keys:
+                k = rel.key
+                if k in exclude_keys:
+                    continue
+                if k not in sd:
                     continue
 
-                v = attr.value
+                v = sd[k]
                 if v is None:
-                    out[rel.key] = None
+                    out[k] = None
                 elif rel.uselist:
-                    out[rel.key] = [
+                    out[k] = [
                         item.to_d(
                             joins=True,
                             max_depth=max_depth - 1,
@@ -83,9 +89,10 @@ class RootTable(Base):
                         for item in v
                     ]
                 else:
-                    out[rel.key] = v.to_d(
+                    out[k] = v.to_d(
                         joins=True,
                         max_depth=max_depth - 1,
                         exclude_keys=exclude_keys,
                     )
+
         return out

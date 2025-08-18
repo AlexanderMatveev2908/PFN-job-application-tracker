@@ -1,10 +1,10 @@
 from fastapi import Depends, Request
-from sqlalchemy import false, select
+from sqlalchemy import delete, false, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.middleware.check_token import check_cbc_hmac_mdw
-from src.models.token import CheckTokenReturnT
+from src.models.token import CheckTokenReturnT, Token
 from src.models.user import User
 
 
@@ -24,5 +24,7 @@ async def confirm_email_ctrl(
             raise ErrAPI(msg="user not found", status=404)
 
         us.verify_email()
+        stmt = delete(Token).where(Token.id == cbc_result["token_d"]["id"])
+        await trx.execute(stmt)
 
         return ResAPI.ok_200(updated_user=us.to_d(exclude_keys=["password"]))
