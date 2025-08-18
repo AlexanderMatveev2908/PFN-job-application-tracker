@@ -6,8 +6,7 @@ from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
-from src.lib.tokens.jwe import gen_jwe
-from src.lib.tokens.jwt import gen_jwt
+from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
 from src.models.user import User
 
@@ -39,9 +38,10 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         await trx.flush([new_user])
         await trx.refresh(new_user)
 
-        access_token: str = gen_jwt({"user_id": user_id})
-        result_jwe: GenTokenReturnT = await gen_jwe(user_id=user_id, trx=trx)
-
+        access_token, result_jwe = await gen_tokens_session(
+            user_id=user_id,
+            trx=trx,
+        )
         cbc_hmac_res: GenTokenReturnT = await gen_cbc_hmac(
             hdr={
                 "token_t": TokenT.CONF_EMAIL,
