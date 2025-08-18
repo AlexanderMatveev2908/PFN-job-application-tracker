@@ -7,7 +7,7 @@ from src.conf.redis import redis_session
 from src.constants.api import EXPOSE_HEADERS
 from src.decorators.err import ErrAPI
 from src.lib.etc import get_now
-from src.types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
+from src.my_types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
 
 
 def merge_exp_hdr(base: dict[str, str]) -> dict[str, str]:

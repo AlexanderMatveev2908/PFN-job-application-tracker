@@ -6,7 +6,7 @@ from typing import Callable, Coroutine, Literal, TypeVar
 from fastapi import Request
 
 from src.decorators.err import ErrAPI
-from src.types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
+from src.my_types.idx import MAPPER_WINDOW_TIME, ParamWindowTime
 
 T = TypeVar("T")
 
