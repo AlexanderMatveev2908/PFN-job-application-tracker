@@ -11,14 +11,14 @@ env_var = get_env()
 
 async def send_email(user: User, subj: str, callback_url: str) -> None:
     msg = EmailMessage()
-    msg["From"] = (env_var.smpt_from,)
-    msg["To"] = (user.email,)
-    msg["Subject"] = (subj,)
+    msg["From"] = env_var.smpt_from
+    msg["To"] = user.email
+    msg["Subject"] = subj
     msg.set_content(
-        f"Hi {user.first_name}\n\n",
+        f"Hi {user.first_name}\n\n"
         "Click the link below to be redirected"
-        " to our verification page 🔒\n\n",
-        f"{callback_url}",
+        " to our verification page 🔒\n\n"
+        f"{callback_url}"
     )
 
     msg.add_alternative(
