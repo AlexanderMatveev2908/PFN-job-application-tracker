@@ -10,8 +10,8 @@ ALG = "HS256"
 env_var = get_env()
 
 
-def gen_jwt(arg: PayloadT, reverse: bool = False) -> str:
-    payload = {**arg}
+def gen_jwt(user_id: str, reverse: bool = False) -> str:
+    payload: dict[str, str | int] = {"user_id": user_id}
     payload["exp"] = calc_exp("15m", reverse=reverse, format="sec")
 
     token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)

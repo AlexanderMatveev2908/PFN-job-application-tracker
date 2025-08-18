@@ -1,7 +1,17 @@
 import os
+from typing import TypedDict
 
 
-def get_payload_register() -> dict:
+class RegisterPayloadT(TypedDict):
+    first_name: str
+    last_name: str
+    email: str
+    password: str
+    confirm_password: str
+    terms: bool
+
+
+def get_payload_register() -> RegisterPayloadT:
     return {
         "first_name": "John",
         "last_name": "Doe",

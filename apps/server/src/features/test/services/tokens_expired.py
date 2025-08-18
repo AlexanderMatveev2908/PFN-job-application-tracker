@@ -3,8 +3,7 @@ from src.features.auth.middleware.register import RegisterFormT
 from src.features.test.lib.register_user import handle_user_lib
 from src.lib.data_structure import parse_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
-from src.lib.tokens.jwe import gen_jwe
-from src.lib.tokens.jwt import gen_jwt
+from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
 
 
@@ -14,8 +13,7 @@ async def tokens_expired_svc(user_data: RegisterFormT) -> dict:
 
         parsed_us_id: str = parse_id(us.id)
 
-        access_token: str = gen_jwt({"user_id": parsed_us_id}, reverse=True)
-        result_jwe: GenTokenReturnT = await gen_jwe(
+        access_token, result_jwe = await gen_tokens_session(
             user_id=parsed_us_id, trx=trx, reverse=True
         )
 
