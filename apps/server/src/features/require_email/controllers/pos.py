@@ -26,4 +26,6 @@ async def require_email_forgot_pwd_ctrl(
         if not us:
             raise ErrAPI(msg="user not found", status=404)
 
+        # cbc_hmac_result = await gen_cbc_hmac()
+
     return ResAPI.ok_200(**us.to_d(exclude_keys=["password"]))
