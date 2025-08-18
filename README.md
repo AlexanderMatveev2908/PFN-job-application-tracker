@@ -416,16 +416,14 @@ yarn check
 
 ##### 📜 Environment Variables
 
-If you use **NGINX reverse proxies** and your dev URLs use **HTTPS**, both client and server need **test-specific URLs** for local and **CI/CD** testing.
+If you use **NGINX reverse proxies** and your dev URLs use **HTTPS**, both client and server need **test-specific URLs** for local and **CI/CD pipelines** testing.
 
-The code is set to **prioritize test URLs** if they are present and **truthy**.  
-To keep using your normal **HTTPS dev URLs** during development, comment out the test variables in **.env** so they are ignored.
+The variables that set **test mode** are:
 
-**My workflow:**
+- **PY_ENV** for server
+- **NEXT_PUBLIC_ENV** for client
 
-- Keep test variables **commented** during normal development.
-- **Uncomment** them only when running tests locally.
-- Use **HTTP** for **CI/CD** pipelines.
+So them are the same that also set **development** or **production** environment
 
 ---
 
@@ -447,7 +445,7 @@ Instead:
    yarn start
    ```
 
-3. **Run tests** on both client & server in parallel
+3. **Run tests** on both client & server in parallel with maximum workers available on current machine
 
    ```bash
    yarn tests
@@ -458,5 +456,3 @@ Instead:
 I hope you find the project interesting — if not, the app doesn’t come with a refund policy 💰
 
 Thanks for checking out the repo ✌🏼
-
-<!--  -->
