@@ -12,17 +12,16 @@ async def ok_t(api) -> None:
 @pytest.mark.asyncio
 async def err_existing_t(api) -> None:
     # _ First call: should succeed
-    res = await register_ok_lib(api)
+    res_register = await register_ok_lib(api)
 
     # ! Second call: same payload → conflict
-    data_1, refresh_1 = await wrap_httpx(
+    res_register_err = await wrap_httpx(
         api,
         url="/auth/register",
-        data=res["payload"],
+        data=res_register["payload"],
         expected_code=409,
     )
-    assert "user already exists" in data_1.get("msg", "").lower()
-    assert isinstance(refresh_1, str)  # likely "N/A" per wrapper
+    assert "user already exists" in res_register_err["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
@@ -34,28 +33,26 @@ async def err_mismatch_t(api) -> None:
         ),
     }
 
-    data, refresh = await wrap_httpx(
+    res_register = await wrap_httpx(
         api,
         url="/auth/register",
         data=payload,
         expected_code=422,
     )
-    assert "passwords do not match" in data.get("msg", "").lower()
-    assert isinstance(refresh, str)
+    assert "passwords do not match" in res_register["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
 async def err_terms_t(api) -> None:
     payload = {**get_payload_register(), "terms": False}
 
-    data, refresh = await wrap_httpx(
+    res_register = await wrap_httpx(
         api,
         url="/auth/register",
         data=payload,
         expected_code=422,
     )
-    assert "user must accept terms" in data.get("msg", "").lower()
-    assert isinstance(refresh, str)
+    assert "user must accept terms" in res_register["data"]["msg"].lower()
 
 
 # @pytest.mark.asyncio
