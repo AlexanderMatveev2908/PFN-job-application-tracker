@@ -3,6 +3,7 @@ from httpx import AsyncClient, Response
 
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
 from src.lib.logger import clg
+from src.models.token import TokenT
 from tests.conf.constants import RegisterPayloadT, get_payload_register
 
 
@@ -85,11 +86,13 @@ async def register_ok_lib(api) -> tuple[RegisterPayloadT, dict]:
 
 
 async def get_tokens_lib(
-    api: AsyncClient, health: bool = False
+    api: AsyncClient,
+    health: bool = False,
+    cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
 ) -> tuple[str, str, str]:
     data, _ = await wrap_httpx(
         api,
-        url=f"/test/{'tokens-health' if health else 'get-tokens-expired'}",
+        url=f"/test/{'tokens-health' if health else 'get-tokens-expired'}?cbc_hmac_token_t={cbc_hmac_t.value}",  # noqa: E501
         data=get_payload_register(),
         expected_code=200,
     )
