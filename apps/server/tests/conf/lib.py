@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any, Literal, TypedDict, cast
 from httpx import AsyncClient, Response
 
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
@@ -67,7 +67,19 @@ def extract_login_payload(
     }
 
 
-async def register_ok_lib(api) -> tuple[RegisterPayloadT, dict]:
+class RegisterReturnT(TypedDict):
+    access_token: str
+    refresh_token: str
+    cbc_hmac_token: str
+    msg: str
+
+
+class RegisterOkReturnT(TypedDict):
+    payload: RegisterPayloadT
+    data_register: RegisterReturnT
+
+
+async def register_ok_lib(api) -> RegisterOkReturnT:
     payload = get_payload_register()
 
     data_register, refresh_token = await wrap_httpx(
@@ -82,18 +94,30 @@ async def register_ok_lib(api) -> tuple[RegisterPayloadT, dict]:
     assert REG_CBC_HMAC.fullmatch(data_register["cbc_hmac_token"])
     assert "new_user" in data_register
 
-    return (payload, data_register)
+    return {
+        "payload": payload,
+        "data_register": cast(RegisterReturnT, data_register),
+    }
+
+
+class GenTokensReturnT(TypedDict):
+    access_token: str
+    refresh_token: str
+    cbc_hmac_token: str
+    payload: RegisterPayloadT
 
 
 async def get_tokens_lib(
     api: AsyncClient,
     health: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
-) -> tuple[str, str, str]:
+) -> GenTokensReturnT:
+    payload = get_payload_register()
+
     data, _ = await wrap_httpx(
         api,
         url=f"/test/{'tokens-health' if health else 'get-tokens-expired'}?cbc_hmac_token_t={cbc_hmac_t.value}",  # noqa: E501
-        data=get_payload_register(),
+        data=payload,
         expected_code=200,
     )
 
@@ -116,8 +140,9 @@ async def get_tokens_lib(
             == data["access_token_decoded"]["user_id"]
         )
 
-    return (
-        data["access_token"],
-        data["refresh_token"],
-        data["cbc_hmac_token"],
-    )
+    return {
+        "access_token": data["access_token"],
+        "refresh_token": data["refresh_token"],
+        "cbc_hmac_token": data["cbc_hmac_token"],
+        "payload": payload,
+    }

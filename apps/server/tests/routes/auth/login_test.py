@@ -8,12 +8,12 @@ from tests.conf.lib import extract_login_payload, register_ok_lib, wrap_httpx
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    payload, *_ = await register_ok_lib(api)
+    res = await register_ok_lib(api)
 
     data_login, refresh_token = await wrap_httpx(
         api,
         url="/auth/login",
-        data=extract_login_payload(payload),
+        data=extract_login_payload(res["payload"]),
         expected_code=200,
     )
 
@@ -35,14 +35,14 @@ async def err_not_found_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    payload, *_ = await register_ok_lib(api)
+    res = await register_ok_lib(api)
 
     data_login, *_ = await wrap_httpx(
         api,
         url="/auth/login",
         data={
-            **extract_login_payload(payload),
-            "password": payload["password"] + "yayyyy",
+            **extract_login_payload(res["payload"]),
+            "password": res["payload"]["password"] + "yayyyy",
         },
         expected_code=401,
     )

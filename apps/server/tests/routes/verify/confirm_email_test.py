@@ -6,12 +6,12 @@ from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    _, data_register = await register_ok_lib(api)
+    res = await register_ok_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,
         method="GET",
-        url=f'/verify/confirm-email?cbc_hmac_token={data_register["cbc_hmac_token"]}',  # noqa: E501
+        url=f'/verify/confirm-email?cbc_hmac_token={res["data_register"]["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -20,12 +20,12 @@ async def ok_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_expired_t(api: AsyncClient) -> None:
-    *_, cbc_hmac_tk = await get_tokens_lib(api)
+    res = await get_tokens_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,
         method="GET",
-        url=f"/verify/confirm-email?cbc_hmac_token={cbc_hmac_tk}",  # noqa: E501
+        url=f"/verify/confirm-email?cbc_hmac_token={res['cbc_hmac_token']}",  # noqa: E501
         expected_code=401,
     )
 
@@ -34,12 +34,12 @@ async def err_expired_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    *_, cbc_hmac_tk = await get_tokens_lib(api)
+    res = await get_tokens_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,
         method="GET",
-        url=f"/verify/confirm-email?cbc_hmac_token={cbc_hmac_tk[:-4]+'afaf'}",  # noqa: E501
+        url=f"/verify/confirm-email?cbc_hmac_token={res['cbc_hmac_token'][:-4]+'afaf'}",  # noqa: E501
         expected_code=401,
     )
 

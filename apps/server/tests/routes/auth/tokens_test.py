@@ -12,13 +12,13 @@ async def ok_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_expired_t(api: AsyncClient) -> None:
-    access_tk, refresh_tk, cbc_hmac_tk = await get_tokens_lib(api)
+    res = await get_tokens_lib(api)
     url = f"/test/get-err-expired?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
     data_jwt, _ = await wrap_httpx(
         api,
         url=url,
-        data={"token": access_tk, "act": "JWT"},
+        data={"token": res["access_token"], "act": "JWT"},
         expected_code=401,
     )
     assert "ACCESS_TOKEN_EXPIRED" in data_jwt["msg"]
@@ -26,7 +26,7 @@ async def err_expired_t(api: AsyncClient) -> None:
     data_jwe, _ = await wrap_httpx(
         api,
         url=url,
-        data={"token": refresh_tk, "act": "JWE"},
+        data={"token": res["refresh_token"], "act": "JWE"},
         expected_code=401,
     )
     assert "REFRESH_TOKEN_EXPIRED" in data_jwe["msg"]
@@ -34,7 +34,7 @@ async def err_expired_t(api: AsyncClient) -> None:
     data_cbc, _ = await wrap_httpx(
         api,
         url=url,
-        data={"token": cbc_hmac_tk, "act": "CBC_HMAC"},
+        data={"token": res["cbc_hmac_token"], "act": "CBC_HMAC"},
         expected_code=401,
     )
     assert "CBC_HMAC_EXPIRED" in data_cbc["msg"]
@@ -42,14 +42,14 @@ async def err_expired_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    access_tk, refresh_tk, cbc_hmac_tk = await get_tokens_lib(api)
+    res = await get_tokens_lib(api)
 
     url = f"/test/get-err-invalid?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
     data_jwt, _ = await wrap_httpx(
         api,
         url=url,
-        data={"token": access_tk[:-4] + "hack", "act": "JWT"},
+        data={"token": res["access_token"][:-4] + "hack", "act": "JWT"},
         expected_code=401,
     )
     assert re.compile(r".*ACCESS_TOKEN_INVALID$").fullmatch(data_jwt["msg"])
@@ -57,7 +57,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
     data_jwe, _ = await wrap_httpx(
         api,
         url=url,
-        data={"token": refresh_tk[:-4] + "hack", "act": "JWE"},
+        data={"token": res["refresh_token"][:-4] + "hack", "act": "JWE"},
         expected_code=401,
     )
     assert re.compile(r".*REFRESH_TOKEN_INVALID$").fullmatch(data_jwe["msg"])
@@ -66,7 +66,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
         api,
         url=url,
         data={
-            "token": cbc_hmac_tk[:-4] + "aaaa",
+            "token": res["cbc_hmac_token"][:-4] + "aaaa",
             "act": "CBC_HMAC",
         },
         expected_code=401,

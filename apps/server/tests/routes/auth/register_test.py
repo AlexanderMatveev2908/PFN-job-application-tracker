@@ -12,13 +12,13 @@ async def ok_t(api) -> None:
 @pytest.mark.asyncio
 async def err_existing_t(api) -> None:
     # _ First call: should succeed
-    payload, *_ = await register_ok_lib(api)
+    res = await register_ok_lib(api)
 
     # ! Second call: same payload → conflict
     data_1, refresh_1 = await wrap_httpx(
         api,
         url="/auth/register",
-        data=payload,
+        data=res["payload"],
         expected_code=409,
     )
     assert "user already exists" in data_1.get("msg", "").lower()
