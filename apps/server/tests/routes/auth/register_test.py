@@ -4,13 +4,13 @@ from tests.conf.constants import get_payload_register
 
 
 @pytest.mark.asyncio
-async def register_ok_t(api) -> None:
+async def ok_t(api) -> None:
 
     await register_ok_lib(api)
 
 
 @pytest.mark.asyncio
-async def register_err_existing_t(api) -> None:
+async def err_existing_t(api) -> None:
     # _ First call: should succeed
     payload, *_ = await register_ok_lib(api)
 
@@ -26,7 +26,7 @@ async def register_err_existing_t(api) -> None:
 
 
 @pytest.mark.asyncio
-async def register_err_mismatch_t(api) -> None:
+async def err_mismatch_t(api) -> None:
     payload = {
         **get_payload_register(),
         "confirm_password": (
@@ -45,7 +45,7 @@ async def register_err_mismatch_t(api) -> None:
 
 
 @pytest.mark.asyncio
-async def register_err_terms_t(api) -> None:
+async def err_terms_t(api) -> None:
     payload = {**get_payload_register(), "terms": False}
 
     data, refresh = await wrap_httpx(

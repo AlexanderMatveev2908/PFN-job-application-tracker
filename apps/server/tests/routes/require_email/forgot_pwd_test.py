@@ -7,7 +7,7 @@ from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
-async def require_email_ok_t(api: AsyncClient) -> None:
+async def ok_t(api: AsyncClient) -> None:
     payload, *_ = await register_ok_lib(api)
 
     data_forgot_pwd, *_ = await wrap_httpx(
@@ -21,7 +21,7 @@ async def require_email_ok_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def require_email_err_invalid_t(api: AsyncClient) -> None:
+async def err_invalid_t(api: AsyncClient) -> None:
     *_, cbc_hmac_tk = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
     assert (

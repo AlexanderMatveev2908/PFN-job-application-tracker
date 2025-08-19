@@ -5,7 +5,7 @@ from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
-async def confirm_email_ok_t(api: AsyncClient) -> None:
+async def ok_t(api: AsyncClient) -> None:
     _, data_register = await register_ok_lib(api)
 
     data_conf, *_ = await wrap_httpx(
@@ -19,7 +19,7 @@ async def confirm_email_ok_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def confirm_email_expired_t(api: AsyncClient) -> None:
+async def err_expired_t(api: AsyncClient) -> None:
     *_, cbc_hmac_tk = await get_tokens_lib(api)
 
     data_conf, *_ = await wrap_httpx(
@@ -33,7 +33,7 @@ async def confirm_email_expired_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def confirm_email_invalid_t(api: AsyncClient) -> None:
+async def err_invalid_t(api: AsyncClient) -> None:
     *_, cbc_hmac_tk = await get_tokens_lib(api)
 
     data_conf, *_ = await wrap_httpx(
