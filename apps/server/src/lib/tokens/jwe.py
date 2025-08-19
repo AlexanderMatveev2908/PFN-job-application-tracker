@@ -19,6 +19,8 @@ from src.models.token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.models.user import User
+
 env_var = get_env()
 
 K_ALG = "RSA-OAEP-256"
@@ -84,7 +86,20 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
         payload = b_to_d(cast(bytes, decrypted_bytes))
 
-        return {"decrypted": payload, "token_d": existing.to_d()}
+        us = (
+            await trx.execute(
+                select(User).where(User.id == payload["user_id"])
+            )
+        ).scalar_one_or_none()
+
+        if not us:
+            raise ErrAPI(msg="user not found", status=404)
+
+        return {
+            "decrypted": payload,
+            "token": existing,
+            "user": us,
+        }
 
     except ErrAPI:
         raise

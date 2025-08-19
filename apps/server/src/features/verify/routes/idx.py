@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from src.features.verify.controllers.post import (
+from src.features.verify.controllers.get import (
     confirm_email_ctrl,
     forgot_pwd_ctrl,
 )

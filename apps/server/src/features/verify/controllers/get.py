@@ -1,11 +1,10 @@
 from fastapi import Depends, Request
-from sqlalchemy import delete, false, select
+from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.middleware.check_token import check_cbc_hmac_mdw
 from src.models.token import CheckTokenReturnT, Token, TokenT
-from src.models.user import User
 
 
 async def confirm_email_ctrl(
@@ -17,21 +16,27 @@ async def confirm_email_ctrl(
 
     async with db_trx() as trx:
 
-        stmt_find = select(User).where(
-            (User.id == cbc_result["decrypted"]["user_id"])
-            & (User.is_verified == false())
-        )
-        us = (await trx.execute(stmt_find)).scalars().one_or_none()
+        us = cbc_result["user"]
 
-        if not us:
-            raise ErrAPI(msg="user not found", status=404)
+        if us.is_verified:
+            raise ErrAPI(msg="user already verified", status=409)
 
         us.verify_email()
-        stmt_del = delete(Token).where(Token.id == cbc_result["token_d"]["id"])
+        stmt_del = delete(Token).where(Token.id == cbc_result["token"].id)
         await trx.execute(stmt_del)
 
         return ResAPI.ok_200(updated_user=us.to_d(exclude_keys=["password"]))
 
 
-async def forgot_pwd_ctrl(req: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def forgot_pwd_ctrl(
+    req: Request,
+    cbc_result: CheckTokenReturnT = Depends(
+        check_cbc_hmac_mdw(token_t=TokenT.RECOVER_PWD)
+    ),
+) -> ResAPI:
+
+    async with db_trx() as trx:  # noqa: F841
+
+        print(cbc_result["user"].email)
+
+        return ResAPI.ok_200()

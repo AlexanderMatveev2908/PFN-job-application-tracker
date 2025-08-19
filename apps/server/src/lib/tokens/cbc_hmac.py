@@ -30,6 +30,8 @@ from src.models.token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.models.user import User
+
 master_key = h_to_b(get_env().master_key)
 
 
@@ -146,6 +148,13 @@ async def check_cbc_hmac(
     if TokenT(aad_d["token_t"]) != token_t:
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
+    us = (
+        await trx.execute(select(User).where(User.id == aad_d["user_id"]))
+    ).scalar_one_or_none()
+
+    if not us:
+        raise ErrAPI(msg="user not found", status=404)
+
     stm = select(Token).where(
         (Token.id == uuid.UUID(aad_d["token_id"]))
         & (Token.user_id == uuid.UUID(aad_d["user_id"]))
@@ -196,6 +205,7 @@ async def check_cbc_hmac(
     )
 
     return {
-        "token_d": existing.to_d(),
+        "token": existing,
         "decrypted": json.loads(pt.decode("utf-8")),
+        "user": us,
     }
