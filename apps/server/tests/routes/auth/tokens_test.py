@@ -1,6 +1,7 @@
 import re
 import pytest
 from httpx import AsyncClient
+from src.models.token import TokenT
 from tests.conf.lib import get_tokens_lib, wrap_httpx
 
 
@@ -12,7 +13,7 @@ async def tokens_health_t(api: AsyncClient) -> None:
 @pytest.mark.asyncio
 async def check_expired_t(api: AsyncClient) -> None:
     access_tk, refresh_tk, cbc_hmac_tk = await get_tokens_lib(api)
-    url = "/test/get-err-expired"
+    url = f"/test/get-err-expired?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
     data_jwt, _ = await wrap_httpx(
         api,
@@ -42,9 +43,8 @@ async def check_expired_t(api: AsyncClient) -> None:
 @pytest.mark.asyncio
 async def check_invalid_t(api: AsyncClient) -> None:
     access_tk, refresh_tk, cbc_hmac_tk = await get_tokens_lib(api)
-    url = "/test/get-err-expired"
 
-    url = "/test/get-err-invalid"
+    url = f"/test/get-err-invalid?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
     data_jwt, _ = await wrap_httpx(
         api,

@@ -132,8 +132,8 @@ async def gen_cbc_hmac(
 async def check_cbc_hmac(
     token: str,
     trx: AsyncSession,
+    token_t: TokenT,
     commit_soft_delete: bool = False,
-    token_t: TokenT = TokenT.CONF_EMAIL,
 ) -> CheckTokenReturnT:
 
     if not REG_CBC_HMAC.fullmatch(token):

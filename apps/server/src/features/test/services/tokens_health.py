@@ -56,6 +56,8 @@ async def tokens_health_svc(
             )["decrypted"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_decrypted": (
-                await check_cbc_hmac(result_cbc_hmac["client_token"], trx=trx)
+                await check_cbc_hmac(
+                    result_cbc_hmac["client_token"], trx=trx, token_t=token_t
+                )
             )["decrypted"],
         }

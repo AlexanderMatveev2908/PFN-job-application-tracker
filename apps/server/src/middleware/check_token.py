@@ -8,7 +8,7 @@ from src.models.token import CheckTokenReturnT, TokenT
 
 
 def check_cbc_hmac_mdw(
-    token_t: TokenT = TokenT.CONF_EMAIL,
+    token_t: TokenT,
 ) -> Callable[[Request], Awaitable[CheckTokenReturnT]]:
 
     async def _check_cbc(req: Request) -> CheckTokenReturnT:

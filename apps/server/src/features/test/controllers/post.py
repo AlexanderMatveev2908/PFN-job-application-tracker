@@ -81,9 +81,11 @@ async def get_err_ctrl(req: Request) -> ResAPI:
                     )
                 )["decrypted"]
             case "CBC_HMAC":
-                payload = (await check_cbc_hmac(token=token, trx=trx))[
-                    "decrypted"
-                ]
+                payload = (
+                    await check_cbc_hmac(
+                        token=token, trx=trx, token_t=get_query_token_t(req)
+                    )
+                )["decrypted"]
             case _:
                 raise ErrAPI(msg="unknown action", status=400)
 
