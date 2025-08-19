@@ -24,3 +24,8 @@ async def require_email_ok_t(api: AsyncClient) -> None:
     )
 
     assert "email sent" in data_forgot_pwd["msg"]
+
+
+@pytest.mark.asyncio
+async def require_email_err_invalid_t(api: AsyncClient) -> None:
+    pass

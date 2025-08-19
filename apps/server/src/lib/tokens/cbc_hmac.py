@@ -144,6 +144,7 @@ async def check_cbc_hmac(
         (Token.id == uuid.UUID(aad_d["token_id"]))
         & (Token.user_id == uuid.UUID(aad_d["user_id"]))
         & (Token.deleted_at == null())
+        & (Token.token_t == TokenT(aad_d["token_t"]))
     )
 
     existing = (await trx.execute(stm)).scalar_one_or_none()

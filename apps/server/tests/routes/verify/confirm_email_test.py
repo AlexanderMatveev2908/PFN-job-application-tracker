@@ -4,19 +4,12 @@ import pytest
 
 from src.constants.reg import REG_CBC_HMAC
 from tests.conf.constants import get_payload_register
-from tests.conf.lib import wrap_httpx
+from tests.conf.lib import register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
 async def confirm_email_ok_t(api: AsyncClient) -> None:
-    data_register, *_ = await wrap_httpx(
-        api,
-        data=get_payload_register(),
-        url="/auth/register",
-        expected_code=201,
-    )
-
-    assert REG_CBC_HMAC.fullmatch(data_register["cbc_hmac_token"])
+    payload, data_register = await register_ok_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,

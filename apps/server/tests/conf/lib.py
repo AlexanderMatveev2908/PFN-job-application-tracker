@@ -1,8 +1,9 @@
 from typing import Any, Literal
 from httpx import AsyncClient, Response
 
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.lib.logger import clg
-from tests.conf.constants import RegisterPayloadT
+from tests.conf.constants import RegisterPayloadT, get_payload_register
 
 
 def parse_res(res: Response) -> dict:
@@ -63,3 +64,21 @@ def extract_login_payload(
         "email": payload_register["email"],
         "password": payload_register["password"],
     }
+
+
+async def register_ok_lib(api) -> tuple[RegisterPayloadT, dict]:
+    payload = get_payload_register()
+
+    data_register, refresh_token = await wrap_httpx(
+        api,
+        url="/auth/register",
+        data=payload,
+        expected_code=201,
+    )
+
+    assert REG_JWT.fullmatch(data_register["access_token"])
+    assert REG_JWE.fullmatch(refresh_token)
+    assert REG_CBC_HMAC.fullmatch(data_register["cbc_hmac_token"])
+    assert "new_user" in data_register
+
+    return (payload, data_register)

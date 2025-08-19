@@ -1,38 +1,18 @@
 import pytest
-from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
-from tests.conf.lib import wrap_httpx
+from tests.conf.lib import register_ok_lib, wrap_httpx
 from tests.conf.constants import get_payload_register
 
 
 @pytest.mark.asyncio
 async def register_ok_t(api) -> None:
 
-    data, refresh_token = await wrap_httpx(
-        api,
-        data=get_payload_register(),
-        url="/auth/register",
-        expected_code=201,
-    )
-
-    assert "new_user" in data
-    assert REG_JWT.fullmatch(data["access_token"])
-    assert REG_JWE.fullmatch(refresh_token)
-    assert isinstance(data["cbc_hmac_token"], str)
-    assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
+    await register_ok_lib(api)
 
 
 @pytest.mark.asyncio
 async def register_err_existing_t(api) -> None:
     # _ First call: should succeed
-    payload = get_payload_register()
-    data_0, refresh_0 = await wrap_httpx(
-        api,
-        url="/auth/register",
-        data=payload,
-        expected_code=201,
-    )
-    assert "new_user" in data_0
-    assert isinstance(refresh_0, str)
+    payload, *_ = await register_ok_lib(api)
 
     # ! Second call: same payload → conflict
     data_1, refresh_1 = await wrap_httpx(
