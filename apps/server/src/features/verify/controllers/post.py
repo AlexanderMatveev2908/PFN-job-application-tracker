@@ -31,3 +31,7 @@ async def confirm_email_ctrl(
         await trx.execute(stmt_del)
 
         return ResAPI.ok_200(updated_user=us.to_d(exclude_keys=["password"]))
+
+
+async def forgot_pwd_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
