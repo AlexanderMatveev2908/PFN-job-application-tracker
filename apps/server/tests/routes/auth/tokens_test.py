@@ -52,7 +52,7 @@ async def check_invalid_t(api: AsyncClient) -> None:
         data={"token": access_tk[:-4] + "hack", "act": "JWT"},
         expected_code=401,
     )
-    assert "ACCESS_TOKEN_INVALID" in data_jwt["msg"]
+    assert re.compile(r".*ACCESS_TOKEN_INVALID$").fullmatch(data_jwt["msg"])
 
     data_jwe, _ = await wrap_httpx(
         api,
@@ -60,7 +60,7 @@ async def check_invalid_t(api: AsyncClient) -> None:
         data={"token": refresh_tk[:-4] + "hack", "act": "JWE"},
         expected_code=401,
     )
-    assert "REFRESH_TOKEN_INVALID" in data_jwe["msg"]
+    assert re.compile(r".*REFRESH_TOKEN_INVALID$").fullmatch(data_jwe["msg"])
 
     data_cbc, _ = await wrap_httpx(
         api,
@@ -71,4 +71,4 @@ async def check_invalid_t(api: AsyncClient) -> None:
         },
         expected_code=401,
     )
-    assert re.compile(r".*\sCBC_HMAC_INVALID$").fullmatch(data_cbc["msg"])
+    assert re.compile(r".*CBC_HMAC_INVALID$").fullmatch(data_cbc["msg"])
