@@ -7,68 +7,77 @@ from tests.conf.lib import get_tokens_lib, wrap_httpx
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    await get_tokens_lib(api, health=True)
+    await get_tokens_lib(
+        api,
+    )
 
 
 @pytest.mark.asyncio
 async def err_expired_t(api: AsyncClient) -> None:
-    res = await get_tokens_lib(api)
+    res_tokens = await get_tokens_lib(api, reverse=True)
     url = f"/test/get-err-expired?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
-    data_jwt, _ = await wrap_httpx(
+    res_jwt = await wrap_httpx(
         api,
         url=url,
-        data={"token": res["access_token"], "act": "JWT"},
+        data={"token": res_tokens["access_token"], "act": "JWT"},
         expected_code=401,
     )
-    assert "ACCESS_TOKEN_EXPIRED" in data_jwt["msg"]
+    assert "ACCESS_TOKEN_EXPIRED" in res_jwt["data"]["msg"]
 
-    data_jwe, _ = await wrap_httpx(
+    res_jwe = await wrap_httpx(
         api,
         url=url,
-        data={"token": res["refresh_token"], "act": "JWE"},
+        data={"token": res_tokens["refresh_token"], "act": "JWE"},
         expected_code=401,
     )
-    assert "REFRESH_TOKEN_EXPIRED" in data_jwe["msg"]
+    assert "REFRESH_TOKEN_EXPIRED" in res_jwe["data"]["msg"]
 
-    data_cbc, _ = await wrap_httpx(
+    res_cbc = await wrap_httpx(
         api,
         url=url,
-        data={"token": res["cbc_hmac_token"], "act": "CBC_HMAC"},
+        data={"token": res_tokens["cbc_hmac_token"], "act": "CBC_HMAC"},
         expected_code=401,
     )
-    assert "CBC_HMAC_EXPIRED" in data_cbc["msg"]
+    assert "CBC_HMAC_EXPIRED" in res_cbc["data"]["msg"]
 
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    res = await get_tokens_lib(api)
+    res_tokens = await get_tokens_lib(api, reverse=True)
 
     url = f"/test/get-err-invalid?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
-    data_jwt, _ = await wrap_httpx(
+    res_jwt = await wrap_httpx(
         api,
         url=url,
-        data={"token": res["access_token"][:-4] + "hack", "act": "JWT"},
+        data={"token": res_tokens["access_token"][:-4] + "hack", "act": "JWT"},
         expected_code=401,
     )
-    assert re.compile(r".*ACCESS_TOKEN_INVALID$").fullmatch(data_jwt["msg"])
-
-    data_jwe, _ = await wrap_httpx(
-        api,
-        url=url,
-        data={"token": res["refresh_token"][:-4] + "hack", "act": "JWE"},
-        expected_code=401,
+    assert re.compile(r".*ACCESS_TOKEN_INVALID$").fullmatch(
+        res_jwt["data"]["msg"]
     )
-    assert re.compile(r".*REFRESH_TOKEN_INVALID$").fullmatch(data_jwe["msg"])
 
-    data_cbc, _ = await wrap_httpx(
+    res_jwe = await wrap_httpx(
         api,
         url=url,
         data={
-            "token": res["cbc_hmac_token"][:-4] + "aaaa",
+            "token": res_tokens["refresh_token"][:-4] + "hack",
+            "act": "JWE",
+        },
+        expected_code=401,
+    )
+    assert re.compile(r".*REFRESH_TOKEN_INVALID$").fullmatch(
+        res_jwe["data"]["msg"]
+    )
+
+    res_cbc = await wrap_httpx(
+        api,
+        url=url,
+        data={
+            "token": res_tokens["cbc_hmac_token"][:-4] + "aaaa",
             "act": "CBC_HMAC",
         },
         expected_code=401,
     )
-    assert re.compile(r".*CBC_HMAC_INVALID$").fullmatch(data_cbc["msg"])
+    assert re.compile(r".*CBC_HMAC_INVALID$").fullmatch(res_cbc["data"]["msg"])

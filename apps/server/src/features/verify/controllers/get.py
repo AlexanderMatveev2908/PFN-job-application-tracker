@@ -1,5 +1,6 @@
+from typing import cast
 from fastapi import Depends, Request
-from sqlalchemy import delete, false, select
+from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -17,17 +18,26 @@ async def confirm_email_ctrl(
 
     async with db_trx() as trx:
 
-        stmt_find = select(User).where(
-            (User.id == cbc_result["decrypted"]["user_id"])
-            & (User.is_verified == false())
-        )
-        us = (await trx.execute(stmt_find)).scalars().one_or_none()
+        us_d = cbc_result["user_d"]
 
-        if not us:
-            raise ErrAPI(msg="user not found", status=404)
+        if us_d["is_verified"]:
+            raise ErrAPI(msg="user already verified", status=409)
+
+        us = cast(User, await trx.get(User, us_d["id"]))
 
         us.verify_email()
-        stmt_del = delete(Token).where(Token.id == cbc_result["token_d"]["id"])
-        await trx.execute(stmt_del)
+        await trx.execute(
+            delete(Token).where(Token.id == cbc_result["token_d"]["id"])
+        )
 
         return ResAPI.ok_200(updated_user=us.to_d(exclude_keys=["password"]))
+
+
+async def forgot_pwd_ctrl(
+    _: Request,
+    cbc_result: CheckTokenReturnT = Depends(
+        check_cbc_hmac_mdw(token_t=TokenT.RECOVER_PWD)
+    ),
+) -> ResAPI:
+
+    return ResAPI.ok_200(msg="verification successful")

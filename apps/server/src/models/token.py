@@ -72,3 +72,4 @@ class GenTokenReturnT(TypedDict):
 class CheckTokenReturnT(TypedDict):
     token_d: dict
     decrypted: PayloadT
+    user_d: dict

@@ -89,4 +89,4 @@ async def get_err_ctrl(req: Request) -> ResAPI:
             case _:
                 raise ErrAPI(msg="unknown action", status=400)
 
-    return ResAPI.ok_200(payload=(payload))
+    return ResAPI.ok_200(payload=payload)

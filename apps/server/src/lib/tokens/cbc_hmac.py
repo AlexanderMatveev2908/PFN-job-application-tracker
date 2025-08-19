@@ -3,7 +3,7 @@ import os
 from typing import TypedDict, cast
 import uuid
 
-from sqlalchemy import null, select
+from sqlalchemy import delete, null, select
 from src.conf.env import get_env
 from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
@@ -18,7 +18,7 @@ from src.lib.data_structure import (
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
-from src.lib.etc import calc_exp, get_now, lt_now
+from src.lib.etc import calc_exp, lt_now
 from src.lib.serialize_data import serialize
 from src.models.token import (
     AlgT,
@@ -29,6 +29,8 @@ from src.models.token import (
     TokenT,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.models.user import User
 
 master_key = h_to_b(get_env().master_key)
 
@@ -103,6 +105,12 @@ async def gen_cbc_hmac(
     reverse: bool = False,
 ) -> GenTokenReturnT:
 
+    await trx.execute(
+        delete(Token).where(
+            (Token.user_id == user_id) & (Token.token_t == hdr["token_t"])
+        )
+    )
+
     parsed_id = parse_id(user_id)
 
     result: BuildCbcHmacReturnT = build_cbc_hmac(
@@ -133,7 +141,7 @@ async def check_cbc_hmac(
     token: str,
     trx: AsyncSession,
     token_t: TokenT,
-    commit_soft_delete: bool = False,
+    delete_expired: bool = False,
 ) -> CheckTokenReturnT:
 
     if not REG_CBC_HMAC.fullmatch(token):
@@ -144,7 +152,14 @@ async def check_cbc_hmac(
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
     if TokenT(aad_d["token_t"]) != token_t:
-        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+        raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
+
+    us = (
+        await trx.execute(select(User).where(User.id == aad_d["user_id"]))
+    ).scalar_one_or_none()
+
+    if not us:
+        raise ErrAPI(msg="user not found", status=404)
 
     stm = select(Token).where(
         (Token.id == uuid.UUID(aad_d["token_id"]))
@@ -163,8 +178,8 @@ async def check_cbc_hmac(
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     if lt_now(existing.exp):
-        if commit_soft_delete:
-            existing.deleted_at = get_now()
+        if delete_expired:
+            await trx.delete(existing)
             await trx.commit()
         raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
@@ -198,4 +213,5 @@ async def check_cbc_hmac(
     return {
         "token_d": existing.to_d(),
         "decrypted": json.loads(pt.decode("utf-8")),
+        "user_d": us.to_d(),
     }
