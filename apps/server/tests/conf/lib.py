@@ -113,7 +113,7 @@ class GenTokensReturnT(TypedDict):
 
 async def get_tokens_lib(
     api: AsyncClient,
-    health: bool = False,
+    reverse: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
 ) -> GenTokensReturnT:
@@ -121,7 +121,7 @@ async def get_tokens_lib(
 
     res_register = await wrap_httpx(
         api,
-        url=f"/test/{'tokens-health' if health else 'get-tokens-expired'}?cbc_hmac_token_t={cbc_hmac_t.value}",  # noqa: E501
+        url=f"/test/{'get-tokens-expired' if reverse else 'tokens-health'}?cbc_hmac_token_t={cbc_hmac_t.value}",  # noqa: E501
         data=payload,
         expected_code=200,
     )
@@ -130,7 +130,7 @@ async def get_tokens_lib(
     assert REG_JWE.fullmatch(res_register["data"]["refresh_token"])
     assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
 
-    if health:
+    if not reverse:
         assert REG_ID.fullmatch(
             res_register["data"]["access_token_decoded"]["user_id"]
         )

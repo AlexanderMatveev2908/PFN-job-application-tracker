@@ -1,16 +1,21 @@
 from httpx import AsyncClient
 import pytest
 
-from tests.conf.lib import register_ok_lib, wrap_httpx
+from src.models.token import TokenT
+from tests.conf.lib import get_tokens_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_register = await register_ok_lib(api)
 
-    res_require = await wrap_httpx(
+    res_tokens = await get_tokens_lib(
         api,
-        url="/require-email/forgot-pwd",
-        data={"email": res_register["payload"]["email"]},
-        expected_code=201,
+        cbc_hmac_t=TokenT.RECOVER_PWD,
+    )
+
+    res_check_tk = await wrap_httpx(
+        api,
+        url=f'/verify/forgot-pwd?cbc_hmac_token={res_tokens["cbc_hmac_token"]}',  # noqa: E501
+        expected_code=200,
+        method="GET",
     )
