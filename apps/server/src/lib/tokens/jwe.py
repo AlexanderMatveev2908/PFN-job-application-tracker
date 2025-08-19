@@ -97,8 +97,8 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
         return {
             "decrypted": payload,
-            "token": existing,
-            "user": us,
+            "token_d": existing.to_d(),
+            "user_d": us.to_d(),
         }
 
     except ErrAPI:

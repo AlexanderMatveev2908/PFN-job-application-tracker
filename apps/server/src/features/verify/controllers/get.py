@@ -34,14 +34,10 @@ async def confirm_email_ctrl(
 
 
 async def forgot_pwd_ctrl(
-    req: Request,
+    _: Request,
     cbc_result: CheckTokenReturnT = Depends(
         check_cbc_hmac_mdw(token_t=TokenT.RECOVER_PWD)
     ),
 ) -> ResAPI:
 
-    async with db_trx() as trx:  # noqa: F841
-
-        print(cbc_result["user_d"]["email"])
-
-        return ResAPI.ok_200()
+    return ResAPI.ok_200(msg="verification successful")

@@ -42,7 +42,7 @@ So I decided to build a proper application to track them:
 - **JWT** — Used as short-lived access tokens for authenticating user requests.
 - **JWE—** Used as refresh tokens, securely storing session renewal data.
 - **CBC-HMAC tokens with HKDF-derived keys** — Special short-lived tokens, mainly for sensitive actions like account verification, password resets, or email confirmation.
-- **APScheduler** — Schedules recurring tasks, e.g. a 24h cleanup job that bulk-deletes expired tokens flagged with `deleted_at`.
+- **APScheduler** — Schedules recurring tasks
 
 ---
 

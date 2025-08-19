@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from src.conf.db import db_trx
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
@@ -10,7 +10,7 @@ from src.features.require_email.middleware.require_email import (
 )
 from src.lib.emails.aiosmtp.idx import send_email
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
-from src.models.token import Token, TokenT
+from src.models.token import TokenT
 from src.models.user import User
 
 
@@ -28,13 +28,6 @@ async def require_email_forgot_pwd_ctrl(
 
         if not us:
             raise ErrAPI(msg="user not found", status=404)
-
-        await trx.execute(
-            delete(Token).where(
-                (Token.user_id == us.id)
-                & (Token.token_t == TokenT.RECOVER_PWD)
-            )
-        )
 
         cbc_hmac_result = await gen_cbc_hmac(
             user_id=us.id, trx=trx, hdr={"token_t": TokenT.RECOVER_PWD}

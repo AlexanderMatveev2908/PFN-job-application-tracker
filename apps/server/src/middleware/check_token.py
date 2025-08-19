@@ -22,7 +22,7 @@ def check_cbc_hmac_mdw(
 
         async with db_trx(auto_commit=False) as trx:
             return await check_cbc_hmac(
-                token, trx, commit_soft_delete=True, token_t=token_t
+                token, trx, delete_expired=True, token_t=token_t
             )
 
     return _check_cbc
