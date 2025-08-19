@@ -111,8 +111,9 @@ async def get_tokens_lib(
     api: AsyncClient,
     health: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
+    existing_payload: RegisterPayloadT | None = None,
 ) -> GenTokensReturnT:
-    payload = get_payload_register()
+    payload = existing_payload or get_payload_register()
 
     data, _ = await wrap_httpx(
         api,

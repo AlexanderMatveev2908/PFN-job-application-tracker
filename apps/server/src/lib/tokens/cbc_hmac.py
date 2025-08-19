@@ -205,7 +205,7 @@ async def check_cbc_hmac(
     )
 
     return {
-        "token": existing,
+        "token_d": existing.to_d(),
         "decrypted": json.loads(pt.decode("utf-8")),
-        "user": us,
+        "user_d": us.to_d(),
     }

@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import text
+from sqlalchemy import select
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id
 from src.models.user import User
@@ -7,14 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def handle_user_lib(user_data: RegisterFormT, trx: AsyncSession) -> User:
-    stm = """
-        SELECT us.*
-        FROM users us
-        WHERE us.email = :email
-        LIMIT 1
-        """
     us = (
-        await trx.execute(text(stm), {"email": user_data["email"]})
+        await trx.execute(select(User).where(User.email == user_data["email"]))
     ).scalar_one_or_none()
 
     if not us:
