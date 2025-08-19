@@ -5,7 +5,7 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
-from src.features.test.services.tokens_expired import tokens_expired_svc
+from src.features.test.lib.idx import get_query_token_t
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
@@ -46,18 +46,20 @@ async def post_msg_ctrl(req: Request) -> ResAPI:
 
 
 async def tokens_health_ctrl(
-    _: Request, user_data: RegisterFormT = Depends(register_mdw)
+    req: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
-    res = await tokens_health_svc(user_data)
+    res = await tokens_health_svc(user_data, token_t=get_query_token_t(req))
 
     return ResAPI.ok_200(**res)
 
 
 async def tokens_expired_ctrl(
-    _: Request, user_data: RegisterFormT = Depends(register_mdw)
+    req: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
-    res = await tokens_expired_svc(user_data)
+    res = await tokens_health_svc(
+        user_data, token_t=get_query_token_t(req), reverse=True
+    )
 
     return ResAPI.ok_200(**res)
 

@@ -13,7 +13,9 @@ from src.lib.tokens.jwt import check_jwt
 from src.models.token import GenTokenReturnT, TokenT
 
 
-async def tokens_health_svc(user_data: RegisterFormT) -> Any:
+async def tokens_health_svc(
+    user_data: RegisterFormT, token_t: TokenT, reverse: bool = False
+) -> Any:
     async with db_trx() as trx:
 
         us = await handle_user_lib(user_data, trx)
@@ -21,29 +23,37 @@ async def tokens_health_svc(user_data: RegisterFormT) -> Any:
         await clear_old_tokens(trx, us.id)
 
         access_token, result_jwe = await gen_tokens_session(
-            user_id=us.id, trx=trx
+            user_id=us.id, trx=trx, reverse=reverse
         )
 
         result_cbc_hmac: GenTokenReturnT = await gen_cbc_hmac(
             user_id=us.id,
             hdr={
-                "token_t": TokenT.CONF_EMAIL,
+                "token_t": token_t,
             },
             trx=trx,
+            reverse=reverse,
         )
 
-        return {
-            "new_user": us.to_d(exclude_keys=["password"]),
+        base_res = {
             "access_token": access_token,
+            "refresh_token": result_jwe["client_token"],
+            "cbc_hmac_token": result_cbc_hmac["client_token"],
+        }
+
+        if reverse:
+            return base_res
+
+        return {
+            **base_res,
+            "new_user": us.to_d(exclude_keys=["password"]),
             "access_token_decoded": check_jwt(
                 access_token,
             ),
-            "refresh_token": result_jwe["client_token"],
             "refresh_token_db": result_jwe["server_token"].to_d(),
             "refresh_token_decrypted": (
                 await check_jwe(result_jwe["client_token"], trx)
             )["decrypted"],
-            "cbc_hmac_token": result_cbc_hmac["client_token"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_token_len": len(result_cbc_hmac["client_token"]),
             "cbc_hmac_token_parts_len": list(
