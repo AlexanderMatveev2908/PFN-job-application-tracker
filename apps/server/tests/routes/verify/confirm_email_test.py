@@ -9,7 +9,7 @@ from tests.conf.lib import register_ok_lib, wrap_httpx
 
 @pytest.mark.asyncio
 async def confirm_email_ok_t(api: AsyncClient) -> None:
-    payload, data_register = await register_ok_lib(api)
+    _, data_register = await register_ok_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,
