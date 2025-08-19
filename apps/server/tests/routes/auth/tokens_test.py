@@ -2,37 +2,15 @@ import re
 import pytest
 from httpx import AsyncClient
 
-from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from tests.conf.constants import get_payload_register
 
-from tests.conf.lib import wrap_httpx
+from tests.conf.lib import get_tokens, wrap_httpx
 
 
 @pytest.mark.asyncio
 async def tokens_health_t(api: AsyncClient) -> None:
-    data, _ = await wrap_httpx(
-        api,
-        url="/test/tokens-health",
-        data=get_payload_register(),
-        expected_code=200,
-    )
-
-    assert REG_JWT.fullmatch(data["access_token"])
-    assert REG_ID.fullmatch(data["access_token_decoded"]["user_id"])
-
-    assert REG_JWE.fullmatch(data["refresh_token"])
-    assert REG_ID.fullmatch(data["refresh_token_db"]["user_id"])
-    assert REG_ID.fullmatch(data["refresh_token_decrypted"]["user_id"])
-
-    assert REG_CBC_HMAC.fullmatch(data["cbc_hmac_token"])
-    assert REG_ID.fullmatch(data["cbc_hmac_db"]["user_id"])
-    assert REG_ID.fullmatch(data["cbc_hmac_decrypted"]["user_id"])
-
-    assert (
-        data["cbc_hmac_decrypted"]["user_id"]
-        == data["refresh_token_decrypted"]["user_id"]
-        == data["access_token_decoded"]["user_id"]
-    )
+    await get_tokens(api, health=True)
 
 
 @pytest.mark.asyncio

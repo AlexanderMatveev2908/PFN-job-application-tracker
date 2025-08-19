@@ -55,10 +55,6 @@ async def tokens_health_svc(
                 await check_jwe(result_jwe["client_token"], trx)
             )["decrypted"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
-            "cbc_hmac_token_len": len(result_cbc_hmac["client_token"]),
-            "cbc_hmac_token_parts_len": list(
-                map(len, (result_cbc_hmac["client_token"]).split("."))
-            ),
             "cbc_hmac_decrypted": (
                 await check_cbc_hmac(result_cbc_hmac["client_token"], trx=trx)
             )["decrypted"],
