@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from src.features.require_email.controllers.pos import (
+from src.features.require_email.controllers.post import (
     require_email_forgot_pwd_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw

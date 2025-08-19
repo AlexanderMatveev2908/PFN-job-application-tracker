@@ -3,26 +3,17 @@ import pytest
 
 from src.constants.reg import REG_JWE, REG_JWT
 from tests.conf.constants import get_payload_register
-from tests.conf.lib import extract_login_payload, wrap_httpx
+from tests.conf.lib import extract_login_payload, register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
-async def login_ok_t(api: AsyncClient) -> None:
-    payload = get_payload_register()
-
-    data_register, *_ = await wrap_httpx(
-        api,
-        url="/auth/register",
-        data=payload,
-        expected_code=201,
-    )
-
-    assert REG_JWT.fullmatch(data_register["access_token"])
+async def ok_t(api: AsyncClient) -> None:
+    res = await register_ok_lib(api)
 
     data_login, refresh_token = await wrap_httpx(
         api,
         url="/auth/login",
-        data=extract_login_payload(payload),
+        data=extract_login_payload(res["payload"]),
         expected_code=200,
     )
 
@@ -31,7 +22,7 @@ async def login_ok_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def login_not_found_t(api: AsyncClient) -> None:
+async def err_not_found_t(api: AsyncClient) -> None:
     data, *_ = await wrap_httpx(
         api,
         url="/auth/login",
@@ -43,24 +34,15 @@ async def login_not_found_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def login_invalid_t(api: AsyncClient) -> None:
-    payload = get_payload_register()
-
-    data_register, *_ = await wrap_httpx(
-        api,
-        url="/auth/register",
-        data=payload,
-        expected_code=201,
-    )
-
-    assert REG_JWT.fullmatch(data_register["access_token"])
+async def err_invalid_t(api: AsyncClient) -> None:
+    res = await register_ok_lib(api)
 
     data_login, *_ = await wrap_httpx(
         api,
         url="/auth/login",
         data={
-            **extract_login_payload(payload),
-            "password": payload["password"] + "yayyyy",
+            **extract_login_payload(res["payload"]),
+            "password": res["payload"]["password"] + "yayyyy",
         },
         expected_code=401,
     )

@@ -130,7 +130,10 @@ async def gen_cbc_hmac(
 
 
 async def check_cbc_hmac(
-    token: str, trx: AsyncSession, commit_soft_delete: bool = False
+    token: str,
+    trx: AsyncSession,
+    token_t: TokenT,
+    commit_soft_delete: bool = False,
 ) -> CheckTokenReturnT:
 
     if not REG_CBC_HMAC.fullmatch(token):
@@ -140,10 +143,14 @@ async def check_cbc_hmac(
 
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
+    if TokenT(aad_d["token_t"]) != token_t:
+        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+
     stm = select(Token).where(
         (Token.id == uuid.UUID(aad_d["token_id"]))
         & (Token.user_id == uuid.UUID(aad_d["user_id"]))
         & (Token.deleted_at == null())
+        & (Token.token_t == token_t)
     )
 
     existing = (await trx.execute(stm)).scalar_one_or_none()

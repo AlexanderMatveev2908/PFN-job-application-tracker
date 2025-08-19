@@ -1,6 +1,7 @@
 from fastapi import Depends, Request
 from sqlalchemy import select
 from src.conf.db import db_trx
+from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.require_email.middleware.require_email import (
@@ -32,10 +33,11 @@ async def require_email_forgot_pwd_ctrl(
             user_id=us.id, trx=trx, hdr={"token_t": TokenT.RECOVER_PWD}
         )
 
-        await send_email(
-            callback_url=f"https://pfn-job-application-tracker-client.fly.dev?cbc_hmac_token={cbc_hmac_result['client_token']}",  # noqa: E501
-            subj="RECOVER PASSWORD 🔒",
-            user=us,
-        )
+        if get_env().py_env != "test":
+            await send_email(
+                callback_url=f"https://pfn-job-application-tracker-client.fly.dev?cbc_hmac_token={cbc_hmac_result['client_token']}",  # noqa: E501
+                subj="RECOVER PASSWORD 🔒",
+                user=us,
+            )
 
-    return ResAPI.ok_200(**us.to_d(exclude_keys=["password"]))
+    return ResAPI.ok_201(msg="📮 email sent")
