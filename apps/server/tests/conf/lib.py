@@ -84,7 +84,7 @@ async def register_ok_lib(api) -> tuple[RegisterPayloadT, dict]:
     return (payload, data_register)
 
 
-async def get_tokens(
+async def get_tokens_lib(
     api: AsyncClient, health: bool = False
 ) -> tuple[str, str, str]:
     data, _ = await wrap_httpx(
