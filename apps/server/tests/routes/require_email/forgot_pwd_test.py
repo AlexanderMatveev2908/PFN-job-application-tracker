@@ -1,9 +1,7 @@
 from httpx import AsyncClient
 import pytest
 
-from src.lib.data_structure import b_to_d, h_to_b
-from src.models.token import TokenT
-from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
+from tests.conf.lib import register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
@@ -22,12 +20,7 @@ async def ok_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    res = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
-
-    assert (
-        TokenT(b_to_d(h_to_b(res["cbc_hmac_token"].split(".")[0]))["token_t"])
-        == TokenT.RECOVER_PWD
-    )
+    res = await register_ok_lib(api)
 
     data, *_ = await wrap_httpx(
         api,
@@ -35,3 +28,16 @@ async def err_invalid_t(api: AsyncClient) -> None:
         data={"email": res["payload"]["email"] * 8},
         expected_code=422,
     )
+
+
+@pytest.mark.asyncio
+async def err_404_t(api: AsyncClient) -> None:
+
+    data, *_ = await wrap_httpx(
+        api,
+        url="/require-email/forgot-pwd",
+        data={"email": "example-non-existent@gmail.com"},
+        expected_code=404,
+    )
+
+    assert "user not found" in data["msg"]
