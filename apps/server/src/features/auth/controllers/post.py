@@ -36,3 +36,7 @@ async def login_ctrl(
         access_token=access_token,
         cookies=[gen_refresh_cookie(jwe_result["client_token"])],
     )
+
+
+async def recover_pwd_ctrl(_: Request) -> ResAPI:
+    return ResAPI.ok_200()
