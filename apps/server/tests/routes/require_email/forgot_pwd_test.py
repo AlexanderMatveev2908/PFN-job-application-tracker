@@ -3,6 +3,8 @@ import pytest
 
 from tests.conf.lib import register_ok_lib, wrap_httpx
 
+URL = "/require-email/forgot-pwd"
+
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
@@ -11,7 +13,7 @@ async def ok_t(api: AsyncClient) -> None:
     res_forgot_pwd = await wrap_httpx(
         api,
         data={"email": res_register["payload"]["email"]},
-        url="/require-email/forgot-pwd",
+        url=URL,
         expected_code=201,
     )
 
@@ -24,7 +26,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
 
     await wrap_httpx(
         api,
-        url="/require-email/forgot-pwd",
+        url=URL,
         data={"email": res_register["payload"]["email"] * 8},
         expected_code=422,
     )
@@ -35,7 +37,7 @@ async def err_404_t(api: AsyncClient) -> None:
 
     res = await wrap_httpx(
         api,
-        url="/require-email/forgot-pwd",
+        url=URL,
         data={"email": "example-non-existent@gmail.com"},
         expected_code=404,
     )

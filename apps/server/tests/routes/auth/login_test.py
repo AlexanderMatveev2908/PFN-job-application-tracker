@@ -6,13 +6,16 @@ from tests.conf.constants import get_payload_register
 from tests.conf.lib import extract_login_payload, register_ok_lib, wrap_httpx
 
 
+URL = "/auth/login"
+
+
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
     res_register = await register_ok_lib(api)
 
     res_login = await wrap_httpx(
         api,
-        url="/auth/login",
+        url=URL,
         data=extract_login_payload(res_register["payload"]),
         expected_code=200,
     )
@@ -25,7 +28,7 @@ async def ok_t(api: AsyncClient) -> None:
 async def err_not_found_t(api: AsyncClient) -> None:
     res_login = await wrap_httpx(
         api,
-        url="/auth/login",
+        url=URL,
         data=extract_login_payload(get_payload_register()),
         expected_code=404,
     )
@@ -39,7 +42,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
 
     res_login = await wrap_httpx(
         api,
-        url="/auth/login",
+        url=URL,
         data={
             **extract_login_payload(res_register["payload"]),
             "password": res_register["payload"]["password"] + "yayyyy",

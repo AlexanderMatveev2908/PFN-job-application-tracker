@@ -5,6 +5,8 @@ from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
 from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
 
+URL = "/verify/confirm-email?cbc_hmac_token="
+
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
@@ -13,7 +15,7 @@ async def ok_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'/verify/confirm-email?cbc_hmac_token={res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -27,7 +29,7 @@ async def err_already_verified_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'/verify/confirm-email?cbc_hmac_token={res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -47,7 +49,7 @@ async def err_already_verified_t(api: AsyncClient) -> None:
     res_err = await wrap_httpx(
         api,
         method="GET",
-        url=f'/verify/confirm-email?cbc_hmac_token={res_tokens["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_tokens["cbc_hmac_token"]}',  # noqa: E501
         expected_code=409,
     )
 
@@ -61,7 +63,7 @@ async def err_expired_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f"/verify/confirm-email?cbc_hmac_token={res['cbc_hmac_token']}",  # noqa: E501
+        url=f"{URL}{res['cbc_hmac_token']}",  # noqa: E501
         expected_code=401,
     )
 
@@ -75,7 +77,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f"/verify/confirm-email?cbc_hmac_token={res_tokens['cbc_hmac_token'][:-4]+'afaf'}",  # noqa: E501
+        url=f"{URL}{res_tokens['cbc_hmac_token'][:-4]+'afaf'}",  # noqa: E501
         expected_code=401,
     )
 

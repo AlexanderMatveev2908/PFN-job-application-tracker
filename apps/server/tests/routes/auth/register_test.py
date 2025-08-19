@@ -2,6 +2,8 @@ import pytest
 from tests.conf.lib import register_ok_lib, wrap_httpx
 from tests.conf.constants import get_payload_register
 
+URL = "/auth/register"
+
 
 @pytest.mark.asyncio
 async def ok_t(api) -> None:
@@ -17,7 +19,7 @@ async def err_existing_t(api) -> None:
     # ! Second call: same payload → conflict
     res_register_err = await wrap_httpx(
         api,
-        url="/auth/register",
+        url=URL,
         data=res_register["payload"],
         expected_code=409,
     )
@@ -35,7 +37,7 @@ async def err_mismatch_t(api) -> None:
 
     res_register = await wrap_httpx(
         api,
-        url="/auth/register",
+        url=URL,
         data=payload,
         expected_code=422,
     )
@@ -48,7 +50,7 @@ async def err_terms_t(api) -> None:
 
     res_register = await wrap_httpx(
         api,
-        url="/auth/register",
+        url=URL,
         data=payload,
         expected_code=422,
     )
