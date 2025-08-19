@@ -4,7 +4,7 @@ import pytest
 
 from src.constants.reg import REG_CBC_HMAC
 from tests.conf.constants import get_payload_register
-from tests.conf.lib import register_ok_lib, wrap_httpx
+from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
 
 
 @pytest.mark.asyncio
@@ -23,19 +23,12 @@ async def confirm_email_ok_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def confirm_email_expired_t(api: AsyncClient) -> None:
-    data_register, *_ = await wrap_httpx(
-        api,
-        data=get_payload_register(),
-        url="/test/get-tokens-expired",
-        expected_code=200,
-    )
-
-    assert REG_CBC_HMAC.fullmatch(data_register["cbc_hmac_token"])
+    *_, cbc_hmac_tk = await get_tokens_lib(api)
 
     data_conf, *_ = await wrap_httpx(
         api,
         method="GET",
-        url=f'/verify/confirm-email?cbc_hmac_token={data_register["cbc_hmac_token"]}',  # noqa: E501
+        url=f"/verify/confirm-email?cbc_hmac_token={cbc_hmac_tk}",  # noqa: E501
         expected_code=401,
     )
 
