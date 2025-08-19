@@ -44,11 +44,9 @@ async def check_expired_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    assert (
-        data_exp["access_token"]
-        and data_exp["refresh_token"]
-        and data_exp["cbc_hmac_token"]
-    )
+    assert REG_JWT.fullmatch(data_exp["access_token"])
+    assert REG_JWE.fullmatch(data_exp["refresh_token"])
+    assert REG_CBC_HMAC.fullmatch(data_exp["cbc_hmac_token"])
 
     url = "/test/get-err-expired"
 
