@@ -129,7 +129,7 @@ async def get_tokens_lib(
     )
 
     assert REG_JWT.fullmatch(res_register["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_register["data"]["refresh_token"])
+    assert REG_JWE.fullmatch(res_register["refresh_token"])
     assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
 
     if not reverse:
@@ -157,7 +157,7 @@ async def get_tokens_lib(
 
     return {
         "access_token": res_register["data"]["access_token"],
-        "refresh_token": res_register["data"]["refresh_token"],
+        "refresh_token": res_register["refresh_token"],
         "cbc_hmac_token": res_register["data"]["cbc_hmac_token"],
         "payload": payload,
     }
