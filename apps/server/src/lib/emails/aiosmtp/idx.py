@@ -4,25 +4,32 @@ import aiosmtplib
 from src.conf.env import get_env
 from src.lib.emails.idx import gen_html_template
 from src.lib.logger import clg
-from src.models.user import User
+from src.models.user import User, UserDcT
 
 env_var = get_env()
 
 
-async def send_email(user: User, subj: str, callback_url: str) -> None:
+async def send_email(
+    user: User | UserDcT, subj: str, callback_url: str
+) -> None:
+
+    us_shape = user.to_d() if isinstance(user, User) else user
+
     msg = EmailMessage()
     msg["From"] = env_var.smpt_from
-    msg["To"] = user.email
+    msg["To"] = us_shape["email"]
     msg["Subject"] = subj
     msg.set_content(
-        f"Hi {user.first_name}\n\n"
+        f"Hi {us_shape['first_name']}\n\n"
         "Click the link below to be redirected"
         " to our verification page 🔒\n\n"
         f"{callback_url}"
     )
 
     msg.add_alternative(
-        await gen_html_template(first_name=user.first_name, url=callback_url),
+        await gen_html_template(
+            first_name=us_shape["first_name"], url=callback_url
+        ),
         subtype="html",
     )
 
