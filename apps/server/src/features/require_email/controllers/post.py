@@ -29,4 +29,4 @@ async def confirm_email_ctrl(
 
     await gen_token_send_email_svc(us_d, TokenT.CONF_EMAIL)
 
-    return ResAPI.ok_200(msg="📮 email sent", user=us_d)
+    return ResAPI.ok_201(msg="📮 email sent", user=us_d)

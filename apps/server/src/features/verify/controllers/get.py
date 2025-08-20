@@ -30,7 +30,10 @@ async def confirm_email_ctrl(
             delete(Token).where(Token.id == cbc_result["token_d"]["id"])
         )
 
-        return ResAPI.ok_200(updated_user=us.to_d(exclude_keys=["password"]))
+        return ResAPI.ok_200(
+            msg="email verified",
+            updated_user=us.to_d(exclude_keys=["password"]),
+        )
 
 
 async def forgot_pwd_ctrl(
