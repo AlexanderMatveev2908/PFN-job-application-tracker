@@ -1,7 +1,8 @@
 from httpx import AsyncClient
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib, wrap_httpx
+from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.idx import wrap_httpx
 
 URL = "/require-email/confirm-email"
 

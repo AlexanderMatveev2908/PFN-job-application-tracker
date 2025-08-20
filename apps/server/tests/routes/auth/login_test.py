@@ -6,8 +6,8 @@ from tests.conf.constants import get_payload_register
 from tests.conf.lib.etc import (
     extract_login_payload,
     register_ok_lib,
-    wrap_httpx,
 )
+from tests.conf.lib.idx import wrap_httpx
 
 
 URL = "/auth/login"
