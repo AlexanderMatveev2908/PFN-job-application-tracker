@@ -1,26 +1,9 @@
 from typing import Any, Literal, TypedDict, cast
-from httpx import AsyncClient, Response
-
+from httpx import AsyncClient
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
-from src.lib.logger import clg
 from src.models.token import TokenT
 from tests.conf.constants import RegisterPayloadT, get_payload_register
-
-
-def parse_res(res: Response) -> dict:
-    data = res.json()
-
-    full = str(res.request.url)
-    part = (
-        full[full.index("/api/v1") + len("/api/v1") :]  # noqa: E203
-    ).split("?", 1)[0]
-
-    clg(
-        data,
-        ttl=f"💾 {part} — 🚦 {res.status_code}",
-    )
-
-    return data
+from tests.conf.lib.log import parse_res
 
 
 class WrapReturnT(TypedDict):

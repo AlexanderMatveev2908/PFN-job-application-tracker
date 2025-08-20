@@ -2,7 +2,7 @@ from httpx import AsyncClient
 import pytest
 
 from src.models.token import TokenT
-from tests.conf.lib import get_tokens_lib, wrap_httpx
+from tests.conf.lib.etc import get_tokens_lib, wrap_httpx
 
 
 URL = "/verify/forgot-pwd?cbc_hmac_token="

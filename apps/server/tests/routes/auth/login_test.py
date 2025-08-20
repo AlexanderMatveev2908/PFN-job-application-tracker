@@ -3,7 +3,11 @@ import pytest
 
 from src.constants.reg import REG_JWE, REG_JWT
 from tests.conf.constants import get_payload_register
-from tests.conf.lib import extract_login_payload, register_ok_lib, wrap_httpx
+from tests.conf.lib.etc import (
+    extract_login_payload,
+    register_ok_lib,
+    wrap_httpx,
+)
 
 
 URL = "/auth/login"

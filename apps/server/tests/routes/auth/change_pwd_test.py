@@ -4,7 +4,7 @@ import pytest
 from src.constants.reg import REG_JWE, REG_JWT
 from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
-from tests.conf.lib import get_tokens_lib, wrap_httpx
+from tests.conf.lib.etc import get_tokens_lib, wrap_httpx
 
 URL = "/auth/recover-pwd"
 
