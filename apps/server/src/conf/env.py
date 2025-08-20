@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -38,7 +39,9 @@ class EnvVar(BaseSettings):
     )
 
     # __ my real env
-    py_env: str = Field(..., validation_alias="PY_ENV")
+    py_env: Literal["development", "production", "test"] = Field(
+        ..., validation_alias="PY_ENV"
+    )
     port: int = Field(..., validation_alias="PORT")
 
     # __ communication client
