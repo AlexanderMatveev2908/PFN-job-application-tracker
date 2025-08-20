@@ -55,3 +55,7 @@ async def recover_pwd_ctrl(
         access_token=access_token,
         cookies=[gen_refresh_cookie(refresh_result["client_token"])],
     )
+
+
+async def refresh_token_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()

@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import cast
 from fastapi import Request
 from sqlalchemy import select
 
@@ -9,12 +9,7 @@ from src.models.token import PayloadT
 from src.models.user import User, UserDcT
 
 
-class CheckJwtMdwReturnT(TypedDict):
-    decoded: PayloadT
-    user_d: UserDcT
-
-
-async def check_check_jwt_mdw(req: Request) -> CheckJwtMdwReturnT:
+async def check_check_jwt_mdw(req: Request) -> UserDcT:
     splitted = [
         x.strip()
         for x in req.headers.get("authorization", "").split("Bearer ")
@@ -36,6 +31,4 @@ async def check_check_jwt_mdw(req: Request) -> CheckJwtMdwReturnT:
         if not us:
             raise ErrAPI(msg="user not found", status=404)
 
-        print(us.to_d())
-
-        return {}
+        return cast(UserDcT, us.to_d())
