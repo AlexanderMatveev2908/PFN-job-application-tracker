@@ -3,7 +3,6 @@ import concurrent.futures
 from argon2 import PasswordHasher
 import concurrent
 
-from src.lib.logger import clg
 
 PH = PasswordHasher(
     time_cost=3, memory_cost=64 * 1024, parallelism=1, hash_len=32, salt_len=16
@@ -23,6 +22,5 @@ async def check_pwd(hashed: str, plain: str) -> bool:
 
     try:
         return await loop.run_in_executor(HASH_POOL, PH.verify, hashed, plain)
-    except Exception as err:
-        clg(err, ttl="invalid password")
+    except Exception:
         return False

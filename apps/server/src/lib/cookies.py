@@ -12,6 +12,6 @@ def gen_refresh_cookie(refresh_token: str) -> CookieD:
         "httponly": True,
         "secure": mode != "test",
         "samesite": "lax" if mode == "test" else "none",
-        "max_age": 60**2 * 24,
+        "max_age": 60**2,
         "path": "/",
     }

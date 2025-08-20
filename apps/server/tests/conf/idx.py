@@ -12,7 +12,8 @@ async def client(clean: bool = True) -> AsyncGenerator[AsyncClient, None]:
     transport = ASGITransport(app=app)
     async with AsyncClient(
         transport=transport,
-        base_url=cast(str, env_var.next_public_back_url_dev),
+        base_url=cast(str, env_var.next_public_back_url_test),
+        follow_redirects=True,
     ) as c:
         if clean:
             pass
