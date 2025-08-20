@@ -48,8 +48,8 @@ class GetTokensLibReturnT(TypedDict):
 
 async def get_tokens_lib(
     api: AsyncClient,
-    cbc_hmac_t: TokenT,
     reverse: bool = False,
+    cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
 ) -> GetTokensLibReturnT:
     payload = existing_payload or get_payload_register()

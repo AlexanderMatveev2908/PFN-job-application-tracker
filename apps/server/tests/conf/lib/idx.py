@@ -16,13 +16,14 @@ async def wrap_httpx(
     url: str,
     method: Literal["POST", "GET"] = "POST",
     data: Any | None = None,
+    access_token: str = "",
     expected_code: int = 200,
 ) -> WrapReturnT:
 
     if method == "POST":
         res = await api.post(url, json=data)
     elif method == "GET":
-        res = await api.get(url)
+        res = await api.get(url, headers={"authorization": access_token})
 
     parsed = parse_res(res)
     refresh = (

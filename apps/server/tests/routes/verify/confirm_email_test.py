@@ -38,7 +38,6 @@ async def err_already_verified_t(api: AsyncClient) -> None:
 
     res_tokens = await get_tokens_lib(
         api,
-        cbc_hmac_t=TokenT.CONF_EMAIL,
         existing_payload=res_register["payload"],
     )
 
@@ -59,7 +58,7 @@ async def err_already_verified_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_expired_t(api: AsyncClient) -> None:
-    res = await get_tokens_lib(api, cbc_hmac_t=TokenT.CONF_EMAIL, reverse=True)
+    res = await get_tokens_lib(api, reverse=True)
 
     res_conf = await wrap_httpx(
         api,
@@ -73,9 +72,7 @@ async def err_expired_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api, cbc_hmac_t=TokenT.CONF_EMAIL, reverse=True
-    )
+    res_tokens = await get_tokens_lib(api, reverse=True)
 
     res_conf = await wrap_httpx(
         api,

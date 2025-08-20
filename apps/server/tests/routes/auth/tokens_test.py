@@ -8,14 +8,14 @@ from tests.conf.lib.idx import wrap_httpx
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    await get_tokens_lib(api, cbc_hmac_t=TokenT.CONF_EMAIL)
+    await get_tokens_lib(
+        api,
+    )
 
 
 @pytest.mark.asyncio
 async def err_expired_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api, cbc_hmac_t=TokenT.CONF_EMAIL, reverse=True
-    )
+    res_tokens = await get_tokens_lib(api, reverse=True)
     url = f"/test/get-err-expired?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
     res_jwt = await wrap_httpx(
@@ -45,9 +45,7 @@ async def err_expired_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 async def err_invalid_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api, cbc_hmac_t=TokenT.CONF_EMAIL, reverse=True
-    )
+    res_tokens = await get_tokens_lib(api, reverse=True)
 
     url = f"/test/get-err-invalid?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"
 
