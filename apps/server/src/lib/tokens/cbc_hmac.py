@@ -26,11 +26,12 @@ from src.models.token import (
     GenTokenReturnT,
     PayloadTokenT,
     Token,
+    TokenDct,
     TokenT,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.user import User
+from src.models.user import User, UserDcT
 
 master_key = h_to_b(get_env().master_key)
 
@@ -212,7 +213,7 @@ async def check_cbc_hmac(
     )
 
     return {
-        "token_d": existing.to_d(),
+        "token_d": cast(TokenDct, existing.to_d()),
         "decrypted": json.loads(pt.decode("utf-8")),
-        "user_d": us.to_d(),
+        "user_d": cast(UserDcT, us.to_d()),
     }
