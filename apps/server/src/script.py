@@ -7,3 +7,6 @@ print("script worked ✅")
 
 
 # # print(os.urandom(64).hex())
+
+
+print("".split("."))

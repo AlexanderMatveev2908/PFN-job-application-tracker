@@ -9,17 +9,17 @@ from src.decorators.err import ErrAPI
 from src.lib.algs.hmac import hash_db_hmac
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b, parse_id
 from src.lib.etc import calc_exp, lt_now
-from src.lib.logger import clg
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
     GenTokenReturnT,
     Token,
+    TokenDct,
     TokenT,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.user import User
+from src.models.user import User, UserDcT
 
 env_var = get_env()
 
@@ -70,7 +70,9 @@ async def gen_jwe(
 async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
     try:
-        stm = select(Token).where(Token.hashed == hash_db_hmac(h_to_b(token)))
+        token_b = h_to_b(token)
+
+        stm = select(Token).where(Token.hashed == hash_db_hmac(token_b))
 
         existing = (await trx.execute(stm)).scalar_one_or_none()
 
@@ -78,10 +80,11 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
             raise ErrAPI(msg="REFRESH_TOKEN_NOT_FOUND", status=401)
 
         if lt_now(existing.exp):
+            await trx.delete(existing)
             raise ErrAPI(msg="REFRESH_TOKEN_EXPIRED", status=401)
 
         decrypted_bytes = await asyncio.to_thread(
-            jwe.decrypt, h_to_b(token), h_to_b(env_var.jwe_private)
+            jwe.decrypt, token_b, h_to_b(env_var.jwe_private)
         )
 
         payload = b_to_d(cast(bytes, decrypted_bytes))
@@ -97,13 +100,12 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
         return {
             "decrypted": payload,
-            "token_d": existing.to_d(),
-            "user_d": us.to_d(),
+            "token_d": cast(TokenDct, existing.to_d()),
+            "user_d": cast(UserDcT, us.to_d()),
         }
 
     except ErrAPI:
         raise
 
-    except Exception as err:
-        clg(err, ttl="invalid token")
+    except Exception:
         raise ErrAPI(msg="REFRESH_TOKEN_INVALID", status=401)

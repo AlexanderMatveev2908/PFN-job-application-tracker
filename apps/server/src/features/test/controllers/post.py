@@ -9,6 +9,7 @@ from src.features.test.lib.idx import get_query_token_t
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
+from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import dest_d
 from src.lib.etc import parse_bd
 from src.lib.s3.post import upload_w3
@@ -51,7 +52,9 @@ async def tokens_health_ctrl(
 
     res = await tokens_health_svc(user_data, token_t=get_query_token_t(req))
 
-    return ResAPI.ok_200(**res)
+    return ResAPI.ok_200(
+        **res, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
+    )
 
 
 async def tokens_expired_ctrl(
@@ -61,7 +64,9 @@ async def tokens_expired_ctrl(
         user_data, token_t=get_query_token_t(req), reverse=True
     )
 
-    return ResAPI.ok_200(**res)
+    return ResAPI.ok_200(
+        **res, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
+    )
 
 
 async def get_err_ctrl(req: Request) -> ResAPI:

@@ -12,6 +12,8 @@ from sqlalchemy import (
 from src.models.root import RootTable
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.models.user import UserDcT
+
 
 class TokenT(Enum):
     REFRESH = "REFRESH"
@@ -35,6 +37,15 @@ class PayloadTokenT(
 
 
 PayloadT = dict[str, Any] | PayloadTokenT
+
+
+class TokenDct(TypedDict):
+    id: str
+    user_id: str
+    token_t: TokenT
+    alg: AlgT
+    hashed: str
+    exp: int
 
 
 class Token(RootTable):
@@ -70,6 +81,6 @@ class GenTokenReturnT(TypedDict):
 
 
 class CheckTokenReturnT(TypedDict):
-    token_d: dict
+    token_d: TokenDct
     decrypted: PayloadT
-    user_d: dict
+    user_d: UserDcT
