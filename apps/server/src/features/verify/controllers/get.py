@@ -35,7 +35,7 @@ async def confirm_email_ctrl(
 
 async def forgot_pwd_ctrl(
     _: Request,
-    cbc_result: CheckTokenReturnT = Depends(
+    __: CheckTokenReturnT = Depends(
         check_cbc_hmac_mdw(token_t=TokenT.RECOVER_PWD)
     ),
 ) -> ResAPI:
