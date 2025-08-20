@@ -1,6 +1,6 @@
 import asyncio
 import concurrent.futures
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, TypedDict
 from argon2 import PasswordHasher
 import concurrent
 from sqlalchemy import Boolean, String
@@ -19,6 +19,16 @@ HASH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 if TYPE_CHECKING:
     from .token import Token
+
+
+class UserDcT(TypedDict):
+    id: str
+    first_name: str
+    last_name: str
+    email: str
+    password: str
+    terms: bool
+    is_verified: bool
 
 
 class User(RootTable):
