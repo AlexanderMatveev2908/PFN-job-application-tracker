@@ -7,6 +7,7 @@ from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 
 URL_SENS = "/test/protected"
+URL_REF = "/auth/refresh"
 
 
 @pytest.mark.asyncio
@@ -33,10 +34,27 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_refresh = await wrap_httpx(
         api,
-        url="/auth/refresh",
+        url=URL_REF,
         expected_code=200,
         access_token=res_tokens_expired["access_token"],
         method="GET",
     )
 
     assert REG_JWT.fullmatch(res_refresh["data"]["access_token"])
+
+
+@pytest.mark.asyncio
+async def err_expired_t(api: AsyncClient) -> None:
+    await get_tokens_lib(
+        api,
+        reverse=True,
+    )
+
+    res_err = await wrap_httpx(
+        api,
+        url=URL_REF,
+        expected_code=401,
+        method="GET",
+    )
+
+    assert "REFRESH_TOKEN_EXPIRED" in res_err["data"]["msg"]
