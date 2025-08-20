@@ -6,3 +6,5 @@ class ErrAPI(Exception):
         self.status = status
         self.msg = f"💣 {msg}"
         self.data = kwargs
+
+        super().__init__(self.msg)

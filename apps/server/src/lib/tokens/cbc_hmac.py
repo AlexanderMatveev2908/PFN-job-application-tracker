@@ -152,6 +152,7 @@ async def check_cbc_hmac(
     aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
 
     if TokenT(aad_d["token_t"]) != token_t:
+        print(aad_d["token_t"])
         raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
 
     us = (

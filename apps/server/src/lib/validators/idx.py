@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from src.constants.reg import REG_PWD
+from src.constants.reg import REG_CBC_HMAC, REG_PWD
 from src.decorators.err import ErrAPI
 
 
@@ -15,4 +15,14 @@ def validate_password_lib(v: str) -> str:
             "1 number, 1 symbol, and be 8+ chars long",
             status=422,
         )
+    return v
+
+
+def check_basic_cbc_shape_lib(v: str | None) -> str:
+    if not v:
+        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
+
+    if not REG_CBC_HMAC.fullmatch(v):
+        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+
     return v
