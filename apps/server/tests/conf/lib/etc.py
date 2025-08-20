@@ -1,18 +1,9 @@
-from typing import Literal, TypedDict, cast
+from typing import TypedDict, cast
 from httpx import AsyncClient
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.constants import RegisterPayloadT, get_payload_register
 from tests.conf.lib.idx import wrap_httpx
-
-
-def extract_login_payload(
-    payload_register: RegisterPayloadT,
-) -> dict[Literal["email", "password"], str]:
-    return {
-        "email": payload_register["email"],
-        "password": payload_register["password"],
-    }
 
 
 class RegisterReturnT(TypedDict):
@@ -48,7 +39,7 @@ async def register_ok_lib(api) -> RegisterOkReturnT:
     }
 
 
-class GenTokensReturnT(TypedDict):
+class GetTokensLibReturnT(TypedDict):
     access_token: str
     refresh_token: str
     cbc_hmac_token: str
@@ -57,10 +48,10 @@ class GenTokensReturnT(TypedDict):
 
 async def get_tokens_lib(
     api: AsyncClient,
+    cbc_hmac_t: TokenT,
     reverse: bool = False,
-    cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
-) -> GenTokensReturnT:
+) -> GetTokensLibReturnT:
     payload = existing_payload or get_payload_register()
 
     res_register = await wrap_httpx(
