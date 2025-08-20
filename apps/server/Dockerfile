@@ -46,9 +46,10 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
 COPY --from=builder /app/dist/*.whl .
+COPY cmd_start.py ./
 
 RUN pip install --upgrade pip && pip install *.whl
 
 EXPOSE 3000
 
-CMD ["gunicorn", "src.server:app", "-w", "8", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:3000"]
+CMD ["python", "cmd_start.py"]
