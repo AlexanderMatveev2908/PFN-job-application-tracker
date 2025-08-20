@@ -65,43 +65,32 @@ def log_err(err: Exception) -> None:
                 f" | 🆎 {f.name} | ☢️ {f.line}"
             )
 
-    args = repr(err.args)
-    cause = repr(err.__cause__) if err.__cause__ else None
-    context = repr(err.__context__) if err.__context__ else None
     msg = str(err) or repr(err)
     exc_type = type(err).__name__
     exc_mod = type(err).__module__
     depth = len(frames)
-
     last = frames[-1]
-    last_line = f"💥 last line => 📁 {last.filename} | 📏 {last.lineno} | 👻 {last.name} | ✏️ {last.line}"  # noqa: E501
 
-    tb = err.__traceback__
-    if tb:
-        while tb.tb_next:
-            tb = tb.tb_next
-        frame = tb.tb_frame
-        locals_last = {k: repr(v) for k, v in frame.f_locals.items()}
-    else:
-        locals_last = {}
+    print("\t")
 
     clg(
         *src_frames,
         "\t",
         f"📝 msg => {msg}",
         f"📏 depth => {depth}",
-        last_line,
+        f"💥 last file => 📁 {last.filename}",
+        f" 📏 last line =>  {last.lineno}",
+        f" 👻 last def name => {last.name}",
+        f" ✏️ last code line =>   {last.line}",
         "\t",
         center_txt("args", emoji="⚠️"),
-        args,
+        repr(err.args),
         "\t",
         center_txt("cause", emoji="⚠️"),
-        cause,
+        repr(err.__cause__) if err.__cause__ else None,
         "\t",
         center_txt("context", emoji="⚠️"),
-        context,
+        repr(err.__context__) if err.__context__ else None,
         "\t",
-        center_txt("last frame", emoji="🔍"),
-        locals_last,
         ttl=f"💣 {exc_type} — {exc_mod}",
     )

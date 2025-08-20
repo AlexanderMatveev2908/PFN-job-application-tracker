@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import (
 from src.conf.env import get_env
 from contextlib import asynccontextmanager
 
+
 env_var = get_env()
 
 
@@ -43,7 +44,6 @@ async def db_trx(auto_commit: bool = True) -> AsyncIterator[AsyncSession]:
             if trx.is_active and auto_commit:
                 await db.commit()
 
-            print("✅ trx 200")
         except Exception as err:
             await db.rollback()
 
