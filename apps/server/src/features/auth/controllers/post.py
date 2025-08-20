@@ -2,6 +2,10 @@ from typing import cast
 from fastapi import Depends, Request
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
+from src.features.auth.middleware.recover_pwd import (
+    RecoverPwdMdwReturnT,
+    recover_pwd_mdw,
+)
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
 from src.features.auth.services.register import register_user_svc
@@ -38,5 +42,8 @@ async def login_ctrl(
     )
 
 
-async def recover_pwd_ctrl(_: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def recover_pwd_ctrl(
+    _: Request,
+    data_recover_pwd: RecoverPwdMdwReturnT = Depends(recover_pwd_mdw),
+) -> ResAPI:
+    return ResAPI.ok_200(msg="password updated", **data_recover_pwd)

@@ -39,8 +39,6 @@ async def clean_redis() -> None:
     async with redis_session() as r:
         await r.execute_command("FLUSHDB")
 
-    print("✅ redis 200")
-
 
 async def get_all_redis() -> None:
     async with redis_session() as r:
