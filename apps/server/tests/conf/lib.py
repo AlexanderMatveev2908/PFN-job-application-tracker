@@ -15,11 +15,10 @@ def parse_res(res: Response) -> dict:
         full[full.index("/api/v1") + len("/api/v1") :]  # noqa: E203
     ).split("?", 1)[0]
 
-    if res.status_code not in [200, 201]:
-        clg(
-            data,
-            ttl=f"💾 {part} — 🚦 {res.status_code}",
-        )
+    clg(
+        data,
+        ttl=f"💾 {part} — 🚦 {res.status_code}",
+    )
 
     return data
 
@@ -59,7 +58,10 @@ async def wrap_httpx(
     except Exception:
         raise
 
-    return {"data": parsed, "refresh_token": refresh}
+    return {
+        "data": parsed,
+        "refresh_token": refresh,
+    }
 
 
 def extract_login_payload(
