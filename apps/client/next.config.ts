@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+
+  turbopack: {
+    resolveAlias: { "@": "./src" },
+  },
 };
 
 export default nextConfig;

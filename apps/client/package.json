@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "install_pkg": "yarn install",
-    "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev -p 3001",
+    "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
