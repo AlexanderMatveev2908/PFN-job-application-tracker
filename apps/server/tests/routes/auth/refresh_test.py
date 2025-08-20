@@ -25,7 +25,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     assert "ACCESS_TOKEN_EXPIRED" in res_err["data"]["msg"]
 
-    # __ I just grab a fresh JWE so I will have a valid refresh token to receive a new JWT # noqa: E501
+    # ? I just grab a fresh JWE so I will have a valid refresh token to receive a new JWT # noqa: E501
     await get_tokens_lib(
         api,
         existing_payload=res_tokens_expired["payload"],

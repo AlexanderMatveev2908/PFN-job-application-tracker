@@ -32,7 +32,7 @@ async def del_list_assets(public_ids: list[str]) -> None:
 
 async def del_folder_assets(prefix: str) -> None:
     async with gen_s3_session() as s3:
-        # __ 1000 max res for req
+        # ? 1000 max res for req
         paginator = s3.get_paginator("list_objects_v2")
         base_path = cast(str, env_var.app_name)
         full_path = str(Path(base_path) / prefix)
