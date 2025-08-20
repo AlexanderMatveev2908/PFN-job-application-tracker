@@ -1,6 +1,7 @@
 import pytest
-from tests.conf.lib import register_ok_lib, wrap_httpx
+from tests.conf.lib.etc import register_ok_lib
 from tests.conf.constants import get_payload_register
+from tests.conf.lib.idx import wrap_httpx
 
 URL = "/auth/register"
 

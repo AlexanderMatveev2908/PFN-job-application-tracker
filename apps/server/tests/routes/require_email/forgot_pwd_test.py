@@ -1,7 +1,8 @@
 from httpx import AsyncClient
 import pytest
 
-from tests.conf.lib import register_ok_lib, wrap_httpx
+from tests.conf.lib.etc import register_ok_lib
+from tests.conf.lib.idx import wrap_httpx
 
 URL = "/require-email/forgot-pwd"
 

@@ -1,7 +1,7 @@
 from httpx import AsyncClient
 import pytest
-from src.models.token import TokenT
-from tests.conf.lib import get_tokens_lib, register_ok_lib, wrap_httpx
+from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.idx import wrap_httpx
 
 URL = "/require-email/confirm-email"
 
@@ -46,7 +46,6 @@ async def err_not_found_t(api: AsyncClient) -> None:
 async def err_already_confirmed_t(api: AsyncClient) -> None:
     res_tokens = await get_tokens_lib(
         api,
-        cbc_hmac_t=TokenT.CONF_EMAIL,
     )
 
     res_verify = await wrap_httpx(

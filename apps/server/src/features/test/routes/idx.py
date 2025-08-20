@@ -27,6 +27,6 @@ router_test.post("/get-tokens-expired")(tokens_expired_ctrl)
 router_test.post("/get-err-expired")(get_err_ctrl)
 router_test.post("/get-err-invalid")(get_err_ctrl)
 
-router_test.get(
-    "/protected-data", dependencies=[Depends(rate_limit_mdw(limit=5))]
-)(get_protected_data_ctrl)
+router_test.get("/protected", dependencies=[Depends(rate_limit_mdw(limit=5))])(
+    get_protected_data_ctrl
+)

@@ -9,11 +9,11 @@ from starlette.responses import Response
 from starlette.types import ASGIApp
 
 
-# __ I am undecided which approach to use in classes 🧐
-# __ I am thinking which would help me more between:
-# __ dataclasses
-# __ attrs
-# __ raw python
+# ? I am undecided which approach to use in classes 🧐
+# ? I am thinking which would help me more between:
+# ? dataclasses
+# ? attrs
+# ? raw python
 # @attr.define
 @dataclass
 class CorsMDW(BaseHTTPMiddleware):

@@ -1,4 +1,4 @@
-# __ python
+# ? python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -13,14 +13,14 @@ env/
 venv/
 pip-wheel-metadata/
 
-# __ useless
+# ? useless
 .editorconfig
 
-# __ keep .vscode because it have useful settings for python formatting
+# ? keep .vscode because it have useful settings for python formatting
 
-# __ keep cheat_sheet because can be useful as reminder for some concepts 
+# ? keep cheat_sheet because can be useful as reminder for some concepts 
 
-# __ pytest
+# ? pytest
 htmlcov/
 .cache/
 .tox/
@@ -31,14 +31,14 @@ nosetests.xml
 test-results.xml
 .pytest_cache/
 
-# __ mypy / ruff / linting
+# ? mypy / ruff / linting
 .mypy_cache/
 .dmypy.json
 ruff_cache/
 *.lint
 *.typecheck
 
-# __ yarn
+# ? yarn
 .yarn/*
 !.yarn/patches/
 !.yarn/plugins/
@@ -47,21 +47,21 @@ ruff_cache/
 !.yarn/versions/
 !.yarnrc.yml
 
-# __ node
+# ? node
 node_modules/
 
-# __ ts build
+# ? ts build
 *.tsbuildinfo
 
-# __ turbo
+# ? turbo
 turbo/
 .turbo/
 
-# __ build apps
+# ? build apps
 dist/
 build/
 
-# __ loggers
+# ? loggers
 logger/
 logs/
 *.log
@@ -69,11 +69,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# __ client
+# ? client
 apps/*/.next/
 apps/*/out/
 
-# __ secrets
+# ? secrets
 *.pem
 *.key
 *.crt
@@ -81,10 +81,10 @@ apps/*/out/
 .env.*
 certs/
 
-# __ assets
+# ? assets
 uploads/
 assets/
 
-# __ tests
+# ? tests
 playwright-report/
 test-results/

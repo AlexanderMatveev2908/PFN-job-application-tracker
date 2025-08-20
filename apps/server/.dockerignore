@@ -1,7 +1,7 @@
-# __ ignore client
+# ? ignore client
 apps/client/
 
-# __ python
+# ? python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -17,7 +17,7 @@ venv/
 pip-wheel-metadata/
 
 
-# __ pytest
+# ? pytest
 htmlcov/
 .cache/
 .tox/
@@ -28,14 +28,14 @@ nosetests.xml
 test-results.xml
 .pytest_cache/
 
-# __ mypy / ruff / linting
+# ? mypy / ruff / linting
 .mypy_cache/
 .dmypy.json
 ruff_cache/
 *.lint
 *.typecheck
 
-# __ yarn
+# ? yarn
 .yarn/*
 !.yarn/patches/
 !.yarn/plugins/
@@ -44,21 +44,21 @@ ruff_cache/
 !.yarn/versions/
 !.yarnrc.yml
 
-# __ node
+# ? node
 node_modules/
 
-# __ ts build
+# ? ts build
 *.tsbuildinfo
 
-# __ turbo
+# ? turbo
 turbo/
 .turbo/
 
-# __ build apps
+# ? build apps
 dist/
 build/
 
-# __ loggers
+# ? loggers
 logger/
 logs/
 *.log
@@ -66,11 +66,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# __ client
+# ? client
 apps/*/.next/
 apps/*/out/
 
-# __ assets
+# ? assets
 uploads/
 assets/
 
