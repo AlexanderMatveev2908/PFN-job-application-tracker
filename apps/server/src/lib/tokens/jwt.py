@@ -18,7 +18,7 @@ def gen_jwt(user_id: str | uuid.UUID, reverse: bool = False) -> str:
     payload: dict[str, str | int] = {"user_id": parsed_id}
     payload["exp"] = calc_exp("15m", reverse=reverse, format="sec")
 
-    token = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
+    token: str = jwt.encode(payload, env_var.jwt_secret, algorithm=ALG)
 
     return token
 

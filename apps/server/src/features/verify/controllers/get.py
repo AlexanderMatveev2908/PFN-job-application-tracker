@@ -4,7 +4,7 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.middleware.check_token import check_cbc_hmac_mdw
+from src.middleware.check_cbc_hmac import check_cbc_hmac_mdw
 from src.models.token import CheckTokenReturnT, Token, TokenT
 from src.models.user import User
 
