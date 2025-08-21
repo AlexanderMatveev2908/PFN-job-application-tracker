@@ -7,6 +7,16 @@ class EmailForm(BaseModel):
     email: EmailStr = Field(min_length=1, max_length=254)
 
 
+def check_basic_cbc_shape_lib(v: str | None) -> str:
+    if not v:
+        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
+
+    if not REG_CBC_HMAC.fullmatch(v):
+        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+
+    return v
+
+
 def validate_password_lib(v: str) -> str:
 
     if not REG_PWD.match(v):
@@ -15,16 +25,6 @@ def validate_password_lib(v: str) -> str:
             "1 number, 1 symbol, and be 8+ chars long",
             status=422,
         )
-    return v
-
-
-def check_basic_cbc_shape_lib(v: str | None) -> str:
-    if not v:
-        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
-
-    if not REG_CBC_HMAC.fullmatch(v):
-        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
-
     return v
 
 
