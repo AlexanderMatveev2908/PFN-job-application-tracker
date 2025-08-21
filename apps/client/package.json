@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "install_pkg": "yarn install",
+    "install_pkg": "yarn install && yarn playwright install",
     "dev": "sass --watch src/styles/globals.scss src/styles/globals.css --no-source-map & next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start -p 3001",

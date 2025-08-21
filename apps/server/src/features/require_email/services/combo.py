@@ -12,7 +12,7 @@ async def gen_token_send_email_svc(us_d: UserDcT, token_t: TokenT) -> None:
     async with db_trx() as trx:
 
         cbc_hmac_result = await gen_cbc_hmac(
-            user_id=us_d["id"], trx=trx, hdr={"token_t": token_t}
+            user_id=us_d["id"], trx=trx, token_t=token_t
         )
 
         if can_send:

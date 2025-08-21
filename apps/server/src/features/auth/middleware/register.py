@@ -8,11 +8,11 @@ from pydantic import (
 
 from src.constants.reg import REG_NAME
 from src.decorators.err import ErrAPI
-from src.lib.validators.idx import EmailForm, validate_password_lib
+from src.lib.validators.idx import EmailForm, PwdFormT
 from src.middleware.check_form import check_form_mdw
 
 
-class RegisterForm(EmailForm):
+class RegisterForm(EmailForm, PwdFormT):
     first_name: str = Field(
         min_length=1, max_length=50, pattern=REG_NAME.pattern
     )
@@ -20,17 +20,11 @@ class RegisterForm(EmailForm):
         min_length=1, max_length=50, pattern=REG_NAME.pattern
     )
 
-    password: str = Field(min_length=1, max_length=100)
     confirm_password: str = Field(min_length=1, max_length=100)
 
     terms: bool = Field(
         ...,
     )
-
-    @field_validator("password")
-    def _validate_password(cls, v: str) -> str:
-
-        return validate_password_lib(v)
 
     @model_validator(mode="after")
     def check_passwords_match(self) -> Self:

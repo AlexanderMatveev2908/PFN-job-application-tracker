@@ -67,7 +67,7 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
 
     info: bytes = d_to_b(info_d)
     salt: bytes = os.urandom(32)
-    token_id = parse_id(uuid.uuid4())
+    token_id: str = parse_id(uuid.uuid4())
 
     derived: DerivedKeysCbcHmacT = derive_hkdf_cbc_hmac(
         master=master_key, info=info, salt=salt
@@ -101,10 +101,12 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
 
 async def gen_cbc_hmac(
     user_id: str | uuid.UUID,
-    hdr: HdrT,
+    token_t: TokenT,
     trx: AsyncSession,
     reverse: bool = False,
 ) -> GenTokenReturnT:
+
+    hdr: HdrT = {"token_t": token_t}
 
     await trx.execute(
         delete(Token).where(

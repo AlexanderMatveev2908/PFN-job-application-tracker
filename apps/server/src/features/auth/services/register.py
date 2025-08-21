@@ -42,9 +42,7 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             trx=trx,
         )
         cbc_hmac_res: GenTokenReturnT = await gen_cbc_hmac(
-            hdr={
-                "token_t": TokenT.CONF_EMAIL,
-            },
+            token_t=TokenT.CONF_EMAIL,
             user_id=new_user.id,
             trx=trx,
         )

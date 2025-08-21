@@ -3,7 +3,7 @@ from typing import Type, TypeVar
 from fastapi import Request
 from pydantic import BaseModel, ValidationError
 from src.decorators.err import ErrAPI
-from src.lib.logger import clg
+
 
 FormT = TypeVar("FormT", bound=BaseModel)
 
@@ -14,8 +14,8 @@ async def check_form_mdw(model: Type[FormT], req: Request) -> FormT:
 
     try:
         parsed = json.loads(await req.body())
-    except Exception as err:
-        clg(err, ttl="err parse body")
+    except Exception:
+        pass
 
     if parsed is None:
         raise ErrAPI(msg="wrong data format", status=422)

@@ -28,9 +28,7 @@ async def tokens_health_svc(
 
         result_cbc_hmac: GenTokenReturnT = await gen_cbc_hmac(
             user_id=us.id,
-            hdr={
-                "token_t": token_t,
-            },
+            token_t=token_t,
             trx=trx,
             reverse=reverse,
         )

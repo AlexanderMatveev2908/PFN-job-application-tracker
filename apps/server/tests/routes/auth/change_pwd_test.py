@@ -24,7 +24,7 @@ async def ok_t(api: AsyncClient) -> None:
         url=URL,
         data={
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "new_password": new_pwd,
+            "password": new_pwd,
         },
         expected_code=200,
     )
@@ -46,7 +46,7 @@ async def err_same_pwd_t(api: AsyncClient) -> None:
         url=URL,
         data={
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "new_password": res_tokens["payload"]["password"],
+            "password": res_tokens["payload"]["password"],
         },
         expected_code=400,
     )
@@ -70,7 +70,7 @@ async def err_expired_t(api: AsyncClient) -> None:
         url=URL,
         data={
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "new_password": new_pwd,
+            "password": new_pwd,
         },
         expected_code=401,
     )
@@ -92,7 +92,7 @@ async def invalid_action_t(api: AsyncClient) -> None:
         url=URL,
         data={
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "new_password": new_pwd,
+            "password": new_pwd,
         },
         expected_code=401,
     )
