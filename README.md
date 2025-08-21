@@ -59,6 +59,7 @@ So I decided to build a proper application to track them:
 
 - **Turborepo** — Monorepo project structure for managing client and server together, with coordinated scripts and parallel builds
 - **Docker** — Ensures consistent environments for development and production across both client and server
+- **Docker Hub** — Publishing and managing images
 - **GitHub Actions** — Automated pipelines for testing, building, and deploying both apps
 - **Fly.io** — Hosting platform (client and server deployed as separate services)
 - **Supabase** — PostgreSQL hosting
