@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from src.constants.reg import REG_CBC_HMAC, REG_PWD
 from src.decorators.err import ErrAPI
 
@@ -26,3 +26,15 @@ def check_basic_cbc_shape_lib(v: str | None) -> str:
         raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
 
     return v
+
+
+class PwdFormT(BaseModel):
+    password: str = Field(
+        min_length=1,
+        max_length=100,
+    )
+
+    @field_validator("password")
+    def _validate_password(cls, v: str) -> str:
+
+        return validate_password_lib(v)

@@ -7,5 +7,5 @@ from src.middleware.rate_limiter import rate_limit_mdw
 user_router = APIRouter(prefix="/user")
 
 user_router.post(
-    "/access-manage-account", dependencies=[Depends(rate_limit_mdw(limit=5))]
+    "/manage-account", dependencies=[Depends(rate_limit_mdw(limit=5))]
 )(get_access_account_ctrl)
