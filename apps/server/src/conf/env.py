@@ -39,9 +39,11 @@ class EnvVar(BaseSettings):
     )
 
     # ? my real env
-    py_env: Literal["development", "production", "test"] = Field(
-        ..., validation_alias="PY_ENV"
-    )
+    py_env: Literal[
+        "development",
+        "production",
+        "test",
+    ] = Field(..., validation_alias="PY_ENV")
     port: int = Field(..., validation_alias="PORT")
 
     # ? communication client

@@ -17,3 +17,6 @@ spec:
           image: alexandermatveev2908/pfn-job-application-tracker-client:latest
           ports:
             - containerPort: 3001
+          envFrom:
+            - secretRef:
+                name: pfn-job-application-tracker

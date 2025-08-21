@@ -80,6 +80,7 @@ apps/*/out/
 .env
 .env.*
 certs/
+kind-secrets.yml
 
 # ? assets
 uploads/
