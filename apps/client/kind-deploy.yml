@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pfn-job-application-tracker-client
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pfn-job-application-tracker-client
+  template:
+    metadata:
+      labels:
+        app: pfn-job-application-tracker-client
+    spec:
+      containers:
+        - name: client
+          image: alexandermatveev2908/pfn-job-application-tracker-client:latest
+          ports:
+            - containerPort: 3001
