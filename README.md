@@ -60,6 +60,7 @@ So I decided to build a proper application to track them:
 - **Turborepo** — Monorepo project structure for managing client and server together, with coordinated scripts and parallel builds
 - **Docker** — Ensures consistent environments for development and production across both client and server
 - **Docker Hub** — Publishing and managing images
+- **Kind** — Run local Kubernetes clusters for development
 - **GitHub Actions** — Automated pipelines for testing, building, and deploying both apps
 - **Fly.io** — Hosting platform (client and server deployed as separate services)
 - **Supabase** — PostgreSQL hosting
@@ -156,7 +157,63 @@ This uses **Turborepo** to start both the **Python server** and the **Next.js cl
 
 ### 🐋 Docker Setup
 
-The following Docker helper scripts are designed to support **dynamic file locations**, making it easy to delete or adjust paths as needed depending on your project structure.
+The following Docker helper scripts are designed to support **dynamic file locations**, making it easy to adjust paths as needed
+
+---
+
+#### 📜 Scripts needed
+
+First script needed to continue is the following **gwd** which finds the **monorepo root** regardless of whether you’re inside **server** or **client**
+
+```bash
+gwd() {
+  local root_dir
+
+  root_dir=$(basename "$PWD")
+
+  if [[ "$root_dir" == "server" || "$root_dir" == "client" ]]; then
+    root_dir=$(realpath "$PWD/../..")
+  else
+    root_dir=$PWD
+  fi
+
+  local parsed=${(L)$(basename "$root_dir")}
+
+  print "$parsed"
+}
+```
+
+Then as second helper we will need **acw** which will append the **workspace (client or server)** to the **root name**
+
+```bash
+acw() {
+  local root_dir
+  root_dir=$(gwd)
+
+  local workspace
+
+  if [[ $1 == '0' ]]; then
+    workspace='server'
+  elif [[ $1 == '1' ]]; then
+    workspace='client'
+  else
+    echo "invalid arg"
+    return 1
+  fi
+
+  print "$root_dir-$workspace"
+}
+```
+
+The final result will be **monorepo directory lowercase** + **client** or **server** like:
+
+```bash
+acw 0
+pfn-job-application-tracker-server
+
+acw 1
+pfn-job-application-tracker-server
+```
 
 ---
 
@@ -174,14 +231,39 @@ dbc() {
     context="apps/client"
   fi
 
+  local tag="<your Docker Hub username>/$(acw 1):latest"
+
+  local build_args=()
+  while IFS='=' read -r key value; do
+    [[ -z "$key" || "$key" == \#* ]] && continue
+
+    # trim leading and trailing spaces from key
+    key="${key#"${key%%[![:space:]]*}"}"
+    key="${key%"${key##*[![:space:]]}"}"
+
+    # strip optional surrounding quotes from value
+    value="${value%\"}"
+    value="${value#\"}"
+    value="${value%\'}"
+    value="${value#\'}"
+
+    # The client doesn’t need all env vars, but I pass them all to avoid extra filtering
+
+    build_args+=( --build-arg "${key}=${value}" )
+  done < <(grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env)
+
   docker build \
     --no-cache \
     -f "$dockerfile" \
-    -t app-client \
-    --build-arg NEXT_PUBLIC_ENV=development \
-    --build-arg NEXT_PUBLIC_BACK_URL_DEV=http://localhost:3000/api/v1 \
-    --build-arg NEXT_PUBLIC_FRONT_URL_DEV=http://localhost:3001 \
+    -t "$tag" \
+    "${build_args[@]}" \
     "$context"
+
+  docker push "$tag"
+
+  # avoid deleting image if after firsts pull all works correctly
+  # I delete it at first to be sure Docker Hub pulls are fine
+  docker rmi -f "$tag"
 }
 
 ```
@@ -202,13 +284,22 @@ dbs() {
     context="apps/server"
   fi
 
+  local tag="<your Docker Hub username>/$(acw 0):latest"
+
+  # server use env variables just at runtime, not as client which require them at build time
+
   docker build \
     --no-cache \
     -f "$dockerfile" \
-    -t app-server \
+    -t "$tag" \
     "$context"
-}
 
+  docker push "$tag"
+
+  # avoid deleting image if after firsts pull all works correctly
+  # I delete it at first to be sure Docker Hub pulls are fine
+  docker rmi -f "$tag"
+}
 ```
 
 ---
