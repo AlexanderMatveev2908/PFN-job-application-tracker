@@ -31,6 +31,5 @@ async def recover_pwd_mdw(req: Request) -> RecoverPwdMdwReturnT:
                 trx=trx,
                 token_t=TokenT.RECOVER_PWD,
                 token=cast(str, data.cbc_hmac_token),
-                delete_expired=True,
             ),
         }

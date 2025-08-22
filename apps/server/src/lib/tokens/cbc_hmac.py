@@ -144,7 +144,6 @@ async def check_cbc_hmac(
     token: str,
     trx: AsyncSession,
     token_t: TokenT,
-    delete_expired: bool = False,
 ) -> CheckTokenReturnT:
 
     if not REG_CBC_HMAC.fullmatch(token):
@@ -182,9 +181,8 @@ async def check_cbc_hmac(
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     if lt_now(existing.exp):
-        if delete_expired:
-            await trx.delete(existing)
-            await trx.commit()
+        await trx.delete(existing)
+        await trx.commit()
         raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     info_b: bytes = d_to_b(

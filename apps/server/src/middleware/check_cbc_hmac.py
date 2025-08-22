@@ -15,9 +15,7 @@ def check_cbc_hmac_mdw(
 
         CbcHmacFormT(cbc_hmac_token=token)
 
-        async with db_trx(auto_commit=False) as trx:
-            return await check_cbc_hmac(
-                cast(str, token), trx, delete_expired=True, token_t=token_t
-            )
+        async with db_trx() as trx:
+            return await check_cbc_hmac(cast(str, token), trx, token_t=token_t)
 
     return _check_cbc
