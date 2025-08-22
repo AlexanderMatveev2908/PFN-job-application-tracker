@@ -2,12 +2,8 @@
 
 ## 📌 About This Project
 
-The idea for this app was born while I was applying to jobs on LinkedIn and jotting down basic information in a simple notepad.  
-So I decided to build a proper application to track them:
-
-- First to consolidate the **Python tools** I've recently learned.
-
-- Second, to create something useful that anyone can clone and use to manage their own applications.
+The idea for this app was born while I was applying for jobs online and jotting down basic information in a simple notepad.  
+So I decided to build a proper application to consolidate the **Python tools** I've recently learned and provide a useful tool that anyone can clone and adapt to his workflow
 
 ---
 
@@ -72,7 +68,7 @@ So I decided to build a proper application to track them:
 
 ## 📦 Setup
 
-After cloning the repository, start by installing dependencies:
+After cloning the repository, start by installing the dependencies:
 
 ```bash
 yarn install && yarn install_pkg
@@ -112,7 +108,7 @@ You can choose between two options:
 
 ---
 
-### 🚀 Start App
+### 🛠️ Build & Run
 
 To start a development session, run:
 
@@ -127,7 +123,7 @@ This uses **Turborepo** to run both the **Python server** and the **Next.js clie
 
 ---
 
-TO build the app run:
+To build the app run:
 
 ```bash
 yarn build
@@ -149,21 +145,17 @@ yarn start
 
 This uses **Turborepo** to start both the **Python server** and the **Next.js client** in parallel:
 
-- 🐍 **Python** runs via **Gunicorn**, using **8 workers**, available at http://localhost:3000
+- 🐍 **Python** runs via **Gunicorn**, using **maximum workers available on current machine**, available at http://localhost:3000
 
 - 🖥️ **Next.js** is served at http://localhost:3001
 
 ---
 
-### 🐋 Docker Setup
+### 📜 Custom Scripts
 
-The following Docker helper scripts are designed to support **dynamic file locations**, making it easy to adjust paths as needed
+#### ✒️ gwd
 
----
-
-#### 📜 Scripts needed
-
-First script needed to continue is the following **gwd** which finds the **monorepo root** regardless of whether you’re inside **server** or **client**
+It finds the **monorepo root** regardless of whether you’re inside **server** or **client**
 
 ```bash
 gwd() {
@@ -183,7 +175,11 @@ gwd() {
 }
 ```
 
-Then as second helper we will need **acw** which will append the **workspace (client or server)** to the **root name**
+---
+
+#### ✒️ acw
+
+It append the **workspace (client or server)** to the **root name**
 
 ```bash
 acw() {
@@ -214,6 +210,12 @@ pfn-job-application-tracker-server
 acw 1
 pfn-job-application-tracker-server
 ```
+
+---
+
+### 🐋 Docker Setup
+
+The following Docker helper scripts are designed to support **dynamic file locations**, making it easy to adjust paths as needed
 
 ---
 
@@ -325,16 +327,20 @@ dsi() {
     return 1
   fi
 
-  local cname="app-${name}"
+  local image="<your Docker Hub username>/$(acw "$port"):latest"
+  local cname=$(acw "$port")
 
+  # remove old existing container
   docker rm -f "$cname" &>/dev/null || true
 
   docker run \
     --rm \
+    --pull=always \
     --env-file "$env_p" \
     --name "$cname" \
     -p 300${port}:300${port} \
-    "$cname"
+    "$image"
+
 }
 ```
 
@@ -391,20 +397,9 @@ mkcert localhost
 
 #### 📜 NGINX Config Script
 
-💡 **Note:**
-
-- Wherever you see `ninja` in paths (e.g. `/home/ninja/`), replace it with **your Linux username**, which you chose during OS installation.
-  You can check your current username with:
+The following is the root conf for nginx I keep at **/etc/nginx/nginx.conf**
 
 ```bash
-echo $USER
-```
-
----
-
-```bash
-# ❕ http is the default NGINX user on Manjaro (Arch-based distros).
-
 user http;
 worker_processes auto;
 
@@ -412,85 +407,140 @@ events {
     worker_connections 1024;
 }
 
-# ❕ HTTP block
 http {
-    # 📷 load MIME types from file to recognize extensions
     include mime.types;
-
-     # ❓ fallback type if unknown: raw binary
     default_type application/octet-stream;
 
-    # 💾 let the kernel handle file transfers for performance
     sendfile on;
-
-    # ⌛ keep connections open for 60s before timing out
     keepalive_timeout 60;
-
-    # 🥸 hide the NGINX version (like Helmet does for Node apps)
     server_tokens off;
 
-    # 🗃️ allocate more memory for MIME type hash table
     types_hash_max_size 2048;
     types_hash_bucket_size 128;
 
-    # 🔀 HTTP → HTTPS redirect
     server {
         listen 80;
         server_name localhost;
 
-    # ❕ 301 code is a permanent redirection
         location / {
             return 301 https://$host$request_uri;
         }
     }
 
-    # 🔐 HTTPS server block
-    server {
-        listen 443 ssl;
-        server_name localhost;
+    include /etc/nginx/env/active.conf;
+}
 
-        # 🗄️ increase body size limit (useful for file uploads)
-        client_max_body_size 200M;
+```
 
-        # ⛔ restrict to modern TLS versions only
-        ssl_protocols TLSv1.2 TLSv1.3;
-        # ⛔ exclude ciphers that allow anonymous key exchange and weak hashing algorithms
-        ssl_ciphers HIGH:!aNULL:!MD5;
+---
 
-        # ℹ️ basic logging
-        access_log /var/log/nginx/access.log;
-        error_log  /var/log/nginx/error.log warn;
+The file **/etc/nginx/env/active.conf** will be determined dynamically using a **symlink** using following script:
 
-        # 🔐 SSL cert paths (use absolute paths)
-        ssl_certificate     /home/ninja/certs/nginx-dev/localhost.pem;
-        ssl_certificate_key /home/ninja/certs/nginx-dev/localhost-key.pem;
+```bash
+ngx() {
+  local env="dev"
+  [[ "$1" == "k" ]] && env="kind"
 
-      # 🐍 proxy to Python FastAPI or 🟩 Node.js Fastify server
-        location /api/v1/ {
-            proxy_pass http://localhost:3000/api/v1/;
+  local target="/etc/nginx/env/${env}.conf"
+  local active="/etc/nginx/env/active.conf"
 
-            # 📱 useful if you later will need web-socket
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection 'upgrade';
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
-        }
+  # Switch symlink
+  sudo ln -sf "$target" "$active"
 
-        # 🖥️ proxy to Next.js or Vite app
-        location / {
-            proxy_pass http://localhost:3001/;
-
-            # 📱 useful if you later will need web-socket
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection 'upgrade';
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
-        }
-    }
+  # Test config before applying
+  if sudo nginx -t; then
+    if systemctl is-active --quiet nginx; then
+      echo "♻️  Reloading nginx with $env config..."
+      sudo systemctl reload nginx
+    else
+      echo "🚀 Starting nginx with $env config..."
+      sudo systemctl start nginx
+    fi
+  else
+    echo "❌ Config error, not reloading"
+  fi
 }
 ```
+
+---
+
+The files dev.conf and kind.conf are structured as followed:
+
+- **dev.conf**
+
+  ```bash
+  server {
+    listen 443 ssl;
+    server_name localhost;
+
+    client_max_body_size 200M;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    access_log /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log warn;
+
+    ssl_certificate     /etc/nginx/certs/localhost.pem;
+    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
+
+    location /api/v1/ {
+        proxy_pass http://localhost:3000/api/v1/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location / {
+        proxy_pass http://localhost:3001/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+  }
+  ```
+
+- **kind.conf**
+
+  ```bash
+  server {
+    listen 443 ssl;
+    server_name localhost;
+
+    client_max_body_size 200M;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    access_log /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log warn;
+
+    ssl_certificate     /etc/nginx/certs/localhost.pem;
+    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
+
+    location /api/v1/ {
+        proxy_pass http://localhost:30080/api/v1/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location / {
+        proxy_pass http://localhost:30081/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+  }
+  ```
 
 ---
 
@@ -514,26 +564,13 @@ yarn check
 
 #### 🧪 Tests
 
-##### 📜 Environment Variables
-
-If you use **NGINX reverse proxies** and your dev URLs use **HTTPS**, both client and server need **test-specific URLs** for local and **CI/CD pipelines** testing.
-
-The variables that set **test mode** are:
-
-- **PY_ENV** for server
-- **NEXT_PUBLIC_ENV** for client
-
-So them are the same that also set **development** or **production** environment
-
----
-
 ##### 🔬 Test Flow
 
 Running tests directly on a Next.js app can be slow and flaky due to rebuild times.
 
 Instead:
 
-1. **Build** the client
+1. **Build** the app
 
    ```bash
    yarn build
