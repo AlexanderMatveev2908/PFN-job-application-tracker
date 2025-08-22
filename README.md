@@ -466,16 +466,6 @@ To improve stability and speed, the recommended workflow is:
 
 ## 🛠️ CI/CD
 
-The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch
-
-Got it buddy 💪 your CI/CD section is already solid, but we can make it **clearer, more professional, and smoother to read** while still showing the logic behind the pipeline. Right now it feels a bit “raw notes style” — let’s polish it into something resume/GitHub-ready ✨
-
-Here’s an improved version 👇
-
----
-
-## 🛠️ CI/CD
-
 The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch.
 
 ### 🚧 Workflow Stages
