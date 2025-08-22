@@ -46,3 +46,7 @@ class CbcHmacFormT(BaseModel):
     @field_validator("cbc_hmac_token")
     def _check_token(cls, v: str) -> str:
         return check_basic_cbc_shape_lib(v)
+
+
+class PairCbcHmacPwdFormT(PwdFormT, CbcHmacFormT):
+    pass
