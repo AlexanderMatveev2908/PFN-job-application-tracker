@@ -14,19 +14,51 @@ from ..controllers.post import (
 
 router_test = APIRouter(prefix="/test")
 
-
-router_test.get(
+router_test.add_api_route(
     "/",
-)(get_msg_ctrl)
-router_test.post("/")(post_msg_ctrl)
+    get_msg_ctrl,
+    methods=["GET"],
+)
 
-router_test.post("/form")(post_form_ctrl)
+router_test.add_api_route(
+    "/",
+    post_msg_ctrl,
+    methods=["POST"],
+)
 
-router_test.post("/tokens-health")(tokens_health_ctrl)
-router_test.post("/get-tokens-expired")(tokens_expired_ctrl)
-router_test.post("/get-err-expired")(get_err_ctrl)
-router_test.post("/get-err-invalid")(get_err_ctrl)
+router_test.add_api_route(
+    "/form",
+    post_form_ctrl,
+    methods=["POST"],
+)
 
-router_test.get("/protected", dependencies=[Depends(rate_limit_mdw(limit=5))])(
-    get_protected_data_ctrl
+router_test.add_api_route(
+    "/tokens-health",
+    tokens_health_ctrl,
+    methods=["POST"],
+)
+
+router_test.add_api_route(
+    "/get-tokens-expired",
+    tokens_expired_ctrl,
+    methods=["POST"],
+)
+
+router_test.add_api_route(
+    "/get-err-expired",
+    get_err_ctrl,
+    methods=["POST"],
+)
+
+router_test.add_api_route(
+    "/get-err-invalid",
+    get_err_ctrl,
+    methods=["POST"],
+)
+
+router_test.add_api_route(
+    "/protected",
+    get_protected_data_ctrl,
+    methods=["GET"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
