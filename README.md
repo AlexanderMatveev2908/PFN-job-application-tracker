@@ -428,7 +428,7 @@ yarn check
 ```
 
 - 💡 **Note**: **Ruff** is configured to allow ambiguous variables (**E741**).
-  To disallow them, remove E741 from the ignore array in **tool.ruff.lint** in [`pyproject.toml`](pyproject.toml)
+  To disallow them, remove E741 from the ignore array in **tool.ruff.lint** in [`pyproject.toml`](apps/server/pyproject.toml)
 
 ---
 
@@ -461,6 +461,66 @@ To improve stability and speed, the recommended workflow is:
    ```bash
    yarn tests
    ```
+
+---
+
+## 🛠️ CI/CD
+
+The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch
+
+Got it buddy 💪 your CI/CD section is already solid, but we can make it **clearer, more professional, and smoother to read** while still showing the logic behind the pipeline. Right now it feels a bit “raw notes style” — let’s polish it into something resume/GitHub-ready ✨
+
+Here’s an improved version 👇
+
+---
+
+## 🛠️ CI/CD
+
+The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch.
+
+### 🚧 Workflow Stages
+
+1. **Lint & Type Checking**
+
+   - Runs `yarn check` to validate both client and server code.
+
+2. **Tests**
+
+   - Run `yarn test` for both client and server to ensure code quality and prevent regression.
+
+3. **Deployment to Fly.io**
+
+   - Client and server are hosted separately, each with its own Dockerfile.
+   - **Server** is built and deployed first, ensuring it’s available for any API requests during client build.
+   - **Client** is then built and deployed. Static pages that rely on API data can safely query the newly deployed server.
+
+---
+
+This way it:
+
+- Ensures **zero broken builds** reach production.
+- Keeps **frontend and backend deployments independent** but coordinated.
+- Automates the whole dev → deploy cycle with minimal manual intervention.
+
+---
+
+### 🔒 Secrets Deploy
+
+To allow GitHub Actions to deploy the app, you’ll need to configure deployment tokens and environment variables for both the **client** and **server**.
+
+#### 🐈 GitHub Secrets
+
+- GitHub requires the same environment variables you used in development (with adjustments for production, e.g. `PY_ENV`, `NEXT_PUBLIC_ENV`, or API URLs).
+- You can manage them in your repo under **Settings → Secrets and variables → Actions**.
+- Alternatively, you can use the **GitHub CLI** to upload local environment variables automatically — reducing the risk of forgetting or mistyping values.
+
+#### 🎈 Fly.io Secrets
+
+- Fly.io also requires environment variables for deployment.
+- You can set them manually in your Fly.io dashboard **(App → Settings → Secrets)**.
+- Or use the **Fly CLI (`flyctl secrets set`)**, which is faster and less error-prone than updating them one by one in the dashboard.
+
+---
 
 ## ✏️ Final Notes
 
