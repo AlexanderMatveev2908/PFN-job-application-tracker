@@ -25,22 +25,22 @@
   "python.envFile": "${workspaceFolder}/.env",
   "better-comments.tags": [
     {
-      "tag": "| ",
+      "tag": "|",
       "color": "#CA8A04", // Tailwind yellow-600
       "bold": true
     },
     {
-      "tag": "? ",
+      "tag": "?",
       "color": "#2563EB", // Tailwind blue-600
       "bold": true
     },
     {
-      "tag": "> ",
+      "tag": ">",
       "color": "#16A34A", // Tailwind green-600
       "bold": true
     },
     {
-      "tag": "! ",
+      "tag": "!",
       "color": "#DC2626", // Tailwind red-600
       "bold": true
     }
