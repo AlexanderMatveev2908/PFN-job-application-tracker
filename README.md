@@ -384,6 +384,36 @@ server {
 
 ---
 
+### 🚢 Kubernetes
+
+To start a local **Kubernetes Cluster** run
+
+```bash
+kcc
+```
+
+The script present in **scripts/kind.zsh** will
+
+- **Create the cluster** using **Kind** passing the config file at repo root
+- **Apply secrets** defined in **kind-secrets.yml**
+- **Deploy the applications** using the manifests located in:
+
+  - `apps/client/kind-deploy.yml`
+  - `apps/client/kind-service.yml`
+  - `apps/server/kind-deploy.yml`
+  - `apps/server/kind-service.yml`
+
+#### 🔗 Access
+
+- **Client** → available at **[http://localhost:30081](http://localhost:30081)**
+- **Server** → available at **[http://localhost:30080](http://localhost:30080)**
+
+If you’ve set up the **Nginx reverse proxy** (see section above), it will automatically route these internal ports behind a single HTTPS entrypoint (port 443).
+
+This way, your local Kubernetes environment behaves just like your development setup — URLs stay consistent and you don’t need a separate `PY_ENV=kind` or `NEXT_PUBLIC_ENV=kind` mode.
+
+---
+
 ### ⚗️ Testing & Type Checking
 
 #### ✒️ Type Checking
