@@ -3,7 +3,7 @@ from src.decorators.err import ErrAPI
 from src.lib.hashing.idx import check_pwd
 from src.lib.validators.idx import PwdFormT
 from src.middleware.check_form import check_form_mdw
-from src.middleware.check_jwt import check_jwt_mdw
+from src.middleware.check_jwt import check_jwt_search_us_mdw
 from src.models.user import UserDcT
 
 
@@ -12,7 +12,9 @@ class ManageAccountForm(PwdFormT):
 
 
 async def manage_account_mdw(req: Request) -> UserDcT:
-    us: UserDcT = await check_jwt_mdw(req)
+    us: UserDcT = await check_jwt_search_us_mdw(
+        req,
+    )
 
     result = await check_form_mdw(ManageAccountForm, req)
 

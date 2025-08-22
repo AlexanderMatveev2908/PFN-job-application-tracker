@@ -22,9 +22,15 @@ def extract_jwt(req: Request) -> str:
     return token
 
 
-async def check_jwt_mdw(req: Request) -> UserDcT:
+def check_jwt_mdw(req: Request) -> PayloadT:
 
     decoded: PayloadT = check_jwt(extract_jwt(req))
+
+    return decoded
+
+
+async def check_jwt_search_us_mdw(req: Request) -> UserDcT:
+    decoded: PayloadT = check_jwt_mdw(req)
 
     async with db_trx() as trx:
         us = (
