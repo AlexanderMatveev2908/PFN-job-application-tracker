@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pfn-job-application-tracker-server
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: pfn-job-application-tracker-server
+  template:
+    metadata:
+      labels:
+        app: pfn-job-application-tracker-server
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: pfn-job-application-tracker-server
+      containers:
+        - name: server
+          image: alexandermatveev2908/pfn-job-application-tracker-server:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: pfn-job-application-tracker
