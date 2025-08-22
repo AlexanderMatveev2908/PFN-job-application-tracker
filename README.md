@@ -85,9 +85,7 @@ This will initialize the project and install all required packages for both clie
 
 All required environment variables are listed and validated inside:
 
-```bash
-apps/server/src/conf/env.py
-```
+[`apps/server/src/conf/env.py`](apps/server/src/conf/env.py)
 
 This file uses **Pydantic** to:
 
@@ -118,16 +116,18 @@ There’s no strict separation between client and server variables, but variable
 
 ### 📜 Scripts
 
-To streamline development, I created a set of helper scripts located in the **scripts** folder.  
+To streamline development, I created a set of helper scripts located in the [**scripts**](scripts) folder.  
 They are written in **Zsh**, so you can either copy them into your **.zshrc** file or place them wherever you normally keep custom scripts.
 
 Available scripts:
 
-- **gwd** — Get the monorepo’s root directory name in lowercase
-- **acw** — Append `client` or `server` to the monorepo name
-- **dbc** — Build the Docker image for the client, passing build variables
-- **dbs** — Build the Docker image for the server
-- **dsi** — Start a Docker container
+- [`gwd`](scripts/files.zsh) — Get the monorepo’s root directory name in lowercase
+- [`acw`](scripts/files.zsh) — Append `client` or `server` to the monorepo name
+- [`dbc`](scripts/docker.zsh) — Build the Docker image for the client, passing build variables
+- [`dbs`](scripts/docker.zsh) — Build the Docker image for the server
+- [`dsi`](scripts/docker.zsh) — Start a Docker container
+- [`kind.zsh`](scripts/kind.zsh) — Create and manage the Kind cluster
+- [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via symlink
 
 ---
 
@@ -281,7 +281,7 @@ Instead of hardcoding routes, the last line **include /etc/nginx/env/active.conf
 
 #### 🔄 Switching Between Environments
 
-The script **ngx** in **scripts/nginx** manages a **symlink** (active.conf) that points to the right environment file:
+The script [`ngx`](scripts/nginx/ngx) in **scripts/nginx** manages a **symlink** (active.conf) that points to the right environment file:
 
 - **Development** → /etc/nginx/env/dev.conf
 - **Kubernetes** → /etc/nginx/env/kind.conf
@@ -398,10 +398,10 @@ The script present in **scripts/kind.zsh** will
 - **Apply secrets** defined in **kind-secrets.yml**
 - **Deploy the applications** using the manifests located in:
 
-  - `apps/client/kind-deploy.yml`
-  - `apps/client/kind-service.yml`
-  - `apps/server/kind-deploy.yml`
-  - `apps/server/kind-service.yml`
+  - [`apps/client/kind-deploy.yml`](apps/client/kind-deploy.yml)
+  - [`apps/client/kind-service.yml`](apps/client/kind-service.yml)
+  - [`apps/server/kind-deploy.yml`](apps/server/kind-deploy.yml)
+  - [`apps/server/kind-service.yml`](apps/server/kind-service.yml)
 
 #### 🔗 Access
 
@@ -428,7 +428,7 @@ yarn check
 ```
 
 - 💡 **Note**: **Ruff** is configured to allow ambiguous variables (**E741**).
-  To disallow them, remove E741 from the ignore array in **tool.ruff.lint** in **pyproject.toml**
+  To disallow them, remove E741 from the ignore array in **tool.ruff.lint** in [`pyproject.toml`](pyproject.toml)
 
 ---
 
@@ -456,7 +456,7 @@ To improve stability and speed, the recommended workflow is:
    yarn start
    ```
 
-3. **Run tests** parallel on both sides, using the maximum number of workers available on your machine:
+3. **Run tests** in parallel for both client & server, using the maximum number of workers available on your machine:
 
    ```bash
    yarn tests
