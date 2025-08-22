@@ -9,7 +9,7 @@ from src.models.token import PayloadT
 from src.models.user import User, UserDcT
 
 
-async def check_check_jwt_mdw(req: Request) -> UserDcT:
+def extract_jwt(req: Request) -> str:
     splitted = [
         x.strip()
         for x in req.headers.get("authorization", "").split("Bearer ")
@@ -19,7 +19,12 @@ async def check_check_jwt_mdw(req: Request) -> UserDcT:
     if not (token := (splitted[0] if splitted else None)):
         raise ErrAPI(msg="ACCESS_TOKEN_NOT_PROVIDED", status=401)
 
-    decoded: PayloadT = check_jwt(token)
+    return token
+
+
+async def check_jwt_mdw(req: Request) -> UserDcT:
+
+    decoded: PayloadT = check_jwt(extract_jwt(req))
 
     async with db_trx() as trx:
         us = (

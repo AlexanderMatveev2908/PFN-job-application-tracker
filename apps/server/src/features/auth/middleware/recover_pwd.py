@@ -1,23 +1,18 @@
 from typing import TypedDict, cast
 from fastapi import Request
-from pydantic import Field, field_validator
 
 from src.conf.db import db_trx
 from src.lib.tokens.cbc_hmac import check_cbc_hmac
 from src.lib.validators.idx import (
+    CbcHmacFormT,
     PwdFormT,
-    check_basic_cbc_shape_lib,
 )
 from src.middleware.check_form import check_form_mdw
 from src.models.token import CheckTokenReturnT, TokenT
 
 
-class RecoverPwdFrom(PwdFormT):
-    cbc_hmac_token: str | None = Field(default=None, validate_default=True)
-
-    @field_validator("cbc_hmac_token")
-    def _check_token(cls, v: str) -> str:
-        return check_basic_cbc_shape_lib(v)
+class RecoverPwdFrom(PwdFormT, CbcHmacFormT):
+    pass
 
 
 class RecoverPwdMdwReturnT(TypedDict):
@@ -27,8 +22,6 @@ class RecoverPwdMdwReturnT(TypedDict):
 
 async def recover_pwd_mdw(req: Request) -> RecoverPwdMdwReturnT:
     data = await check_form_mdw(RecoverPwdFrom, req)
-
-    print(data)
 
     async with db_trx() as trx:
 

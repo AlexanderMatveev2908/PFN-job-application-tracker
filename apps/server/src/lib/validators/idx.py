@@ -7,16 +7,6 @@ class EmailForm(BaseModel):
     email: EmailStr = Field(min_length=1, max_length=254)
 
 
-def check_basic_cbc_shape_lib(v: str | None) -> str:
-    if not v:
-        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
-
-    if not REG_CBC_HMAC.fullmatch(v):
-        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
-
-    return v
-
-
 def validate_password_lib(v: str) -> str:
 
     if not REG_PWD.match(v):
@@ -38,3 +28,21 @@ class PwdFormT(BaseModel):
     def _validate_password(cls, v: str) -> str:
 
         return validate_password_lib(v)
+
+
+def check_basic_cbc_shape_lib(v: str | None) -> str:
+    if not v:
+        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
+
+    if not REG_CBC_HMAC.fullmatch(v):
+        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+
+    return v
+
+
+class CbcHmacFormT(BaseModel):
+    cbc_hmac_token: str | None = Field(default=None, validate_default=True)
+
+    @field_validator("cbc_hmac_token")
+    def _check_token(cls, v: str) -> str:
+        return check_basic_cbc_shape_lib(v)
