@@ -2,8 +2,11 @@
 
 ## 📌 About This Project
 
-The idea for this app was born while I was applying for jobs online and jotting down basic information in a simple notepad.  
-So I decided to build a proper application to consolidate the **Python tools** I've recently learned and provide a useful tool that anyone can clone and adapt to his workflow
+This app was inspired by my own job search journey — I started out tracking applications in a simple notepad, but quickly realized I needed something more structured.  
+So I built a proper application to:
+
+- Consolidate and apply the **Python tools** I’ve recently learned
+- Create a practical tool that anyone can clone and use to manage their own job applications
 
 ---
 
@@ -36,7 +39,7 @@ So I decided to build a proper application to consolidate the **Python tools** I
 - **Redis** — In-memory key-value store for caching, rate limiting, and temporary data
 - **Argon2** — Modern memory-hard password hashing algorithm, used to securely store user passwords and protect against brute-force or GPU attacks
 - **JWT** — Used as short-lived access tokens for authenticating user requests.
-- **JWE—** Used as refresh tokens, securely storing session renewal data.
+- **JWE** — Used as refresh tokens, securely storing session renewal data.
 - **CBC-HMAC tokens with HKDF-derived keys** — Special short-lived tokens, mainly for sensitive actions like account verification, password resets, or email confirmation.
 - **APScheduler** — Schedules recurring tasks
 
@@ -74,7 +77,7 @@ After cloning the repository, start by installing the dependencies:
 yarn install && yarn install_pkg
 ```
 
-This will initialize the project and install all required packages for both the client and server.
+This will initialize the project and install all required packages for both client and server.
 
 ---
 
@@ -96,15 +99,35 @@ This approach ensures that all variables needed by both client and server are de
 
 There’s no strict separation between client and server variables, but variables used by the client are easy to identify because **Next.js** requires them to start with **NEXT_PUBLIC**.
 
-You can choose between two options:
+- **💡Note**:
+  The same variables must also be present in a **kind-secrets.yml** file (not committed to git). This file is required if you want to run the app in a local **Kubernetes cluster** via **Kind**.
+  Template of file is the following:
 
-1.  Full file reuse:
-    Define all environment variables once (**server-side**), and copy the same .env file into the client folder.
-    This is the easiest and safest approach.
+  ```bash
+  apiVersion: v1
+  kind: Secret
+  metadata:
+  name: pfn-job-application-tracker
+  type: Opaque
+  stringData:
+  APP_NAME: "PFN-job-application-tracker"
+  ...rest key value pairs variables
+  ```
 
-2.  Split setup:
-    Create a minimal .env file in the client folder, containing only the **NEXT_PUBLIC** variables.
-    This reduces redundancy but requires you to manage two separate files.
+---
+
+### 📜 Scripts
+
+To streamline development, I created a set of helper scripts located in the **scripts** folder.  
+They are written in **Zsh**, so you can either copy them into your **.zshrc** file or place them wherever you normally keep custom scripts.
+
+Available scripts:
+
+- **gwd** — Get the monorepo’s root directory name in lowercase
+- **acw** — Append `client` or `server` to the monorepo name
+- **dbc** — Build the Docker image for the client, passing build variables
+- **dbs** — Build the Docker image for the server
+- **dsi** — Start a Docker container
 
 ---
 
@@ -116,431 +139,82 @@ To start a development session, run:
 yarn dev
 ```
 
-This uses **Turborepo** to run both the **Python server** and the **Next.js client** in parallel:
+This command uses **Turborepo** to run both the **Python server** and the **Next.js client** in parallel:
 
-- 🐍 **Python** runs via **Uvicorn**, with **auto-reload** on **src** changes, at http://localhost:3000
-- 🖥️ **Next.js** runs at http://localhost:3001
+- 🐍 **Python** runs with **Uvicorn**, featuring **auto-reload** on `src` changes, at [http://localhost:3000](http://localhost:3000)
+- 🖥️ **Next.js** runs at [http://localhost:3001](http://localhost:3001)
 
 ---
 
-To build the app run:
+To build the app, run:
 
 ```bash
 yarn build
 ```
 
-This uses **Turborepo** to build both the client and server in parallel:
+This triggers **Turborepo** to build both the client and server in parallel:
 
-- 🐍 Python: Generates a .tar.gz and .whl (wheel) distribution packages.
-  The wheel file is stored inside a custom **app_wheel** folder and used for **local** build.
-- 🖥️ Next.js will follow his normal flow to generate **SSR** or **CSR** pages based on top page declaration and inner fetch logic.
+- 🐍 **Python** generates both a `.tar.gz` source archive and a `.whl` (wheel) distribution package.
+  The wheel file is saved inside the custom **app_wheel** folder for **local builds**.
+- 🖥️ **Next.js** follows its standard build flow, generating **SSR** or **CSR** pages depending on page configuration and data fetching logic.
 
 ---
 
-Once the build is complete, you can run:
+Once the build is complete, you can start servers with:
 
 ```bash
 yarn start
 ```
 
-This uses **Turborepo** to start both the **Python server** and the **Next.js client** in parallel:
+This again uses **Turborepo** to launch both the **Python server** and the **Next.js client** in parallel:
 
-- 🐍 **Python** runs via **Gunicorn**, using **maximum workers available on current machine**, available at http://localhost:3000
-
-- 🖥️ **Next.js** is served at http://localhost:3001
+- 🐍 **Python** runs via **Gunicorn**, using the **maximum available workers** on your machine, at [http://localhost:3000](http://localhost:3000)
+- 🖥️ **Next.js** is served at [http://localhost:3001](http://localhost:3001)
 
 ---
 
-### 📜 Custom Scripts
+### 🐋 Docker
 
-#### ✒️ gwd
+#### 🛠️ Build
 
-It finds the **monorepo root** regardless of whether you’re inside **server** or **client**
+To build the **client** Docker image, run:
 
 ```bash
-gwd() {
-  local root_dir
-
-  root_dir=$(basename "$PWD")
-
-  if [[ "$root_dir" == "server" || "$root_dir" == "client" ]]; then
-    root_dir=$(realpath "$PWD/../..")
-  else
-    root_dir=$PWD
-  fi
-
-  local parsed=${(L)$(basename "$root_dir")}
-
-  print "$parsed"
-}
+dbc
 ```
 
 ---
 
-#### ✒️ acw
-
-It append the **workspace (client or server)** to the **root name**
+To build the **server** Docker image, run:
 
 ```bash
-acw() {
-  local root_dir
-  root_dir=$(gwd)
-
-  local workspace
-
-  if [[ $1 == '0' ]]; then
-    workspace='server'
-  elif [[ $1 == '1' ]]; then
-    workspace='client'
-  else
-    echo "invalid arg"
-    return 1
-  fi
-
-  print "$root_dir-$workspace"
-}
-```
-
-The final result will be **monorepo directory lowercase** + **client** or **server** like:
-
-```bash
-acw 0
-pfn-job-application-tracker-server
-
-acw 1
-pfn-job-application-tracker-server
+dbs
 ```
 
 ---
 
-### 🐋 Docker Setup
+#### 🐳 Start
 
-The following Docker helper scripts are designed to support **dynamic file locations**, making it easy to adjust paths as needed
+To start a container:
 
----
-
-#### 🖥️ Build Client
-
-To build the **client** Docker image, use:
+- **Server**
 
 ```bash
-dbc() {
-  local dockerfile="Dockerfile.client"
-  local context="."
-
-  if [[ ! -f "$dockerfile" ]]; then
-    dockerfile="apps/client/Dockerfile"
-    context="apps/client"
-  fi
-
-  local tag="<your Docker Hub username>/$(acw 1):latest"
-
-  local build_args=()
-  while IFS='=' read -r key value; do
-    [[ -z "$key" || "$key" == \#* ]] && continue
-
-    # trim leading and trailing spaces from key
-    key="${key#"${key%%[![:space:]]*}"}"
-    key="${key%"${key##*[![:space:]]}"}"
-
-    # strip optional surrounding quotes from value
-    value="${value%\"}"
-    value="${value#\"}"
-    value="${value%\'}"
-    value="${value#\'}"
-
-    # The client doesn’t need all env vars, but I pass them all to avoid extra filtering
-
-    build_args+=( --build-arg "${key}=${value}" )
-  done < <(grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env)
-
-  docker build \
-    --no-cache \
-    -f "$dockerfile" \
-    -t "$tag" \
-    "${build_args[@]}" \
-    "$context"
-
-  docker push "$tag"
-
-  # avoid deleting image if after firsts pull all works correctly
-  # I delete it at first to be sure Docker Hub pulls are fine
-  docker rmi -f "$tag"
-}
-
+dsi 0
 ```
 
----
-
-#### 💾 Build Server
-
-To build the **server** Docker image, use:
+- **Client**
 
 ```bash
-dbs() {
-  local dockerfile="Dockerfile.server"
-  local context="."
-
-  if [[ ! -f "$dockerfile" ]]; then
-    dockerfile="apps/server/Dockerfile"
-    context="apps/server"
-  fi
-
-  local tag="<your Docker Hub username>/$(acw 0):latest"
-
-  # server use env variables just at runtime, not as client which require them at build time
-
-  docker build \
-    --no-cache \
-    -f "$dockerfile" \
-    -t "$tag" \
-    "$context"
-
-  docker push "$tag"
-
-  # avoid deleting image if after firsts pull all works correctly
-  # I delete it at first to be sure Docker Hub pulls are fine
-  docker rmi -f "$tag"
-}
-```
-
----
-
-#### 🐳 Start Containers
-
-To start a container for either the client or the server, use the following function:
-
-```bash
-dsi() {
-  local port="${1:-1}"
-  local name
-  local env_p
-
-  if [[ "$port" == "1" ]]; then
-    name="client"
-    env_p="apps/client/.env"
-  elif [[ "$port" == "0" ]]; then
-    name="server"
-    env_p="apps/server/.env"
-  else
-    echo "❌ Unknown port '$port'. Use 1 (client) or 0 (server)"
-    return 1
-  fi
-
-  local image="<your Docker Hub username>/$(acw "$port"):latest"
-  local cname=$(acw "$port")
-
-  # remove old existing container
-  docker rm -f "$cname" &>/dev/null || true
-
-  docker run \
-    --rm \
-    --pull=always \
-    --env-file "$env_p" \
-    --name "$cname" \
-    -p 300${port}:300${port} \
-    "$image"
-
-}
-```
-
----
-
-To run both client and server containers in **parallel**:
-
-```bash
-dsi 0 & dsi 1
+dsi 1
 ```
 
 ---
 
 #### 🔗 Result
 
-- 🖥️ **Next.js** is built into a Docker image and served from a container listening on http://localhost:3001
-- 🐍 **Python** is packaged with Poetry, installs the .whl build, and runs from a container listening on http://localhost:3000/api/v1
-
----
-
-### 🛡️ Reverse Proxy (optional)
-
-As part of my local development setup, I prefer to start an `NGINX` server so the environment closely mirrors the production setup.
-
-This allows me to:
-
-- Test CORS issues directly in development
-- Simulate deployment flow more realistically
-
----
-
-💡 **Note:**
-
-- You’ll need to configure **Node.js** to trust self-signed certs.
-
-Add the following line to your `.bashrc` or `.zshrc`:
-
-```bash
-export NODE_OPTIONS="--use-system-ca"
-```
-
----
-
-For Self-signed certs I used `mkcert` and `nss`(optional for `Chrome` — required for `Firefox`).
-Setup includes:
-
-```bash
-sudo pacman -S mkcert nss && \
-mkcert -install && \
-mkcert localhost
-```
-
----
-
-#### 📜 NGINX Config Script
-
-The following is the root conf for nginx I keep at **/etc/nginx/nginx.conf**
-
-```bash
-user http;
-worker_processes auto;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    include mime.types;
-    default_type application/octet-stream;
-
-    sendfile on;
-    keepalive_timeout 60;
-    server_tokens off;
-
-    types_hash_max_size 2048;
-    types_hash_bucket_size 128;
-
-    server {
-        listen 80;
-        server_name localhost;
-
-        location / {
-            return 301 https://$host$request_uri;
-        }
-    }
-
-    include /etc/nginx/env/active.conf;
-}
-
-```
-
----
-
-The file **/etc/nginx/env/active.conf** will be determined dynamically using a **symlink** using following script:
-
-```bash
-ngx() {
-  local env="dev"
-  [[ "$1" == "k" ]] && env="kind"
-
-  local target="/etc/nginx/env/${env}.conf"
-  local active="/etc/nginx/env/active.conf"
-
-  # Switch symlink
-  sudo ln -sf "$target" "$active"
-
-  # Test config before applying
-  if sudo nginx -t; then
-    if systemctl is-active --quiet nginx; then
-      echo "♻️  Reloading nginx with $env config..."
-      sudo systemctl reload nginx
-    else
-      echo "🚀 Starting nginx with $env config..."
-      sudo systemctl start nginx
-    fi
-  else
-    echo "❌ Config error, not reloading"
-  fi
-}
-```
-
----
-
-The files dev.conf and kind.conf are structured as followed:
-
-- **dev.conf**
-
-  ```bash
-  server {
-    listen 443 ssl;
-    server_name localhost;
-
-    client_max_body_size 200M;
-
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
-
-    access_log /var/log/nginx/access.log;
-    error_log  /var/log/nginx/error.log warn;
-
-    ssl_certificate     /etc/nginx/certs/localhost.pem;
-    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
-
-    location /api/v1/ {
-        proxy_pass http://localhost:3000/api/v1/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    location / {
-        proxy_pass http://localhost:3001/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-  }
-  ```
-
-- **kind.conf**
-
-  ```bash
-  server {
-    listen 443 ssl;
-    server_name localhost;
-
-    client_max_body_size 200M;
-
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
-
-    access_log /var/log/nginx/access.log;
-    error_log  /var/log/nginx/error.log warn;
-
-    ssl_certificate     /etc/nginx/certs/localhost.pem;
-    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
-
-    location /api/v1/ {
-        proxy_pass http://localhost:30080/api/v1/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    location / {
-        proxy_pass http://localhost:30081/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-  }
-  ```
+- 🖥️ **Next.js** is packaged into a Docker image and served from a container at [http://localhost:3001](http://localhost:3001)
+- 🐍 **Python** is built with Poetry, installs the `.whl` package, and runs inside a container at [http://localhost:3000/api/v1](http://localhost:3000/api/v1)
 
 ---
 
