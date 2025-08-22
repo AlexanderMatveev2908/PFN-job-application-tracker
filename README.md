@@ -404,9 +404,15 @@ yarn check
 
 #### 🧪 Tests
 
-Running tests directly on a Next.js app can be slow and flaky due to rebuild times.
+If your development environment uses **HTTPS** (via Nginx or another proxy), you’ll need an additional set of environment variables for testing.  
+These variables point the **client** and **server** directly to their respective **HTTP endpoints**, bypassing the proxy.
 
-Instead:
+For this reason, both `PY_ENV` and `NEXT_PUBLIC_ENV` should be set to **test** when running tests.
+
+---
+
+Running tests directly on a Next.js app can be slow and flaky because of rebuild times.  
+To improve stability and speed, the recommended workflow is:
 
 1. **Build** the app
 
@@ -420,7 +426,7 @@ Instead:
    yarn start
    ```
 
-3. **Run tests** on both client & server in parallel with maximum workers available on current machine
+3. **Run tests** parallel on both sides, using the maximum number of workers available on your machine:
 
    ```bash
    yarn tests
