@@ -218,9 +218,175 @@ dsi 1
 
 ---
 
+### 🔀 Nginx Reverse Proxy
+
+To mirror the production setup, I use an **Nginx reverse proxy** that listens on port **443 (HTTPS)** and routes requests to the correct service:
+
+- In **development**:
+
+  - 🐍 Server → port **3000**
+  - 🖥️ Client → port **3001**
+
+- In **Kubernetes**:
+  - 🐍 Server → port **30080**
+  - 🖥️ Client → port **30081**
+
+This setup provides a **single HTTPS entrypoint** while internally forwarding traffic to the right service.  
+It also avoids the need for a separate `kind` mode (like `PY_ENV=kind` or `NEXT_PUBLIC_ENV=kind`) — Nginx handles all routing automatically.
+
+---
+
+#### 🚦 Root nginx.conf
+
+The main config file is:
+
+```bash
+/etc/nginx/nginx.conf
+
+user http;
+worker_processes auto;
+
+events {
+worker_connections 1024;
+}
+
+http {
+include mime.types;
+default_type application/octet-stream;
+
+    sendfile on;
+    keepalive_timeout 60;
+    server_tokens off;
+
+    types_hash_max_size 2048;
+    types_hash_bucket_size 128;
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    include /etc/nginx/env/active.conf;
+
+}
+```
+
+Instead of hardcoding routes, the last line **include /etc/nginx/env/active.conf** acts as an entrypoint for environment-specific configs.
+
+---
+
+#### 🔄 Switching Between Environments
+
+The script **ngx** in **scripts/nginx** manages a **symlink** (active.conf) that points to the right environment file:
+
+- **Development** → /etc/nginx/env/dev.conf
+- **Kubernetes** → /etc/nginx/env/kind.conf
+
+---
+
+##### 🛠️ Development Config
+
+Running
+
+```bash
+ngx
+```
+
+Activates dev.conf
+
+```bash
+server {
+    listen 443 ssl;
+    server_name localhost;
+
+    client_max_body_size 200M;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    access_log /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log warn;
+
+    ssl_certificate     /etc/nginx/certs/localhost.pem;
+    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
+
+    location /api/v1/ {
+        proxy_pass http://localhost:3000/api/v1/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location / {
+        proxy_pass http://localhost:3001/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+---
+
+##### ⚔️ Kubernetes Config
+
+Running
+
+```bash
+ngx k
+```
+
+Activates kind.conf
+
+```bash
+server {
+    listen 443 ssl;
+    server_name localhost;
+
+    client_max_body_size 200M;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    access_log /var/log/nginx/access.log;
+    error_log  /var/log/nginx/error.log warn;
+
+    ssl_certificate     /etc/nginx/certs/localhost.pem;
+    ssl_certificate_key /etc/nginx/certs/localhost-key.pem;
+
+    location /api/v1/ {
+        proxy_pass http://localhost:30080/api/v1/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location / {
+        proxy_pass http://localhost:30081/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+---
+
 ### ⚗️ Testing & Type Checking
 
-#### ✒️ Type Checking & Formatting
+#### ✒️ Type Checking
 
 - **Client**: Formatting with **ESLint** • Type checking with **TypeScript**
 - **Server**: Formatting with **Ruff** • Type checking with **Mypy**
@@ -237,8 +403,6 @@ yarn check
 ---
 
 #### 🧪 Tests
-
-##### 🔬 Test Flow
 
 Running tests directly on a Next.js app can be slow and flaky due to rebuild times.
 
