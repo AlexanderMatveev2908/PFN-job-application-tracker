@@ -4,15 +4,23 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.middleware.check_cbc_hmac import check_cbc_hmac_mdw
-from src.models.token import CheckTokenWithUsReturnT, Token, TokenT
+from src.middleware.check_cbc_hmac import (
+    check_cbc_hmac_mdw,
+    check_cbc_hmac_with_us_mdw,
+)
+from src.models.token import (
+    CheckTokenReturnT,
+    CheckTokenWithUsReturnT,
+    Token,
+    TokenT,
+)
 from src.models.user import User
 
 
 async def confirm_email_ctrl(
     _: Request,
     cbc_result: CheckTokenWithUsReturnT = Depends(
-        check_cbc_hmac_mdw(token_t=TokenT.CONF_EMAIL)
+        check_cbc_hmac_with_us_mdw(token_t=TokenT.CONF_EMAIL)
     ),
 ) -> ResAPI:
 
@@ -39,12 +47,17 @@ async def confirm_email_ctrl(
 async def forgot_pwd_ctrl(
     _: Request,
     __: CheckTokenWithUsReturnT = Depends(
-        check_cbc_hmac_mdw(token_t=TokenT.RECOVER_PWD)
+        check_cbc_hmac_with_us_mdw(token_t=TokenT.RECOVER_PWD)
     ),
 ) -> ResAPI:
 
     return ResAPI.ok_200(msg="verification successful")
 
 
-async def confirm_new_email_ctrl(req: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def confirm_new_email_ctrl(
+    req: Request,
+    result_cbc: CheckTokenReturnT = Depends(
+        check_cbc_hmac_mdw(token_t=TokenT.CHANGE_EMAIL)
+    ),
+) -> ResAPI:
+    return ResAPI.ok_200(**result_cbc)
