@@ -23,3 +23,7 @@ async def get_access_account_ctrl(
             msg="verification successful",
             cbc_hmac_token=result_cbc["client_token"],
         )
+
+
+async def change_email_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
