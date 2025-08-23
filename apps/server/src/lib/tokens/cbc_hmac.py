@@ -142,11 +142,8 @@ async def gen_cbc_hmac(
 
 
 async def check_cbc_hmac_lib(
-    token: str | None,
-    trx: AsyncSession,
-    token_t: TokenT,
-) -> CheckTokenReturnT:
-
+    trx: AsyncSession, token: str | None, token_t: TokenT
+) -> tuple[AadT, str, str, str, str]:
     if not token:
         raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
 
@@ -164,6 +161,21 @@ async def check_cbc_hmac_lib(
 
     if TokenT(aad_d["token_t"]) != token_t:
         raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
+
+    return aad_d, aad_hex, iv_hex, ct_hex, tag_hex
+
+
+async def check_cbc_hmac_with_us(
+    token: str | None,
+    trx: AsyncSession,
+    token_t: TokenT,
+) -> CheckTokenReturnT:
+
+    aad_d, aad_hex, iv_hex, ct_hex, tag_hex = await check_cbc_hmac_lib(
+        trx, token, token_t
+    )
+
+    assert isinstance(token, str)
 
     us = await get_us_by_id(trx, aad_d["user_id"])
 

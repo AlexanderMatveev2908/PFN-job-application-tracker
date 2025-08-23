@@ -4,7 +4,7 @@ from src.features.auth.middleware.register import RegisterFormT
 from src.features.test.lib.register_user import handle_user_lib
 from src.lib.db.idx import clear_old_tokens
 from src.lib.tokens.cbc_hmac import (
-    check_cbc_hmac_lib,
+    check_cbc_hmac_with_us,
     gen_cbc_hmac,
 )
 from src.lib.tokens.combo import gen_tokens_session
@@ -54,7 +54,7 @@ async def tokens_health_svc(
             )["decrypted"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_decrypted": (
-                await check_cbc_hmac_lib(
+                await check_cbc_hmac_with_us(
                     result_cbc_hmac["client_token"], trx=trx, token_t=token_t
                 )
             )["decrypted"],
