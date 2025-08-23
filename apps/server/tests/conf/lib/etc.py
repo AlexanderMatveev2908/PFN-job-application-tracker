@@ -3,6 +3,7 @@ from httpx import AsyncClient
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.constants import RegisterPayloadT, get_payload_register
+from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
 
 
@@ -81,3 +82,24 @@ async def get_tokens_lib(
         "cbc_hmac_token": res_register["data"]["cbc_hmac_token"],
         "payload": payload,
     }
+
+
+class LoginOkReturnT(TypedDict):
+    access_token: str
+
+
+async def login_ok_lib(
+    api: AsyncClient, register_payload: RegisterPayloadT
+) -> LoginOkReturnT:
+
+    res_login = await wrap_httpx(
+        api,
+        url="/auth/login",
+        data=extract_login_payload(register_payload),
+        expected_code=200,
+    )
+
+    assert REG_JWE.fullmatch(res_login["refresh_token"])
+    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
+
+    return {"access_token": res_login["data"]["access_token"]}
