@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from src.features.user.controllers.delete import delete_account_ctrl
 from src.features.user.controllers.patch import (
     change_email_ctrl,
     change_pwd_ctrl,
@@ -31,4 +32,11 @@ user_router.add_api_route(
     change_email_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(10))],
+)
+
+user_router.add_api_route(
+    "/delete-account",
+    delete_account_ctrl,
+    methods=["DELETE"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
