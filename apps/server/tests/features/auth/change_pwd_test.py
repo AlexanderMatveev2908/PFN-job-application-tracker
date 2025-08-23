@@ -27,6 +27,7 @@ async def ok_t(api: AsyncClient) -> None:
             "password": new_pwd,
         },
         expected_code=200,
+        method="PATCH",
     )
 
     assert REG_JWT.fullmatch(res_change["data"]["access_token"])
@@ -49,6 +50,7 @@ async def err_same_pwd_t(api: AsyncClient) -> None:
             "password": res_tokens["payload"]["password"],
         },
         expected_code=400,
+        method="PATCH",
     )
 
     assert (
@@ -73,6 +75,7 @@ async def err_expired_t(api: AsyncClient) -> None:
             "password": new_pwd,
         },
         expected_code=401,
+        method="PATCH",
     )
 
     assert "CBC_HMAC_EXPIRED" in res_change["data"]["msg"]
@@ -95,6 +98,7 @@ async def invalid_action_t(api: AsyncClient) -> None:
             "password": new_pwd,
         },
         expected_code=401,
+        method="PATCH",
     )
 
     assert "CBC_HMAC_WRONG_TYPE" in res_change["data"]["msg"]
