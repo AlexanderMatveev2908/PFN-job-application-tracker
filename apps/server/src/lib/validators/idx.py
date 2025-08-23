@@ -3,7 +3,7 @@ from src.constants.reg import REG_CBC_HMAC, REG_PWD
 from src.decorators.err import ErrAPI
 
 
-class EmailForm(BaseModel):
+class EmailFormT(BaseModel):
     email: EmailStr = Field(min_length=1, max_length=254)
 
 

@@ -4,13 +4,13 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.lib.hashing.idx import check_pwd
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
-from src.middleware.combo.idx import ComboCheckCbJwtCbcReturnT
+from src.middleware.combo.idx import ComboCheckJwtCbcBdReturnT
 from src.models.token import Token
 from src.models.user import User
 
 
 async def change_pwd_svc(
-    result_combo: ComboCheckCbJwtCbcReturnT,
+    result_combo: ComboCheckJwtCbcBdReturnT,
 ) -> TokensSessionsReturnT:
     async with db_trx() as trx:
         us = cast(

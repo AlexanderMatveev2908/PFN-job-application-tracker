@@ -2,12 +2,12 @@ from typing import cast
 from fastapi import Request
 from src.conf.db import db_trx
 from src.lib.db.idx import get_us_by_email
-from src.lib.validators.idx import EmailForm
+from src.lib.validators.idx import EmailFormT
 from src.middleware.check_form import check_form_mdw
 from src.models.user import User, UserDcT
 
 
-class RequireEmailForm(EmailForm):
+class RequireEmailForm(EmailFormT):
     pass
 
 

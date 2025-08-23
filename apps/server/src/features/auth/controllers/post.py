@@ -15,7 +15,7 @@ from src.lib.tokens.jwe import check_jwe
 from src.lib.tokens.jwt import gen_jwt
 from src.lib.validators.idx import PwdFormT
 from src.middleware.combo.idx import (
-    ComboCheckCbJwtCbcReturnT,
+    ComboCheckJwtCbcBdReturnT,
     combo_check_bd_jwt_bcb_hmac_mdw,
 )
 from src.models.token import CheckTokenReturnT, TokenT
@@ -51,7 +51,7 @@ async def login_ctrl(
 
 async def recover_pwd_ctrl(
     _: Request,
-    result_combo: ComboCheckCbJwtCbcReturnT = Depends(
+    result_combo: ComboCheckJwtCbcBdReturnT = Depends(
         combo_check_bd_jwt_bcb_hmac_mdw(
             model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
         )
