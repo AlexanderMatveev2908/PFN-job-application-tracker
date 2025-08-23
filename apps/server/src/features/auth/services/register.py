@@ -1,9 +1,9 @@
 from typing import TypedDict
 import uuid
-from sqlalchemy import select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
+from src.lib.db.idx import get_us_by_email
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
@@ -20,8 +20,9 @@ class RegisterSvcReturnT(TypedDict):
 async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
     async with db_trx() as trx:
 
-        stmt = select(User).where(User.email == user_data["email"])
-        existing = (await trx.execute(stmt)).scalar_one_or_none()
+        existing = await get_us_by_email(
+            trx, user_data["email"], must_exists=False
+        )
 
         if existing:
             raise ErrAPI(msg="user already exists", status=409)

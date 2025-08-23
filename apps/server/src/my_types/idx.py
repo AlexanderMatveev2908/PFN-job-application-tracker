@@ -1,8 +1,6 @@
 from typing import Literal
 
-
 ParamWindowTime = Literal["15m", "30m", "1h", "1d"]
-
 
 MAPPER_WINDOW_TIME: dict[ParamWindowTime, int] = {
     "15m": 60 * 15,

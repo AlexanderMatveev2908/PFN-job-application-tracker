@@ -21,7 +21,7 @@ ClearCookieT = Optional[list[str | dict[str, Any]]]
 class ResAPI(JSONResponse):
     def __init__(
         self,
-        status: int = 204,
+        status: int,
         data: Optional[dict[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
         cookies: CookieT = None,
@@ -35,6 +35,7 @@ class ResAPI(JSONResponse):
             status_code=status,
             content={
                 **content,
+                "msg": f"{'✅' if status in [200, 201, 204] else '💣'} {content['msg']}",  # noqa: E501
             },
             # content={
             #     **content,
@@ -57,7 +58,7 @@ class ResAPI(JSONResponse):
     @classmethod
     def ok_200(
         cls,
-        msg: str = "GET operation successful ✅",
+        msg: str = "GET operation successful 📄",
         cookies: CookieT = None,
         clear_cookies: ClearCookieT = None,
         **kwargs: Any,
@@ -72,7 +73,7 @@ class ResAPI(JSONResponse):
     @classmethod
     def ok_201(
         cls,
-        msg: str = "POST operation successful ✅",
+        msg: str = "POST operation successful ✒️",
         cookies: CookieT = None,
         clear_cookies: ClearCookieT = None,
         **kwargs: Any,

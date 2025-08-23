@@ -8,6 +8,7 @@ from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.algs.hmac import hash_db_hmac
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b, parse_id
+from src.lib.db.idx import get_us_by_id
 from src.lib.etc import calc_exp, lt_now
 from src.models.token import (
     AlgT,
@@ -19,7 +20,7 @@ from src.models.token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.user import User, UserDcT
+from src.models.user import UserDcT
 
 env_var = get_env()
 
@@ -89,14 +90,7 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
         payload = b_to_d(cast(bytes, decrypted_bytes))
 
-        us = (
-            await trx.execute(
-                select(User).where(User.id == payload["user_id"])
-            )
-        ).scalar_one_or_none()
-
-        if not us:
-            raise ErrAPI(msg="user not found", status=404)
+        us = await get_us_by_id(trx, payload["user_id"])
 
         return {
             "decrypted": payload,

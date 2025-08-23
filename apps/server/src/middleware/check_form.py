@@ -8,12 +8,17 @@ from src.decorators.err import ErrAPI
 FormT = TypeVar("FormT", bound=BaseModel)
 
 
-async def check_form_mdw(model: Type[FormT], req: Request) -> FormT:
+async def check_form_mdw(
+    model: Type[FormT], req: Request | None = None, data: dict | None = None
+) -> FormT:
 
     parsed: dict | None = None
 
     try:
-        parsed = json.loads(await req.body())
+        if isinstance(req, Request):
+            parsed = json.loads(await req.body())
+        elif isinstance(data, dict):
+            parsed = data
     except Exception:
         pass
 

@@ -4,12 +4,12 @@ from src.features.auth.middleware.register import RegisterFormT
 from src.features.test.lib.register_user import handle_user_lib
 from src.lib.db.idx import clear_old_tokens
 from src.lib.tokens.cbc_hmac import (
-    check_cbc_hmac,
+    check_cbc_hmac_lib,
     gen_cbc_hmac,
 )
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe
-from src.lib.tokens.jwt import check_jwt
+from src.lib.tokens.jwt import check_jwt_lib
 from src.models.token import GenTokenReturnT, TokenT
 
 
@@ -45,7 +45,7 @@ async def tokens_health_svc(
         return {
             **base_res,
             "new_user": us.to_d(exclude_keys=["password"]),
-            "access_token_decoded": check_jwt(
+            "access_token_decoded": check_jwt_lib(
                 access_token,
             ),
             "refresh_token_db": result_jwe["server_token"].to_d(),
@@ -54,7 +54,7 @@ async def tokens_health_svc(
             )["decrypted"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_decrypted": (
-                await check_cbc_hmac(
+                await check_cbc_hmac_lib(
                     result_cbc_hmac["client_token"], trx=trx, token_t=token_t
                 )
             )["decrypted"],

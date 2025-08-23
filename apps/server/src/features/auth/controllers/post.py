@@ -4,10 +4,6 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
-from src.features.auth.middleware.recover_pwd import (
-    RecoverPwdMdwReturnT,
-    recover_pwd_mdw,
-)
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.change_pwd import change_pwd_svc
 from src.features.auth.services.login import login_svc
@@ -17,7 +13,12 @@ from src.lib.data_structure import pick
 from src.lib.tokens.combo import TokensSessionsReturnT
 from src.lib.tokens.jwe import check_jwe
 from src.lib.tokens.jwt import gen_jwt
-from src.models.token import CheckTokenReturnT
+from src.lib.validators.idx import PwdFormT
+from src.middleware.combo.idx import (
+    ComboCheckCbJwtCbcReturnT,
+    combo_check_bd_jwt_bcb_hmac_mdw,
+)
+from src.models.token import CheckTokenReturnT, TokenT
 
 
 async def register_ctrl(
@@ -50,10 +51,14 @@ async def login_ctrl(
 
 async def recover_pwd_ctrl(
     _: Request,
-    data_recover_pwd: RecoverPwdMdwReturnT = Depends(recover_pwd_mdw),
+    result_combo: ComboCheckCbJwtCbcReturnT = Depends(
+        combo_check_bd_jwt_bcb_hmac_mdw(
+            model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
+        )
+    ),
 ) -> ResAPI:
 
-    access_token, refresh_result = await change_pwd_svc(data_recover_pwd)
+    access_token, refresh_result = await change_pwd_svc(result_combo)
 
     return ResAPI.ok_200(
         msg="password updated",

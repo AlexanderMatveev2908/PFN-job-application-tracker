@@ -18,6 +18,7 @@ from src.lib.data_structure import (
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
+from src.lib.db.idx import get_us_by_id
 from src.lib.etc import calc_exp, lt_now
 from src.lib.serialize_data import serialize
 from src.models.token import (
@@ -31,7 +32,7 @@ from src.models.token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.user import User, UserDcT
+from src.models.user import UserDcT
 
 master_key = h_to_b(get_env().master_key)
 
@@ -140,11 +141,10 @@ async def gen_cbc_hmac(
     }
 
 
-async def check_cbc_hmac(
+async def check_cbc_hmac_lib(
     token: str,
     trx: AsyncSession,
     token_t: TokenT,
-    delete_expired: bool = False,
 ) -> CheckTokenReturnT:
 
     if not REG_CBC_HMAC.fullmatch(token):
@@ -158,12 +158,7 @@ async def check_cbc_hmac(
         print(aad_d["token_t"])
         raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
 
-    us = (
-        await trx.execute(select(User).where(User.id == aad_d["user_id"]))
-    ).scalar_one_or_none()
-
-    if not us:
-        raise ErrAPI(msg="user not found", status=404)
+    us = await get_us_by_id(trx, aad_d["user_id"])
 
     stm = select(Token).where(
         (Token.id == uuid.UUID(aad_d["token_id"]))
@@ -182,9 +177,8 @@ async def check_cbc_hmac(
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
 
     if lt_now(existing.exp):
-        if delete_expired:
-            await trx.delete(existing)
-            await trx.commit()
+        await trx.delete(existing)
+        await trx.commit()
         raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     info_b: bytes = d_to_b(
