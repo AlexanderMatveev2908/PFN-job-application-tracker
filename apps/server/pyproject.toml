@@ -91,3 +91,4 @@ python_functions = ["*_t", "test_*"]
 python_classes = ["*TST", "Test*"]
 addopts = "-v --no-header --json-report --json-report-file=test-results/reports.json"
 asyncio_mode = "strict"
+pythonpath = [".", "apps/server"]

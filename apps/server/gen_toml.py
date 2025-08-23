@@ -103,6 +103,7 @@ ini["addopts"] = (
     "-v --no-header --json-report --json-report-file=test-results/reports.json"
 )
 ini["asyncio_mode"] = ini.get("asyncio_mode", "strict")
+ini["pythonpath"] = ini.get("pythonpath", [".", "apps/server"])
 
 conf_p.write_text(dumps(doc))
 print("✅ updated pyproject.toml")
