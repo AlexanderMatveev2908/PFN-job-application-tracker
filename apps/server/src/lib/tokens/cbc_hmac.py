@@ -142,10 +142,13 @@ async def gen_cbc_hmac(
 
 
 async def check_cbc_hmac_lib(
-    token: str,
+    token: str | None,
     trx: AsyncSession,
     token_t: TokenT,
 ) -> CheckTokenReturnT:
+
+    if not token:
+        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
 
     if not REG_CBC_HMAC.fullmatch(token):
         raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)

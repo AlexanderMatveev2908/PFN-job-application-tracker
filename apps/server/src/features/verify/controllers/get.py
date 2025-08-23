@@ -44,3 +44,7 @@ async def forgot_pwd_ctrl(
 ) -> ResAPI:
 
     return ResAPI.ok_200(msg="verification successful")
+
+
+async def confirm_new_email_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()

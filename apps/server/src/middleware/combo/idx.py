@@ -39,9 +39,6 @@ def combo_check_bd_jwt_bcb_hmac_mdw(
 
         token: str | None = bd.get("cbc_hmac_token")
 
-        if not token:
-            raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
-
         async with db_trx() as trx:
             result_cbc_hmac = await check_cbc_hmac_lib(
                 token=token, trx=trx, token_t=token_t
