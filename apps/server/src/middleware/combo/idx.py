@@ -20,7 +20,6 @@ class ComboCheckJwtCbcReturnT(TypedDict):
 
 class ComboCheckJwtCbcBodyReturnT(ComboCheckJwtCbcReturnT):
     body: dict[str, Any]
-    cbc_hmac_result: CheckTokenWithUsReturnT
 
 
 ComboCheckJwtCbcReturnAlsT = (
