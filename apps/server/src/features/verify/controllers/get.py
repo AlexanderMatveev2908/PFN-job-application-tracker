@@ -4,7 +4,9 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
+from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
     check_cbc_hmac_with_us_mdw,
 )
@@ -67,4 +69,15 @@ async def confirm_new_email_ctrl(
 
         us.toggle_mails()
 
-        return ResAPI.ok_200(msg="email updated successfully")
+        access_token, result_jwe = await gen_tokens_session(
+            trx=trx,
+            user_id=result_cbc["user_d"]["id"],
+        )
+
+        return ResAPI.ok_200(
+            msg="email updated successfully",
+            access_token=access_token,
+            cookies=[
+                gen_refresh_cookie(refresh_token=result_jwe["client_token"])
+            ],
+        )
