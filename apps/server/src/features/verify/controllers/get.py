@@ -4,12 +4,11 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.lib.db.idx import get_us_by_id
 from src.middleware.check_cbc_hmac import (
-    check_cbc_hmac_mdw,
     check_cbc_hmac_with_us_mdw,
 )
 from src.models.token import (
-    CheckTokenReturnT,
     CheckTokenWithUsReturnT,
     Token,
     TokenT,
@@ -55,9 +54,17 @@ async def forgot_pwd_ctrl(
 
 
 async def confirm_new_email_ctrl(
-    req: Request,
-    result_cbc: CheckTokenReturnT = Depends(
-        check_cbc_hmac_mdw(token_t=TokenT.CHANGE_EMAIL)
+    _: Request,
+    result_cbc: CheckTokenWithUsReturnT = Depends(
+        check_cbc_hmac_with_us_mdw(token_t=TokenT.CHANGE_EMAIL)
     ),
 ) -> ResAPI:
-    return ResAPI.ok_200(**result_cbc)
+
+    async with db_trx() as trx:
+        us = cast(
+            User, await get_us_by_id(trx=trx, us_id=result_cbc["user_d"]["id"])
+        )
+
+        us.toggle_mails()
+
+        return ResAPI.ok_200(msg="email updated successfully")
