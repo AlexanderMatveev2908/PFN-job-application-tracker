@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.lib.tokens.jwt import check_jwt
+from src.lib.tokens.jwt import check_jwt_lib
 from src.models.token import PayloadT
 from src.models.user import User, UserDcT
 
@@ -24,7 +24,7 @@ def extract_jwt(req: Request) -> str:
 
 def check_jwt_mdw(req: Request) -> PayloadT:
 
-    decoded: PayloadT = check_jwt(extract_jwt(req))
+    decoded: PayloadT = check_jwt_lib(extract_jwt(req))
 
     return decoded
 

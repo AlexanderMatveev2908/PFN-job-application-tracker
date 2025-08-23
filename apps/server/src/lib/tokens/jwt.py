@@ -23,7 +23,7 @@ def gen_jwt(user_id: str | uuid.UUID, reverse: bool = False) -> str:
     return token
 
 
-def check_jwt(token: str, dirty: bool = False) -> PayloadT:
+def check_jwt_lib(token: str, dirty: bool = False) -> PayloadT:
     try:
         decoded: PayloadT = jwt.decode(
             token + ("👻 some random text for fun" if dirty else ""),

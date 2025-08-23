@@ -9,7 +9,7 @@ from src.lib.tokens.cbc_hmac import (
 )
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe
-from src.lib.tokens.jwt import check_jwt
+from src.lib.tokens.jwt import check_jwt_lib
 from src.models.token import GenTokenReturnT, TokenT
 
 
@@ -45,7 +45,7 @@ async def tokens_health_svc(
         return {
             **base_res,
             "new_user": us.to_d(exclude_keys=["password"]),
-            "access_token_decoded": check_jwt(
+            "access_token_decoded": check_jwt_lib(
                 access_token,
             ),
             "refresh_token_db": result_jwe["server_token"].to_d(),
