@@ -27,13 +27,16 @@ async def get_us_by_id(trx: AsyncSession, us_id: str) -> User:
     return us
 
 
-async def get_us_by_email(trx: AsyncSession, email: str) -> User:
+async def get_us_by_email(
+    trx: AsyncSession, email: str, must_exists: bool = True
+) -> User | None:
     stmt = select(User).from_statement(
         text("SELECT * FROM users WHERE email = :email")
     )
     us = (await trx.execute(stmt, {"email": email})).scalar_one_or_none()
 
-    if not us:
-        raise ErrAPI(msg="user not found", status=404)
+    if must_exists:
+        if not us:
+            raise ErrAPI(msg="user not found", status=404)
 
     return us
