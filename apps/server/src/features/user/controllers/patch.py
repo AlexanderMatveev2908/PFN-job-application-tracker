@@ -39,4 +39,4 @@ async def change_pwd_ctrl(
 
         await cast(User, us).set_pwd(plain=new_pwd)
 
-        return ResAPI.ok_200()
+        return ResAPI.ok_200(msg="password updated")
