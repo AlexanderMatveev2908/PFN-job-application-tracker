@@ -12,7 +12,7 @@ from src.models.user import UserDcT
 def extract_jwt(req: Request) -> str:
     splitted = [
         x.strip()
-        for x in req.headers.get("authorization", "").split("Bearer ")
+        for x in req.headers.get("authorization", "").split("Bearer")
         if x.strip()
     ]
 

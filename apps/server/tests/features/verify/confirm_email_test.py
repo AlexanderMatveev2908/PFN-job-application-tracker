@@ -16,7 +16,7 @@ async def ok_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -30,7 +30,7 @@ async def err_already_verified_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -41,7 +41,9 @@ async def err_already_verified_t(api: AsyncClient) -> None:
         existing_payload=res_register["payload"],
     )
 
-    aad_d = b_to_d(h_to_b((res_tokens["cbc_hmac_token"]).split(".")[0]))
+    aad_d = b_to_d(
+        h_to_b((res_tokens["cbc_hmac_token"]).split(".")[0]),
+    )
     assert TokenT(aad_d["token_t"]) == TokenT.CONF_EMAIL
 
     assert aad_d["user_id"] == res_conf["data"]["updated_user"]["id"]

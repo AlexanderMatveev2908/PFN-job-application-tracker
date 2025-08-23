@@ -61,10 +61,16 @@ def d_to_b(obj: dict[str, Any]) -> bytes:
     )
 
 
-def b_to_d(b: bytes) -> dict:
-    return json.loads(
-        b.decode("utf-8"),
-    )
+def b_to_d(
+    b: bytes, err_msg: str = "wrong data format", err_status: int = 422
+) -> dict:
+    try:
+        return json.loads(
+            b.decode("utf-8"),
+        )
+
+    except Exception:
+        raise ErrAPI(msg=err_msg, status=err_status)
 
 
 def parse_id(id: str | uuid.UUID) -> str:
