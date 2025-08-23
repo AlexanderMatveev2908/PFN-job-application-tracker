@@ -8,7 +8,7 @@ from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,
 )
 from src.lib.tokens.combo import gen_tokens_session
-from src.lib.tokens.jwe import check_jwe
+from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import check_jwt_lib
 from src.models.token import GenTokenReturnT, TokenT
 
@@ -50,7 +50,7 @@ async def tokens_health_svc(
             ),
             "refresh_token_db": result_jwe["server_token"].to_d(),
             "refresh_token_decrypted": (
-                await check_jwe(result_jwe["client_token"], trx)
+                await check_jwe_with_us(result_jwe["client_token"], trx)
             )["decrypted"],
             "cbc_hmac_db": result_cbc_hmac["server_token"].to_d(),
             "cbc_hmac_decrypted": (

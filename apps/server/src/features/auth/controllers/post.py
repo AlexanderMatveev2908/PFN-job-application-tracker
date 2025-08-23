@@ -11,14 +11,14 @@ from src.features.auth.services.register import register_user_svc
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import pick
 from src.lib.tokens.combo import TokensSessionsReturnT
-from src.lib.tokens.jwe import check_jwe
+from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
 from src.lib.validators.idx import PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBdReturnT,
     combo_check_bd_jwt_bcb_hmac_mdw,
 )
-from src.models.token import CheckTokenReturnT, TokenT
+from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 
 async def register_ctrl(
@@ -75,7 +75,7 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
 
     async with db_trx() as trx:
         try:
-            result_jwe: CheckTokenReturnT = await check_jwe(
+            result_jwe: CheckTokenWithUsReturnT = await check_jwe_with_us(
                 token=refresh, trx=trx
             )
             access_token = gen_jwt(user_id=result_jwe["user_d"]["id"])

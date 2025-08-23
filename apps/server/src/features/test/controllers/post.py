@@ -15,7 +15,7 @@ from src.lib.etc import parse_bd
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
 from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
-from src.lib.tokens.jwe import check_jwe
+from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import check_jwt_lib
 
 
@@ -81,7 +81,7 @@ async def get_err_ctrl(req: Request) -> ResAPI:
                 payload = check_jwt_lib(token)
             case "JWE":
                 payload = (
-                    await check_jwe(
+                    await check_jwe_with_us(
                         token=token,
                         trx=trx,
                     )

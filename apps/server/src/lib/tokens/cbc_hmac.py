@@ -24,6 +24,7 @@ from src.lib.serialize_data import serialize
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
+    CheckTokenWithUsReturnT,
     GenTokenReturnT,
     PayloadT,
     PayloadTokenT,
@@ -142,14 +143,9 @@ async def gen_cbc_hmac(
     }
 
 
-class CheckCbcHmacReturnT(TypedDict):
-    token_d: TokenDct
-    decrypted: PayloadT
-
-
 async def check_cbc_hmac_lib(
     trx: AsyncSession, token: str | None, token_t: TokenT
-) -> CheckCbcHmacReturnT:
+) -> CheckTokenReturnT:
     if not token:
         raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
 
@@ -223,7 +219,7 @@ async def check_cbc_hmac_with_us(
     token: str | None,
     trx: AsyncSession,
     token_t: TokenT,
-) -> CheckTokenReturnT:
+) -> CheckTokenWithUsReturnT:
 
     result_cbc = await check_cbc_hmac_lib(
         trx=trx, token=token, token_t=token_t
