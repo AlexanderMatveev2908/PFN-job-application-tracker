@@ -45,7 +45,7 @@ async def change_pwd_ctrl(
 
 
 async def change_email_ctrl(
-    req: Request,
+    _: Request,
     combo_result: ComboCheckJwtCbcBdReturnT = Depends(
         combo_check_bd_jwt_bcb_hmac_mdw(
             check_jwt=True, token_t=TokenT.MANAGE_ACC, model=EmailFormT
