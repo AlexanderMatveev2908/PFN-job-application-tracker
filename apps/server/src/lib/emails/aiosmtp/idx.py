@@ -10,14 +10,17 @@ env_var = get_env()
 
 
 async def send_email(
-    user: User | UserDcT, subj: str, callback_url: str
+    user: User | UserDcT,
+    subj: str,
+    callback_url: str,
+    email_to: str | None = None,
 ) -> None:
 
     us_shape = user.to_d() if isinstance(user, User) else user
 
     msg = EmailMessage()
     msg["From"] = env_var.smpt_from
-    msg["To"] = us_shape["email"]
+    msg["To"] = email_to or us_shape["email"]
     msg["Subject"] = subj
     msg.set_content(
         f"Hi {us_shape['first_name']}\n\n"

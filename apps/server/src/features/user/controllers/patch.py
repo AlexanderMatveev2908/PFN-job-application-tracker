@@ -3,6 +3,8 @@ from fastapi import Depends, Request
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
+from src.features.require_email.services.combo import gen_token_send_email_svc
+from src.lib.db.idx import get_us_by_email, get_us_by_id
 from src.lib.hashing.idx import check_pwd
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
@@ -51,4 +53,33 @@ async def change_email_ctrl(
     ),
 ) -> ResAPI:
 
-    return ResAPI.ok_200(**combo_result)
+    async with db_trx() as trx:
+        if (
+            combo_result["body"]["email"]
+            == combo_result["cbc_hmac_result"]["user_d"]["email"]
+        ):
+            return ResAPI.err_400(msg="new email can not be same as old one")
+
+        existing = await get_us_by_email(
+            must_exists=False, trx=trx, email=combo_result["body"]["email"]
+        )
+
+        if existing:
+            return ResAPI.err_409(msg="a user with this email already exists")
+
+        us = cast(
+            User,
+            await get_us_by_id(
+                trx, combo_result["cbc_hmac_result"]["user_d"]["id"]
+            ),
+        )
+        us.tmp_email = combo_result["body"]["email"]
+
+        await gen_token_send_email_svc(
+            trx=trx,
+            us_d=combo_result["cbc_hmac_result"]["user_d"],
+            token_t=TokenT.CHANGE_EMAIL,
+            email_to=combo_result["body"]["email"],
+        )
+
+        return ResAPI.ok_200(msg="email sent to new address")
