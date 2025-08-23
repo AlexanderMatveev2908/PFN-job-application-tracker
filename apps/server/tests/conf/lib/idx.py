@@ -14,7 +14,7 @@ async def wrap_httpx(
     api: AsyncClient,
     *,
     url: str,
-    method: Literal["POST", "GET"] = "POST",
+    method: Literal["POST", "GET", "PUT", "PATCH", "DELETE"] = "POST",
     data: Any | None = None,
     access_token: str = "",
     expected_code: int = 200,
@@ -22,10 +22,14 @@ async def wrap_httpx(
 
     h = {"authorization": f"Bearer {access_token}"}
 
-    if method == "POST":
-        res = await api.post(url, json=data, headers=h)
-    elif method == "GET":
-        res = await api.get(url, headers=h)
+    fn = getattr(api, method.lower())
+    kwargs = {
+        "url": url,
+        "headers": h,
+    }
+    if method in ["POST", "PUT", "PATCH"]:
+        kwargs["json"] = data
+    res = await fn(**kwargs)
 
     parsed = parse_res(res)
     refresh = (

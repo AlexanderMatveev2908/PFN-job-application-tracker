@@ -16,7 +16,7 @@ async def ok_t(api: AsyncClient) -> None:
         api,
         url=URL,
         data={"password": res_register["payload"]["password"]},
-        access_token=res_register["data_register"]["access_token"],
+        access_token=res_register["access_token"],
         expected_code=200,
     )
 
@@ -31,7 +31,7 @@ async def err_invalid_t(api: AsyncClient) -> None:
         api,
         url=URL,
         data={"password": res_register["payload"]["password"][4:]},
-        access_token=res_register["data_register"]["access_token"],
+        access_token=res_register["access_token"],
         expected_code=401,
     )
 

@@ -6,19 +6,14 @@ from tests.conf.constants import RegisterPayloadT, get_payload_register
 from tests.conf.lib.idx import wrap_httpx
 
 
-class RegisterReturnT(TypedDict):
+class SuccessReqTokensReturnT(TypedDict):
     access_token: str
     refresh_token: str
     cbc_hmac_token: str
-    msg: str
-
-
-class RegisterOkReturnT(TypedDict):
     payload: RegisterPayloadT
-    data_register: RegisterReturnT
 
 
-async def register_ok_lib(api) -> RegisterOkReturnT:
+async def register_ok_lib(api) -> SuccessReqTokensReturnT:
     payload = get_payload_register()
 
     res_register = await wrap_httpx(
@@ -33,17 +28,9 @@ async def register_ok_lib(api) -> RegisterOkReturnT:
     assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
     assert "new_user" in res_register["data"]
 
-    return {
-        "payload": payload,
-        "data_register": cast(RegisterReturnT, res_register["data"]),
-    }
-
-
-class GetTokensLibReturnT(TypedDict):
-    access_token: str
-    refresh_token: str
-    cbc_hmac_token: str
-    payload: RegisterPayloadT
+    return cast(
+        SuccessReqTokensReturnT, {"payload": payload, **res_register["data"]}
+    )
 
 
 async def get_tokens_lib(
@@ -51,7 +38,7 @@ async def get_tokens_lib(
     reverse: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
-) -> GetTokensLibReturnT:
+) -> SuccessReqTokensReturnT:
     payload = existing_payload or get_payload_register()
 
     res_register = await wrap_httpx(

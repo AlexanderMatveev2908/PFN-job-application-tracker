@@ -16,7 +16,7 @@ async def ok_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
@@ -30,7 +30,7 @@ async def err_already_verified_t(api: AsyncClient) -> None:
     res_conf = await wrap_httpx(
         api,
         method="GET",
-        url=f'{URL}{res_register["data_register"]["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_register["cbc_hmac_token"]}',  # noqa: E501
         expected_code=200,
     )
 
