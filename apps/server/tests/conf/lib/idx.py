@@ -20,15 +20,18 @@ async def wrap_httpx(
     expected_code: int = 200,
 ) -> WrapReturnT:
 
-    if method == "POST":
-        res = await api.post(
-            url, json=data, headers={"authorization": f"Bearer {access_token}"}
-        )
-    elif method == "GET":
-        res = await api.get(
-            url, headers={"authorization": f"Bearer {access_token}"}
-        )
+    methods = {
+        "GET": api.get,
+        "POST": api.post,
+        "PUT": api.put,
+        "DELETE": api.delete,
+    }
 
+    res = await methods[method](
+        url,
+        json=data if method in {"POST", "PUT"} else None,
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
     parsed = parse_res(res)
     refresh = (
         res.cookies.get(
