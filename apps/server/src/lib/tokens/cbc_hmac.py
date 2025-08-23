@@ -152,7 +152,12 @@ async def check_cbc_hmac_lib(
 
     aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
-    aad_d: AadT = cast(AadT, b_to_d(h_to_b(aad_hex)))
+    aad_d: AadT = cast(
+        AadT,
+        b_to_d(
+            h_to_b(aad_hex), err_status=401, err_msg="CBC_HMAC_INVALID_FORMAT"
+        ),
+    )
 
     if TokenT(aad_d["token_t"]) != token_t:
         print(aad_d["token_t"])

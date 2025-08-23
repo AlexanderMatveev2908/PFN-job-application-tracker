@@ -88,7 +88,11 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
             jwe.decrypt, token_b, h_to_b(env_var.jwe_private)
         )
 
-        payload = b_to_d(cast(bytes, decrypted_bytes))
+        payload = b_to_d(
+            cast(bytes, decrypted_bytes),
+            err_status=401,
+            err_msg="REFRESH_TOKEN_INVALID_FORMAT",
+        )
 
         us = await get_us_by_id(trx, payload["user_id"])
 
