@@ -8,11 +8,11 @@ from pydantic import (
 
 from src.constants.reg import REG_NAME
 from src.decorators.err import ErrAPI
-from src.lib.validators.idx import EmailForm, PwdFormT
+from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.check_form import check_form_mdw
 
 
-class RegisterForm(EmailForm, PwdFormT):
+class RegisterForm(EmailFormT, PwdFormT):
     first_name: str = Field(
         min_length=1, max_length=50, pattern=REG_NAME.pattern
     )

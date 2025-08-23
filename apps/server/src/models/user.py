@@ -39,6 +39,10 @@ class User(RootTable):
     email: Mapped[str] = mapped_column(
         String(254), nullable=False, unique=True, index=True
     )
+    tmp_email: Mapped[str | None] = mapped_column(
+        String(254),
+        nullable=True,
+    )
     password: Mapped[str] = mapped_column(
         String(200),
         nullable=False,

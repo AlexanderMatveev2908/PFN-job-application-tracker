@@ -58,7 +58,7 @@ class ResAPI(JSONResponse):
     @classmethod
     def ok_200(
         cls,
-        msg: str = "GET operation successful 📄",
+        msg: str = "operation successful 📄",
         cookies: CookieT = None,
         clear_cookies: ClearCookieT = None,
         **kwargs: Any,

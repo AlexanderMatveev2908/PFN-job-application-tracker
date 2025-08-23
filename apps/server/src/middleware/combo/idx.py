@@ -14,16 +14,16 @@ from src.models.token import CheckTokenReturnT, TokenT
 FormT = TypeVar("FormT", bound=BaseModel)
 
 
-class ComboCheckCbJwtCbcReturnT(TypedDict):
+class ComboCheckJwtCbcBdReturnT(TypedDict):
     body: dict[str, Any]
     cbc_hmac_result: CheckTokenReturnT
 
 
 def combo_check_bd_jwt_bcb_hmac_mdw(
     model: Type[FormT], token_t: TokenT, check_jwt: bool
-) -> Callable[[Request], Awaitable[ComboCheckCbJwtCbcReturnT]]:
+) -> Callable[[Request], Awaitable[ComboCheckJwtCbcBdReturnT]]:
 
-    async def _check(req: Request) -> ComboCheckCbJwtCbcReturnT:
+    async def _check(req: Request) -> ComboCheckJwtCbcBdReturnT:
         if check_jwt:
             check_jwt_mdw(req)
 

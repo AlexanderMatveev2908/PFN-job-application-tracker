@@ -40,11 +40,8 @@ class LoggerJSON(BaseHTTPMiddleware):
             if "application/json" in request.headers.get("content-type", ""):
                 parsed = json.loads(body)
 
-        except Exception as err:
-            clg(
-                err,
-                ttl="err logger json parsing",
-            )
+        except Exception:
+            ...
             # parsed = {"raw": body.decode("utf-8", errors="ignore")}
 
         parsed_q = (getattr(request.state, "parsed_q", None),)
