@@ -14,7 +14,7 @@ from src.lib.data_structure import dest_d, pick
 from src.lib.etc import parse_bd
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
-from src.lib.tokens.cbc_hmac import check_cbc_hmac
+from src.lib.tokens.cbc_hmac import check_cbc_hmac_lib
 from src.lib.tokens.jwe import check_jwe
 from src.lib.tokens.jwt import check_jwt
 
@@ -88,7 +88,7 @@ async def get_err_ctrl(req: Request) -> ResAPI:
                 )["decrypted"]
             case "CBC_HMAC":
                 payload = (
-                    await check_cbc_hmac(
+                    await check_cbc_hmac_lib(
                         token=token, trx=trx, token_t=get_query_token_t(req)
                     )
                 )["decrypted"]

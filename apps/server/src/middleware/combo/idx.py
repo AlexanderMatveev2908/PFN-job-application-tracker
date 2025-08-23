@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.lib.tokens.cbc_hmac import check_cbc_hmac
+from src.lib.tokens.cbc_hmac import check_cbc_hmac_lib
 from src.middleware.check_form import check_form_mdw
 from src.middleware.check_jwt import check_jwt_mdw
 from src.models.token import CheckTokenReturnT, TokenT
@@ -35,7 +35,7 @@ def combo_check_bd_jwt_bcb_hmac_mdw(
             ...
 
         if not bd:
-            raise ErrAPI(msg="Invalid data format", status=422)
+            raise ErrAPI(msg="wrong data format", status=422)
 
         token: str | None = bd.get("cbc_hmac_token")
 
@@ -43,7 +43,7 @@ def combo_check_bd_jwt_bcb_hmac_mdw(
             raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
 
         async with db_trx() as trx:
-            result_cbc_hmac = await check_cbc_hmac(
+            result_cbc_hmac = await check_cbc_hmac_lib(
                 token=token, trx=trx, token_t=token_t
             )
 

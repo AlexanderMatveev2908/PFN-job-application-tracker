@@ -140,7 +140,7 @@ async def gen_cbc_hmac(
     }
 
 
-async def check_cbc_hmac(
+async def check_cbc_hmac_lib(
     token: str,
     trx: AsyncSession,
     token_t: TokenT,
