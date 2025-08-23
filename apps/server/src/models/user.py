@@ -1,6 +1,6 @@
 import asyncio
 import concurrent.futures
-from typing import TYPE_CHECKING, Self, TypedDict
+from typing import TYPE_CHECKING, Self, TypedDict, cast
 from argon2 import PasswordHasher
 import concurrent
 from sqlalchemy import Boolean, String
@@ -65,6 +65,10 @@ class User(RootTable):
             raise ErrAPI(msg="User must accepts terms", status=422)
 
         return v
+
+    def toggle_mails(self) -> None:
+        self.email = cast(str, self.tmp_email)
+        self.tmp_email = None
 
     async def set_pwd(self, plain: str) -> None:
         loop = asyncio.get_running_loop()

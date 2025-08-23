@@ -13,6 +13,7 @@ from src.lib.etc import calc_exp, lt_now
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
+    CheckTokenWithUsReturnT,
     GenTokenReturnT,
     Token,
     TokenDct,
@@ -68,8 +69,7 @@ async def gen_jwe(
     return {"client_token": b_to_h(enc_bytes), "server_token": refresh_db}
 
 
-async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
-
+async def check_jwe_lib(trx: AsyncSession, token: str) -> CheckTokenReturnT:
     try:
         token_b = h_to_b(token)
 
@@ -94,12 +94,9 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
             err_msg="REFRESH_TOKEN_INVALID_FORMAT",
         )
 
-        us = await get_us_by_id(trx, payload["user_id"])
-
         return {
             "decrypted": payload,
             "token_d": cast(TokenDct, existing.to_d()),
-            "user_d": cast(UserDcT, us.to_d()),
         }
 
     except ErrAPI:
@@ -107,3 +104,17 @@ async def check_jwe(token: str, trx: AsyncSession) -> CheckTokenReturnT:
 
     except Exception:
         raise ErrAPI(msg="REFRESH_TOKEN_INVALID", status=401)
+
+
+async def check_jwe_with_us(
+    token: str, trx: AsyncSession
+) -> CheckTokenWithUsReturnT:
+
+    result_jwe = await check_jwe_lib(trx=trx, token=token)
+
+    us = await get_us_by_id(trx, result_jwe["decrypted"]["user_id"])
+
+    return {
+        **result_jwe,
+        "user_d": cast(UserDcT, us.to_d()),
+    }

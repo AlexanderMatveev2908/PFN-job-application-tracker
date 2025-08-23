@@ -1,0 +1,28 @@
+from fastapi import Depends, Request
+from src.decorators.res import ResAPI
+from src.features.auth.services.change_pwd import change_pwd_svc
+from src.lib.cookies import gen_refresh_cookie
+from src.lib.validators.idx import PwdFormT
+from src.middleware.combo.idx import (
+    ComboCheckJwtCbcBdReturnT,
+    combo_check_bd_jwt_bcb_hmac_mdw,
+)
+from src.models.token import TokenT
+
+
+async def recover_pwd_ctrl(
+    _: Request,
+    result_combo: ComboCheckJwtCbcBdReturnT = Depends(
+        combo_check_bd_jwt_bcb_hmac_mdw(
+            model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
+        )
+    ),
+) -> ResAPI:
+
+    access_token, refresh_result = await change_pwd_svc(result_combo)
+
+    return ResAPI.ok_200(
+        msg="password updated",
+        access_token=access_token,
+        cookies=[gen_refresh_cookie(refresh_result["client_token"])],
+    )

@@ -83,4 +83,9 @@ class GenTokenReturnT(TypedDict):
 class CheckTokenReturnT(TypedDict):
     token_d: TokenDct
     decrypted: PayloadT
+
+
+class CheckTokenWithUsReturnT(TypedDict):
+    token_d: TokenDct
+    decrypted: PayloadT
     user_d: UserDcT

@@ -24,7 +24,9 @@ from src.lib.serialize_data import serialize
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,
+    CheckTokenWithUsReturnT,
     GenTokenReturnT,
+    PayloadT,
     PayloadTokenT,
     Token,
     TokenDct,
@@ -142,10 +144,10 @@ async def gen_cbc_hmac(
 
 
 async def check_cbc_hmac_lib(
-    token: str,
-    trx: AsyncSession,
-    token_t: TokenT,
+    trx: AsyncSession, token: str | None, token_t: TokenT
 ) -> CheckTokenReturnT:
+    if not token:
+        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
 
     if not REG_CBC_HMAC.fullmatch(token):
         raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
@@ -160,31 +162,18 @@ async def check_cbc_hmac_lib(
     )
 
     if TokenT(aad_d["token_t"]) != token_t:
-        print(aad_d["token_t"])
         raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
 
-    us = await get_us_by_id(trx, aad_d["user_id"])
-
-    stm = select(Token).where(
-        (Token.id == uuid.UUID(aad_d["token_id"]))
-        & (Token.user_id == uuid.UUID(aad_d["user_id"]))
-        & (Token.deleted_at == null())
-        & (Token.token_t == token_t)
-    )
-
-    existing = (await trx.execute(stm)).scalar_one_or_none()
-
+    existing = (
+        await trx.execute(
+            select(Token).where(
+                (Token.id == uuid.UUID(aad_d["token_id"]))
+                & (Token.deleted_at == null())
+            )
+        )
+    ).scalar_one_or_none()
     if not existing:
         raise ErrAPI(msg="CBC_HMAC_NOT_FOUND", status=401)
-
-    comp_hash = hash_db_hmac((token).encode("utf-8"))
-    if not check_hmac(comp_hash, existing.hashed):
-        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
-
-    if lt_now(existing.exp):
-        await trx.delete(existing)
-        await trx.commit()
-        raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     info_b: bytes = d_to_b(
         {
@@ -193,7 +182,6 @@ async def check_cbc_hmac_lib(
             "user_id": parse_id(existing.user_id),
         }
     )
-
     derived = derive_hkdf_cbc_hmac(
         master=h_to_b(get_env().master_key),
         info=info_b,
@@ -208,6 +196,14 @@ async def check_cbc_hmac_lib(
     )
     if not check_hmac(h_to_b(tag_hex), comp_tag):
         raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+    comp_hash = hash_db_hmac((token).encode("utf-8"))
+    if not check_hmac(comp_hash, existing.hashed):
+        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+
+    if lt_now(existing.exp):
+        await trx.delete(existing)
+        await trx.commit()
+        raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     pt = dec_aes_cbc(
         derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
@@ -215,6 +211,25 @@ async def check_cbc_hmac_lib(
 
     return {
         "token_d": cast(TokenDct, existing.to_d()),
-        "decrypted": json.loads(pt.decode("utf-8")),
+        "decrypted": cast(PayloadT, json.loads(pt.decode("utf-8"))),
+    }
+
+
+async def check_cbc_hmac_with_us(
+    token: str | None,
+    trx: AsyncSession,
+    token_t: TokenT,
+) -> CheckTokenWithUsReturnT:
+
+    result_cbc = await check_cbc_hmac_lib(
+        trx=trx, token=token, token_t=token_t
+    )
+
+    assert isinstance(token, str)
+
+    us = await get_us_by_id(trx, result_cbc["decrypted"]["user_id"])
+
+    return {
+        **result_cbc,
         "user_d": cast(UserDcT, us.to_d()),
     }

@@ -5,10 +5,10 @@ from pydantic import BaseModel
 
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.lib.tokens.cbc_hmac import check_cbc_hmac_lib
+from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
 from src.middleware.check_form import check_form_mdw
 from src.middleware.check_jwt import check_jwt_mdw
-from src.models.token import CheckTokenReturnT, TokenT
+from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 
 FormT = TypeVar("FormT", bound=BaseModel)
@@ -16,7 +16,7 @@ FormT = TypeVar("FormT", bound=BaseModel)
 
 class ComboCheckJwtCbcBdReturnT(TypedDict):
     body: dict[str, Any]
-    cbc_hmac_result: CheckTokenReturnT
+    cbc_hmac_result: CheckTokenWithUsReturnT
 
 
 def combo_check_bd_jwt_bcb_hmac_mdw(
@@ -39,11 +39,8 @@ def combo_check_bd_jwt_bcb_hmac_mdw(
 
         token: str | None = bd.get("cbc_hmac_token")
 
-        if not token:
-            raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
-
         async with db_trx() as trx:
-            result_cbc_hmac = await check_cbc_hmac_lib(
+            result_cbc_hmac = await check_cbc_hmac_with_us(
                 token=token, trx=trx, token_t=token_t
             )
 

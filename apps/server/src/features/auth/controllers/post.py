@@ -5,20 +5,14 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
-from src.features.auth.services.change_pwd import change_pwd_svc
 from src.features.auth.services.login import login_svc
 from src.features.auth.services.register import register_user_svc
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import pick
 from src.lib.tokens.combo import TokensSessionsReturnT
-from src.lib.tokens.jwe import check_jwe
+from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
-from src.lib.validators.idx import PwdFormT
-from src.middleware.combo.idx import (
-    ComboCheckJwtCbcBdReturnT,
-    combo_check_bd_jwt_bcb_hmac_mdw,
-)
-from src.models.token import CheckTokenReturnT, TokenT
+from src.models.token import CheckTokenWithUsReturnT
 
 
 async def register_ctrl(
@@ -49,24 +43,6 @@ async def login_ctrl(
     )
 
 
-async def recover_pwd_ctrl(
-    _: Request,
-    result_combo: ComboCheckJwtCbcBdReturnT = Depends(
-        combo_check_bd_jwt_bcb_hmac_mdw(
-            model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
-        )
-    ),
-) -> ResAPI:
-
-    access_token, refresh_result = await change_pwd_svc(result_combo)
-
-    return ResAPI.ok_200(
-        msg="password updated",
-        access_token=access_token,
-        cookies=[gen_refresh_cookie(refresh_result["client_token"])],
-    )
-
-
 async def refresh_token_ctrl(req: Request) -> ResAPI:
     refresh = req.cookies.get("refresh_token")
 
@@ -75,7 +51,7 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
 
     async with db_trx() as trx:
         try:
-            result_jwe: CheckTokenReturnT = await check_jwe(
+            result_jwe: CheckTokenWithUsReturnT = await check_jwe_with_us(
                 token=refresh, trx=trx
             )
             access_token = gen_jwt(user_id=result_jwe["user_d"]["id"])

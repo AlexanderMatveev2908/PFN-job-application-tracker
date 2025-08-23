@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from src.features.auth.controllers.patch import recover_pwd_ctrl
 from src.features.auth.controllers.post import (
     login_ctrl,
-    recover_pwd_ctrl,
     refresh_token_ctrl,
     register_ctrl,
 )
@@ -28,7 +28,7 @@ auth_router.add_api_route(
 auth_router.add_api_route(
     "/recover-pwd",
     recover_pwd_ctrl,
-    methods=["POST"],
+    methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
 
