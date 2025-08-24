@@ -1,6 +1,4 @@
-from httpx import AsyncClient
 import pytest
-
 from tests.conf.lib.etc import register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
 
@@ -8,39 +6,42 @@ URL = "/require-email/forgot-pwd"
 
 
 @pytest.mark.asyncio
-async def ok_t(api: AsyncClient) -> None:
+async def test_forgot_pwd_ok(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_forgot_pwd = await wrap_httpx(
         api,
-        data={"email": res_register["payload"]["email"]},
         url=URL,
+        data={"email": res_register["payload"]["email"]},
         expected_code=201,
     )
 
-    assert "email sent" in res_forgot_pwd["data"]["msg"]
+    assert "email sent" in res_forgot_pwd["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
-async def err_invalid_t(api: AsyncClient) -> None:
-    res_register = await register_ok_lib(api)
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("invalid_email", 422, None),
+        ("not_found", 404, "user not found"),
+    ],
+)
+async def test_forgot_pwd_invalid_cases(
+    api, case, expected_code, expected_msg
+) -> None:
+    payload: dict | None = None
 
-    await wrap_httpx(
-        api,
-        url=URL,
-        data={"email": res_register["payload"]["email"] * 8},
-        expected_code=422,
-    )
+    if case == "invalid_email":
+        res_register = await register_ok_lib(api)
+        payload = {"email": res_register["payload"]["email"] * 8}
 
-
-@pytest.mark.asyncio
-async def err_404_t(api: AsyncClient) -> None:
+    elif case == "not_found":
+        payload = {"email": "example-non-existent@gmail.com"}
 
     res = await wrap_httpx(
-        api,
-        url=URL,
-        data={"email": "example-non-existent@gmail.com"},
-        expected_code=404,
+        api, url=URL, data=payload, expected_code=expected_code
     )
 
-    assert "user not found" in res["data"]["msg"]
+    if expected_msg:
+        assert expected_msg in res["data"]["msg"].lower()

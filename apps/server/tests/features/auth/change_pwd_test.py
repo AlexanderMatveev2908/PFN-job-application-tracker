@@ -1,6 +1,4 @@
-from httpx import AsyncClient
 import pytest
-
 from src.constants.reg import REG_JWE, REG_JWT
 from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
@@ -11,11 +9,8 @@ URL = "/auth/recover-pwd"
 
 
 @pytest.mark.asyncio
-async def ok_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api,
-        cbc_hmac_t=TokenT.RECOVER_PWD,
-    )
+async def test_recover_pwd_ok(api) -> None:
+    res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
     new_pwd = gen_pwd(n=5)
 
@@ -32,73 +27,54 @@ async def ok_t(api: AsyncClient) -> None:
 
     assert REG_JWT.fullmatch(res_change["data"]["access_token"])
     assert REG_JWE.fullmatch(res_change["refresh_token"])
-    assert "password updated" in res_change["data"]["msg"]
+    assert "password updated" in res_change["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
-async def err_same_pwd_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api,
-        cbc_hmac_t=TokenT.RECOVER_PWD,
-    )
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("same_pwd", 400, "new password must be different from old one"),
+        ("expired", 401, "cbc_hmac_expired"),
+        ("wrong_type", 401, "cbc_hmac_wrong_type"),
+    ],
+)
+async def test_recover_pwd_invalid_cases(
+    api, case, expected_code, expected_msg
+) -> None:
+    new_pwd = gen_pwd(n=5)
 
-    res_change = await wrap_httpx(
-        api,
-        url=URL,
-        data={
+    payload: dict | None = None
+
+    if case == "same_pwd":
+        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
+        payload = {
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
             "password": res_tokens["payload"]["password"],
-        },
-        expected_code=400,
-        method="PATCH",
-    )
+        }
 
-    assert (
-        "new password must be different from old one"
-        in res_change["data"]["msg"]
-    )
+    elif case == "expired":
+        res_tokens = await get_tokens_lib(
+            api, cbc_hmac_t=TokenT.RECOVER_PWD, reverse=True
+        )
+        payload = {
+            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
+            "password": new_pwd,
+        }
 
-
-@pytest.mark.asyncio
-async def err_expired_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api, cbc_hmac_t=TokenT.RECOVER_PWD, reverse=True
-    )
-
-    new_pwd = gen_pwd(n=5)
+    elif case == "wrong_type":
+        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+        payload = {
+            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
+            "password": new_pwd,
+        }
 
     res_change = await wrap_httpx(
         api,
         url=URL,
-        data={
-            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "password": new_pwd,
-        },
-        expected_code=401,
+        data=payload,
+        expected_code=expected_code,
         method="PATCH",
     )
 
-    assert "CBC_HMAC_EXPIRED" in res_change["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def invalid_action_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api,
-        cbc_hmac_t=TokenT.MANAGE_ACC,
-    )
-
-    new_pwd = gen_pwd(n=5)
-
-    res_change = await wrap_httpx(
-        api,
-        url=URL,
-        data={
-            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "password": new_pwd,
-        },
-        expected_code=401,
-        method="PATCH",
-    )
-
-    assert "CBC_HMAC_WRONG_TYPE" in res_change["data"]["msg"]
+    assert expected_msg in res_change["data"]["msg"].lower()
