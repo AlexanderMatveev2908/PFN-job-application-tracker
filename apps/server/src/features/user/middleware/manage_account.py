@@ -4,13 +4,11 @@ from src.decorators.err import ErrAPI
 from src.lib.validators.idx import PwdFormT
 from src.middleware.check_form import check_form_mdw
 from src.middleware.check_jwt import check_jwt_search_us_mdw
-from src.models.user import UserDcT
+from src.models.user import User, UserDcT
 
 
 async def manage_account_mdw(req: Request) -> UserDcT:
-    us = await check_jwt_search_us_mdw(
-        req,
-    )
+    us = cast(User, await check_jwt_search_us_mdw(req, inst=True))
 
     result = await check_form_mdw(PwdFormT, req)
 
