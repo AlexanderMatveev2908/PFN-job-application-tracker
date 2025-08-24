@@ -27,7 +27,7 @@ ComboCheckJwtCbcReturnAlsT = (
 )
 
 
-def combo_check_bd_jwt_bcb_hmac_mdw(
+def combo_check_jwt_cbc_hmac_body_mdw(
     token_t: TokenT,
     check_jwt: bool,
     model: Type[FormT] | None = None,

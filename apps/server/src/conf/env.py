@@ -89,7 +89,8 @@ class EnvVar(BaseSettings):
     jwe_private: str = Field(..., validation_alias="JWE_PRIVATE")
 
     master_key: str = Field(..., validation_alias="MASTER_KEY")
-    pepper_key: str = Field(..., validation_alias="PEPPER_KEY")
+    pepper_hmac_key: str = Field(..., validation_alias="PEPPER_HMAC_KEY")
+    fernet_key: str = Field(..., validation_alias="FERNET_KEY")
 
     # ? tests CI/CD
     next_public_back_url_test: str | None = Field(

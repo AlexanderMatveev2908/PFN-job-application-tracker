@@ -3,7 +3,7 @@ import concurrent.futures
 from typing import TYPE_CHECKING, Self, TypedDict, cast
 from argon2 import PasswordHasher
 import concurrent
-from sqlalchemy import Boolean, String
+from sqlalchemy import Boolean, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
 from src.lib.logger import clg
@@ -46,6 +46,9 @@ class User(RootTable):
     password: Mapped[str] = mapped_column(
         String(200),
         nullable=False,
+    )
+    totp_secret: Mapped[bytes | None] = mapped_column(
+        LargeBinary, nullable=True
     )
     terms: Mapped[bool] = mapped_column(Boolean, nullable=False)
 

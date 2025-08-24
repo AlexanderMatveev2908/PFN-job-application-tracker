@@ -6,6 +6,7 @@ from src.features.user.controllers.patch import (
     change_pwd_ctrl,
 )
 from src.features.user.controllers.post import (
+    TFA_ctrl,
     get_access_account_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
@@ -39,4 +40,11 @@ user_router.add_api_route(
     delete_account_ctrl,
     methods=["DELETE"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+user_router.add_api_route(
+    "/2FA",
+    TFA_ctrl,
+    methods=["POST"],
+    dependencies=[Depends(rate_limit_mdw(limit=10))],
 )

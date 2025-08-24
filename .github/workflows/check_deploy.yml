@@ -43,7 +43,8 @@ jobs:
       JWE_PUBLIC: ${{secrets.JWE_PUBLIC}}
       JWE_PRIVATE: ${{secrets.JWE_PRIVATE}}
       MASTER_KEY: ${{secrets.MASTER_KEY}}
-      PEPPER_KEY: ${{secrets.PEPPER_KEY}}
+      PEPPER_HMAC_KEY: ${{secrets.PEPPER_HMAC_KEY}}
+      FERNET_KEY: ${{secrets.FERNET_KEY}}
       NEXT_PUBLIC_BACK_URL_TEST: ${{secrets.NEXT_PUBLIC_BACK_URL_TEST}}
       NEXT_PUBLIC_FRONT_URL_TEST: ${{secrets.NEXT_PUBLIC_FRONT_URL_TEST}}
 
@@ -114,40 +115,42 @@ jobs:
             const path = require("path");
 
             const vars = [
-            "APP_NAME",
-            "NEXT_PUBLIC_ENV",
-            "NEXT_PUBLIC_BACK_URL",
-            "NEXT_PUBLIC_BACK_URL_DEV",
-            "NEXT_PUBLIC_FRONT_URL",
-            "NEXT_PUBLIC_FRONT_URL_DEV",
-            "PY_ENV",
-            "PORT",
-            "FRONT_URL",
-            "FRONT_URL_DEV",
-            "SECRET",
-            "AWS_ACCESS_KEY",
-            "AWS_ACCESS_SECRET_KEY",
-            "AWS_REGION",
-            "AWS_BUCKET_NAME",
-            "DB_PWD",
-            "DB_URL",
-            "MY_EMAIL",
-            "EMAIL_PWD",
-            "BREVO_SMPT_SERVER",
-            "BREVO_SMPT_PORT",
-            "BREVO_SMPT_USER",
-            "BREVO_SMPT_PWD",
-            "SMPT_FROM",
-            "REDIS_URL",
-            "SUPABASE_CA",
-            "JWT_SECRET",
-            "JWE_PUBLIC",
-            "JWE_PRIVATE",
-            "MASTER_KEY",
-            "PEPPER_KEY",
-            "NEXT_PUBLIC_BACK_URL_TEST",
-            "NEXT_PUBLIC_FRONT_URL_TEST",
+              "APP_NAME",
+              "NEXT_PUBLIC_ENV",
+              "NEXT_PUBLIC_BACK_URL",
+              "NEXT_PUBLIC_BACK_URL_DEV",
+              "NEXT_PUBLIC_FRONT_URL",
+              "NEXT_PUBLIC_FRONT_URL_DEV",
+              "PY_ENV",
+              "PORT",
+              "FRONT_URL",
+              "FRONT_URL_DEV",
+              "SECRET",
+              "AWS_ACCESS_KEY",
+              "AWS_ACCESS_SECRET_KEY",
+              "AWS_REGION",
+              "AWS_BUCKET_NAME",
+              "DB_PWD",
+              "DB_URL",
+              "MY_EMAIL",
+              "EMAIL_PWD",
+              "BREVO_SMPT_SERVER",
+              "BREVO_SMPT_PORT",
+              "BREVO_SMPT_USER",
+              "BREVO_SMPT_PWD",
+              "SMPT_FROM",
+              "REDIS_URL",
+              "SUPABASE_CA",
+              "JWT_SECRET",
+              "JWE_PUBLIC",
+              "JWE_PRIVATE",
+              "MASTER_KEY",
+              "PEPPER_HMAC_KEY",
+              "FERNET_KEY",
+              "NEXT_PUBLIC_BACK_URL_TEST",
+              "NEXT_PUBLIC_FRONT_URL_TEST",
             ];
+
 
             const envPath = path.join(process.cwd(), "apps/server/.env");
             const lines = vars.map((name) => `${name}=${process.env[name] ?? ""}`);

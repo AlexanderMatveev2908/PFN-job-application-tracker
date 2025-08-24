@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import TypedDict
 from cryptography.hazmat.primitives import hashes, hmac
 from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
 
@@ -18,7 +18,9 @@ def expand_okm(prk: bytes, length: int, info: bytes) -> bytes:
     ).derive(prk)
 
 
-DerivedKeysCbcHmacT = dict[Literal["k_0", "k_1"], bytes]
+class DerivedKeysCbcHmacT(TypedDict):
+    cbc_key: bytes
+    hmac_key: bytes
 
 
 def derive_hkdf_cbc_hmac(
@@ -28,7 +30,7 @@ def derive_hkdf_cbc_hmac(
 
     okm = expand_okm(prk, length=64, info=info)
 
-    return {"k_0": okm[:32], "k_1": okm[32:]}
+    return {"cbc_key": okm[:32], "hmac_key": okm[32:]}
 
 
 def derive_hmac(*, master: bytes, salt: bytes, info: bytes) -> bytes:
