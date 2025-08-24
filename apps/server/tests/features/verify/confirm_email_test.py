@@ -24,15 +24,15 @@ async def test_confirm_email_ok(api) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "case, expected_code, expected_msg, use_regex",
+    "case, expected_code, expected_msg",
     [
-        ("already_verified", 409, "user already verified", False),
-        ("expired", 401, "cbc_hmac_expired", False),
-        ("invalid", 401, r".*cbc_hmac_invalid$", True),
+        ("already_verified", 409, "user already verified"),
+        ("expired", 401, "CBC_HMAC_EXPIRED"),
+        ("invalid", 401, re.compile(r".*CBC_HMAC_INVALID$")),
     ],
 )
 async def test_confirm_email_invalid_cases(
-    api, case, expected_code, expected_msg, use_regex
+    api, case, expected_code, expected_msg
 ) -> None:
     url = ""
 
@@ -50,7 +50,6 @@ async def test_confirm_email_invalid_cases(
         res_tokens = await get_tokens_lib(
             api, existing_payload=res_register["payload"]
         )
-
         aad_d = b_to_d(h_to_b((res_tokens["cbc_hmac_token"]).split(".")[0]))
         assert TokenT(aad_d["token_t"]) == TokenT.CONF_EMAIL
         assert aad_d["user_id"] == res_conf["data"]["updated_user"]["id"]
@@ -69,9 +68,7 @@ async def test_confirm_email_invalid_cases(
         api, method="GET", url=url, expected_code=expected_code
     )
 
-    if use_regex:
-        assert re.compile(expected_msg).fullmatch(
-            res_conf["data"]["msg"].lower()
-        )
+    if isinstance(expected_msg, re.Pattern):
+        assert expected_msg.fullmatch(res_conf["data"]["msg"])
     else:
-        assert expected_msg in res_conf["data"]["msg"].lower()
+        assert expected_msg in res_conf["data"]["msg"]
