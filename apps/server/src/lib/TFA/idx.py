@@ -2,12 +2,6 @@ from typing import TypedDict
 import pyotp
 
 
-def gen_totp_secret() -> str:
-    secret = pyotp.random_base32()
-
-    return secret
-
-
 class GenTotpNowReturnT(TypedDict):
     code: str
     uri: str | None
@@ -16,6 +10,7 @@ class GenTotpNowReturnT(TypedDict):
 def gen_totp_code(
     secret: str, user_email: str | None = None
 ) -> GenTotpNowReturnT:
+    secret = pyotp.random_base32()
     totp = pyotp.TOTP(secret)
 
     uri: str | None = None
@@ -28,6 +23,6 @@ def gen_totp_code(
     return {"code": totp.now(), "uri": uri}
 
 
-def check_totp(secret: str, user_code_db: str) -> bool:
+def check_totp(secret: str, user_code: str) -> bool:
     totp = pyotp.TOTP(secret)
-    return totp.verify(user_code_db, valid_window=1)
+    return totp.verify(user_code, valid_window=1)
