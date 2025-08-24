@@ -3,59 +3,54 @@ from tests.conf.lib.etc import register_ok_lib
 from tests.conf.constants import get_payload_register
 from tests.conf.lib.idx import wrap_httpx
 
+
 URL = "/auth/register"
 
 
 @pytest.mark.asyncio
-async def ok_t(api) -> None:
-
+async def test_register_ok(api) -> None:
     await register_ok_lib(api)
 
 
 @pytest.mark.asyncio
-async def err_existing_t(api) -> None:
-    # _ First call: should succeed
-    res_register = await register_ok_lib(api)
-
-    # ! Second call: same payload → conflict
-    res_register_err = await wrap_httpx(
-        api,
-        url=URL,
-        data=res_register["payload"],
-        expected_code=409,
-    )
-    assert "user already exists" in res_register_err["data"]["msg"].lower()
-
-
-@pytest.mark.asyncio
-async def err_mismatch_t(api) -> None:
-    payload = {
-        **get_payload_register(),
-        "confirm_password": (
-            "a4A0.E.H,p$VjDaw&bzX!_A#V+1P)juV2726439d_wrong_password_mismatch"
+@pytest.mark.parametrize(
+    "gen_payload, expected_code, expected_msg",
+    [
+        (
+            lambda: get_payload_register(),
+            409,
+            "user already exists",
         ),
-    }
+        (
+            lambda: {
+                **get_payload_register(),
+                "confirm_password": "totally_wrong_password",
+            },
+            422,
+            "passwords do not match",
+        ),
+        (
+            lambda: {
+                **get_payload_register(),
+                "terms": False,
+            },
+            422,
+            "user must accept terms",
+        ),
+    ],
+)
+async def test_register_invalid_cases(
+    api, gen_payload, expected_code, expected_msg
+) -> None:
+    payload = gen_payload()
 
-    res_register = await wrap_httpx(
-        api,
-        url=URL,
-        data=payload,
-        expected_code=422,
+    if expected_code == 409:
+        await wrap_httpx(api, url=URL, data=payload, expected_code=201)
+
+    res = await wrap_httpx(
+        api, url=URL, data=payload, expected_code=expected_code
     )
-    assert "passwords do not match" in res_register["data"]["msg"].lower()
-
-
-@pytest.mark.asyncio
-async def err_terms_t(api) -> None:
-    payload = {**get_payload_register(), "terms": False}
-
-    res_register = await wrap_httpx(
-        api,
-        url=URL,
-        data=payload,
-        expected_code=422,
-    )
-    assert "user must accept terms" in res_register["data"]["msg"].lower()
+    assert expected_msg in res["data"]["msg"].lower()
 
 
 # @pytest.mark.asyncio
