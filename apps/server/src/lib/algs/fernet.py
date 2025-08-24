@@ -4,11 +4,11 @@ from cryptography.fernet import Fernet
 key_fernet: bytes = get_env().fernet_key.encode()
 
 
-def enc_fernet(txt: bytes) -> bytes:
+def gen_fernet(txt: str) -> bytes:
     encryptor = Fernet(key_fernet)
-    return encryptor.encrypt(txt)
+    return encryptor.encrypt(txt.encode())
 
 
-def dec_fernet(encrypted: bytes) -> bytes:
+def check_fernet(encrypted: bytes) -> bytes:
     decryptor = Fernet(key_fernet)
     return decryptor.decrypt(encrypted)

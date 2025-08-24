@@ -1,5 +1,6 @@
 import base64
 import io
+import os
 import pyotp
 import qrcode
 import qrcode.constants
@@ -32,7 +33,9 @@ def gen_qrcode(uri: str) -> str:
     )
 
     buf = io.BytesIO()
-
     img.save(buf, format="PNG")
+
+    img_path = os.path.join("assets", f"{os.urandom(10).hex()}.png")
+    img.save(img_path, format="PNG")
 
     return base64.b64encode(buf.getvalue()).decode("utf-8")

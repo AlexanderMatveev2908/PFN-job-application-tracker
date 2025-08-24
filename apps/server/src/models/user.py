@@ -47,7 +47,9 @@ class User(RootTable):
         String(200),
         nullable=False,
     )
-    code_totp: Mapped[bytes | None] = mapped_column(LargeBinary, nullable=True)
+    totp_secret: Mapped[bytes | None] = mapped_column(
+        LargeBinary, nullable=True
+    )
     terms: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     tokens: Mapped[list["Token"]] = relationship(
