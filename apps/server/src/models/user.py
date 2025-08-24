@@ -9,6 +9,7 @@ from src.models.root import RootTable
 
 if TYPE_CHECKING:
     from .token import Token
+    from .backup_code import BackupCode
 
 
 class UserDcT(TypedDict):
@@ -44,6 +45,9 @@ class User(RootTable):
 
     tokens: Mapped[list["Token"]] = relationship(
         "Token", back_populates="user"
+    )
+    backup_codes: Mapped[list["BackupCode"]] = relationship(
+        "BackupCode", back_populates="user"
     )
 
     is_verified: Mapped[bool] = mapped_column(
