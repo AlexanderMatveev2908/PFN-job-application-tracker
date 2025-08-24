@@ -1,14 +1,17 @@
+import io
 from typing import cast
+import uuid
+import zipfile
+import aiofiles
 from fastapi import Depends, Request
+from fastapi.responses import StreamingResponse
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.require_email.services.combo import gen_token_send_email_svc
-from src.lib.TFA.backup import GenBackupCodesReturnT, gen_backup_codes
-from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
-from src.lib.algs.fernet import gen_fernet
+from src.features.user.services.TFA import TFA_svc
 from src.lib.db.idx import get_us_by_email, get_us_by_id
-from src.lib.qrcode.idx import gen_qrcode
+from src.lib.system import APP_DIR
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -94,31 +97,14 @@ async def TFA_ctrl(
 ) -> ResAPI:
 
     async with db_trx() as trx:
-        us = await get_us_by_id(
-            trx=trx, us_id=result_combo["cbc_hmac_result"]["user_d"]["id"]
-        )
-
-        if us.totp_secret:
-            return ResAPI.err_409(
-                msg="user already have 2FA set up",
-            )
-
-        result_secret: GenTotpSecretReturnT = gen_totp_secret(
-            user_email=us.email
-        )
-
-        us.totp_secret = gen_fernet(txt=result_secret["secret"])
-
-        qrcode: str = gen_qrcode(uri=result_secret["uri"])
-
-        result_backup_codes: GenBackupCodesReturnT = await gen_backup_codes(
-            trx, us_id=us.id
-        )
+        result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
 
         return ResAPI.ok_200(
-            totp_secret=result_secret["secret"],
-            backup_codes=result_backup_codes["codes"],
-            totp_secret_qrcode=qrcode,
+            totp_secret=result_svc["secret_result"]["secret"],
+            backup_codes=result_svc["backup_codes_result"][
+                "backup_codes_client"
+            ],
+            totp_secret_qrcode=result_svc["qrcode_result"]["base_64"],
         )
 
 
@@ -129,5 +115,40 @@ async def TFA_zip_ctrl(
             check_jwt=True, token_t=TokenT.MANAGE_ACC
         )
     ),
-) -> ResAPI:
-    return ResAPI.ok_200()
+) -> StreamingResponse:
+    async with db_trx() as trx:
+        result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
+
+        codes: list[str] = result_svc["backup_codes_result"][
+            "backup_codes_client"
+        ]
+        formatted: str = "\n".join(
+            " ".join(codes[i : i + 2])  # noqa: E203
+            for i in range(0, len(codes), 2)
+        )
+
+        buf = io.BytesIO()
+
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr(
+                "backup_codes.txt",
+                formatted,
+            )
+            zf.writestr(
+                "otp_secret.txt", result_svc["secret_result"]["secret"]
+            )
+            zf.writestr(
+                "qrcode.png",
+                result_svc["qrcode_result"]["binary"],
+            )
+
+        p = APP_DIR / "assets" / f"{uuid.uuid4()}.zip"
+        async with aiofiles.open(p, "wb") as f:
+            buf.seek(0)
+            await f.write(buf.read())
+
+        return StreamingResponse(
+            buf,
+            media_type="application/zip",
+            headers={"Content-Disposition": "attachment; filename=2FA.zip"},
+        )

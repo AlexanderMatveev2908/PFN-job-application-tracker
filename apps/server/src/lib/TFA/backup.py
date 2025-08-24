@@ -8,8 +8,8 @@ from src.models.backup_code import BackupCode
 
 
 class GenBackupCodesReturnT(TypedDict):
-    codes: list[str]
-    backup_codes_db: list[BackupCode]
+    backup_codes_client: list[str]
+    backup_codes_server: list[BackupCode]
 
 
 async def gen_backup_codes(
@@ -35,4 +35,4 @@ async def gen_backup_codes(
     for bc in backup_codes:
         await trx.refresh(bc)
 
-    return {"codes": codes, "backup_codes_db": backup_codes}
+    return {"backup_codes_client": codes, "backup_codes_server": backup_codes}
