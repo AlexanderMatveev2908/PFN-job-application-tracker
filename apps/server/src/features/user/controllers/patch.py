@@ -120,3 +120,14 @@ async def TFA_ctrl(
             backup_codes=result_backup_codes["codes"],
             totp_secret_qrcode=qrcode,
         )
+
+
+async def TFA_zip_ctrl(
+    req: Request,
+    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=True, token_t=TokenT.MANAGE_ACC
+        )
+    ),
+) -> ResAPI:
+    return ResAPI.ok_200()
