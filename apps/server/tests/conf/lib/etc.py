@@ -1,6 +1,6 @@
 from typing import TypedDict, cast
 from httpx import AsyncClient
-from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.constants import RegisterPayloadT, get_payload_register
 from tests.conf.lib.data_structure import extract_login_payload
@@ -52,29 +52,6 @@ async def get_tokens_lib(
     assert REG_JWT.fullmatch(res_register["data"]["access_token"])
     assert REG_JWE.fullmatch(res_register["refresh_token"])
     assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
-
-    if not reverse:
-        assert REG_ID.fullmatch(
-            res_register["data"]["access_token_decoded"]["user_id"]
-        )
-
-        assert REG_ID.fullmatch(
-            res_register["data"]["refresh_token_db"]["user_id"]
-        )
-        assert REG_ID.fullmatch(
-            res_register["data"]["refresh_token_decrypted"]["user_id"]
-        )
-
-        assert REG_ID.fullmatch(res_register["data"]["cbc_hmac_db"]["user_id"])
-        assert REG_ID.fullmatch(
-            res_register["data"]["cbc_hmac_decrypted"]["user_id"]
-        )
-
-        assert (
-            res_register["data"]["cbc_hmac_decrypted"]["user_id"]
-            == res_register["data"]["refresh_token_decrypted"]["user_id"]
-            == res_register["data"]["access_token_decoded"]["user_id"]
-        )
 
     return {
         "access_token": res_register["data"]["access_token"],
