@@ -5,4 +5,4 @@ from src.lib.etc import wrap_loop  # noqa: F401
 print("script worked ✅")
 
 
-# # print(os.urandom(64).hex())
+print(os.urandom(32).hex())

@@ -84,14 +84,14 @@ def build_cbc_hmac(payload: PayloadTokenT, hdr: HdrT) -> BuildCbcHmacReturnT:
         }
     )
 
-    iv, ct = gen_aes_cbc(derived["k_0"], d_to_b(cast(dict, payload)))
+    iv, ct = gen_aes_cbc(derived["cbc_key"], d_to_b(cast(dict, payload)))
 
     aad_hex = b_to_h(aad)
     iv_hex = b_to_h(iv)
     ct_hex = b_to_h(ct)
     tag_hex: str = b_to_h(
         gen_hmac(
-            derived["k_1"],
+            derived["hmac_key"],
             d_to_b({"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex}),
         )
     )
@@ -189,7 +189,7 @@ async def check_cbc_hmac_lib(
     )
 
     comp_tag = gen_hmac(
-        derived["k_1"],
+        derived["hmac_key"],
         d_to_b(
             {"aad": aad_hex, "iv": iv_hex, "ciphertext": ct_hex},
         ),
@@ -206,7 +206,7 @@ async def check_cbc_hmac_lib(
         raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
 
     pt = dec_aes_cbc(
-        derived["k_0"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
+        derived["cbc_key"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)
     )
 
     return {

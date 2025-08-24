@@ -11,7 +11,7 @@ def gen_hmac(mac_key: bytes, pt: bytes) -> bytes:
 
 
 def hash_db_hmac(tok: bytes) -> bytes:
-    pepper = h_to_b(get_env().pepper_key)
+    pepper = h_to_b(get_env().pepper_hmac_key)
 
     return gen_hmac(mac_key=pepper, pt=tok)
 
