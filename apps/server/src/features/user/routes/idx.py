@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 
 from src.features.user.controllers.delete import delete_account_ctrl
 from src.features.user.controllers.patch import (
+    TFA_ctrl,
     change_email_ctrl,
     change_pwd_ctrl,
 )
 from src.features.user.controllers.post import (
-    TFA_ctrl,
     get_access_account_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
@@ -45,6 +45,6 @@ user_router.add_api_route(
 user_router.add_api_route(
     "/2FA",
     TFA_ctrl,
-    methods=["POST"],
+    methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=10))],
 )

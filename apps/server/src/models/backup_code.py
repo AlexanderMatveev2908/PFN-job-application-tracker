@@ -1,7 +1,13 @@
+from typing import TypedDict
 import uuid
 from sqlalchemy import UUID, ForeignKey, String
 from src.models.root import RootTable
 from sqlalchemy.orm import MappedColumn, mapped_column, relationship
+
+
+class BackupCodeDct(TypedDict):
+    code: str
+    user_id: str
 
 
 class BackupCode(RootTable):
