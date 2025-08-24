@@ -20,7 +20,7 @@ async def test_tokens_ok(api) -> None:
         (
             "invalid_jwt",
             "JWT",
-            lambda t: t[:-4] + "hack",
+            lambda t: t[:-4] + "aaaa",
             "access_token_invalid",
         ),
         (

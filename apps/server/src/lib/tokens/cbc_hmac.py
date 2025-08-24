@@ -138,7 +138,7 @@ async def gen_cbc_hmac(
     await trx.refresh(new_cbc_hmac)
 
     return {
-        "client_token": client_token,  # noqa: E501
+        "client_token": client_token,
         "server_token": new_cbc_hmac,
     }
 

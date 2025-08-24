@@ -34,6 +34,27 @@ async def register_ok_lib(api) -> SuccessReqTokensReturnT:
     )
 
 
+class LoginOkReturnT(TypedDict):
+    access_token: str
+
+
+async def login_ok_lib(
+    api: AsyncClient, register_payload: RegisterPayloadT
+) -> LoginOkReturnT:
+
+    res_login = await wrap_httpx(
+        api,
+        url="/auth/login",
+        data=extract_login_payload(register_payload),
+        expected_code=200,
+    )
+
+    assert REG_JWE.fullmatch(res_login["refresh_token"])
+    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
+
+    return {"access_token": res_login["data"]["access_token"]}
+
+
 async def get_tokens_lib(
     api: AsyncClient,
     reverse: bool = False,
@@ -59,24 +80,3 @@ async def get_tokens_lib(
         "cbc_hmac_token": res_register["data"]["cbc_hmac_token"],
         "payload": payload,
     }
-
-
-class LoginOkReturnT(TypedDict):
-    access_token: str
-
-
-async def login_ok_lib(
-    api: AsyncClient, register_payload: RegisterPayloadT
-) -> LoginOkReturnT:
-
-    res_login = await wrap_httpx(
-        api,
-        url="/auth/login",
-        data=extract_login_payload(register_payload),
-        expected_code=200,
-    )
-
-    assert REG_JWE.fullmatch(res_login["refresh_token"])
-    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
-
-    return {"access_token": res_login["data"]["access_token"]}

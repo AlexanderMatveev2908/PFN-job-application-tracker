@@ -1,8 +1,7 @@
 import pytest
-from src.constants.reg import REG_JWE, REG_JWT
 from tests.conf.constants import get_payload_register
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import register_ok_lib
+from tests.conf.lib.etc import login_ok_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
 
 URL = "/auth/login"
@@ -12,15 +11,7 @@ URL = "/auth/login"
 async def test_login_ok(api) -> None:
     res_register = await register_ok_lib(api)
 
-    res_login = await wrap_httpx(
-        api,
-        url=URL,
-        data=extract_login_payload(res_register["payload"]),
-        expected_code=200,
-    )
-
-    assert REG_JWE.fullmatch(res_login["refresh_token"])
-    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
+    await login_ok_lib(api, register_payload=res_register["payload"])
 
 
 @pytest.mark.asyncio
