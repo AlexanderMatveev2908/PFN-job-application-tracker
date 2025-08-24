@@ -6,11 +6,11 @@ script_file = Path(__file__).resolve()
 script_dir = script_file.parent
 
 
-app_dir = Path.cwd()
+APP_DIR = Path.cwd()
 
 
 def read_f(rel: str) -> str:
-    joined = app_dir / rel
+    joined = APP_DIR / rel
     print(joined)
 
     with open(joined, "r", encoding="utf-8") as f:
@@ -19,7 +19,7 @@ def read_f(rel: str) -> str:
 
 
 def write_f(relative: str, content: str) -> None:
-    joined = app_dir.joinpath(relative)
+    joined = APP_DIR.joinpath(relative)
     joined.parent.mkdir(parents=True, exist_ok=True)
 
     if not joined.exists():

@@ -1,6 +1,6 @@
 import base64
 import io
-import os
+from typing import TypedDict
 import pyotp
 import qrcode
 import qrcode.constants
@@ -12,7 +12,12 @@ secret = pyotp.random_base32()
 totp = pyotp.TOTP(secret)
 
 
-def gen_qrcode(uri: str) -> str:
+class GenQrcodeReturnT(TypedDict):
+    base_64: str
+    binary: bytes
+
+
+def gen_qrcode(uri: str) -> GenQrcodeReturnT:
 
     qr = qrcode.QRCode(
         error_correction=qrcode.constants.ERROR_CORRECT_M,
@@ -34,8 +39,12 @@ def gen_qrcode(uri: str) -> str:
 
     buf = io.BytesIO()
     img.save(buf, format="PNG")
+    binary: bytes = buf.getvalue()
 
-    img_path = os.path.join("assets", f"{os.urandom(10).hex()}.png")
-    img.save(img_path, format="PNG")
+    # img_path = os.path.join("assets", f"{os.urandom(10).hex()}.png")
+    # img.save(img_path, format="PNG")
 
-    return base64.b64encode(buf.getvalue()).decode("utf-8")
+    return {
+        "base_64": base64.b64encode(binary).decode("utf-8"),
+        "binary": binary,
+    }

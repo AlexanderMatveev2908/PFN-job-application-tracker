@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from src.features.user.controllers.delete import delete_account_ctrl
 from src.features.user.controllers.patch import (
     TFA_ctrl,
+    TFA_zip_ctrl,
     change_email_ctrl,
     change_pwd_ctrl,
 )
@@ -45,6 +46,13 @@ user_router.add_api_route(
 user_router.add_api_route(
     "/2FA",
     TFA_ctrl,
+    methods=["PATCH"],
+    dependencies=[Depends(rate_limit_mdw(limit=10))],
+)
+
+user_router.add_api_route(
+    "/2FA-zip",
+    TFA_zip_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=10))],
 )
