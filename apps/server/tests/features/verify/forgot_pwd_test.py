@@ -1,70 +1,55 @@
-from httpx import AsyncClient
 import pytest
-
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
-
 
 URL = "/verify/forgot-pwd?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def ok_t(api: AsyncClient) -> None:
+async def test_forgot_pwd_verify_ok(api) -> None:
+    res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
-    res_tokens = await get_tokens_lib(
+    res_check = await wrap_httpx(
         api,
-        cbc_hmac_t=TokenT.RECOVER_PWD,
-    )
-
-    res_check_tk = await wrap_httpx(
-        api,
-        url=f'{URL}{res_tokens["cbc_hmac_token"]}',  # noqa: E501
+        url=f'{URL}{res_tokens["cbc_hmac_token"]}',
         expected_code=200,
         method="GET",
     )
 
-    assert "verification successful" in res_check_tk["data"]["msg"]
+    assert "verification successful" in res_check["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
-async def err_not_provided_t(api: AsyncClient) -> None:
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("not_provided", 401, "cbc_hmac_not_provided"),
+        ("invalid_format", 401, "cbc_hmac_invalid_format"),
+        ("wrong_type", 401, "cbc_hmac_wrong_type"),
+    ],
+)
+async def test_forgot_pwd_verify_invalid_cases(
+    api, case, expected_code, expected_msg
+) -> None:
+    url = ""
+
+    if case == "not_provided":
+        url = f"{URL}"
+
+    elif case == "invalid_format":
+        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
+        url = f"{URL}{'hack' + res_tokens['cbc_hmac_token'][4:]}"
+
+    elif case == "wrong_type":
+        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.CHANGE_PWD)
+        url = f"{URL}{res_tokens['cbc_hmac_token']}"
+
     res_check = await wrap_httpx(
-        api, url=f"{URL}", expected_code=401, method="GET"
-    )
-
-    assert "CBC_HMAC_NOT_PROVIDED" in res_check["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def err_invalid_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
         api,
-        cbc_hmac_t=TokenT.RECOVER_PWD,
-    )
-
-    res_check = await wrap_httpx(
-        api,
-        url=f"{URL}{'hack' + res_tokens['cbc_hmac_token'][4:]}",
-        expected_code=401,
+        url=url,
+        expected_code=expected_code,
         method="GET",
     )
 
-    assert "CBC_HMAC_INVALID_FORMAT" in res_check["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def err_wrong_token_type_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api,
-        cbc_hmac_t=TokenT.CHANGE_PWD,
-    )
-
-    res_check = await wrap_httpx(
-        api,
-        url=f"{URL}{res_tokens['cbc_hmac_token']}",
-        expected_code=401,
-        method="GET",
-    )
-
-    assert "CBC_HMAC_WRONG_TYPE" in res_check["data"]["msg"]
+    assert expected_msg in res_check["data"]["msg"].lower()
