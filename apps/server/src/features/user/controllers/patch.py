@@ -33,9 +33,6 @@ async def change_pwd_ctrl(
             return ResAPI.err_400(
                 msg="new password must be different from old one",
             )
-        us = await trx.get(
-            User, result_combo["cbc_hmac_result"]["user_d"]["id"]
-        )
 
         await cast(User, us).set_pwd(plain=new_pwd)
 
