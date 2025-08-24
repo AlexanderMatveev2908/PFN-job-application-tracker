@@ -2,7 +2,7 @@ from fastapi import Depends, Request
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.user.middleware.manage_account import manage_account_mdw
-from src.lib.TFA.idx import GenTotpSecretReturnT, gen_totp_secret
+from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
 from src.lib.algs.fernet import gen_fernet
 from src.lib.db.idx import get_us_by_id
 from src.lib.qrcode.idx import gen_qrcode

@@ -2,7 +2,6 @@ from typing import cast
 
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.lib.hashing.idx import check_pwd
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 from src.models.token import Token
@@ -20,9 +19,7 @@ async def change_pwd_svc(
             ),
         )
 
-        if await check_pwd(
-            hashed=us.password, plain=result_combo["body"]["password"]
-        ):
+        if await us.check_pwd(plain=result_combo["body"]["password"]):
             raise ErrAPI(
                 msg="new password must be different from old one", status=400
             )

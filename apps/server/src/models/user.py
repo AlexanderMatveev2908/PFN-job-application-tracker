@@ -1,20 +1,10 @@
-import asyncio
-import concurrent.futures
 from typing import TYPE_CHECKING, Self, TypedDict, cast
-from argon2 import PasswordHasher
-import concurrent
 from sqlalchemy import Boolean, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
+from src.lib.hashing.idx import check_argon, hash_argon
 from src.lib.logger import clg
 from src.models.root import RootTable
-
-
-PH = PasswordHasher(
-    time_cost=3, memory_cost=64 * 1024, parallelism=1, hash_len=32, salt_len=16
-)
-
-HASH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 
 if TYPE_CHECKING:
@@ -74,17 +64,12 @@ class User(RootTable):
         self.tmp_email = None
 
     async def set_pwd(self, plain: str) -> None:
-        loop = asyncio.get_running_loop()
-
-        self.password = await loop.run_in_executor(HASH_POOL, PH.hash, plain)
+        self.password = await hash_argon(plain)
 
     async def check_pwd(self, plain: str) -> bool:
-        loop = asyncio.get_running_loop()
 
         try:
-            return await loop.run_in_executor(
-                HASH_POOL, PH.verify, self.password, plain
-            )
+            return await check_argon(hashed=self.password, plain=plain)
         except Exception as err:
             clg(err, ttl="invalid password")
             return False

@@ -1,4 +1,3 @@
-from typing import cast
 from fastapi import Request
 
 from src.conf.db import db_trx
@@ -6,7 +5,7 @@ from src.decorators.err import ErrAPI
 from src.lib.db.idx import get_us_by_id
 from src.lib.tokens.jwt import check_jwt_lib
 from src.models.token import PayloadT
-from src.models.user import UserDcT
+from src.models.user import User
 
 
 def extract_jwt(req: Request) -> str:
@@ -29,9 +28,9 @@ def check_jwt_mdw(req: Request) -> PayloadT:
     return decoded
 
 
-async def check_jwt_search_us_mdw(req: Request) -> UserDcT:
+async def check_jwt_search_us_mdw(req: Request) -> User:
     decoded: PayloadT = check_jwt_mdw(req)
 
     async with db_trx() as trx:
         us = await get_us_by_id(trx=trx, us_id=decoded["user_id"])
-        return cast(UserDcT, us.to_d())
+        return us

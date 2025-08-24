@@ -5,7 +5,6 @@ from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.require_email.services.combo import gen_token_send_email_svc
 from src.lib.db.idx import get_us_by_email, get_us_by_id
-from src.lib.hashing.idx import check_pwd
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -24,17 +23,16 @@ async def change_pwd_ctrl(
     ),
 ) -> ResAPI:
 
-    new_pwd = result_combo["body"]["password"]
-
-    if await check_pwd(
-        hashed=result_combo["cbc_hmac_result"]["user_d"]["password"],
-        plain=new_pwd,
-    ):
-        return ResAPI.err_400(
-            msg="new password must be different from old one",
-        )
-
     async with db_trx() as trx:
+        us = await get_us_by_id(
+            trx=trx, us_id=result_combo["cbc_hmac_result"]["user_d"]["id"]
+        )
+        new_pwd = result_combo["body"]["password"]
+
+        if await us.check_pwd(plain=new_pwd):
+            return ResAPI.err_400(
+                msg="new password must be different from old one",
+            )
         us = await trx.get(
             User, result_combo["cbc_hmac_result"]["user_d"]["id"]
         )

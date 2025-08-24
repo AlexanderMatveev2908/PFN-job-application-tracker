@@ -11,13 +11,13 @@ PH = PasswordHasher(
 HASH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 
-async def hash_pwd(plain: str) -> str:
+async def hash_argon(plain: str) -> str:
     loop = asyncio.get_running_loop()
 
     return await loop.run_in_executor(HASH_POOL, PH.hash, plain)
 
 
-async def check_pwd(hashed: str, plain: str) -> bool:
+async def check_argon(hashed: str, plain: str) -> bool:
     loop = asyncio.get_running_loop()
 
     try:
