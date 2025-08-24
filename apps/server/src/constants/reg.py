@@ -27,3 +27,7 @@ REG_CBC_HMAC = re.compile(
 REG_JWT = re.compile(
     r"^(?=.{171}$)[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$"
 )
+
+REG_SECRET_TOTP = re.compile(r"^[A-Z2-7]{32}$")
+
+REG_BACKUP_CODE = re.compile(r"^[A-Z0-9]{4}-[A-Z0-9]{4}$")
