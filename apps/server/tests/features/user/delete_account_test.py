@@ -1,6 +1,4 @@
-from httpx import AsyncClient
 import pytest
-
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib, login_ok_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
@@ -9,7 +7,7 @@ URL = "/user/delete-account?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def ok_t(api: AsyncClient) -> None:
+async def test_delete_account_ok(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -28,63 +26,58 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    assert "account deleted" in res_delete["data"]["msg"]
+    assert "account deleted" in res_delete["data"]["msg"].lower()
 
 
 @pytest.mark.asyncio
-async def err_invalid_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("invalid_cbc", 401, "cbc_hmac_invalid"),
+        ("expired_jwt", 401, "access_token_expired"),
+        ("expired_cbc", 401, "cbc_hmac_expired"),
+        ("wrong_type", 401, "cbc_hmac_wrong_type"),
+    ],
+)
+async def test_delete_account_invalid_cases(
+    api, case, expected_code, expected_msg
+) -> None:
+    payload_url = ""
+    access_token = ""
 
-    res_del = await wrap_httpx(
+    if case == "invalid_cbc":
+        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+        payload_url = URL + res_tokens["cbc_hmac_token"][:-4] + "af90"
+        access_token = res_tokens["access_token"]
+
+    elif case == "expired_jwt":
+        res_tokens = await get_tokens_lib(
+            api, reverse=True, cbc_hmac_t=TokenT.MANAGE_ACC
+        )
+        payload_url = URL + res_tokens["cbc_hmac_token"]
+        access_token = res_tokens["access_token"]
+
+    elif case == "expired_cbc":
+        res_tokens = await get_tokens_lib(
+            api, reverse=True, cbc_hmac_t=TokenT.MANAGE_ACC
+        )
+        res_login = await login_ok_lib(
+            api, register_payload=res_tokens["payload"]
+        )
+        payload_url = URL + res_tokens["cbc_hmac_token"]
+        access_token = res_login["access_token"]
+
+    elif case == "wrong_type":
+        res_tokens = await get_tokens_lib(api)
+        payload_url = URL + res_tokens["cbc_hmac_token"]
+        access_token = res_tokens["access_token"]
+
+    res = await wrap_httpx(
         api,
-        url=f'{URL}{res_tokens["cbc_hmac_token"][:-4]+'af90'}',
-        expected_code=401,
-        access_token=res_tokens["access_token"],
+        url=payload_url,
+        expected_code=expected_code,
+        access_token=access_token,
         method="DELETE",
     )
 
-    assert "CBC_HMAC_INVALID" in res_del["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def err_expired_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(
-        api, reverse=True, cbc_hmac_t=TokenT.MANAGE_ACC
-    )
-
-    err_jwt = await wrap_httpx(
-        api,
-        url=f'{URL}{res_tokens["cbc_hmac_token"]}',
-        expected_code=401,
-        access_token=res_tokens["access_token"],
-        method="DELETE",
-    )
-
-    assert "ACCESS_TOKEN_EXPIRED" in err_jwt["data"]["msg"]
-
-    res_login = await login_ok_lib(api, register_payload=res_tokens["payload"])
-
-    err_cbc = await wrap_httpx(
-        api,
-        url=f'{URL}{res_tokens["cbc_hmac_token"]}',
-        expected_code=401,
-        access_token=res_login["access_token"],
-        method="DELETE",
-    )
-
-    assert "CBC_HMAC_EXPIRED" in err_cbc["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def wrong_act_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(api)
-
-    err_type = await wrap_httpx(
-        api,
-        url=f'{URL}{res_tokens["cbc_hmac_token"]}',
-        expected_code=401,
-        access_token=res_tokens["access_token"],
-        method="DELETE",
-    )
-
-    assert "CBC_HMAC_WRONG_TYPE" in err_type["data"]["msg"]
+    assert expected_msg in res["data"]["msg"].lower()

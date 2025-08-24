@@ -1,6 +1,4 @@
-from httpx import AsyncClient
 import pytest
-
 from src.constants.reg import REG_CBC_HMAC
 from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
@@ -9,7 +7,7 @@ URL = "/user/manage-account"
 
 
 @pytest.mark.asyncio
-async def ok_t(api: AsyncClient) -> None:
+async def test_manage_account_ok(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -24,30 +22,35 @@ async def ok_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def err_invalid_t(api: AsyncClient) -> None:
-    res_register = await register_ok_lib(api)
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("invalid_password", 401, "invalid password"),
+        ("expired_access", 401, "access_token_expired"),
+    ],
+)
+async def test_manage_account_invalid_cases(
+    api, case, expected_code, expected_msg
+) -> None:
+    payload = {}
+    access_token = ""
 
-    res_err = await wrap_httpx(
+    if case == "invalid_password":
+        res_register = await register_ok_lib(api)
+        payload = {"password": res_register["payload"]["password"][4:]}
+        access_token = res_register["access_token"]
+
+    elif case == "expired_access":
+        res_tokens = await get_tokens_lib(api, reverse=True)
+        payload = {"password": res_tokens["payload"]["password"]}
+        access_token = res_tokens["access_token"]
+
+    res = await wrap_httpx(
         api,
         url=URL,
-        data={"password": res_register["payload"]["password"][4:]},
-        access_token=res_register["access_token"],
-        expected_code=401,
+        data=payload,
+        access_token=access_token,
+        expected_code=expected_code,
     )
 
-    assert "invalid password" in res_err["data"]["msg"]
-
-
-@pytest.mark.asyncio
-async def err_expired_t(api: AsyncClient) -> None:
-    res_tokens = await get_tokens_lib(api, reverse=True)
-
-    res_err = await wrap_httpx(
-        api,
-        url=URL,
-        data={"password": res_tokens["payload"]["password"]},
-        access_token=res_tokens["access_token"],
-        expected_code=401,
-    )
-
-    assert "ACCESS_TOKEN_EXPIRED" in res_err["data"]["msg"]
+    assert expected_msg in res["data"]["msg"].lower()
