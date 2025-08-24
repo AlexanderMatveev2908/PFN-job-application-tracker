@@ -3,6 +3,10 @@ from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.user.middleware.manage_account import manage_account_mdw
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
+from src.middleware.combo.idx import (
+    ComboCheckJwtCbcBodyReturnT,
+    combo_check_jwt_cbc_hmac_body_mdw,
+)
 from src.models.token import GenTokenReturnT, TokenT
 from src.models.user import UserDcT
 
@@ -25,5 +29,12 @@ async def get_access_account_ctrl(
         )
 
 
-async def TFA_ctrl(req: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def TFA_ctrl(
+    _: Request,
+    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=True, token_t=TokenT.MANAGE_ACC
+        )
+    ),
+) -> ResAPI:
+    return ResAPI.ok_200(**result_combo)

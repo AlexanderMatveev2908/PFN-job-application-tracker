@@ -9,7 +9,7 @@ from src.lib.hashing.idx import check_pwd
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
-    combo_check_bd_jwt_bcb_hmac_mdw,
+    combo_check_jwt_cbc_hmac_body_mdw,
 )
 from src.models.token import TokenT
 from src.models.user import User
@@ -18,7 +18,7 @@ from src.models.user import User
 async def change_pwd_ctrl(
     _: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_bd_jwt_bcb_hmac_mdw(
+        combo_check_jwt_cbc_hmac_body_mdw(
             model=PwdFormT, token_t=TokenT.MANAGE_ACC, check_jwt=True
         )
     ),
@@ -47,7 +47,7 @@ async def change_pwd_ctrl(
 async def change_email_ctrl(
     _: Request,
     combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_bd_jwt_bcb_hmac_mdw(
+        combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=True, token_t=TokenT.MANAGE_ACC, model=EmailFormT
         )
     ),

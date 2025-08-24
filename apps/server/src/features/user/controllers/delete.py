@@ -6,7 +6,7 @@ from src.decorators.res import ResAPI
 from src.lib.db.idx import get_us_by_id
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcReturnT,
-    combo_check_bd_jwt_bcb_hmac_mdw,
+    combo_check_jwt_cbc_hmac_body_mdw,
 )
 from src.models.token import TokenT
 
@@ -14,7 +14,7 @@ from src.models.token import TokenT
 async def delete_account_ctrl(
     req: Request,
     result_cbc: ComboCheckJwtCbcReturnT = Depends(
-        combo_check_bd_jwt_bcb_hmac_mdw(
+        combo_check_jwt_cbc_hmac_body_mdw(
             token_t=TokenT.MANAGE_ACC,
             check_jwt=True,
         )

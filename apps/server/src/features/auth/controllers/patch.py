@@ -5,7 +5,7 @@ from src.lib.cookies import gen_refresh_cookie
 from src.lib.validators.idx import PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
-    combo_check_bd_jwt_bcb_hmac_mdw,
+    combo_check_jwt_cbc_hmac_body_mdw,
 )
 from src.models.token import TokenT
 
@@ -13,7 +13,7 @@ from src.models.token import TokenT
 async def recover_pwd_ctrl(
     _: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_bd_jwt_bcb_hmac_mdw(
+        combo_check_jwt_cbc_hmac_body_mdw(
             model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
         )
     ),
