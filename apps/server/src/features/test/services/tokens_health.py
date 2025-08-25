@@ -19,7 +19,7 @@ async def tokens_health_svc(
     async with db_trx() as trx:
 
         expired: str | list[str] | None = parsed_q.get("expired")
-        verify_user: bool = parsed_q["verify_user"]
+        verify_user: bool | None = parsed_q.get("verify_user")
 
         if expired is None:
             expired = []
