@@ -7,7 +7,7 @@ from src.middleware.check_jwt import check_jwt_search_us_mdw
 from src.models.user import User, UserDcT
 
 
-async def manage_account_mdw(req: Request) -> UserDcT:
+async def get_access_account_mdw(req: Request) -> UserDcT:
     us = cast(User, await check_jwt_search_us_mdw(req, inst=True))
 
     result = await check_form_mdw(PwdFormT, req)
