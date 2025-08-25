@@ -19,7 +19,7 @@ async def tokens_health_svc(
 
         await clear_old_tokens(trx, us.id)
 
-        access_token, result_jwe = await gen_tokens_session(
+        result_tokens = await gen_tokens_session(
             user_id=us.id, trx=trx, reverse=reverse
         )
 
@@ -31,7 +31,7 @@ async def tokens_health_svc(
         )
 
         return {
-            "access_token": access_token,
-            "refresh_token": result_jwe["client_token"],
+            "access_token": result_tokens["access_token"],
+            "refresh_token": result_tokens["result_jwe"]["client_token"],
             "cbc_hmac_token": result_cbc_hmac["client_token"],
         }

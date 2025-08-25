@@ -69,15 +69,17 @@ async def confirm_new_email_ctrl(
 
         us.toggle_mails()
 
-        access_token, result_jwe = await gen_tokens_session(
+        result_tokens = await gen_tokens_session(
             trx=trx,
             user_id=result_cbc["user_d"]["id"],
         )
 
         return ResAPI.ok_200(
             msg="email updated successfully",
-            access_token=access_token,
+            access_token=result_tokens["access_token"],
             cookies=[
-                gen_refresh_cookie(refresh_token=result_jwe["client_token"])
+                gen_refresh_cookie(
+                    refresh_token=result_tokens["result_jwe"]["client_token"]
+                )
             ],
         )

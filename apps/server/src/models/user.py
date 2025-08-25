@@ -20,6 +20,7 @@ class UserDcT(TypedDict):
     password: str
     terms: bool
     is_verified: bool
+    totp_secret: str | None
 
 
 class User(RootTable):

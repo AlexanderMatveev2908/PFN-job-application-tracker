@@ -38,15 +38,3 @@ def check_basic_cbc_shape_lib(v: str | None) -> str:
         raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
 
     return v
-
-
-class CbcHmacFormT(BaseModel):
-    cbc_hmac_token: str | None = Field(default=None, validate_default=True)
-
-    @field_validator("cbc_hmac_token")
-    def _check_token(cls, v: str) -> str:
-        return check_basic_cbc_shape_lib(v)
-
-
-class PairCbcHmacPwdFormT(PwdFormT, CbcHmacFormT):
-    pass

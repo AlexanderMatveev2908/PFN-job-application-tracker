@@ -113,7 +113,7 @@ async def gen_cbc_hmac(
 
     await trx.execute(
         delete(Token).where(
-            (Token.user_id == user_id) & (Token.token_t == hdr["token_t"])
+            (Token.user_id == user_id) & (Token.token_t == token_t)
         )
     )
 

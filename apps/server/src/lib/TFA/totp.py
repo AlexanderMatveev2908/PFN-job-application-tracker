@@ -17,5 +17,6 @@ def gen_totp_secret(user_email: str) -> GenTotpSecretReturnT:
 
 
 def check_totp(secret: str, user_code: str) -> bool:
+
     totp = pyotp.TOTP(secret)
     return totp.verify(user_code, valid_window=1)

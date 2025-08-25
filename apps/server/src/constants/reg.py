@@ -30,4 +30,6 @@ REG_JWT = re.compile(
 
 REG_SECRET_TOTP = re.compile(r"^[A-Z2-7]{32}$")
 
+REG_TOTP_CODE = re.compile(r"^\d{6}$")
+
 REG_BACKUP_CODE = re.compile(r"^[A-Z0-9]{4}-[A-Z0-9]{4}$")

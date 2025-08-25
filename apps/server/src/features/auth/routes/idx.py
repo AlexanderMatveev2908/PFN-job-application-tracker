@@ -2,7 +2,9 @@ from fastapi import APIRouter, Depends
 
 from src.features.auth.controllers.patch import recover_pwd_ctrl
 from src.features.auth.controllers.post import (
+    login_backup_code_ctrl,
     login_ctrl,
+    login_totp_ctrl,
     refresh_token_ctrl,
     register_ctrl,
 )
@@ -30,6 +32,20 @@ auth_router.add_api_route(
     recover_pwd_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+auth_router.add_api_route(
+    "/login-totp",
+    login_totp_ctrl,
+    methods=["POST"],
+    dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
+)
+
+auth_router.add_api_route(
+    "/login-backup-code",
+    login_backup_code_ctrl,
+    methods=["POST"],
+    dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
 )
 
 auth_router.add_api_route(

@@ -1,4 +1,4 @@
-from typing import Any, Awaitable, Callable, Type, TypeVar, TypedDict, cast
+from typing import Any, Awaitable, Callable, Type, TypedDict, cast
 
 from fastapi import Request
 from pydantic import BaseModel
@@ -9,9 +9,7 @@ from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
 from src.middleware.check_form import check_form_mdw
 from src.middleware.check_jwt import check_jwt_mdw
 from src.models.token import CheckTokenWithUsReturnT, TokenT
-
-
-FormT = TypeVar("FormT", bound=BaseModel)
+from src.my_types.idx import FormT
 
 
 class ComboCheckJwtCbcReturnT(TypedDict):

@@ -1,11 +1,9 @@
 import json
-from typing import Type, TypeVar
+from typing import Type
 from fastapi import Request
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 from src.decorators.err import ErrAPI
-
-
-FormT = TypeVar("FormT", bound=BaseModel)
+from src.my_types.idx import FormT
 
 
 async def check_form_mdw(
