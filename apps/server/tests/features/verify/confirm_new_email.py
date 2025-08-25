@@ -1,8 +1,8 @@
 import os
 import pytest
+from src.__dev_only.payloads import RegisterPayloadT
 from src.constants.reg import REG_JWE, REG_JWT
 from src.models.token import TokenT
-from tests.conf.constants import RegisterPayloadT
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 

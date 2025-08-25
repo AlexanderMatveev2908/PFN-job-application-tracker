@@ -1,5 +1,5 @@
 import pytest
-from tests.conf.constants import get_payload_register
+from src.__dev_only.payloads import get_payload_register
 from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.etc import login_ok_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx

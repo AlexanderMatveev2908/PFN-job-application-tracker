@@ -1,8 +1,8 @@
 from typing import TypedDict, cast
 from httpx import AsyncClient
+from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.models.token import TokenT
-from tests.conf.constants import RegisterPayloadT, get_payload_register
 from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
 
