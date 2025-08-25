@@ -37,6 +37,9 @@ async def ok_t(api: AsyncClient) -> None:
     [
         ("jwt_expired", 401, "access_token_expired"),
         ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
+        ("jwt_invalid", 401, "access_token_invalid"),
+        ("cbc_hmac_invalid", 401, "cbc_hmac_invalid"),
+        ("cbc_hmac_wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
 async def bad_cases_t(
@@ -48,14 +51,24 @@ async def bad_cases_t(
         expired=(
             [case.split("_expired")[0]] if case.endswith("_expired") else []
         ),
-        token_t=TokenT.MANAGE_ACC,
+        token_t=TokenT[
+            "CHANGE_EMAIL" if "cbc_hmac_wrong_type" == case else "MANAGE_ACC"
+        ],
     )
 
+    jwt: str = res_us["access_token"]
+    cbc_hmac: str = res_us["cbc_hmac_token"]
+
+    if case.endswith("_invalid"):
+        if "jwt" in case:
+            jwt = jwt[:-4] + "aaaa"
+        elif "cbc_hmac" in case:
+            cbc_hmac = cbc_hmac[:-4] + "aaaa"
     err_res = await wrap_httpx(
         api,
         url=URL,
-        access_token=res_us["access_token"],
-        data={"cbc_hmac_token": res_us["cbc_hmac_token"]},
+        access_token=jwt,
+        data={"cbc_hmac_token": cbc_hmac},
         expected_code=expected_code,
         method="PATCH",
     )
