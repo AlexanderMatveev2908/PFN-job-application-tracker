@@ -6,12 +6,12 @@ export const registerSchema = z
     first_name: z
       .string()
       .min(1, "First Name is required")
-      .max(50, "Max length exceeded")
+      .max(100, "Max length exceeded")
       .regex(REG_NAME, "Invalid characters"),
     last_name: z
       .string()
       .min(1, "Last Name is required")
-      .max(50, "Max length exceeded")
+      .max(100, "Max length exceeded")
       .regex(REG_NAME, "Invalid characters"),
 
     email: z
