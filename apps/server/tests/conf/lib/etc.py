@@ -6,7 +6,6 @@ from src.models.token import TokenT
 from src.models.user import UserDcT
 from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
-from urllib.parse import urlencode
 
 
 class SuccessReqTokensReturnT(TypedDict):
@@ -92,15 +91,11 @@ async def get_verified_user_lib(
     expired: list[str] = [],
 ) -> GetVerifiedUserReturnT:
 
-    params: dict[str, str | list[str]] = {"cbc_hmac_t": token_t.value}
-    params.update({"expired": expired}) if expired else None
-
-    url = f"/test/get-verified-user?{urlencode(params, doseq=True)}"
-
     res = await wrap_httpx(
         api,
-        url=url,
-        method="GET",
+        url="/test/get-verified-user",
+        method="POST",
+        data={"cbc_hmac_t": token_t.value, "expired": expired},
         expected_code=201,
     )
 

@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from src.features.test.controllers.get import (
     get_msg_ctrl,
     get_protected_data_ctrl,
-    get_verified_user_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
 from ..controllers.post import (
     get_err_ctrl,
+    get_verified_user_ctrl,
     post_form_ctrl,
     post_msg_ctrl,
     tokens_expired_ctrl,
@@ -34,7 +34,7 @@ router_test.add_api_route(
 )
 
 router_test.add_api_route(
-    "/get-verified-user", get_verified_user_ctrl, methods=["GET"]
+    "/get-verified-user", get_verified_user_ctrl, methods=["POST"]
 )
 
 router_test.add_api_route(
