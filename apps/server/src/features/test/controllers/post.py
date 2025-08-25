@@ -1,8 +1,6 @@
 import asyncio
 import json
-from typing import cast
 from fastapi import Depends, Request
-from src.__dev_only.payloads import get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -16,12 +14,9 @@ from src.lib.data_structure import dest_d, pick
 from src.lib.etc import parse_bd
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
-from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us, gen_cbc_hmac
-from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
+from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import check_jwt_lib
-from src.models.token import GenTokenReturnT, TokenT
-from src.models.user import User
 
 
 async def post_form_ctrl(req: Request) -> ResAPI:
@@ -91,41 +86,3 @@ async def get_err_ctrl(req: Request) -> ResAPI:
                 raise ErrAPI(msg="unknown action", status=400)
 
     return ResAPI.ok_200(payload=payload)
-
-
-async def get_verified_user_ctrl(req: Request) -> ResAPI:
-    payload = get_payload_register()
-    filtered = pick(obj=cast(dict, payload), keys_off=["confirm_password"])
-
-    bd = await req.json()
-    token_t = TokenT(bd["cbc_hmac_t"])
-    expired = bd["expired"]
-
-    async with db_trx() as trx:
-        user = User(**filtered, is_verified=True)
-
-        trx.add(user)
-        await trx.flush([user])
-        await trx.refresh(user)
-
-        tokens_sessions: TokensSessionsReturnT = await gen_tokens_session(
-            trx=trx, user_id=user.id, expired=expired
-        )
-        cbc_res: GenTokenReturnT = await gen_cbc_hmac(
-            token_t=token_t,
-            trx=trx,
-            user_id=user.id,
-            reverse="cbc_hmac" in expired,
-        )
-
-        return ResAPI.ok_201(
-            cbc_hmac_token=cbc_res["client_token"],
-            access_token=tokens_sessions["access_token"],
-            user=user.to_d(),
-            payload=payload,
-            cookies=[
-                gen_refresh_cookie(
-                    tokens_sessions["result_jwe"]["client_token"]
-                )
-            ],
-        )

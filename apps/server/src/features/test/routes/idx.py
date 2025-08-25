@@ -6,7 +6,6 @@ from src.features.test.controllers.get import (
 from src.middleware.rate_limiter import rate_limit_mdw
 from ..controllers.post import (
     get_err_ctrl,
-    get_verified_user_ctrl,
     post_form_ctrl,
     post_msg_ctrl,
     tokens_health_ctrl,
@@ -32,9 +31,6 @@ router_test.add_api_route(
     methods=["POST"],
 )
 
-router_test.add_api_route(
-    "/get-verified-user", get_verified_user_ctrl, methods=["POST"]
-)
 
 router_test.add_api_route(
     "/tokens-health",
