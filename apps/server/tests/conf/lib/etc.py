@@ -94,6 +94,9 @@ async def get_tokens_lib(
     assert REG_CBC_HMAC.fullmatch(res_tokens["data"]["cbc_hmac_token"])
     assert REG_ID.fullmatch(res_tokens["data"]["user"]["id"])
 
+    if verify_user:
+        assert res_tokens["data"]["user"]["is_verified"]
+
     return {
         "user": res_tokens["data"]["user"],
         "access_token": res_tokens["data"]["access_token"],

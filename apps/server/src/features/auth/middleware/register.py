@@ -14,10 +14,10 @@ from src.middleware.check_form import check_form_mdw
 
 class RegisterForm(EmailFormT, PwdFormT):
     first_name: str = Field(
-        min_length=1, max_length=50, pattern=REG_NAME.pattern
+        min_length=1, max_length=100, pattern=REG_NAME.pattern
     )
     last_name: str = Field(
-        min_length=1, max_length=50, pattern=REG_NAME.pattern
+        min_length=1, max_length=100, pattern=REG_NAME.pattern
     )
 
     confirm_password: str = Field(min_length=1, max_length=100)
