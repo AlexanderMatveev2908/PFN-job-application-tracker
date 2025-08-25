@@ -76,3 +76,11 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
             msg = err.msg if isinstance(err, ErrAPI) else str(err)
 
             return ResAPI.err_401(msg=msg, clear_cookies=["refresh_token"])
+
+
+async def login_totp_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
+
+
+async def login_backup_code_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
