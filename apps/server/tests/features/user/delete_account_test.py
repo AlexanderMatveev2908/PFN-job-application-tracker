@@ -2,6 +2,7 @@ import pytest
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib, login_ok_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
+from httpx import AsyncClient
 
 URL = "/user/delete-account?cbc_hmac_token="
 
@@ -40,7 +41,7 @@ async def test_delete_account_ok(api) -> None:
     ],
 )
 async def test_delete_account_invalid_cases(
-    api, case, expected_code, expected_msg
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload_url = ""
     access_token = ""

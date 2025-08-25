@@ -16,11 +16,13 @@ async def gen_tokens_session(
     user_id: str | uuid.UUID,
     trx: AsyncSession,
     reverse: bool = False,
+    expired: list[str] = [],
     **kwargs: Any,
 ) -> TokensSessionsReturnT:
+    access_token: str = gen_jwt(user_id, reverse=reverse or "jwt" in expired)
+
     result_jwe: GenTokenReturnT = await gen_jwe(
-        user_id=user_id, trx=trx, reverse=reverse
+        user_id=user_id, trx=trx, reverse=reverse or "jwe" in expired
     )
-    access_token: str = gen_jwt(user_id, reverse=reverse)
 
     return {"access_token": access_token, "result_jwe": result_jwe}

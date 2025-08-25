@@ -1,5 +1,6 @@
 from typing import Literal
-from tests.conf.constants import RegisterPayloadT
+
+from src.__dev_only.payloads import RegisterPayloadT
 
 
 def extract_login_payload(

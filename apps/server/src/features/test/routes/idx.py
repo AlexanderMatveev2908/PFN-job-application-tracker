@@ -8,7 +8,6 @@ from ..controllers.post import (
     get_err_ctrl,
     post_form_ctrl,
     post_msg_ctrl,
-    tokens_expired_ctrl,
     tokens_health_ctrl,
 )
 
@@ -32,15 +31,10 @@ router_test.add_api_route(
     methods=["POST"],
 )
 
+
 router_test.add_api_route(
     "/tokens-health",
     tokens_health_ctrl,
-    methods=["POST"],
-)
-
-router_test.add_api_route(
-    "/get-tokens-expired",
-    tokens_expired_ctrl,
     methods=["POST"],
 )
 

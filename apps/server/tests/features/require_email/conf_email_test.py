@@ -1,6 +1,7 @@
 import pytest
 from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
+from httpx import AsyncClient
 
 URL = "/require-email/confirm-email"
 
@@ -29,7 +30,7 @@ async def test_require_email_ok(api) -> None:
     ],
 )
 async def test_require_email_invalid_cases(
-    api, case, expected_code, expected_msg
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload: dict | None = None
 

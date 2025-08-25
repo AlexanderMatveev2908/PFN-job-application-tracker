@@ -27,8 +27,8 @@ class UserDcT(TypedDict):
 class User(RootTable):
     __tablename__ = "users"
 
-    first_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(
         String(254), nullable=False, unique=True, index=True
     )

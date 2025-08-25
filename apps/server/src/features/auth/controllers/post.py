@@ -1,4 +1,3 @@
-from typing import cast
 from fastapi import Depends, Request
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
@@ -18,7 +17,6 @@ from src.features.auth.services.register import (
     register_user_svc,
 )
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
@@ -37,7 +35,7 @@ async def register_ctrl(
     result: RegisterSvcReturnT = await register_user_svc(user_data)
 
     return ResAPI.ok_201(
-        **pick(obj=cast(dict, result), keys_off=["refresh_token"]),
+        access_token=result["access_token"],
         cookies=[
             gen_refresh_cookie(result["refresh_token"]),
         ],

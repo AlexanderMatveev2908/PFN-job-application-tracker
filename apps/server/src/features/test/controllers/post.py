@@ -50,23 +50,13 @@ async def tokens_health_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
-    res = await tokens_health_svc(user_data, token_t=get_query_token_t(req))
+    res = await tokens_health_svc(
+        user_data, token_t=get_query_token_t(req), parsed_q=req.state.parsed_q
+    )
 
     return ResAPI.ok_200(
         **pick(res, keys_off=["refresh_token"]),
         cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])],
-    )
-
-
-async def tokens_expired_ctrl(
-    req: Request, user_data: RegisterFormT = Depends(register_mdw)
-) -> ResAPI:
-    res = await tokens_health_svc(
-        user_data, token_t=get_query_token_t(req), reverse=True
-    )
-
-    return ResAPI.ok_200(
-        **res, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
     )
 
 

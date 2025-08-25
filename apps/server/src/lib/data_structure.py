@@ -3,8 +3,12 @@ import json
 import re
 from typing import Any, Optional
 import uuid
-from src.constants.data_structure import BoolParser
 from src.decorators.err import ErrAPI
+
+
+class BoolParser(Enum):
+    TRUE = True
+    FALSE = False
 
 
 def parse_bool(v: str) -> bool | str:
