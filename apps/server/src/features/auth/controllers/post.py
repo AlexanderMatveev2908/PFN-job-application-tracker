@@ -11,9 +11,8 @@ from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
 from src.features.auth.services.register import register_user_svc
 from src.lib.TFA.totp import check_totp
-from src.lib.algs.fernet import check_fernet
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import h_to_b, pick
+from src.lib.data_structure import pick
 from src.lib.hashing.idx import check_argon
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
@@ -97,15 +96,11 @@ async def login_totp_ctrl(
     ),
 ) -> ResAPI:
 
-    decrypted_secret = check_fernet(
-        encrypted=h_to_b(
-            cast(str, result_combo["cbc_hmac_result"]["user_d"]["totp_secret"])
-        )
-    )
-    secret_b_32 = decrypted_secret.decode()
-
     result_totp = check_totp(
-        secret=secret_b_32, user_code=result_combo["body"]["totp_code"]
+        secret=cast(
+            str, result_combo["cbc_hmac_result"]["user_d"]["totp_secret"]
+        ),
+        user_code=result_combo["body"]["totp_code"],
     )
 
     if not result_totp:
