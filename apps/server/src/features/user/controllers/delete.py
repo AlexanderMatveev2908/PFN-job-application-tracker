@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from sqlalchemy import text
+from sqlalchemy import delete
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
@@ -8,7 +8,8 @@ from src.middleware.combo.idx import (
     ComboCheckJwtCbcReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
 )
-from src.models.token import TokenT
+from src.models.backup_code import BackupCode
+from src.models.token import Token, TokenT
 
 
 async def delete_account_ctrl(
@@ -26,9 +27,10 @@ async def delete_account_ctrl(
             trx, result_cbc["cbc_hmac_result"]["user_d"]["id"]
         )
 
+        await trx.execute(delete(Token).where(Token.user_id == us.id))
+
         await trx.execute(
-            text("DELETE FROM tokens AS tk " "WHERE tk.user_id = :user_id"),
-            {"user_id": us.id},
+            delete(BackupCode).where(BackupCode.user_id == us.id)
         )
 
         await trx.delete(
