@@ -1,8 +1,9 @@
 from typing import TypedDict, cast
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
-from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
+from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
 from src.models.token import TokenT
+from src.models.user import UserDcT
 from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
 
@@ -78,3 +79,29 @@ async def get_tokens_lib(
         "cbc_hmac_token": res_register["data"]["cbc_hmac_token"],
         "payload": payload,
     }
+
+
+class GetVerifiedUserReturnT(SuccessReqTokensReturnT):
+    user: UserDcT
+
+
+async def gen_verified_user_lib(
+    api: AsyncClient, token_t: TokenT = TokenT.MANAGE_ACC
+) -> GetVerifiedUserReturnT:
+    res = await wrap_httpx(
+        api,
+        url=f"/test/get-verified-user?cbc_hmac_t={token_t.value}",  # noqa: E501
+        method="GET",
+        expected_code=201,
+    )
+
+    assert REG_JWT.fullmatch(res["data"]["access_token"])
+    assert REG_CBC_HMAC.fullmatch(res["data"]["cbc_hmac_token"])
+    assert REG_JWE.fullmatch(res["refresh_token"])
+    assert REG_ID.fullmatch(res["data"]["user"]["id"])
+    assert res["data"]["payload"]["email"] == res["data"]["user"]["email"]
+
+    return cast(
+        GetVerifiedUserReturnT,
+        {**res["data"], "refresh_token": res["refresh_token"]},
+    )

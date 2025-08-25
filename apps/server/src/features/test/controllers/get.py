@@ -45,10 +45,11 @@ async def get_verified_user_ctrl(req: Request) -> ResAPI:
             token_t=token_t, trx=trx, user_id=user.id
         )
 
-        return ResAPI.ok_200(
+        return ResAPI.ok_201(
             cbc_hmac_token=cbc_res["client_token"],
             access_token=tokens_sessions["access_token"],
-            new_user=user.to_d(),
+            user=user.to_d(),
+            payload=filtered,
             cookies=[
                 gen_refresh_cookie(
                     tokens_sessions["result_jwe"]["client_token"]
