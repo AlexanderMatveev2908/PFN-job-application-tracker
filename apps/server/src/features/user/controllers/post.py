@@ -24,7 +24,11 @@ async def get_access_account_ctrl(
         result_cbc: GenTokenReturnT = await gen_cbc_hmac(
             trx=trx,
             user_id=us["id"],
-            token_t=TokenT.MANAGE_ACC,
+            token_t=(
+                TokenT.MANAGE_ACC
+                if not us["totp_secret"]
+                else TokenT.MANAGE_ACC_2FA
+            ),
         )
 
         return ResAPI.ok_200(

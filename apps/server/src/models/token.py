@@ -23,6 +23,7 @@ class TokenT(Enum):
     CHANGE_PWD = "CHANGE_PWD"
     MANAGE_ACC = "MANAGE_ACC"
     LOGIN_2FA = "LOGIN_2FA"
+    MANAGE_ACC_2FA = "MANAGE_ACC_2FA"
 
 
 class AlgT(Enum):
