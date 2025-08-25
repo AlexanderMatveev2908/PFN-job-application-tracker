@@ -42,9 +42,10 @@ def combo_check_jwt_cbc_hmac_body_mdw(
 
         data: dict | None = None
 
-        is_body = model and issubclass(model, BaseModel)
+        exists_body = req.method not in ["GET", "DELETE"]
+        need_check_body_form = model and issubclass(model, BaseModel)
 
-        if is_body:
+        if exists_body or need_check_body_form:
             try:
                 data = await req.json()
             except Exception:
@@ -62,12 +63,12 @@ def combo_check_jwt_cbc_hmac_body_mdw(
                 token=token, trx=trx, token_t=token_t
             )
 
-            if is_body:
+            if need_check_body_form:
                 await check_form_mdw(model=cast(Type[FormT], model), data=data)
 
             result = {"body": data, "cbc_hmac_result": result_cbc_hmac}
 
-            if is_body:
+            if need_check_body_form:
                 return cast(ComboCheckJwtCbcBodyReturnT, result)
             else:
                 return cast(ComboCheckJwtCbcReturnT, result)

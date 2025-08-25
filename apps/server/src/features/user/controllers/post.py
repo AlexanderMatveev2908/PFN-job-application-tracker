@@ -1,14 +1,22 @@
 from fastapi import Depends, Request
+from sqlalchemy import func, select
 from src.conf.db import db_trx
+from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.features.user.middleware.manage_account import manage_account_mdw
+from src.features.user.middleware.manage_account import get_access_account_mdw
+from src.lib.TFA.backup import gen_backup_codes
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
+from src.middleware.combo.idx import (
+    ComboCheckJwtCbcReturnT,
+    combo_check_jwt_cbc_hmac_body_mdw,
+)
+from src.models.backup_code import BackupCode
 from src.models.token import GenTokenReturnT, TokenT
 from src.models.user import UserDcT
 
 
 async def get_access_account_ctrl(
-    req: Request, us: UserDcT = Depends(manage_account_mdw)
+    req: Request, us: UserDcT = Depends(get_access_account_mdw)
 ) -> ResAPI:
 
     async with db_trx() as trx:
@@ -23,3 +31,33 @@ async def get_access_account_ctrl(
             msg="verification successful",
             cbc_hmac_token=result_cbc["client_token"],
         )
+
+
+async def new_backup_codes_ctrl(
+    req: Request,
+    result_combo: ComboCheckJwtCbcReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            token_t=TokenT.MANAGE_ACC,
+            check_jwt=True,
+        )
+    ),
+) -> ResAPI:
+
+    us_id: str = result_combo["cbc_hmac_result"]["user_d"]["id"]
+
+    async with db_trx() as trx:
+
+        existent_count = (
+            await trx.execute(
+                select(func.count())
+                .select_from(BackupCode)
+                .where(BackupCode.user_id == us_id)
+            )
+        ).scalar_one()
+
+        if existent_count:
+            raise ErrAPI(msg="user already has backup codes", status=409)
+
+        result_codes = await gen_backup_codes(trx=trx, us_id=us_id)
+
+    return ResAPI.ok_200(backup_codes=result_codes["backup_codes_client"])
