@@ -13,12 +13,24 @@ from src.models.token import GenTokenReturnT, TokenT
 async def tokens_health_svc(
     user_data: RegisterFormT,
     token_t: TokenT,
+    parsed_q: dict[str, Any],
     reverse: bool = False,
-    expired: list[str] = [],
 ) -> Any:
     async with db_trx() as trx:
 
+        expired: str | list[str] | None = parsed_q.get("expired")
+        verify_user: bool = parsed_q["verify_user"]
+
+        if expired is None:
+            expired = []
+        elif isinstance(expired, str):
+            expired = [expired]
+
         us = await handle_user_lib(user_data, trx)
+
+        if verify_user:
+            us.is_verified = True
+        await trx.refresh(us)
 
         await clear_old_tokens(trx, us.id)
 
@@ -34,6 +46,7 @@ async def tokens_health_svc(
         )
 
         return {
+            "user": us,
             "access_token": result_tokens["access_token"],
             "refresh_token": result_tokens["result_jwe"]["client_token"],
             "cbc_hmac_token": result_cbc_hmac["client_token"],

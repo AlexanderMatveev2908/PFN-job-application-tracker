@@ -61,14 +61,22 @@ async def get_tokens_lib(
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
     expired: list[str] = [],
+    verify_user: bool = False,
 ) -> SuccessReqTokensReturnT:
     payload = existing_payload or get_payload_register()
 
-    params: dict = {"cbc_hmac_token_t": cbc_hmac_t.value, "expired": expired}
+    if reverse:
+        expired = ["jwt", "jwe", "cbc_hmac"]
+
+    params: dict = {
+        "cbc_hmac_token_t": cbc_hmac_t.value,
+        "expired": expired,
+        "verify_user": verify_user,
+    }
 
     res_register = await wrap_httpx(
         api,
-        url=f"/test/{'get-tokens-expired' if reverse else 'tokens-health'}?{urlencode(params, doseq=True)}",  # noqa: E501
+        url=f"/test/tokens-health?{urlencode(params, doseq=True)}",  # noqa: E501
         data=payload,
         expected_code=200,
     )
