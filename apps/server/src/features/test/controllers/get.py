@@ -4,7 +4,7 @@ from src.__dev_only.payloads import get_payload_register
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import pick
+from src.lib.data_structure import parse_bool, pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.check_jwt import check_jwt_search_us_mdw
@@ -28,7 +28,9 @@ async def get_protected_data_ctrl(
 async def get_verified_user_ctrl(req: Request) -> ResAPI:
     payload = get_payload_register()
     filtered = pick(obj=cast(dict, payload), keys_off=["confirm_password"])
+
     token_t = TokenT(req.query_params.get("cbc_hmac_t"))
+    reverse = cast(bool, parse_bool(req.query_params["reverse"]))
 
     async with db_trx() as trx:
         user = User(**filtered, is_verified=True)
@@ -38,11 +40,10 @@ async def get_verified_user_ctrl(req: Request) -> ResAPI:
         await trx.refresh(user)
 
         tokens_sessions: TokensSessionsReturnT = await gen_tokens_session(
-            trx=trx,
-            user_id=user.id,
+            trx=trx, user_id=user.id, reverse=reverse
         )
         cbc_res: GenTokenReturnT = await gen_cbc_hmac(
-            token_t=token_t, trx=trx, user_id=user.id
+            token_t=token_t, trx=trx, user_id=user.id, reverse=reverse
         )
 
         return ResAPI.ok_201(

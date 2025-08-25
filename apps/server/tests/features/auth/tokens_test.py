@@ -1,8 +1,10 @@
 import re
+from typing import Callable
 import pytest
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
+from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
@@ -38,7 +40,11 @@ async def test_tokens_ok(api) -> None:
     ],
 )
 async def test_tokens_invalid_cases(
-    api, case, act, mutate, expected_msg
+    api: AsyncClient,
+    case: str,
+    act: str,
+    mutate: Callable[[str], str],
+    expected_msg: str,
 ) -> None:
     reverse = case.startswith("expired")
     res_tokens = await get_tokens_lib(api, reverse=reverse)

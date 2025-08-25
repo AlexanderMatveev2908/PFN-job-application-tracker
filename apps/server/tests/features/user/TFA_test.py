@@ -2,7 +2,7 @@ from httpx import AsyncClient
 import pytest
 
 from src.constants.reg import REG_SECRET_TOTP
-from tests.conf.lib.etc import gen_verified_user_lib
+from tests.conf.lib.etc import GetVerifiedUserReturnT, get_verified_user_lib
 from tests.conf.lib.idx import wrap_httpx
 
 URL = "/user/2FA"
@@ -10,14 +10,14 @@ URL = "/user/2FA"
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res = await gen_verified_user_lib(api)
+    res_us: GetVerifiedUserReturnT = await get_verified_user_lib(api)
 
     res_2FA = await wrap_httpx(
         api,
         url=URL,
         method="PATCH",
-        access_token=res["access_token"],
-        data={"cbc_hmac_token": res["cbc_hmac_token"]},
+        access_token=res_us["access_token"],
+        data={"cbc_hmac_token": res_us["cbc_hmac_token"]},
         expected_code=200,
     )
 
@@ -27,7 +27,25 @@ async def ok_t(api: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("case, expected_code, expected_msg", [])
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [("cbc_expired", 401, "access_token_expired")],
+)
 async def bad_cases_t(
-    api: AsyncClient, case, expected_code, expected_msg
-) -> None: ...
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
+) -> None:
+
+    res_us: GetVerifiedUserReturnT = await get_verified_user_lib(
+        api, reverse=case.endswith("_expired")
+    )
+
+    res_2FA = await wrap_httpx(
+        api,
+        url=URL,
+        method="PATCH",
+        access_token=res_us["access_token"],
+        data={"cbc_hmac_token": res_us["cbc_hmac_token"]},
+        expected_code=expected_code,
+    )
+
+    assert expected_msg in res_2FA["data"]["msg"].lower()

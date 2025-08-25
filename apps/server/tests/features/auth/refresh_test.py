@@ -3,6 +3,7 @@ from src.constants.reg import REG_JWT
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
+from httpx import AsyncClient
 
 URL_SENS = "/test/protected"
 URL_REF = "/auth/refresh"
@@ -42,7 +43,9 @@ async def test_refresh_ok(api) -> None:
         "refresh_token_expired",
     ],
 )
-async def test_refresh_invalid_cases(api, expected_msg) -> None:
+async def test_refresh_invalid_cases(
+    api: AsyncClient, expected_msg: str
+) -> None:
     await get_tokens_lib(api, reverse=True)
 
     res_err = await wrap_httpx(

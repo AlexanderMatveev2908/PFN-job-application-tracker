@@ -1,14 +1,15 @@
 import pytest
-from src.__dev_only.payloads import get_payload_register
+from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from tests.conf.lib.etc import register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
-
+from httpx import AsyncClient
+from typing import Callable
 
 URL = "/auth/register"
 
 
 @pytest.mark.asyncio
-async def test_register_ok(api) -> None:
+async def test_register_ok(api: AsyncClient) -> None:
     await register_ok_lib(api)
 
 
@@ -40,7 +41,10 @@ async def test_register_ok(api) -> None:
     ],
 )
 async def test_register_invalid_cases(
-    api, gen_payload, expected_code, expected_msg
+    api: AsyncClient,
+    gen_payload: Callable[[], RegisterPayloadT],
+    expected_code: int,
+    expected_msg: str,
 ) -> None:
     payload = gen_payload()
 

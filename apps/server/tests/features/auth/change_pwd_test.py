@@ -4,6 +4,7 @@ from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
+from httpx import AsyncClient
 
 URL = "/auth/recover-pwd"
 
@@ -40,7 +41,7 @@ async def test_recover_pwd_ok(api) -> None:
     ],
 )
 async def test_recover_pwd_invalid_cases(
-    api, case, expected_code, expected_msg
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     new_pwd = gen_pwd(n=5)
 

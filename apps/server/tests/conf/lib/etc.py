@@ -85,12 +85,14 @@ class GetVerifiedUserReturnT(SuccessReqTokensReturnT):
     user: UserDcT
 
 
-async def gen_verified_user_lib(
-    api: AsyncClient, token_t: TokenT = TokenT.MANAGE_ACC
+async def get_verified_user_lib(
+    api: AsyncClient,
+    token_t: TokenT = TokenT.MANAGE_ACC,
+    reverse: bool = False,
 ) -> GetVerifiedUserReturnT:
     res = await wrap_httpx(
         api,
-        url=f"/test/get-verified-user?cbc_hmac_t={token_t.value}",  # noqa: E501
+        url=f"/test/get-verified-user?cbc_hmac_t={token_t.value}&reverse={reverse}",  # noqa: E501
         method="GET",
         expected_code=201,
     )
