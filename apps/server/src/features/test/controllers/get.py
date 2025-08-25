@@ -4,7 +4,7 @@ from src.__dev_only.payloads import get_payload_register
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import parse_bool, pick
+from src.lib.data_structure import pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.check_jwt import check_jwt_search_us_mdw
@@ -30,7 +30,15 @@ async def get_verified_user_ctrl(req: Request) -> ResAPI:
     filtered = pick(obj=cast(dict, payload), keys_off=["confirm_password"])
 
     token_t = TokenT(req.query_params.get("cbc_hmac_t"))
-    reverse = cast(bool, parse_bool(req.query_params["reverse"]))
+
+    expired_raw: str | list[str] | None = req.state.parsed_q.get("expired")
+
+    if expired_raw is None:
+        expired: list[str] = []
+    elif isinstance(expired_raw, list):
+        expired = expired_raw
+    else:
+        expired = [expired_raw]
 
     async with db_trx() as trx:
         user = User(**filtered, is_verified=True)
@@ -40,17 +48,20 @@ async def get_verified_user_ctrl(req: Request) -> ResAPI:
         await trx.refresh(user)
 
         tokens_sessions: TokensSessionsReturnT = await gen_tokens_session(
-            trx=trx, user_id=user.id, reverse=reverse
+            trx=trx, user_id=user.id, expired=expired
         )
         cbc_res: GenTokenReturnT = await gen_cbc_hmac(
-            token_t=token_t, trx=trx, user_id=user.id, reverse=reverse
+            token_t=token_t,
+            trx=trx,
+            user_id=user.id,
+            reverse="cbc_hmac" in expired,
         )
 
         return ResAPI.ok_201(
             cbc_hmac_token=cbc_res["client_token"],
             access_token=tokens_sessions["access_token"],
             user=user.to_d(),
-            payload=filtered,
+            payload=payload,
             cookies=[
                 gen_refresh_cookie(
                     tokens_sessions["result_jwe"]["client_token"]
