@@ -1,5 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
+from sqlalchemy import text
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -110,6 +111,20 @@ async def login_totp_ctrl(
     async with db_trx() as trx:
         tokens_session = await gen_tokens_session(
             user_id=result_combo["cbc_hmac_result"]["user_d"]["id"], trx=trx
+        )
+
+        await trx.execute(
+            text(
+                """
+                DELETE FROM tokens
+                    WHERE user_id = :user_id
+                    AND token_t = :token_t
+                """
+            ),
+            {
+                "user_id": result_combo["cbc_hmac_result"]["user_d"]["id"],
+                "token_t": TokenT.LOGIN_2FA.value,
+            },
         )
 
         return ResAPI.ok_200(
