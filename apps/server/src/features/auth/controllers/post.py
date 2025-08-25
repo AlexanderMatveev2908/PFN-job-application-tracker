@@ -4,15 +4,20 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
+from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
 from src.features.auth.services.register import register_user_svc
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import parse_id, pick
+from src.lib.data_structure import pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
+from src.middleware.combo.idx import (
+    ComboCheckJwtCbcBodyReturnT,
+    combo_check_jwt_cbc_hmac_body_mdw,
+)
 from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 
@@ -44,7 +49,6 @@ async def login_ctrl(
             )
             return ResAPI.ok_200(
                 cbc_hmac_token=cbc_hmac_result["client_token"],
-                user_id=parse_id(us.id),
             )
 
         tokens_session = await gen_tokens_session(user_id=us.id, trx=trx)
@@ -78,8 +82,15 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
             return ResAPI.err_401(msg=msg, clear_cookies=["refresh_token"])
 
 
-async def login_totp_ctrl(req: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def login_totp_ctrl(
+    req: Request,
+    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=False, model=TotpFormT, token_t=TokenT.LOGIN_2FA
+        )
+    ),
+) -> ResAPI:
+    return ResAPI.ok_200(**result_combo)
 
 
 async def login_backup_code_ctrl(req: Request) -> ResAPI:
