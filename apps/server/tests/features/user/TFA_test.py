@@ -4,6 +4,7 @@ import pytest
 from src.constants.reg import REG_SECRET_TOTP
 from src.models.token import TokenT
 from tests.conf.lib.etc import (
+    get_tokens_lib,
     get_verified_user_lib,
 )
 from tests.conf.lib.idx import wrap_httpx
@@ -40,21 +41,31 @@ async def ok_t(api: AsyncClient) -> None:
         ("jwt_invalid", 401, "access_token_invalid"),
         ("cbc_hmac_invalid", 401, "cbc_hmac_invalid"),
         ("cbc_hmac_wrong_type", 401, "cbc_hmac_wrong_type"),
+        ("not_verified", 403, "user must be verified to set up 2fa"),
     ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
 
-    res_us = await get_verified_user_lib(
-        api,
-        expired=(
-            [case.split("_expired")[0]] if case.endswith("_expired") else []
-        ),
-        token_t=TokenT[
-            "CHANGE_EMAIL" if "cbc_hmac_wrong_type" == case else "MANAGE_ACC"
-        ],
-    )
+    if case != "not_verified":
+        res_us = await get_verified_user_lib(
+            api,
+            expired=(
+                [case.split("_expired")[0]]
+                if case.endswith("_expired")
+                else []
+            ),
+            token_t=TokenT[
+                (
+                    "CHANGE_EMAIL"
+                    if "cbc_hmac_wrong_type" == case
+                    else "MANAGE_ACC"
+                )
+            ],
+        )
+    else:
+        res_us = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
 
     jwt: str = res_us["access_token"]
     cbc_hmac: str = res_us["cbc_hmac_token"]
@@ -64,6 +75,7 @@ async def bad_cases_t(
             jwt = jwt[:-4] + "aaaa"
         elif "cbc_hmac" in case:
             cbc_hmac = cbc_hmac[:-4] + "aaaa"
+
     err_res = await wrap_httpx(
         api,
         url=URL,
