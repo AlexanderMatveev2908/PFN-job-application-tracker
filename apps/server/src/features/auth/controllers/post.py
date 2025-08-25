@@ -1,10 +1,11 @@
 from typing import cast
 from fastapi import Depends, Request
-from sqlalchemy import text
+from sqlalchemy import select, text
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
+from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
@@ -13,6 +14,7 @@ from src.lib.TFA.totp import check_totp
 from src.lib.algs.fernet import check_fernet
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import h_to_b, pick
+from src.lib.hashing.idx import check_argon
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
@@ -21,6 +23,7 @@ from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
 )
+from src.models.backup_code import BackupCode
 from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 
@@ -86,7 +89,7 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
 
 
 async def login_totp_ctrl(
-    req: Request,
+    _: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=False, model=TotpFormT, token_t=TokenT.LOGIN_2FA
@@ -137,5 +140,82 @@ async def login_totp_ctrl(
         )
 
 
-async def login_backup_code_ctrl(req: Request) -> ResAPI:
-    return ResAPI.ok_200()
+async def login_backup_code_ctrl(
+    _: Request,
+    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            model=BackupCodeFormT, token_t=TokenT.LOGIN_2FA, check_jwt=False
+        )
+    ),
+) -> ResAPI:
+
+    async with db_trx() as trx:
+
+        backup_codes = cast(
+            list[BackupCode],
+            (
+                await trx.execute(
+                    select(BackupCode).from_statement(
+                        text(
+                            """
+                            SELECT *
+                                FROM backup_codes bc
+                                WHERE bc.user_id = :user_id
+                            """
+                        )
+                    ),
+                    {
+                        "user_id": result_combo["cbc_hmac_result"]["user_d"][
+                            "id"
+                        ]
+                    },
+                )
+            )
+            .scalars()
+            .all(),
+        )
+
+        if not backup_codes:
+            return ResAPI.err_401(msg="user has no backup codes")
+
+        found_code: BackupCode | None = None
+
+        for bc in backup_codes:
+            if await check_argon(
+                hashed=bc.code,
+                plain=result_combo["body"]["backup_code"],
+            ):
+                found_code = bc
+                break
+
+        if not found_code:
+            return ResAPI.err_401(msg="BACKUP_CODE_INVALID")
+
+        await trx.delete(found_code)
+
+        await trx.execute(
+            text(
+                """
+                DELETE FROM tokens
+                    WHERE user_id = :user_id
+                    AND token_t = :token_t
+                """
+            ),
+            {
+                "user_id": result_combo["cbc_hmac_result"]["user_d"]["id"],
+                "token_t": TokenT.LOGIN_2FA.value,
+            },
+        )
+
+        result_tokens = await gen_tokens_session(
+            trx=trx,
+            user_id=result_combo["cbc_hmac_result"]["user_d"]["id"],
+        )
+
+        return ResAPI.ok_200(
+            access_token=result_tokens["access_token"],
+            backup_codes_left=len(backup_codes) - 1,
+            cookies=[
+                gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
+            ],
+        )
