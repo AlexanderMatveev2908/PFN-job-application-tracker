@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, Self, TypedDict, cast
 from sqlalchemy import Boolean, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
+from src.lib.TFA.totp import check_totp_lib
 from src.lib.hashing.idx import check_argon, hash_argon
 from src.lib.logger import clg
 from src.models.root import RootTable
@@ -78,6 +79,9 @@ class User(RootTable):
         except Exception as err:
             clg(err, ttl="invalid password")
             return False
+
+    def check_totp(self, user_code: str) -> bool:
+        return check_totp_lib(secret=self.totp_secret, user_code=user_code)
 
     def verify_email(
         self,

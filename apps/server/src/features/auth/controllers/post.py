@@ -13,7 +13,10 @@ from src.features.auth.services.login_backup_code import (
     login_backup_code_svc,
 )
 from src.features.auth.services.login_totp import login_topt_svc
-from src.features.auth.services.register import register_user_svc
+from src.features.auth.services.register import (
+    RegisterSvcReturnT,
+    register_user_svc,
+)
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
@@ -31,7 +34,7 @@ async def register_ctrl(
     _: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
-    result = await register_user_svc(user_data)
+    result: RegisterSvcReturnT = await register_user_svc(user_data)
 
     return ResAPI.ok_201(
         **pick(obj=cast(dict, result), keys_off=["refresh_token"]),

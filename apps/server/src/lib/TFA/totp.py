@@ -1,6 +1,7 @@
 from typing import TypedDict
 import pyotp
 
+from src.decorators.err import ErrAPI
 from src.lib.algs.fernet import check_fernet
 from src.lib.data_structure import h_to_b
 
@@ -19,7 +20,11 @@ def gen_totp_secret(user_email: str) -> GenTotpSecretReturnT:
     return {"secret": secret, "uri": uri}
 
 
-def check_totp(secret: str | bytes, user_code: str) -> bool:
+def check_totp_lib(secret: str | bytes | None, user_code: str) -> bool:
+
+    if not secret:
+        raise ErrAPI(msg="missing user secret", status=409)
+
     secret_b: bytes = bytes()
 
     if isinstance(secret, str):
