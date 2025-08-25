@@ -24,3 +24,10 @@ async def ok_t(api: AsyncClient) -> None:
     assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
 
     assert len(res_2FA["data"]["backup_codes"]) == 8
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("case, expected_code, expected_msg", [])
+async def bad_cases_t(
+    api: AsyncClient, case, expected_code, expected_msg
+) -> None: ...
