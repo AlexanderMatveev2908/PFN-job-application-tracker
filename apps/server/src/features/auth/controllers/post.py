@@ -8,8 +8,10 @@ from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
 from src.features.auth.services.register import register_user_svc
+from src.lib.TFA.totp import check_totp
+from src.lib.algs.fernet import check_fernet
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import pick
+from src.lib.data_structure import h_to_b, pick
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
@@ -90,7 +92,34 @@ async def login_totp_ctrl(
         )
     ),
 ) -> ResAPI:
-    return ResAPI.ok_200(**result_combo)
+
+    decrypted_secret = check_fernet(
+        encrypted=h_to_b(
+            cast(str, result_combo["cbc_hmac_result"]["user_d"]["totp_secret"])
+        )
+    )
+    secret_b_32 = decrypted_secret.decode()
+
+    result_totp = check_totp(
+        secret=secret_b_32, user_code=result_combo["body"]["totp_code"]
+    )
+
+    if not result_totp:
+        return ResAPI.err_401(msg="TOTP_INVALID")
+
+    async with db_trx() as trx:
+        tokens_session = await gen_tokens_session(
+            user_id=result_combo["cbc_hmac_result"]["user_d"]["id"], trx=trx
+        )
+
+        return ResAPI.ok_200(
+            access_token=tokens_session["access_token"],
+            cookies=[
+                gen_refresh_cookie(
+                    refresh_token=tokens_session["result_jwe"]["client_token"]
+                )
+            ],
+        )
 
 
 async def login_backup_code_ctrl(req: Request) -> ResAPI:
