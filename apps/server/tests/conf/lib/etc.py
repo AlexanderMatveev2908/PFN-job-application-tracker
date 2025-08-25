@@ -1,4 +1,5 @@
 from typing import TypedDict, cast
+from urllib.parse import urlencode
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.constants.reg import REG_CBC_HMAC, REG_ID, REG_JWE, REG_JWT
@@ -59,12 +60,15 @@ async def get_tokens_lib(
     reverse: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
+    expired: list[str] = [],
 ) -> SuccessReqTokensReturnT:
     payload = existing_payload or get_payload_register()
 
+    params: dict = {"cbc_hmac_token_t": cbc_hmac_t.value, "expired": expired}
+
     res_register = await wrap_httpx(
         api,
-        url=f"/test/{'get-tokens-expired' if reverse else 'tokens-health'}?cbc_hmac_token_t={cbc_hmac_t.value}",  # noqa: E501
+        url=f"/test/{'get-tokens-expired' if reverse else 'tokens-health'}?{urlencode(params, doseq=True)}",  # noqa: E501
         data=payload,
         expected_code=200,
     )

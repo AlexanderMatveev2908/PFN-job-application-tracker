@@ -55,7 +55,16 @@ async def tokens_health_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
 
-    res = await tokens_health_svc(user_data, token_t=get_query_token_t(req))
+    expired: list[str] = req.state.parsed_q.get("expired")
+
+    if expired is None:
+        expired = []
+    elif isinstance(expired, str):
+        expired = [expired]
+
+    res = await tokens_health_svc(
+        user_data, token_t=get_query_token_t(req), expired=expired
+    )
 
     return ResAPI.ok_200(
         **pick(res, keys_off=["refresh_token"]),
@@ -66,8 +75,19 @@ async def tokens_health_ctrl(
 async def tokens_expired_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
 ) -> ResAPI:
+
+    expired: list[str] = req.state.parsed_q.get("expired")
+
+    if expired is None:
+        expired = []
+    elif isinstance(expired, str):
+        expired = [expired]
+
     res = await tokens_health_svc(
-        user_data, token_t=get_query_token_t(req), reverse=True
+        user_data,
+        token_t=get_query_token_t(req),
+        reverse=not expired,
+        expired=expired,
     )
 
     return ResAPI.ok_200(
