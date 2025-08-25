@@ -2,7 +2,7 @@ import re
 import pytest
 from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 
 URL = "/verify/confirm-email?cbc_hmac_token="
@@ -10,7 +10,7 @@ URL = "/verify/confirm-email?cbc_hmac_token="
 
 @pytest.mark.asyncio
 async def test_confirm_email_ok(api) -> None:
-    res_register = await register_ok_lib(api)
+    res_register = await get_tokens_lib(api)
 
     res_conf = await wrap_httpx(
         api,
@@ -37,7 +37,7 @@ async def test_confirm_email_invalid_cases(
     url = ""
 
     if case == "already_verified":
-        res_register = await register_ok_lib(api)
+        res_register = await get_tokens_lib(api)
 
         res_conf = await wrap_httpx(
             api,

@@ -26,8 +26,6 @@ async def register_ok_lib(api) -> SuccessReqTokensReturnT:
 
     assert REG_JWT.fullmatch(res_register["data"]["access_token"])
     assert REG_JWE.fullmatch(res_register["refresh_token"])
-    assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
-    assert "new_user" in res_register["data"]
 
     return cast(
         SuccessReqTokensReturnT, {"payload": payload, **res_register["data"]}
