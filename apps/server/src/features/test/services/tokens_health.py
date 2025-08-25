@@ -30,7 +30,8 @@ async def tokens_health_svc(
 
         if verify_user:
             us.is_verified = True
-        await trx.refresh(us)
+            await trx.flush([us])
+            await trx.refresh(us)
 
         await clear_old_tokens(trx, us.id)
 

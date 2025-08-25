@@ -1,4 +1,4 @@
-from typing import TypedDict, cast
+from typing import TypedDict
 from urllib.parse import urlencode
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
@@ -9,14 +9,21 @@ from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
 
 
-class SuccessReqTokensReturnT(TypedDict):
+class LoginOkReturnT(TypedDict):
     access_token: str
     refresh_token: str
-    cbc_hmac_token: str
+
+
+class RegisterOkLibReturnT(LoginOkReturnT):
     payload: RegisterPayloadT
 
 
-async def register_ok_lib(api) -> SuccessReqTokensReturnT:
+class SuccessReqTokensReturnT(RegisterOkLibReturnT):
+    user: UserDcT
+    cbc_hmac_token: str
+
+
+async def register_ok_lib(api) -> RegisterOkLibReturnT:
     payload = get_payload_register()
 
     res_register = await wrap_httpx(
@@ -29,13 +36,11 @@ async def register_ok_lib(api) -> SuccessReqTokensReturnT:
     assert REG_JWT.fullmatch(res_register["data"]["access_token"])
     assert REG_JWE.fullmatch(res_register["refresh_token"])
 
-    return cast(
-        SuccessReqTokensReturnT, {"payload": payload, **res_register["data"]}
-    )
-
-
-class LoginOkReturnT(TypedDict):
-    access_token: str
+    return {
+        "payload": payload,
+        "access_token": res_register["data"]["access_token"],
+        "refresh_token": res_register["refresh_token"],
+    }
 
 
 async def login_ok_lib(
@@ -52,7 +57,10 @@ async def login_ok_lib(
     assert REG_JWE.fullmatch(res_login["refresh_token"])
     assert REG_JWT.fullmatch(res_login["data"]["access_token"])
 
-    return {"access_token": res_login["data"]["access_token"]}
+    return {
+        "access_token": res_login["data"]["access_token"],
+        "refresh_token": res_login["refresh_token"],
+    }
 
 
 async def get_tokens_lib(
@@ -74,50 +82,35 @@ async def get_tokens_lib(
         "verify_user": verify_user,
     }
 
-    res_register = await wrap_httpx(
+    res_tokens = await wrap_httpx(
         api,
         url=f"/test/tokens-health?{urlencode(params, doseq=True)}",  # noqa: E501
         data=payload,
         expected_code=200,
     )
 
-    assert REG_JWT.fullmatch(res_register["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_register["refresh_token"])
-    assert REG_CBC_HMAC.fullmatch(res_register["data"]["cbc_hmac_token"])
+    assert REG_JWT.fullmatch(res_tokens["data"]["access_token"])
+    assert REG_JWE.fullmatch(res_tokens["refresh_token"])
+    assert REG_CBC_HMAC.fullmatch(res_tokens["data"]["cbc_hmac_token"])
+    assert REG_ID.fullmatch(res_tokens["data"]["user"]["id"])
 
     return {
-        "access_token": res_register["data"]["access_token"],
-        "refresh_token": res_register["refresh_token"],
-        "cbc_hmac_token": res_register["data"]["cbc_hmac_token"],
+        "user": res_tokens["data"]["user"],
+        "access_token": res_tokens["data"]["access_token"],
+        "refresh_token": res_tokens["refresh_token"],
+        "cbc_hmac_token": res_tokens["data"]["cbc_hmac_token"],
         "payload": payload,
     }
-
-
-class GetVerifiedUserReturnT(SuccessReqTokensReturnT):
-    user: UserDcT
 
 
 async def get_verified_user_lib(
     api: AsyncClient,
     token_t: TokenT = TokenT.MANAGE_ACC,
     expired: list[str] = [],
-) -> GetVerifiedUserReturnT:
+) -> SuccessReqTokensReturnT:
 
-    res = await wrap_httpx(
-        api,
-        url="/test/get-verified-user",
-        method="POST",
-        data={"cbc_hmac_t": token_t.value, "expired": expired},
-        expected_code=201,
+    res = await get_tokens_lib(
+        api, cbc_hmac_t=token_t, expired=expired, verify_user=True
     )
 
-    assert REG_JWT.fullmatch(res["data"]["access_token"])
-    assert REG_CBC_HMAC.fullmatch(res["data"]["cbc_hmac_token"])
-    assert REG_JWE.fullmatch(res["refresh_token"])
-    assert REG_ID.fullmatch(res["data"]["user"]["id"])
-    assert res["data"]["payload"]["email"] == res["data"]["user"]["email"]
-
-    return cast(
-        GetVerifiedUserReturnT,
-        {**res["data"], "refresh_token": res["refresh_token"]},
-    )
+    return res

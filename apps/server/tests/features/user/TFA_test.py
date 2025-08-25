@@ -4,7 +4,6 @@ import pytest
 from src.constants.reg import REG_SECRET_TOTP
 from src.models.token import TokenT
 from tests.conf.lib.etc import (
-    GetVerifiedUserReturnT,
     get_verified_user_lib,
 )
 from tests.conf.lib.idx import wrap_httpx
@@ -14,7 +13,7 @@ URL = "/user/2FA"
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_us: GetVerifiedUserReturnT = await get_verified_user_lib(
+    res_us = await get_verified_user_lib(
         api,
     )
 
@@ -44,7 +43,7 @@ async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
 
-    res_us: GetVerifiedUserReturnT = await get_verified_user_lib(
+    res_us = await get_verified_user_lib(
         api,
         expired=(
             [case.split("_expired")[0]] if case.endswith("_expired") else []
