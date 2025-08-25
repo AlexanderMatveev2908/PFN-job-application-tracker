@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, TypedDict
 import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -7,7 +7,9 @@ from src.lib.tokens.jwt import gen_jwt
 from src.models.token import GenTokenReturnT
 
 
-TokensSessionsReturnT = tuple[str, GenTokenReturnT]
+class TokensSessionsReturnT(TypedDict):
+    access_token: str
+    result_jwe: GenTokenReturnT
 
 
 async def gen_tokens_session(
@@ -16,7 +18,9 @@ async def gen_tokens_session(
     reverse: bool = False,
     **kwargs: Any,
 ) -> TokensSessionsReturnT:
-    result_jwe = await gen_jwe(user_id=user_id, trx=trx, reverse=reverse)
+    result_jwe: GenTokenReturnT = await gen_jwe(
+        user_id=user_id, trx=trx, reverse=reverse
+    )
     access_token: str = gen_jwt(user_id, reverse=reverse)
 
-    return (access_token, result_jwe)
+    return {"access_token": access_token, "result_jwe": result_jwe}

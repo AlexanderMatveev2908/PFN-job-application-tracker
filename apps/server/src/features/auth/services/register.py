@@ -38,7 +38,7 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         await trx.flush([new_user])
         await trx.refresh(new_user)
 
-        access_token, result_jwe = await gen_tokens_session(
+        result_tokens = await gen_tokens_session(
             user_id=new_user.id,
             trx=trx,
         )
@@ -50,7 +50,7 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
 
         return {
             "new_user": new_user.to_d(exclude_keys=["password"]),
-            "access_token": access_token,
-            "refresh_token": result_jwe["client_token"],
+            "access_token": result_tokens["access_token"],
+            "refresh_token": result_tokens["result_jwe"]["client_token"],
             "cbc_hmac_token": cbc_hmac_res["client_token"],
         }

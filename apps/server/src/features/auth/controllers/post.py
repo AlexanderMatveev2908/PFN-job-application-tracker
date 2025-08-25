@@ -33,13 +33,13 @@ async def login_ctrl(
     _: Request, login_data: LoginForm = Depends(login_mdw)
 ) -> ResAPI:
 
-    access_token, jwe_result = cast(
-        TokensSessionsReturnT, await login_svc(login_data)
-    )
+    result_tokens = cast(TokensSessionsReturnT, await login_svc(login_data))
 
     return ResAPI.ok_200(
-        access_token=access_token,
-        cookies=[gen_refresh_cookie(jwe_result["client_token"])],
+        access_token=result_tokens["access_token"],
+        cookies=[
+            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
+        ],
     )
 
 

@@ -19,10 +19,12 @@ async def recover_pwd_ctrl(
     ),
 ) -> ResAPI:
 
-    access_token, refresh_result = await change_pwd_svc(result_combo)
+    result_tokens = await change_pwd_svc(result_combo)
 
     return ResAPI.ok_200(
         msg="password updated",
-        access_token=access_token,
-        cookies=[gen_refresh_cookie(refresh_result["client_token"])],
+        access_token=result_tokens["access_token"],
+        cookies=[
+            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
+        ],
     )

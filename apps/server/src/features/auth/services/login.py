@@ -12,9 +12,7 @@ async def login_svc(login_data: LoginForm) -> TokensSessionsReturnT:
         if not us:
             raise ErrAPI(msg="user not found", status=404)
 
-        res_argon = await us.check_pwd(login_data.password)
-
-        if not res_argon:
+        if not await us.check_pwd(login_data.password):
             raise ErrAPI(msg="invalid credentials", status=401)
 
         return await gen_tokens_session(user_id=us.id, trx=trx)
