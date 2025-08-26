@@ -1,5 +1,7 @@
+from typing import cast
 from httpx import AsyncClient
 import pytest
+from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import get_aad_cbc_hmac
 from tests.conf.lib.idx import wrap_httpx
@@ -37,13 +39,18 @@ async def ok_t(api: AsyncClient) -> None:
         res_backup["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC
     )
 
+    assert res_backup["data"]["backup_codes_left"] == 7
+
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "case, expected_code, expected_msg",
-    [("wrong_pwd", 401, "invalid password")],
+    [
+        ("wrong_pwd", 401, "invalid password"),
+        ("wrong_code", 401, "backup_code_invalid"),
+    ],
 )
-async def base_cases_t(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     res_logged = await get_logged_2fa(api)
@@ -61,3 +68,18 @@ async def base_cases_t(
     if case == "wrong_pwd":
         assert expected_msg in res_pwd["data"]["msg"]
         return
+
+    code = cast(list, grab(cast(dict, res_logged), "backup_codes"))[0]
+
+    res_backup = await wrap_httpx(
+        api,
+        url="/user/manage-account-2FA-backup-code",
+        access_token=res_logged["access_token"],
+        expected_code=expected_code,
+        data={
+            "cbc_hmac_token": grab(cast(dict, res_pwd), "cbc_hmac_token"),
+            "backup_code": "12345" if case == "wrong_code" else code,
+        },
+    )
+
+    assert expected_msg in res_backup["data"]["msg"]
