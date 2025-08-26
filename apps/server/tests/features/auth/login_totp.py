@@ -5,13 +5,13 @@ import pytest
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
-from tests.conf.lib.etc import TokenArgT, get_tokens_lib, get_user_2FA
+from tests.conf.lib.etc import TokenArgT, get_tokens_lib, get_us_2FA
 from tests.conf.lib.idx import wrap_httpx
 
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_2FA = await get_user_2FA(api)
+    res_2FA = await get_us_2FA(api)
 
     res_login = await wrap_httpx(
         api,
@@ -57,7 +57,7 @@ async def ok_t(api: AsyncClient) -> None:
 async def base_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    res_us_2FA = await get_user_2FA(api)
+    res_us_2FA = await get_us_2FA(api)
 
     res_tokens = await get_tokens_lib(
         api,
