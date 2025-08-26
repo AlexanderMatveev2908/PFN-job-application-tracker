@@ -68,34 +68,38 @@ async def confirm_new_email_ctrl(
             User, await get_us_by_id(trx=trx, us_id=result_cbc["user_d"]["id"])
         )
 
-        if not us.totp_secret:
+        await trx.execute(
+            delete(Token).where(
+                (Token.user_id == result_cbc["user_d"]["id"])
+                & (Token.token_t == TokenT.CHANGE_EMAIL)
+            )
+        )
 
-            us.toggle_mails()
-
-            result_tokens = await gen_tokens_session(
+        if us.totp_secret:
+            cbc_hmac_res = await gen_cbc_hmac(
                 trx=trx,
-                user_id=result_cbc["user_d"]["id"],
+                user_id=us.id,
+                token_t=TokenT.CHANGE_EMAIL_2FA,
             )
 
             return ResAPI.ok_200(
-                msg="email updated successfully",
-                access_token=result_tokens["access_token"],
-                cookies=[
-                    gen_refresh_cookie(
-                        refresh_token=result_tokens["result_jwe"][
-                            "client_token"
-                        ]
-                    )
-                ],
+                msg="email verified",
+                cbc_hmac_token=cbc_hmac_res["client_token"],
             )
 
-        cbc_hmac_res = await gen_cbc_hmac(
+        us.toggle_mails()
+
+        result_tokens = await gen_tokens_session(
             trx=trx,
-            user_id=us.id,
-            token_t=TokenT.CONF_EMAIL_2FA,
+            user_id=result_cbc["user_d"]["id"],
         )
 
         return ResAPI.ok_200(
             msg="email updated successfully",
-            cbc_hmac_token=cbc_hmac_res["client_token"],
+            access_token=result_tokens["access_token"],
+            cookies=[
+                gen_refresh_cookie(
+                    refresh_token=result_tokens["result_jwe"]["client_token"]
+                )
+            ],
         )

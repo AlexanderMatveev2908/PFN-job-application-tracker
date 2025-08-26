@@ -58,7 +58,7 @@ def get_now() -> int:
 
 
 def grab(
-    d: dict[str, Any],
+    d: Any,
     key: str,
     parent: str | None = None,
     was_under: bool = False,
