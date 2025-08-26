@@ -7,9 +7,8 @@ from src.models.token import TokenT
 from tests.conf.lib.etc import (
     TokenArgT,
     get_tokens_lib,
-    get_us_2FA,
-    get_verified_user_lib,
 )
+from tests.conf.lib.get_us import get_us_2FA, get_verified_user_lib
 from tests.conf.lib.idx import wrap_httpx
 
 URL = "/user/2FA"

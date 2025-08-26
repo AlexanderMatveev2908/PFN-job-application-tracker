@@ -3,7 +3,7 @@ import pytest
 
 from src.constants.reg import REG_CBC_HMAC, REG_JWT
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import get_us_2FA
+from tests.conf.lib.get_us import get_us_2FA
 from tests.conf.lib.idx import wrap_httpx
 
 

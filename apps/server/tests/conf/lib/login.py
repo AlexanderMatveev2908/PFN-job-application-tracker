@@ -5,7 +5,7 @@ from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import get_us_2FA
+from tests.conf.lib.get_us import get_us_2FA
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.types import GetUser2FAReturnT, LoginOkReturnT
 
