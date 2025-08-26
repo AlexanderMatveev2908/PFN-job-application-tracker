@@ -20,7 +20,7 @@ async def login_backup_code_svc(
         result_backup_code = await check_backup_code(
             trx,
             us_id=result_combo["cbc_hmac_result"]["user_d"]["id"],
-            backup_code=result_combo["body"]["bacjup_code"],
+            backup_code=result_combo["body"]["backup_code"],
         )
 
         await trx.execute(
