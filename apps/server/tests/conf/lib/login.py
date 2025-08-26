@@ -1,9 +1,9 @@
 from httpx import AsyncClient
-import pyotp
 from src.__dev_only.payloads import RegisterPayloadT
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
+    gen_totp,
     get_aad_cbc_hmac,
     extract_login_payload,
 )
@@ -40,20 +40,22 @@ async def get_logged_2fa(
 
     res_login = await wrap_httpx(
         api,
-        url="/auth/login-totop",
+        url="/auth/login",
         data=extract_login_payload(res_us_2fa["payload"]),
         expected_code=200,
     )
 
-    assert REG_CBC_HMAC.fullmatch(res_login["data"]["cbc_hmac_token"])
-    get_aad_cbc_hmac(
-        token=res_login["data"]["cbc_hmac_t"], token_t=TokenT.LOGIN_2FA
-    )
+    login_token = res_login["data"]["cbc_hmac_token"]
+    get_aad_cbc_hmac(token=login_token, token_t=TokenT.LOGIN_2FA)
+    assert REG_CBC_HMAC.fullmatch(login_token)
 
     res_login_2fa = await wrap_httpx(
         api,
-        url="/auth/lgoin-totp",
-        data={"totp_code": pyotp.TOTP(res_us_2fa["totp_secret"]).now()},
+        url="/auth/login-totp",
+        data={
+            "totp_code": gen_totp(res_us_2fa["totp_secret"]),
+            "cbc_hmac_token": login_token,
+        },
         expected_code=200,
     )
 

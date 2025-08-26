@@ -1,5 +1,7 @@
 from typing import Literal, cast
 
+import pyotp
+
 from src.__dev_only.payloads import RegisterPayloadT
 from src.lib.data_structure import b_to_d, h_to_b
 from src.lib.tokens.cbc_hmac import AadT
@@ -21,3 +23,7 @@ def get_aad_cbc_hmac(token: str, token_t: TokenT) -> AadT:
     assert TokenT(parsed["token_t"]) == token_t
 
     return cast(AadT, parsed)
+
+
+def gen_totp(totp_secret: str) -> str:
+    return pyotp.TOTP(totp_secret).now()
