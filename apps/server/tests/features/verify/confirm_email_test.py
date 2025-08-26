@@ -1,7 +1,7 @@
 import re
 import pytest
-from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import get_aad_cbc_hmac
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -51,9 +51,11 @@ async def test_confirm_email_invalid_cases(
         res_tokens = await get_tokens_lib(
             api, existing_payload=res_register["payload"]
         )
-        aad_d = b_to_d(h_to_b((res_tokens["cbc_hmac_token"]).split(".")[0]))
-        assert TokenT(aad_d["token_t"]) == TokenT.CONF_EMAIL
-        assert aad_d["user_id"] == res_conf["data"]["updated_user"]["id"]
+
+        parsed = get_aad_cbc_hmac(
+            token=res_tokens["cbc_hmac_token"], token_t=TokenT.CONF_EMAIL
+        )
+        assert parsed["user_id"] == res_conf["data"]["updated_user"]["id"]
 
         url = f'{URL}{res_tokens["cbc_hmac_token"]}'
 
