@@ -12,6 +12,14 @@ So I built a proper application to:
 
 ## 🧱 Tech Stack
 
+The name **PFN** comes from the core stack that powers the project:
+
+- **P** → **PostgreSQL** for relational database storage
+- **F** → **FastAPI** for the backend REST API
+- **N** → **Next.js (App Router)** for the client-side application
+
+Together they form a clean, modern **full-stack architecture** 🚀
+
 ### 🖥️ **Client**
 
 - **Next.js** (App Router) — Framework for React with built-in SSR, ISR, routing, and SEO optimization

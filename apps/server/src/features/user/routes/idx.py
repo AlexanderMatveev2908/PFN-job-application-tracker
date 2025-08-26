@@ -61,7 +61,7 @@ user_router.add_api_route(
 )
 
 user_router.add_api_route(
-    "/manage-account-2FA",
+    "/manage-account-2FA-totp",
     get_access_manage_account_TFA_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
