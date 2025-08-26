@@ -7,7 +7,7 @@ from src.models.token import TokenT
 from tests.conf.lib.etc import (
     TokenArgT,
     get_tokens_lib,
-    get_user_2FA,
+    get_us_2FA,
     get_verified_user_lib,
 )
 from tests.conf.lib.idx import wrap_httpx
@@ -17,7 +17,7 @@ URL = "/user/2FA"
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    await get_user_2FA(api)
+    await get_us_2FA(api)
 
 
 @pytest.mark.asyncio
