@@ -18,7 +18,6 @@ async def tokens_health_svc(
     user_data: RegisterFormT,
     token_t: TokenT,
     parsed_q: dict[str, Any],
-    reverse: bool = False,
 ) -> Any:
     async with db_trx() as trx:
 
@@ -46,14 +45,14 @@ async def tokens_health_svc(
         await trx.execute(delete(Token).where(Token.user_id == us.id))
 
         result_tokens = await gen_tokens_session(
-            user_id=us.id, trx=trx, reverse=reverse, expired=expired
+            user_id=us.id, trx=trx, expired=expired
         )
 
         result_cbc_hmac: GenTokenReturnT = await gen_cbc_hmac(
             user_id=us.id,
             token_t=token_t,
             trx=trx,
-            reverse=reverse or "cbc_hmac" in expired,
+            reverse="cbc_hmac" in expired,
         )
 
         return {
