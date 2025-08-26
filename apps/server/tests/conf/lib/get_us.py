@@ -67,7 +67,6 @@ async def get_us_with_2FA(
         api,
         url=f"/test/get-user-2FA?{urlencode(params, doseq=True)}",
         expected_code=200,
-        method="GET",
     )
 
     assert REG_JWT.fullmatch(grab(res, "access_token"))

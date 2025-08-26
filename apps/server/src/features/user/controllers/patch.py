@@ -1,8 +1,4 @@
-import io
 from typing import cast
-import uuid
-import zipfile
-import aiofiles
 from fastapi import Depends, Request
 from fastapi.responses import StreamingResponse
 
@@ -10,8 +6,8 @@ from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.require_email.services.combo import gen_token_send_email_svc
 from src.features.user.services.TFA import TFA_svc
+from src.features.user.services.TFA_zip import TFA_zip_svc
 from src.lib.db.idx import get_us_by_email, get_us_by_id
-from src.lib.system import APP_DIR
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -122,30 +118,12 @@ async def TFA_zip_ctrl(
         codes: list[str] = result_svc["backup_codes_result"][
             "backup_codes_client"
         ]
-        formatted: str = "\n".join(
-            " ".join(codes[i : i + 2])  # noqa: E203
-            for i in range(0, len(codes), 2)
+
+        buf = await TFA_zip_svc(
+            backup_codes=codes,
+            binary_qr_code=result_svc["qrcode_result"]["binary"],
+            totp_secret=result_svc["secret_result"]["secret"],
         )
-
-        buf = io.BytesIO()
-
-        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-            zf.writestr(
-                "backup_codes.txt",
-                formatted,
-            )
-            zf.writestr(
-                "otp_secret.txt", result_svc["secret_result"]["secret"]
-            )
-            zf.writestr(
-                "qrcode.png",
-                result_svc["qrcode_result"]["binary"],
-            )
-
-        p = APP_DIR / "assets" / f"{uuid.uuid4()}.zip"
-        async with aiofiles.open(p, "wb") as f:
-            buf.seek(0)
-            await f.write(buf.read())
 
         return StreamingResponse(
             buf,

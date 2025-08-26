@@ -6,6 +6,7 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
+from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
     check_cbc_hmac_with_us_mdw,
@@ -66,6 +67,25 @@ async def confirm_new_email_ctrl(
         us = cast(
             User, await get_us_by_id(trx=trx, us_id=result_cbc["user_d"]["id"])
         )
+
+        await trx.execute(
+            delete(Token).where(
+                (Token.user_id == result_cbc["user_d"]["id"])
+                & (Token.token_t == TokenT.CHANGE_EMAIL)
+            )
+        )
+
+        if us.totp_secret:
+            cbc_hmac_res = await gen_cbc_hmac(
+                trx=trx,
+                user_id=us.id,
+                token_t=TokenT.CHANGE_EMAIL_2FA,
+            )
+
+            return ResAPI.ok_200(
+                msg="email verified",
+                cbc_hmac_token=cbc_hmac_res["client_token"],
+            )
 
         us.toggle_mails()
 

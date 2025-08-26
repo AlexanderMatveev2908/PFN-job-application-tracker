@@ -104,13 +104,14 @@ def upgrade() -> None:
         sa.Column(
             "token_t",
             sa.Enum(
+                "LOGIN_2FA",
                 "REFRESH",
                 "CONF_EMAIL",
                 "RECOVER_PWD",
                 "CHANGE_EMAIL",
+                "CHANGE_EMAIL_2FA",
                 "CHANGE_PWD",
                 "MANAGE_ACC",
-                "LOGIN_2FA",
                 "MANAGE_ACC_2FA",
                 name="token_type",
             ),
