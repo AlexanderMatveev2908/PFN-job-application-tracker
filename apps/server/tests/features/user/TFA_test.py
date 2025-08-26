@@ -21,9 +21,9 @@ async def ok_t(api: AsyncClient) -> None:
 @pytest.mark.parametrize(
     "case, expected_code, expected_msg",
     [
-        ("jwt_expired", 401, "access_token_expired"),
+        ("jwt_expired", 401, "jwt_expired"),
         ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
-        ("jwt_invalid", 401, "access_token_invalid"),
+        ("jwt_invalid", 401, "jwt_invalid"),
         ("cbc_hmac_invalid", 401, "cbc_hmac_invalid"),
         ("cbc_hmac_wrong_type", 401, "cbc_hmac_wrong_type"),
         ("not_verified", 403, "user must be verified to set up 2fa"),

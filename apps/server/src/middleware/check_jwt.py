@@ -17,7 +17,7 @@ def extract_jwt(req: Request) -> str:
     ]
 
     if not (token := (splitted[0] if splitted else None)):
-        raise ErrAPI(msg="ACCESS_TOKEN_NOT_PROVIDED", status=401)
+        raise ErrAPI(msg="jwt_not_provided", status=401)
 
     return token
 

@@ -46,7 +46,7 @@ async def test_change_pwd_ok(api) -> None:
     [
         ("same_pwd", 400, "new password must be different from old one"),
         ("invalid_cbc", 401, "cbc_hmac_invalid"),
-        ("expired_access", 401, "access_token_expired"),
+        ("expired_access", 401, "jwt_expired"),
         ("expired_cbc", 401, "cbc_hmac_expired"),
     ],
 )

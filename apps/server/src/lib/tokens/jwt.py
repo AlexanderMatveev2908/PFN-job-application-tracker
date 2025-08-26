@@ -33,6 +33,6 @@ def check_jwt_lib(token: str, dirty: bool = False) -> PayloadT:
 
         return decoded
     except jwt.ExpiredSignatureError:
-        raise ErrAPI(msg="ACCESS_TOKEN_EXPIRED", status=401)
+        raise ErrAPI(msg="jwt_expired", status=401)
     except jwt.InvalidTokenError:
-        raise ErrAPI(msg="ACCESS_TOKEN_INVALID", status=401)
+        raise ErrAPI(msg="jwt_invalid", status=401)

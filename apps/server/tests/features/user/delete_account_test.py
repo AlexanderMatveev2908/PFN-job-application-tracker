@@ -35,7 +35,7 @@ async def test_delete_account_ok(api) -> None:
     "case, expected_code, expected_msg",
     [
         ("invalid_cbc", 401, "cbc_hmac_invalid"),
-        ("expired_jwt", 401, "access_token_expired"),
+        ("expired_jwt", 401, "jwt_expired"),
         ("expired_cbc", 401, "cbc_hmac_expired"),
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],

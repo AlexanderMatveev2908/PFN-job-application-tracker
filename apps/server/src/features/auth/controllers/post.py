@@ -73,7 +73,7 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
     refresh = req.cookies.get("refresh_token")
 
     if not refresh:
-        raise ErrAPI(msg="REFRESH_TOKEN_NOT_PROVIDED", status=401)
+        raise ErrAPI(msg="jwe_not_provided", status=401)
 
     async with db_trx() as trx:
         try:

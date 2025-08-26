@@ -42,9 +42,9 @@ async def test_change_email_ok(api) -> None:
 @pytest.mark.parametrize(
     "case, expected_code, expected_msg",
     [
-        ("invalid_jwt", 401, "access_token_invalid"),
+        ("invalid_jwt", 401, "jwt_invalid"),
         ("invalid_cbc", 401, "cbc_hmac_invalid"),
-        ("expired_jwt", 401, "access_token_expired"),
+        ("expired_jwt", 401, "jwt_expired"),
         ("expired_cbc", 401, "cbc_hmac_expired"),
         ("same_email", 400, "new email can not be same as old one"),
         ("existing_email", 409, "user with this email already exists"),

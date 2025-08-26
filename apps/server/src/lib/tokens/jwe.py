@@ -78,11 +78,11 @@ async def check_jwe_lib(trx: AsyncSession, token: str) -> CheckTokenReturnT:
         existing = (await trx.execute(stm)).scalar_one_or_none()
 
         if not existing:
-            raise ErrAPI(msg="REFRESH_TOKEN_NOT_FOUND", status=401)
+            raise ErrAPI(msg="jwe_not_found", status=401)
 
         if lt_now(existing.exp):
             await trx.delete(existing)
-            raise ErrAPI(msg="REFRESH_TOKEN_EXPIRED", status=401)
+            raise ErrAPI(msg="jwe_expired", status=401)
 
         decrypted_bytes = await asyncio.to_thread(
             jwe.decrypt, token_b, h_to_b(env_var.jwe_private)
@@ -91,7 +91,7 @@ async def check_jwe_lib(trx: AsyncSession, token: str) -> CheckTokenReturnT:
         payload = b_to_d(
             cast(bytes, decrypted_bytes),
             err_status=401,
-            err_msg="REFRESH_TOKEN_INVALID_FORMAT",
+            err_msg="jwe_invalid_format",
         )
 
         return {
@@ -103,7 +103,7 @@ async def check_jwe_lib(trx: AsyncSession, token: str) -> CheckTokenReturnT:
         raise
 
     except Exception:
-        raise ErrAPI(msg="REFRESH_TOKEN_INVALID", status=401)
+        raise ErrAPI(msg="jwe_invalid", status=401)
 
 
 async def check_jwe_with_us(
