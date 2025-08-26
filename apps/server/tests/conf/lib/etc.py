@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Literal, TypedDict
 from urllib.parse import urlencode
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
@@ -74,12 +74,15 @@ async def login_ok_lib(
     }
 
 
+TokenArgT = Literal["jwt", "jwe", "cbc_hmac"]
+
+
 async def get_tokens_lib(
     api: AsyncClient,
     reverse: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
-    expired: list[str] = [],
+    expired: list[TokenArgT] = [],
     verify_user: bool = False,
 ) -> SuccessReqTokensReturnT:
     payload = existing_payload or get_payload_register()
@@ -120,7 +123,7 @@ async def get_tokens_lib(
 async def get_verified_user_lib(
     api: AsyncClient,
     token_t: TokenT = TokenT.MANAGE_ACC,
-    expired: list[str] = [],
+    expired: list[TokenArgT] = [],
 ) -> SuccessReqTokensReturnT:
 
     res = await get_tokens_lib(
