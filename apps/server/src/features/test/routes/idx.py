@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from src.features.test.controllers.get import (
     get_msg_ctrl,
     get_protected_data_ctrl,
-    get_us_2FA_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
 from ..controllers.post import (
     get_err_ctrl,
+    get_us_2FA_ctrl,
     post_form_ctrl,
     post_msg_ctrl,
     tokens_health_ctrl,
@@ -39,7 +39,7 @@ router_test.add_api_route(
     methods=["POST"],
 )
 
-router_test.add_api_route("/get-user-2FA", get_us_2FA_ctrl, methods=["GET"])
+router_test.add_api_route("/get-user-2FA", get_us_2FA_ctrl, methods=["POST"])
 
 router_test.add_api_route(
     "/get-err",

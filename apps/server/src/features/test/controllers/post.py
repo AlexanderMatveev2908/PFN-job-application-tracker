@@ -1,6 +1,7 @@
 import asyncio
 import json
 from fastapi import Depends, Request
+from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -9,14 +10,22 @@ from src.features.test.lib.idx import get_query_token_t
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
+from src.features.user.services.TFA_zip import TFA_zip_svc
+from src.lib.TFA.backup import gen_backup_codes
+from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
+from src.lib.algs.fernet import gen_fernet
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import dest_d, pick
 from src.lib.etc import parse_bd
+from src.lib.qrcode.idx import GenQrcodeReturnT, gen_qrcode
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
-from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
+from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us, gen_cbc_hmac
+from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import check_jwt_lib
+from src.models.token import TokenT
+from src.models.user import User
 
 
 async def post_form_ctrl(req: Request) -> ResAPI:
@@ -86,3 +95,80 @@ async def get_err_ctrl(req: Request) -> ResAPI:
                 raise ErrAPI(msg="unknown action", status=400)
 
     return ResAPI.ok_200(payload=payload)
+
+
+async def get_us_2FA_ctrl(
+    req: Request,
+) -> ResAPI:
+
+    body: RegisterPayloadT | None = None
+    try:
+        body = await req.json()
+    except Exception:
+        ...
+
+    if body:
+        try:
+            RegisterFormT(body)
+        except Exception:
+            raise ErrAPI(msg="invalid payload 😡", status=400)
+
+    payload = body or get_payload_register()
+    filtered = pick(payload, keys_off=["confirm_password"])
+
+    q = req.state.parsed_q
+    empty_codes = q.get("empty_codes")
+
+    try:
+        token_t = TokenT(q.get("cbc_hmac_t"))
+
+    except Exception:
+        raise ErrAPI(msg="invalid cbc_hmac_type", status=422)
+
+    async with db_trx() as trx:
+
+        us = User(**filtered, is_verified=True)
+        await us.set_pwd(payload["password"])
+
+        trx.add(us)
+        await trx.flush([us])
+        await trx.refresh(us)
+
+        secret_result: GenTotpSecretReturnT = gen_totp_secret(
+            user_email=us.email
+        )
+        us.totp_secret = gen_fernet(txt=secret_result["secret"])
+
+        backup_codes: list[str] = []
+        if not empty_codes:
+            backup_codes = (await gen_backup_codes(trx, us_id=us.id))[
+                "backup_codes_client"
+            ]
+
+        tokens_session = await gen_tokens_session(trx=trx, user_id=us.id)
+
+        cbc_hmac_res = await gen_cbc_hmac(
+            trx=trx, token_t=token_t, user_id=us.id
+        )
+
+        qrcode_result: GenQrcodeReturnT = gen_qrcode(uri=secret_result["uri"])
+
+        await TFA_zip_svc(
+            backup_codes=backup_codes,
+            binary_qr_code=qrcode_result["binary"],
+            totp_secret=secret_result["secret"],
+        )
+
+        return ResAPI.ok_200(
+            payload=payload,
+            user=us,
+            totp_secret=secret_result["secret"],
+            backup_codes=backup_codes,
+            access_token=tokens_session["access_token"],
+            cbc_hmac_token=cbc_hmac_res["client_token"],
+            cookies=[
+                gen_refresh_cookie(
+                    tokens_session["result_jwe"]["client_token"]
+                )
+            ],
+        )
