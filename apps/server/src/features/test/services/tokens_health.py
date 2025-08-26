@@ -1,14 +1,16 @@
 from typing import Any, cast
 import uuid
+
+from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id, pick
-from src.lib.db.idx import clear_old_tokens, get_us_by_email
+from src.lib.db.idx import get_us_by_email
 from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,
 )
 from src.lib.tokens.combo import gen_tokens_session
-from src.models.token import GenTokenReturnT, TokenT
+from src.models.token import GenTokenReturnT, Token, TokenT
 from src.models.user import User
 
 
@@ -40,7 +42,8 @@ async def tokens_health_svc(
             trx.add(us)
             await trx.flush([us])
             await trx.refresh(us)
-            await clear_old_tokens(trx, us.id)
+
+        await trx.execute(delete(Token).where(Token.user_id == us.id))
 
         result_tokens = await gen_tokens_session(
             user_id=us.id, trx=trx, reverse=reverse, expired=expired
