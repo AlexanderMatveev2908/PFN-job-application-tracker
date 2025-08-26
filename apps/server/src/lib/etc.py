@@ -62,7 +62,7 @@ def grab(
     key: str,
     parent: str | None = None,
     was_under: bool = False,
-) -> Any | None:
+) -> Any:
     for k, v in d.items():
 
         is_under = was_under or (k == parent)

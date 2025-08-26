@@ -17,7 +17,17 @@ from tests.conf.lib.login import get_logged_2fa
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_logged = await get_logged_2fa(api)
+    res_logged = await get_logged_2fa(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+
+    res_err = await wrap_httpx(
+        api,
+        url="/user/new-backup-codes",
+        access_token=res_logged["access_token"],
+        expected_code=409,
+        data={"cbc_hmac_token": res_logged["cbc_hmac_token"]},
+    )
+
+    assert "user already has backup codes" in grab(res_err, "msg")
 
     for i in range(8):
         res_login_0 = await wrap_httpx(
