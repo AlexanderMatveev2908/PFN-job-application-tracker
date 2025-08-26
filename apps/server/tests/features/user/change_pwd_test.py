@@ -3,9 +3,11 @@ import pytest
 from src.constants.reg import REG_CBC_HMAC
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.register import register_ok_lib
 
 URL_MNG = "/user/manage-account"
 URL_CHG = "/user/change-pwd"

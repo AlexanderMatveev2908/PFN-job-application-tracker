@@ -1,7 +1,9 @@
 import pytest
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/require-email/confirm-email"
 

@@ -1,8 +1,11 @@
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.etc import get_tokens_lib, login_ok_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/user/delete-account?cbc_hmac_token="
 

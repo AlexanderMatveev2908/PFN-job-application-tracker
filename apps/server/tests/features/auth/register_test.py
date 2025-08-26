@@ -1,9 +1,10 @@
 import pytest
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
-from tests.conf.lib.etc import register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 from typing import Callable
+
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/auth/register"
 

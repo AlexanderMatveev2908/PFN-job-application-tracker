@@ -1,4 +1,4 @@
-from typing import Literal, TypedDict
+from typing import Literal
 from urllib.parse import urlencode
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
@@ -10,68 +10,11 @@ from src.constants.reg import (
     REG_SECRET_TOTP,
 )
 from src.models.token import TokenT
-from src.models.user import UserDcT
-from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
-
-
-class LoginOkReturnT(TypedDict):
-    access_token: str
-    refresh_token: str
-
-
-class RegisterOkLibReturnT(LoginOkReturnT):
-    payload: RegisterPayloadT
-
-
-class SuccessReqTokensReturnT(RegisterOkLibReturnT):
-    user: UserDcT
-    cbc_hmac_token: str
-
-
-class GetUser2FAReturnT(SuccessReqTokensReturnT):
-    totp_secret: str
-    backup_codes: list[str]
-
-
-async def register_ok_lib(api) -> RegisterOkLibReturnT:
-    payload = get_payload_register()
-
-    res_register = await wrap_httpx(
-        api,
-        url="/auth/register",
-        data=payload,
-        expected_code=201,
-    )
-
-    assert REG_JWT.fullmatch(res_register["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_register["refresh_token"])
-
-    return {
-        "payload": payload,
-        "access_token": res_register["data"]["access_token"],
-        "refresh_token": res_register["refresh_token"],
-    }
-
-
-async def login_ok_lib(
-    api: AsyncClient, register_payload: RegisterPayloadT
-) -> LoginOkReturnT:
-
-    res_login = await wrap_httpx(
-        api,
-        url="/auth/login",
-        data=extract_login_payload(register_payload),
-        expected_code=200,
-    )
-
-    assert REG_JWE.fullmatch(res_login["refresh_token"])
-    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
-
-    return {
-        "access_token": res_login["data"]["access_token"],
-        "refresh_token": res_login["refresh_token"],
-    }
+from tests.conf.lib.types import (
+    GetUser2FAReturnT,
+    SuccessReqTokensReturnT,
+)
 
 
 TokenArgT = Literal["jwt", "jwe", "cbc_hmac"]
