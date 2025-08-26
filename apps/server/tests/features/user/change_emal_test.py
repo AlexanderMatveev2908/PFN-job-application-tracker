@@ -6,7 +6,7 @@ from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 
-from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.login import make_flow_log
 from tests.conf.lib.register import register_ok_lib
 
 URL = "/user/change-email"
@@ -90,7 +90,7 @@ async def bad_cases_t(
         expired_tk = await get_tokens_lib(
             api, cbc_hmac_t=TokenT.MANAGE_ACC, reverse=True
         )
-        res_login = await login_ok_lib(
+        res_login = await make_flow_log(
             api, register_payload=expired_tk["payload"]
         )
         payload = {

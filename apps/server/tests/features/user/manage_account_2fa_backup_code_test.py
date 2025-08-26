@@ -5,12 +5,12 @@ from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import get_aad_cbc_hmac
 from tests.conf.lib.idx import wrap_httpx
-from tests.conf.lib.login import get_logged_2fa
+from tests.conf.lib.login import make_flow_log_2FA
 
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_logged = await get_logged_2fa(api)
+    res_logged = await make_flow_log_2FA(api)
 
     res_pwd = await wrap_httpx(
         api,
@@ -53,7 +53,7 @@ async def ok_t(api: AsyncClient) -> None:
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    res_logged = await get_logged_2fa(api)
+    res_logged = await make_flow_log_2FA(api)
 
     pwd_user = res_logged["payload"]["password"]
 

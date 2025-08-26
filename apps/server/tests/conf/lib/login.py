@@ -8,12 +8,12 @@ from tests.conf.lib.data_structure import (
     extract_login_payload,
 )
 from tests.conf.lib.etc import get_tokens_lib
-from tests.conf.lib.get_us import get_us_2FA
+from tests.conf.lib.get_us import make_setup_2FA
 from tests.conf.lib.idx import wrap_httpx
-from tests.conf.lib.types import GetUser2FAReturnT, LoginOkReturnT
+from tests.conf.lib.types import User2FAReturnT, LoginOkReturnT
 
 
-async def login_ok_lib(
+async def make_flow_log(
     api: AsyncClient, register_payload: RegisterPayloadT
 ) -> LoginOkReturnT:
 
@@ -33,10 +33,10 @@ async def login_ok_lib(
     }
 
 
-async def get_logged_2fa(
+async def make_flow_log_2FA(
     api: AsyncClient, cbc_hmac_t: TokenT = TokenT.MANAGE_ACC_2FA
-) -> GetUser2FAReturnT:
-    res_us_2fa: GetUser2FAReturnT = await get_us_2FA(api)
+) -> User2FAReturnT:
+    res_us_2fa: User2FAReturnT = await make_setup_2FA(api)
 
     res_login = await wrap_httpx(
         api,

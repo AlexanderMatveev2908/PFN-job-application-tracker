@@ -12,7 +12,7 @@ class GenTotpSecretReturnT(TypedDict):
 
 
 def gen_totp_secret(user_email: str) -> GenTotpSecretReturnT:
-    secret = pyotp.random_base32()
+    secret: str = pyotp.random_base32()
     totp = pyotp.TOTP(secret)
     uri = totp.provisioning_uri(
         name=user_email, issuer_name="pfn-job-application-tracker"
