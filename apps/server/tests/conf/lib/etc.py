@@ -124,10 +124,15 @@ async def get_verified_user_lib(
     api: AsyncClient,
     token_t: TokenT = TokenT.MANAGE_ACC,
     expired: list[TokenArgT] = [],
+    existing_payload: RegisterPayloadT | None = None,
 ) -> SuccessReqTokensReturnT:
 
     res = await get_tokens_lib(
-        api, cbc_hmac_t=token_t, expired=expired, verify_user=True
+        api,
+        cbc_hmac_t=token_t,
+        expired=expired,
+        verify_user=True,
+        existing_payload=existing_payload,
     )
 
     return res

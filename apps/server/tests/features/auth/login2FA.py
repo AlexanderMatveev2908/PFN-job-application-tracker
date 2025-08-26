@@ -51,6 +51,7 @@ async def ok_t(api: AsyncClient) -> None:
     [
         ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
         ("totp_code_invalid", 401, "totp_code_invalid"),
+        ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
 async def base_cases_t(
@@ -65,7 +66,9 @@ async def base_cases_t(
             list[TokenArgT],
             case.split("_expired") if case.endswith("_expired") else [],
         ),
-        cbc_hmac_t=TokenT.LOGIN_2FA,
+        cbc_hmac_t=(
+            TokenT.CONF_EMAIL if case == "wrong_type" else TokenT.LOGIN_2FA
+        ),
     )
 
     totp_code = pyotp.TOTP(res_us_2FA["totp_secret"]).now()

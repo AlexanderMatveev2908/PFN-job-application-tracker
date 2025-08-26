@@ -2,6 +2,7 @@ from typing import cast
 from httpx import AsyncClient
 import pytest
 
+from src.__dev_only.payloads import get_payload_register
 from src.models.token import TokenT
 from tests.conf.lib.etc import (
     TokenArgT,
@@ -29,11 +30,14 @@ async def ok_t(api: AsyncClient) -> None:
         ("cbc_hmac_invalid", 401, "cbc_hmac_invalid"),
         ("cbc_hmac_wrong_type", 401, "cbc_hmac_wrong_type"),
         ("not_verified", 403, "user must be verified to set up 2fa"),
+        ("already_setup", 409, "user already have 2fa set up"),
     ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
+
+    payload = get_payload_register()
 
     if case != "not_verified":
         res_us = await get_verified_user_lib(
@@ -55,10 +59,22 @@ async def bad_cases_t(
             ],
         )
     else:
-        res_us = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+        res_us = await get_tokens_lib(
+            api, cbc_hmac_t=TokenT.MANAGE_ACC, existing_payload=payload
+        )
 
     jwt: str = res_us["access_token"]
     cbc_hmac: str = res_us["cbc_hmac_token"]
+
+    if case == "already_setup":
+        await wrap_httpx(
+            api,
+            url=URL,
+            access_token=jwt,
+            data={"cbc_hmac_token": cbc_hmac},
+            expected_code=200,
+            method="PATCH",
+        )
 
     if case.endswith("_invalid"):
         if "jwt" in case:
