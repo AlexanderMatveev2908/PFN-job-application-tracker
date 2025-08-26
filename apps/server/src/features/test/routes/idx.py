@@ -42,7 +42,7 @@ router_test.add_api_route(
 router_test.add_api_route("/get-user-2FA", get_us_2FA_ctrl, methods=["GET"])
 
 router_test.add_api_route(
-    "/get-err-expired",
+    "/get-err",
     get_err_ctrl,
     methods=["POST"],
 )

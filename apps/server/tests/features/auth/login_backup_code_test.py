@@ -3,13 +3,13 @@ import pytest
 
 from src.constants.reg import REG_CBC_HMAC, REG_JWT
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.get_us import get_us_2FA
+from tests.conf.lib.get_us import make_setup_2FA
 from tests.conf.lib.idx import wrap_httpx
 
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_us_2fa = await get_us_2FA(
+    res_us_2fa = await make_setup_2FA(
         api,
     )
 
@@ -47,7 +47,7 @@ async def ok_t(api: AsyncClient) -> None:
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    res_us_2fa = await get_us_2FA(api)
+    res_us_2fa = await make_setup_2FA(api)
 
     if case == "finished_codes":
         for i in range(8):

@@ -4,7 +4,7 @@ from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 
-from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.login import make_flow_log
 from tests.conf.lib.register import register_ok_lib
 
 URL = "/user/delete-account?cbc_hmac_token="
@@ -65,7 +65,7 @@ async def bad_cases_t(
         res_tokens = await get_tokens_lib(
             api, reverse=True, cbc_hmac_t=TokenT.MANAGE_ACC
         )
-        res_login = await login_ok_lib(
+        res_login = await make_flow_log(
             api, register_payload=res_tokens["payload"]
         )
         payload_url = URL + res_tokens["cbc_hmac_token"]

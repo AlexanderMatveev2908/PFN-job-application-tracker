@@ -1,11 +1,14 @@
+from typing import cast
+from urllib.parse import urlencode
 from httpx import AsyncClient
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_SECRET_TOTP
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_SECRET_TOTP
+from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.etc import TokenArgT, get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
-from tests.conf.lib.types import GetUser2FAReturnT, SuccessReqTokensReturnT
+from tests.conf.lib.types import User2FAReturnT, SuccessReqTokensReturnT
 
 
 async def get_verified_user_lib(
@@ -26,9 +29,9 @@ async def get_verified_user_lib(
     return res
 
 
-async def get_us_2FA(
+async def make_setup_2FA(
     api: AsyncClient,
-) -> GetUser2FAReturnT:
+) -> User2FAReturnT:
     res_us = await get_verified_user_lib(
         api,
     )
@@ -51,3 +54,30 @@ async def get_us_2FA(
         "totp_secret": res_2FA["data"]["totp_secret"],
         "backup_codes": res_2FA["data"]["backup_codes"],
     }
+
+
+async def get_us_with_2FA(
+    api: AsyncClient,
+    cbc_hmac_t: TokenT = TokenT.MANAGE_ACC,
+    empty_codes: bool = False,
+) -> User2FAReturnT:
+    params = {"cbc_hmac_t": cbc_hmac_t.value, "empty_codes": empty_codes}
+
+    res = await wrap_httpx(
+        api,
+        url=f"/test/get-user-2FA?{urlencode(params, doseq=True)}",
+        expected_code=200,
+        method="GET",
+    )
+
+    assert REG_JWT.fullmatch(grab(res, "access_token"))
+    assert REG_JWE.fullmatch(res["refresh_token"])
+    assert REG_CBC_HMAC.fullmatch(grab(res, "cbc_hmac_token"))
+    assert len(res["data"]["backup_codes"]) == (0 if empty_codes else 8)
+
+    assert REG_SECRET_TOTP.fullmatch(res["data"]["totp_secret"])
+
+    return cast(
+        User2FAReturnT,
+        {**res["data"], "refresh_token": res["refresh_token"]},
+    )

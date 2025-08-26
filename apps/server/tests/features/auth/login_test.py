@@ -4,7 +4,7 @@ from tests.conf.lib.data_structure import extract_login_payload
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 
-from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.login import make_flow_log
 from tests.conf.lib.register import register_ok_lib
 
 URL = "/auth/login"
@@ -14,7 +14,7 @@ URL = "/auth/login"
 async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
-    await login_ok_lib(api, register_payload=res_register["payload"])
+    await make_flow_log(api, register_payload=res_register["payload"])
 
 
 @pytest.mark.asyncio

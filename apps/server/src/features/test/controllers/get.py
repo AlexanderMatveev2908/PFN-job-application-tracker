@@ -40,7 +40,7 @@ async def get_us_2FA_ctrl(req: Request) -> ResAPI:
         token_t = TokenT(q.get("cbc_hmac_t"))
 
     except Exception:
-        raise ErrAPI(msg="invalid cbc_hmac_t in query", status=422)
+        raise ErrAPI(msg="invalid cbc_hmac_type", status=422)
 
     async with db_trx() as trx:
 

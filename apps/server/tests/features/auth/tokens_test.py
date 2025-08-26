@@ -49,7 +49,7 @@ async def bad_cases_t(
     reverse = case.startswith("expired")
     res_tokens = await get_tokens_lib(api, reverse=reverse)
 
-    url = f"/test/get-err-{'expired' if reverse else 'invalid'}?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"  # noqa: E501
+    url = f"/test/get-err?cbc_hmac_token_t={TokenT.CONF_EMAIL.value}"  # noqa: E501
 
     token_map = {
         "JWT": res_tokens["access_token"],

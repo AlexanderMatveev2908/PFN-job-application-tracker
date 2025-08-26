@@ -18,6 +18,6 @@ class SuccessReqTokensReturnT(RegisterOkLibReturnT):
     cbc_hmac_token: str
 
 
-class GetUser2FAReturnT(SuccessReqTokensReturnT):
+class User2FAReturnT(SuccessReqTokensReturnT):
     totp_secret: str
     backup_codes: list[str]

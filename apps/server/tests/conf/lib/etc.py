@@ -23,7 +23,7 @@ async def get_tokens_lib(
     reverse: bool = False,
     cbc_hmac_t: TokenT = TokenT.CONF_EMAIL,
     existing_payload: RegisterPayloadT | None = None,
-    expired: list[TokenArgT | str] = [],
+    expired: list[TokenArgT] | list[str] = [],
     verify_user: bool = False,
 ) -> SuccessReqTokensReturnT:
     payload = existing_payload or get_payload_register()
