@@ -58,7 +58,7 @@ async def login_backup_code_svc(
                 break
 
         if not found_code:
-            raise ErrAPI(msg="BACKUP_CODE_INVALID", status=401)
+            raise ErrAPI(msg="backup_code_invalid", status=401)
 
         await trx.delete(found_code)
 
