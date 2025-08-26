@@ -1,21 +1,8 @@
-import uuid
-from sqlalchemy import delete, select, text
+from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.decorators.err import ErrAPI
-from src.models.token import Token, TokenT
 from src.models.user import User
-
-
-async def clear_old_tokens(
-    trx: AsyncSession, user_id: uuid.UUID | str
-) -> None:
-    await trx.execute(
-        delete(Token).where(
-            (Token.token_t.in_([TokenT.REFRESH, TokenT.CONF_EMAIL]))
-            & (Token.user_id == user_id)
-        )
-    )
 
 
 async def get_us_by_id(trx: AsyncSession, us_id: str) -> User:

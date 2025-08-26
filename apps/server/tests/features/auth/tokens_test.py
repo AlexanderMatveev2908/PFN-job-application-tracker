@@ -16,20 +16,20 @@ async def test_tokens_ok(api) -> None:
 @pytest.mark.parametrize(
     "case, act, mutate, expected_msg",
     [
-        ("expired_jwt", "JWT", None, "access_token_expired"),
-        ("expired_jwe", "JWE", None, "refresh_token_expired"),
+        ("expired_jwt", "JWT", None, "jwt_expired"),
+        ("expired_jwe", "JWE", None, "jwe_expired"),
         ("expired_cbc", "CBC_HMAC", None, "cbc_hmac_expired"),
         (
             "invalid_jwt",
             "JWT",
             lambda t: t[:-4] + "aaaa",
-            "access_token_invalid",
+            "jwt_invalid",
         ),
         (
             "invalid_jwe",
             "JWE",
             lambda t: t[:-4] + "hack",
-            "refresh_token_invalid",
+            "jwe_invalid",
         ),
         (
             "invalid_cbc",

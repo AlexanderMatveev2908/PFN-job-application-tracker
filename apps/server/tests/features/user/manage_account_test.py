@@ -27,7 +27,7 @@ async def test_manage_account_ok(api) -> None:
     "case, expected_code, expected_msg",
     [
         ("invalid_password", 401, "invalid password"),
-        ("expired_access", 401, "access_token_expired"),
+        ("expired_access", 401, "jwt_expired"),
     ],
 )
 async def test_manage_account_invalid_cases(

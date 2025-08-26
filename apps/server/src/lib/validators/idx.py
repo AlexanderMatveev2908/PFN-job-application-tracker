@@ -32,9 +32,9 @@ class PwdFormT(BaseModel):
 
 def check_basic_cbc_shape_lib(v: str | None) -> str:
     if not v:
-        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
+        raise ErrAPI(msg="cbc_hmac_not_provided", status=401)
 
     if not REG_CBC_HMAC.fullmatch(v):
-        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+        raise ErrAPI(msg="cbc_hmac_invalid_format", status=401)
 
     return v

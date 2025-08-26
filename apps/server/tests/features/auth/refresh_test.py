@@ -22,7 +22,7 @@ async def test_refresh_ok(api) -> None:
         method="GET",
         access_token=res_tokens_expired["access_token"],
     )
-    assert "access_token_expired" in res_err["data"]["msg"].lower()
+    assert "jwt_expired" in res_err["data"]["msg"].lower()
 
     await get_tokens_lib(api, existing_payload=res_tokens_expired["payload"])
 
@@ -40,7 +40,7 @@ async def test_refresh_ok(api) -> None:
 @pytest.mark.parametrize(
     "expected_msg",
     [
-        "refresh_token_expired",
+        "jwe_expired",
     ],
 )
 async def test_refresh_invalid_cases(

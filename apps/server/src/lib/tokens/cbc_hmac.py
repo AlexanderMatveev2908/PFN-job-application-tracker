@@ -147,22 +147,22 @@ async def check_cbc_hmac_lib(
     trx: AsyncSession, token: str | None, token_t: TokenT
 ) -> CheckTokenReturnT:
     if not token:
-        raise ErrAPI(msg="CBC_HMAC_NOT_PROVIDED", status=401)
+        raise ErrAPI(msg="cbc_hmac_not_provided", status=401)
 
     if not REG_CBC_HMAC.fullmatch(token):
-        raise ErrAPI(msg="CBC_HMAC_INVALID_FORMAT", status=401)
+        raise ErrAPI(msg="cbc_hmac_invalid_format", status=401)
 
     aad_hex, iv_hex, ct_hex, tag_hex = token.split(".")
 
     aad_d: AadT = cast(
         AadT,
         b_to_d(
-            h_to_b(aad_hex), err_status=401, err_msg="CBC_HMAC_INVALID_FORMAT"
+            h_to_b(aad_hex), err_status=401, err_msg="cbc_hmac_invalid_format"
         ),
     )
 
     if TokenT(aad_d["token_t"]) != token_t:
-        raise ErrAPI(msg="CBC_HMAC_WRONG_TYPE", status=401)
+        raise ErrAPI(msg="cbc_hmac_wrong_type", status=401)
 
     existing = (
         await trx.execute(
@@ -195,15 +195,15 @@ async def check_cbc_hmac_lib(
         ),
     )
     if not check_hmac(h_to_b(tag_hex), comp_tag):
-        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+        raise ErrAPI(msg="cbc_hmac_invalid", status=401)
     comp_hash = hash_db_hmac((token).encode("utf-8"))
     if not check_hmac(comp_hash, existing.hashed):
-        raise ErrAPI(msg="CBC_HMAC_INVALID", status=401)
+        raise ErrAPI(msg="cbc_hmac_invalid", status=401)
 
     if lt_now(existing.exp):
         await trx.delete(existing)
         await trx.commit()
-        raise ErrAPI(msg="CBC_HMAC_EXPIRED", status=401)
+        raise ErrAPI(msg="cbc_hmac_expired", status=401)
 
     pt = dec_aes_cbc(
         derived["cbc_key"], iv=h_to_b(iv_hex), ciphertext=h_to_b(ct_hex)

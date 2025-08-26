@@ -23,7 +23,7 @@ async def TFA_svc(
     )
 
     if not us.is_verified:
-        raise ErrAPI(msg="user must be verified to set up 2FA", status=400)
+        raise ErrAPI(msg="user must be verified to set up 2FA", status=403)
 
     if us.totp_secret:
         raise ErrAPI(msg="user already have 2FA set up", status=409)

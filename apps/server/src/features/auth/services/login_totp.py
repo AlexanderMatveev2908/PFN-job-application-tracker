@@ -17,7 +17,7 @@ async def login_topt_svc(
         )
 
         if not us.check_totp(user_code=result_combo["body"]["totp_code"]):
-            raise ErrAPI(msg="TOTP_CODE_INVALID", status=401)
+            raise ErrAPI(msg="totp_code_invalid", status=401)
 
         tokens_session: TokensSessionsReturnT = await gen_tokens_session(
             user_id=result_combo["cbc_hmac_result"]["user_d"]["id"], trx=trx

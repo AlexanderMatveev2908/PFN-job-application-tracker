@@ -28,8 +28,8 @@ async def test_confirm_email_ok(api) -> None:
     "case, expected_code, expected_msg",
     [
         ("already_verified", 409, "user already verified"),
-        ("expired", 401, "CBC_HMAC_EXPIRED"),
-        ("invalid", 401, re.compile(r".*CBC_HMAC_INVALID$")),
+        ("expired", 401, "cbc_hmac_expired"),
+        ("invalid", 401, re.compile(r".*cbc_hmac_invalid$")),
     ],
 )
 async def test_confirm_email_invalid_cases(
