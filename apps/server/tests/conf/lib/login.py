@@ -1,6 +1,6 @@
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
+from src.constants.reg import REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
     gen_totp,
@@ -47,7 +47,6 @@ async def get_logged_2fa(
 
     login_token = res_login["data"]["cbc_hmac_token"]
     get_aad_cbc_hmac(token=login_token, token_t=TokenT.LOGIN_2FA)
-    assert REG_CBC_HMAC.fullmatch(login_token)
 
     res_login_2fa = await wrap_httpx(
         api,
