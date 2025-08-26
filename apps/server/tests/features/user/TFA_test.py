@@ -1,8 +1,10 @@
+from typing import cast
 from httpx import AsyncClient
 import pytest
 
 from src.models.token import TokenT
 from tests.conf.lib.etc import (
+    TokenArgT,
     get_tokens_lib,
     get_user_2FA,
     get_verified_user_lib,
@@ -36,10 +38,13 @@ async def bad_cases_t(
     if case != "not_verified":
         res_us = await get_verified_user_lib(
             api,
-            expired=(
-                [case.split("_expired")[0]]
-                if case.endswith("_expired")
-                else []
+            expired=cast(
+                list[TokenArgT],
+                (
+                    [case.split("_expired")[0]]
+                    if case.endswith("_expired")
+                    else []
+                ),
             ),
             token_t=TokenT[
                 (
