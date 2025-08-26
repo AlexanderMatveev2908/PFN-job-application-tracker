@@ -58,11 +58,11 @@ def get_now() -> int:
 
 
 def grab(
-    d: dict[str, Any],
+    d: Any,
     key: str,
     parent: str | None = None,
     was_under: bool = False,
-) -> Any | None:
+) -> Any:
     for k, v in d.items():
 
         is_under = was_under or (k == parent)

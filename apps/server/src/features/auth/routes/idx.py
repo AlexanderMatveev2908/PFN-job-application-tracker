@@ -35,14 +35,14 @@ auth_router.add_api_route(
 )
 
 auth_router.add_api_route(
-    "/login-totp",
+    "/login-2FA-totp",
     login_totp_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
 )
 
 auth_router.add_api_route(
-    "/login-backup-code",
+    "/login-2FA-backup-code",
     login_backup_code_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],

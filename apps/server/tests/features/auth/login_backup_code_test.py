@@ -24,7 +24,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_login_2fa = await wrap_httpx(
         api,
-        url="/auth/login-backup-code",
+        url="/auth/login-2FA-backup-code",
         expected_code=200,
         data={
             "cbc_hmac_token": res_login["data"]["cbc_hmac_token"],
@@ -62,7 +62,7 @@ async def bad_cases_t(
 
             res_login_2fa = await wrap_httpx(
                 api,
-                url="/auth/login-backup-code",
+                url="/auth/login-2FA-backup-code",
                 expected_code=200,
                 data={
                     "cbc_hmac_token": res_login["data"]["cbc_hmac_token"],
@@ -83,7 +83,7 @@ async def bad_cases_t(
 
     res_login_2fa = await wrap_httpx(
         api,
-        url="/auth/login-backup-code",
+        url="/auth/login-2FA-backup-code",
         expected_code=expected_code,
         data={
             "cbc_hmac_token": res_login["data"]["cbc_hmac_token"],
