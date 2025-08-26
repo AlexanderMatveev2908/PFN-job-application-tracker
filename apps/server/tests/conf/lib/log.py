@@ -3,7 +3,7 @@ from httpx import Response
 from src.lib.logger import clg
 
 
-def parse_res(res: Response) -> dict:
+def parse_res(res: Response, expected_code: int) -> dict:
     data = res.json()
 
     full = str(res.request.url)
@@ -16,9 +16,10 @@ def parse_res(res: Response) -> dict:
     for k, v in data.items():
         shorted[k] = v[:100] if isinstance(v, str) else v
 
-    clg(
-        shorted,
-        ttl=f"💾 {part} — 🚦 {res.status_code}",
-    )
+    if expected_code != res.status_code:
+        clg(
+            shorted,
+            ttl=f"💾 {part} — 🚦 {res.status_code}",
+        )
 
     return data

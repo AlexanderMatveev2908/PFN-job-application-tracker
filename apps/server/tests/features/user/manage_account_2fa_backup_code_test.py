@@ -61,7 +61,7 @@ async def bad_cases_t(
         api,
         url="/user/manage-account",
         access_token=res_logged["access_token"],
-        expected_code=expected_code,
+        expected_code=expected_code if case == "wrong_pwd" else 200,
         data={"password": pwd_user + ("wrong" if case == "wrong_pwd" else "")},
     )
 
@@ -78,7 +78,7 @@ async def bad_cases_t(
         expected_code=expected_code,
         data={
             "cbc_hmac_token": grab(cast(dict, res_pwd), "cbc_hmac_token"),
-            "backup_code": "12345" if case == "wrong_code" else code,
+            "backup_code": "1234-1234" if case == "wrong_code" else code,
         },
     )
 

@@ -31,7 +31,7 @@ async def wrap_httpx(
         kwargs["json"] = data
     res = await fn(**kwargs)
 
-    parsed = parse_res(res)
+    parsed = parse_res(res, expected_code=expected_code)
     refresh = (
         res.cookies.get(
             "refresh_token",
