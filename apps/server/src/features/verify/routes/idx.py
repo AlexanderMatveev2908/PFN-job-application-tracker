@@ -35,7 +35,7 @@ verify_router.add_api_route(
 
 
 verify_router.add_api_route(
-    "/new-email-2TFA-totp",
+    "/new-email-2FA-totp",
     confirm_new_email_2FA_top_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
