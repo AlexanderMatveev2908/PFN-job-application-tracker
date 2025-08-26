@@ -9,7 +9,8 @@ from src.features.user.controllers.patch import (
 )
 from src.features.user.controllers.post import (
     get_access_account_ctrl,
-    get_access_manage_account_TFA_ctrl,
+    get_access_manage_account_TFA_totp_ctrl,
+    get_access_manage_account_backup_code_ctrl,
     new_backup_codes_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
@@ -62,7 +63,14 @@ user_router.add_api_route(
 
 user_router.add_api_route(
     "/manage-account-2FA-totp",
-    get_access_manage_account_TFA_ctrl,
+    get_access_manage_account_TFA_totp_ctrl,
+    methods=["POST"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+user_router.add_api_route(
+    "/manage-account-2FA-backup-code",
+    get_access_manage_account_backup_code_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )

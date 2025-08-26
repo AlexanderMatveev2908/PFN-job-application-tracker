@@ -3,9 +3,10 @@ from sqlalchemy import delete, func, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.user.middleware.manage_account import get_access_account_mdw
-from src.lib.TFA.backup import gen_backup_codes
+from src.lib.TFA.backup import check_backup_code, gen_backup_codes
 from src.lib.db.idx import get_us_by_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.middleware.combo.idx import (
@@ -70,7 +71,7 @@ async def new_backup_codes_ctrl(
     return ResAPI.ok_200(backup_codes=result_codes["backup_codes_client"])
 
 
-async def get_access_manage_account_TFA_ctrl(
+async def get_access_manage_account_TFA_totp_ctrl(
     req: Request,
     combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
@@ -102,3 +103,42 @@ async def get_access_manage_account_TFA_ctrl(
         )
 
         return ResAPI.ok_200(cbc_hmac_token=cbc_result["client_token"])
+
+
+async def get_access_manage_account_backup_code_ctrl(
+    req: Request,
+    combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=True,
+            model=BackupCodeFormT,
+            token_t=TokenT.MANAGE_ACC_2FA,
+        )
+    ),
+) -> ResAPI:
+
+    async with db_trx() as trx:
+
+        us_id = combo_result["cbc_hmac_result"]["user_d"]["id"]
+        res_backup_check = await check_backup_code(
+            trx,
+            us_id=us_id,
+            backup_code=combo_result["body"]["backup_code"],
+        )
+
+        await trx.execute(
+            delete(Token).where(
+                (Token.user_id == us_id)
+                & (Token.token_t == TokenT.MANAGE_ACC_2FA)
+            )
+        )
+
+        cbc_result: GenTokenReturnT = await gen_cbc_hmac(
+            trx=trx,
+            token_t=TokenT.MANAGE_ACC,
+            user_id=us_id,
+        )
+
+        return ResAPI.ok_200(
+            cbc_hmac_token=cbc_result["client_token"],
+            backup_codes_left=res_backup_check["backup_codes_left"],
+        )
