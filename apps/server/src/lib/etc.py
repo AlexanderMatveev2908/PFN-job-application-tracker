@@ -1,7 +1,7 @@
 import asyncio
 import json
 from time import time
-from typing import Callable, Coroutine, Literal, TypeVar
+from typing import Any, Callable, Coroutine, Literal, TypeVar
 
 from fastapi import Request
 
@@ -55,3 +55,23 @@ async def parse_bd(req: Request) -> dict:
 
 def get_now() -> int:
     return int(time() * 1000)
+
+
+def grab(
+    d: dict[str, Any],
+    key: str,
+    parent: str | None = None,
+    was_under: bool = False,
+) -> Any | None:
+    for k, v in d.items():
+
+        is_under = was_under or (k == parent)
+
+        if k == key and (parent is None or is_under):
+            return v
+
+        if isinstance(v, dict):
+            found = grab(v, key, parent, is_under)
+            if found is not None:
+                return found
+    return None
