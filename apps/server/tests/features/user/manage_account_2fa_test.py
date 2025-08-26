@@ -46,3 +46,13 @@ async def ok_t(api: AsyncClient) -> None:
     get_aad_cbc_hmac(
         token=res_totp["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC
     )
+
+    res_delete = await wrap_httpx(
+        api,
+        url=f"/user/delete-account?cbc_hmac_token={res_totp['data']['cbc_hmac_token']}",  # noqa: E501
+        access_token=res_logged["access_token"],
+        method="DELETE",
+        expected_code=200,
+    )
+
+    assert "user account deleted" in res_delete["data"]["msg"]
