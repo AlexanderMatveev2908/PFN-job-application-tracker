@@ -1,5 +1,6 @@
 import asyncio
 import json
+from typing import cast
 from fastapi import Depends, Request
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
@@ -109,7 +110,7 @@ async def get_us_2FA_ctrl(
 
     if body:
         try:
-            RegisterFormT(body)
+            RegisterFormT(**cast(RegisterFormT, body))
         except Exception:
             raise ErrAPI(msg="invalid payload 😡", status=400)
 
