@@ -1,13 +1,15 @@
-from typing import Any
+from typing import Any, cast
+import uuid
 from src.conf.db import db_trx
 from src.features.auth.middleware.register import RegisterFormT
-from src.features.test.lib.register_user import handle_user_lib
-from src.lib.db.idx import clear_old_tokens
+from src.lib.data_structure import parse_id, pick
+from src.lib.db.idx import clear_old_tokens, get_us_by_email
 from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,
 )
 from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
+from src.models.user import User
 
 
 async def tokens_health_svc(
@@ -26,9 +28,19 @@ async def tokens_health_svc(
         elif isinstance(expired, str):
             expired = [expired]
 
-        us = await handle_user_lib(user_data, trx, verify_user=verify_user)
+        us = await get_us_by_email(trx, user_data["email"], must_exists=False)
 
-        await clear_old_tokens(trx, us.id)
+        if not us:
+            data = pick(obj=cast(dict, user_data), keys_off=["password"])
+            user_id = parse_id(uuid.uuid4())
+            plain_pwd = user_data["password"]
+
+            us = User(**data, id=user_id, is_verified=verify_user)
+            await us.set_pwd(plain_pwd)
+            trx.add(us)
+            await trx.flush([us])
+            await trx.refresh(us)
+            await clear_old_tokens(trx, us.id)
 
         result_tokens = await gen_tokens_session(
             user_id=us.id, trx=trx, reverse=reverse, expired=expired

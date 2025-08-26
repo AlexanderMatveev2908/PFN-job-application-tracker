@@ -1,7 +1,6 @@
 from httpx import AsyncClient
 import pyotp
 import pytest
-
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT
 from src.lib.data_structure import b_to_d, h_to_b
 from src.models.token import TokenT
