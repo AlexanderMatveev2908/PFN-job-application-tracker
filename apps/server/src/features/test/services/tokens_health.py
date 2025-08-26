@@ -19,19 +19,14 @@ async def tokens_health_svc(
     async with db_trx() as trx:
 
         expired: str | list[str] | None = parsed_q.get("expired")
-        verify_user: bool | None = parsed_q.get("verify_user")
+        verify_user: bool = bool(parsed_q.get("verify_user"))
 
         if expired is None:
             expired = []
         elif isinstance(expired, str):
             expired = [expired]
 
-        us = await handle_user_lib(user_data, trx)
-
-        if verify_user:
-            us.is_verified = True
-            await trx.flush([us])
-            await trx.refresh(us)
+        us = await handle_user_lib(user_data, trx, verify_user=verify_user)
 
         await clear_old_tokens(trx, us.id)
 

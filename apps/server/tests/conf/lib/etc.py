@@ -130,7 +130,9 @@ async def get_verified_user_lib(
     return res
 
 
-async def get_user_2FA(api: AsyncClient) -> GetUser2FAReturnT:
+async def get_user_2FA(
+    api: AsyncClient,
+) -> GetUser2FAReturnT:
     res_us = await get_verified_user_lib(
         api,
     )
