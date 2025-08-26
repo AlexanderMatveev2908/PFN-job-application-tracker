@@ -10,7 +10,7 @@ URL = "/auth/register"
 
 
 @pytest.mark.asyncio
-async def test_register_ok(api: AsyncClient) -> None:
+async def ok_t(api: AsyncClient) -> None:
     await register_ok_lib(api)
 
 
@@ -41,7 +41,7 @@ async def test_register_ok(api: AsyncClient) -> None:
         ),
     ],
 )
-async def test_register_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient,
     gen_payload: Callable[[], RegisterPayloadT],
     expected_code: int,

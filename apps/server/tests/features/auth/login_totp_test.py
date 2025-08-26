@@ -1,9 +1,8 @@
-from typing import cast
 from httpx import AsyncClient
 import pyotp
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.etc import TokenArgT, get_tokens_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.get_us import get_us_2FA
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.login import get_logged_2fa
@@ -23,7 +22,7 @@ async def ok_t(api: AsyncClient) -> None:
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
-async def base_cases_t(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     res_us_2FA = await get_us_2FA(api)
@@ -31,10 +30,7 @@ async def base_cases_t(
     res_tokens = await get_tokens_lib(
         api,
         existing_payload=res_us_2FA["payload"],
-        expired=cast(
-            list[TokenArgT],
-            case.split("_expired") if case.endswith("_expired") else [],
-        ),
+        expired=case.split("_expired") if case.endswith("_expired") else [],
         cbc_hmac_t=(
             TokenT.CONF_EMAIL if case == "wrong_type" else TokenT.LOGIN_2FA
         ),

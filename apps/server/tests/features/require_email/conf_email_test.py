@@ -9,7 +9,7 @@ URL = "/require-email/confirm-email"
 
 
 @pytest.mark.asyncio
-async def test_require_email_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_require = await wrap_httpx(
@@ -31,7 +31,7 @@ async def test_require_email_ok(api) -> None:
         ("already_confirmed", 409, "user already verified"),
     ],
 )
-async def test_require_email_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload: dict | None = None

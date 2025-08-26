@@ -10,7 +10,7 @@ URL_REF = "/auth/refresh"
 
 
 @pytest.mark.asyncio
-async def test_refresh_ok(api) -> None:
+async def ok_t(api) -> None:
     res_tokens_expired = await get_tokens_lib(
         api, cbc_hmac_t=TokenT.CONF_EMAIL, reverse=True
     )
@@ -43,9 +43,7 @@ async def test_refresh_ok(api) -> None:
         "jwe_expired",
     ],
 )
-async def test_refresh_invalid_cases(
-    api: AsyncClient, expected_msg: str
-) -> None:
+async def bad_cases_t(api: AsyncClient, expected_msg: str) -> None:
     await get_tokens_lib(api, reverse=True)
 
     res_err = await wrap_httpx(

@@ -8,7 +8,7 @@ URL = "/require-email/forgot-pwd"
 
 
 @pytest.mark.asyncio
-async def test_forgot_pwd_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_forgot_pwd = await wrap_httpx(
@@ -29,7 +29,7 @@ async def test_forgot_pwd_ok(api) -> None:
         ("not_found", 404, "user not found"),
     ],
 )
-async def test_forgot_pwd_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload: dict | None = None

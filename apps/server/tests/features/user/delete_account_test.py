@@ -11,7 +11,7 @@ URL = "/user/delete-account?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def test_delete_account_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -43,7 +43,7 @@ async def test_delete_account_ok(api) -> None:
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
-async def test_delete_account_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload_url = ""

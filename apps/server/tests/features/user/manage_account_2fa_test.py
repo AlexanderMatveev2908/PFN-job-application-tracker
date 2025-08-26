@@ -68,7 +68,7 @@ async def ok_t(api: AsyncClient) -> None:
         ("totp_invalid", 401, "totp_code_invalid"),
     ],
 )
-async def base_cases_t(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     res_logged = await get_logged_2fa(api)

@@ -8,7 +8,7 @@ URL = "/verify/forgot-pwd?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def test_forgot_pwd_verify_ok(api) -> None:
+async def ok_t(api) -> None:
     res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
     res_check = await wrap_httpx(
@@ -30,7 +30,7 @@ async def test_forgot_pwd_verify_ok(api) -> None:
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
-async def test_forgot_pwd_verify_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     url = ""

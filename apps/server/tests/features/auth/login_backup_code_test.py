@@ -44,7 +44,7 @@ async def ok_t(api: AsyncClient) -> None:
         # ("finished_codes", 401, "user has no backup codes"),
     ],
 )
-async def base_cases_t(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     res_us_2fa = await get_us_2FA(api)

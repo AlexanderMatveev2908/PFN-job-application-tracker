@@ -10,7 +10,7 @@ URL = "/verify/confirm-email?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def test_confirm_email_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await get_tokens_lib(api)
 
     res_conf = await wrap_httpx(
@@ -32,7 +32,7 @@ async def test_confirm_email_ok(api) -> None:
         ("invalid", 401, re.compile(r".*cbc_hmac_invalid$")),
     ],
 )
-async def test_confirm_email_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     url = ""

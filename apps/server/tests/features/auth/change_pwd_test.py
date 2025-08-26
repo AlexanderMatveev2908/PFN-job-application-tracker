@@ -10,7 +10,7 @@ URL = "/auth/recover-pwd"
 
 
 @pytest.mark.asyncio
-async def test_recover_pwd_ok(api) -> None:
+async def ok_t(api) -> None:
     res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
     new_pwd = gen_pwd(n=5)
@@ -40,7 +40,7 @@ async def test_recover_pwd_ok(api) -> None:
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
-async def test_recover_pwd_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     new_pwd = gen_pwd(n=5)

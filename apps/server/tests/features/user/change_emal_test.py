@@ -13,7 +13,7 @@ URL = "/user/change-email"
 
 
 @pytest.mark.asyncio
-async def test_change_email_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -53,7 +53,7 @@ async def test_change_email_ok(api) -> None:
         ("existing_email", 409, "user with this email already exists"),
     ],
 )
-async def test_change_email_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload = None
