@@ -1,15 +1,17 @@
 import pytest
 from src.__dev_only.payloads import get_payload_register
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import login_ok_lib, register_ok_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/auth/login"
 
 
 @pytest.mark.asyncio
-async def test_login_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     await login_ok_lib(api, register_payload=res_register["payload"])
@@ -23,7 +25,7 @@ async def test_login_ok(api) -> None:
         ("invalid_password", 401, "invalid credentials"),
     ],
 )
-async def test_login_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload: dict | None = None

@@ -1,14 +1,16 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/user/manage-account"
 
 
 @pytest.mark.asyncio
-async def test_manage_account_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -30,7 +32,7 @@ async def test_manage_account_ok(api) -> None:
         ("expired_access", 401, "jwt_expired"),
     ],
 )
-async def test_manage_account_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload = {}

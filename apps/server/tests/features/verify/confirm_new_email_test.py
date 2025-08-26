@@ -28,7 +28,7 @@ async def _local_wrapper(api) -> RegisterPayloadT:
 
 
 @pytest.mark.asyncio
-async def test_confirm_new_email_ok(api) -> None:
+async def ok_t(api) -> None:
     res_tk_body = await get_tokens_lib(
         api,
         cbc_hmac_t=TokenT.CHANGE_EMAIL,
@@ -56,7 +56,7 @@ async def test_confirm_new_email_ok(api) -> None:
         ("expired", 401, "cbc_hmac_expired"),
     ],
 )
-async def test_confirm_new_email_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     url = ""

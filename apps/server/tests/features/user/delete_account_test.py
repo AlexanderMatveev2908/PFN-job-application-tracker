@@ -1,14 +1,17 @@
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.etc import get_tokens_lib, login_ok_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.login import login_ok_lib
+from tests.conf.lib.register import register_ok_lib
 
 URL = "/user/delete-account?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
-async def test_delete_account_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -40,7 +43,7 @@ async def test_delete_account_ok(api) -> None:
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
-async def test_delete_account_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload_url = ""

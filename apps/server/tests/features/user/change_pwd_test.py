@@ -3,16 +3,18 @@ import pytest
 from src.constants.reg import REG_CBC_HMAC
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import extract_login_payload
-from tests.conf.lib.etc import get_tokens_lib, register_ok_lib
+from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
+
+from tests.conf.lib.register import register_ok_lib
 
 URL_MNG = "/user/manage-account"
 URL_CHG = "/user/change-pwd"
 
 
 @pytest.mark.asyncio
-async def test_change_pwd_ok(api) -> None:
+async def ok_t(api) -> None:
     res_register = await register_ok_lib(api)
 
     res_manage = await wrap_httpx(
@@ -50,7 +52,7 @@ async def test_change_pwd_ok(api) -> None:
         ("expired_cbc", 401, "cbc_hmac_expired"),
     ],
 )
-async def test_change_pwd_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
     payload = {}

@@ -8,7 +8,7 @@ from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
-async def test_tokens_ok(api) -> None:
+async def ok_t(api) -> None:
     await get_tokens_lib(api)
 
 
@@ -39,7 +39,7 @@ async def test_tokens_ok(api) -> None:
         ),
     ],
 )
-async def test_tokens_invalid_cases(
+async def bad_cases_t(
     api: AsyncClient,
     case: str,
     act: str,
