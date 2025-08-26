@@ -35,7 +35,7 @@ async def ok_t(api: AsyncClient) -> None:
 
         res_login1 = await wrap_httpx(
             api,
-            url="/auth/login-backup-code",
+            url="/auth/login-2FA-backup-code",
             expected_code=200,
             data={
                 "cbc_hmac_token": token_login,
@@ -47,6 +47,9 @@ async def ok_t(api: AsyncClient) -> None:
 
         access_token: str = cast(str, grab(res_login1, "access_token"))
         assert REG_JWT.fullmatch(access_token)
+        assert grab(res_login1, "backup_codes_left") == (
+            len(cast(list, grab(res_logged, "backup_codes"))) - (i + 1)
+        )
 
     res_tokens = await get_tokens_lib(
         api,

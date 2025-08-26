@@ -50,7 +50,7 @@ async def get_logged_2fa(
 
     res_login_2fa = await wrap_httpx(
         api,
-        url="/auth/login-totp",
+        url="/auth/login-2FA-totp",
         data={
             "totp_code": gen_totp(res_us_2fa["totp_secret"]),
             "cbc_hmac_token": login_token,
