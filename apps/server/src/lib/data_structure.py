@@ -96,7 +96,7 @@ def parse_enum(v: Enum | str) -> str:
 
 
 def pick(
-    obj: dict,
+    obj: Any,
     keys_in: Optional[list[str]] = None,
     keys_off: Optional[list[str]] = None,
 ) -> dict:
