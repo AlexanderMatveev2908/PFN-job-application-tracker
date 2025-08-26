@@ -18,6 +18,7 @@ from src.models.user import UserDcT
 class TokenT(Enum):
     REFRESH = "REFRESH"
     CONF_EMAIL = "CONF_EMAIL"
+    CONF_EMAIL_2FA = "CONF_EMAIL_2FA"
     RECOVER_PWD = "RECOVER_PWD"
     CHANGE_EMAIL = "CHANGE_EMAIL"
     CHANGE_PWD = "CHANGE_PWD"

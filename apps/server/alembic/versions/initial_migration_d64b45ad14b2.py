@@ -106,6 +106,7 @@ def upgrade() -> None:
             sa.Enum(
                 "REFRESH",
                 "CONF_EMAIL",
+                "CONF_EMAIL_2FA",
                 "RECOVER_PWD",
                 "CHANGE_EMAIL",
                 "CHANGE_PWD",

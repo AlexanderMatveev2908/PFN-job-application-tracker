@@ -6,6 +6,7 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
+from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
     check_cbc_hmac_with_us_mdw,
@@ -67,19 +68,34 @@ async def confirm_new_email_ctrl(
             User, await get_us_by_id(trx=trx, us_id=result_cbc["user_d"]["id"])
         )
 
-        us.toggle_mails()
+        if not us.totp_secret:
 
-        result_tokens = await gen_tokens_session(
+            us.toggle_mails()
+
+            result_tokens = await gen_tokens_session(
+                trx=trx,
+                user_id=result_cbc["user_d"]["id"],
+            )
+
+            return ResAPI.ok_200(
+                msg="email updated successfully",
+                access_token=result_tokens["access_token"],
+                cookies=[
+                    gen_refresh_cookie(
+                        refresh_token=result_tokens["result_jwe"][
+                            "client_token"
+                        ]
+                    )
+                ],
+            )
+
+        cbc_hmac_res = await gen_cbc_hmac(
             trx=trx,
-            user_id=result_cbc["user_d"]["id"],
+            user_id=us.id,
+            token_t=TokenT.CONF_EMAIL_2FA,
         )
 
         return ResAPI.ok_200(
             msg="email updated successfully",
-            access_token=result_tokens["access_token"],
-            cookies=[
-                gen_refresh_cookie(
-                    refresh_token=result_tokens["result_jwe"]["client_token"]
-                )
-            ],
+            cbc_hmac_token=cbc_hmac_res["client_token"],
         )

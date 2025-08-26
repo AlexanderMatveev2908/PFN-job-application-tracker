@@ -58,12 +58,18 @@ def get_now() -> int:
 
 
 def grab(
-    d: Any,
+    d: dict[str, Any],
     key: str,
     parent: str | None = None,
     was_under: bool = False,
+    exclude_parents: list[str] | None = None,
 ) -> Any:
+    if exclude_parents is None:
+        exclude_parents = []
+
     for k, v in d.items():
+        if k in exclude_parents:
+            continue
 
         is_under = was_under or (k == parent)
 
@@ -71,7 +77,8 @@ def grab(
             return v
 
         if isinstance(v, dict):
-            found = grab(v, key, parent, is_under)
+            found = grab(v, key, parent, is_under, exclude_parents)
             if found is not None:
                 return found
+
     return None
