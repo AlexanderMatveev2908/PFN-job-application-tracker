@@ -90,7 +90,10 @@ async def ok_t(api: AsyncClient) -> None:
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "case, expected_code, expected_msg",
-    [("totp_wrong", 401, "totp_code_invalid")],
+    [
+        ("totp_wrong", 401, "totp_code_invalid"),
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
+    ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
@@ -104,16 +107,25 @@ async def bad_cases_t(
         expected_code=200,
     )
 
-    get_aad_cbc_hmac(
-        grab(res_verify, "cbc_hmac_token"), TokenT.RECOVER_PWD_2FA
-    )
+    token_2FA = grab(res_verify, "cbc_hmac_token")
+    get_aad_cbc_hmac(token_2FA, TokenT.RECOVER_PWD_2FA)
+
+    if case == "cbc_hmac_expired":
+        token_2FA = (
+            await get_tokens_lib(
+                api,
+                existing_payload=res_logged["payload"],
+                expired=["cbc_hmac"],
+                cbc_hmac_t=TokenT.RECOVER_PWD_2FA,
+            )
+        )["cbc_hmac_token"]
 
     res_totp = await wrap_httpx(
         api,
         url="/verify/recover-pwd-2FA-totp",
         expected_code=expected_code,
         data={
-            "cbc_hmac_token": grab(res_verify, "cbc_hmac_token"),
+            "cbc_hmac_token": token_2FA,
             "totp_code": (
                 "123456"
                 if case == "totp_wrong"
