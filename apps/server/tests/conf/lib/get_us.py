@@ -48,12 +48,12 @@ async def make_setup_2FA(
 
     assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
 
-    assert len(res_2FA["data"]["backup_codes"]) == 8
+    assert len(grab(res_2FA, "backup_codes")) == 8
 
     return {
         **res_us,
         "totp_secret": res_2FA["data"]["totp_secret"],
-        "backup_codes": res_2FA["data"]["backup_codes"],
+        "backup_codes": grab(res_2FA, "backup_codes"),
     }
 
 

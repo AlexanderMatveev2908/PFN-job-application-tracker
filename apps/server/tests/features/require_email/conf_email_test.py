@@ -20,7 +20,7 @@ async def ok_t(api) -> None:
         expected_code=201,
     )
 
-    assert "email sent" in res_require["data"]["msg"].lower()
+    assrt_msg(res_require, "email sent")
 
 
 @pytest.mark.asyncio

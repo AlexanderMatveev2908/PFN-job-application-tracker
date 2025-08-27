@@ -57,11 +57,7 @@ async def login_ctrl(
         tokens_session = await gen_tokens_session(user_id=us.id, trx=trx)
         return ResAPI.ok_200(
             access_token=tokens_session["access_token"],
-            cookies=[
-                gen_refresh_cookie(
-                    tokens_session["result_jwe"]["client_token"]
-                )
-            ],
+            cookies=[gen_refresh_cookie(grab(tokens_session, "client_token"))],
         )
 
 

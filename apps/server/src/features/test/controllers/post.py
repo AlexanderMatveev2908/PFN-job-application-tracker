@@ -17,7 +17,7 @@ from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
 from src.lib.algs.fernet import gen_fernet
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import dest_d, pick
-from src.lib.etc import parse_bd
+from src.lib.etc import grab, parse_bd
 from src.lib.qrcode.idx import GenQrcodeReturnT, gen_qrcode
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
@@ -176,9 +176,5 @@ async def get_us_2FA_ctrl(
             backup_codes=backup_codes,
             access_token=tokens_session["access_token"],
             cbc_hmac_token=cbc_hmac_res["client_token"],
-            cookies=[
-                gen_refresh_cookie(
-                    tokens_session["result_jwe"]["client_token"]
-                )
-            ],
+            cookies=[gen_refresh_cookie(grab(tokens_session, "client_token"))],
         )
