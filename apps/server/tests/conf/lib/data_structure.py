@@ -4,7 +4,7 @@ from typing import Any, Literal, cast
 import pyotp
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC, REG_SECRET_TOTP
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_SECRET_TOTP
 from src.decorators.err import ErrAPI
 from src.lib.algs.fernet import check_fernet
 from src.lib.data_structure import b_to_d, h_to_b
@@ -51,3 +51,8 @@ def gen_totp(totp_secret: str) -> str:
 
 def assrt_msg(d: Any, msg: str) -> None:
     assert msg in grab(d, "msg").lower()
+
+
+def assrt_sessions_tokens(res: Any) -> None:
+    assert REG_JWT.fullmatch(grab(res, "access_token"))
+    assert REG_JWE.fullmatch(grab(res, "refresh_token"))
