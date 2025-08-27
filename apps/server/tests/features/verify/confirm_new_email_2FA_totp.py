@@ -11,13 +11,13 @@ from tests.conf.lib.data_structure import (
     get_aad_cbc_hmac,
 )
 from tests.conf.lib.etc import get_tokens_lib
-from tests.conf.lib.get_us import get_us_with_2FA
+from tests.conf.lib.get_us import get_us_2FA_lib
 from tests.conf.lib.idx import wrap_httpx
 
 
 @pytest.mark.asyncio
 async def ok_t(api: AsyncClient) -> None:
-    res_logged = await get_us_with_2FA(api, cbc_hmac_t=TokenT.MANAGE_ACC)
+    res_logged = await get_us_2FA_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
 
     new_email = faker.Faker().email()
 

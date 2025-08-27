@@ -4,7 +4,7 @@ from httpx import AsyncClient
 
 from tests.conf.lib.register import register_ok_lib
 
-URL = "/require-email/forgot-pwd"
+URL = "/require-email/recover-pwd"
 
 
 @pytest.mark.asyncio

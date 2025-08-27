@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from sqlalchemy import delete, func, select
+from sqlalchemy import func, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -7,7 +7,7 @@ from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.user.middleware.manage_account import get_access_account_mdw
 from src.lib.TFA.backup import check_backup_code, gen_backup_codes
-from src.lib.db.idx import get_us_by_id
+from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -15,7 +15,7 @@ from src.middleware.combo.idx import (
     combo_check_jwt_cbc_hmac_body_mdw,
 )
 from src.models.backup_code import BackupCode
-from src.models.token import GenTokenReturnT, Token, TokenT
+from src.models.token import GenTokenReturnT, TokenT
 from src.models.user import UserDcT
 
 
@@ -95,12 +95,7 @@ async def get_access_manage_account_TFA_totp_ctrl(
             user_id=us.id,
         )
 
-        await trx.execute(
-            delete(Token).where(
-                (Token.token_t == TokenT.MANAGE_ACC_2FA)
-                & (Token.user_id == us.id)
-            )
-        )
+        await del_token_by_t(trx, us.id, TokenT.MANAGE_ACC_2FA)
 
         return ResAPI.ok_200(cbc_hmac_token=cbc_result["client_token"])
 
@@ -125,12 +120,7 @@ async def get_access_manage_account_backup_code_ctrl(
             backup_code=combo_result["body"]["backup_code"],
         )
 
-        await trx.execute(
-            delete(Token).where(
-                (Token.user_id == us_id)
-                & (Token.token_t == TokenT.MANAGE_ACC_2FA)
-            )
-        )
+        await del_token_by_t(trx, us_id, TokenT.MANAGE_ACC_2FA)
 
         cbc_result: GenTokenReturnT = await gen_cbc_hmac(
             trx=trx,

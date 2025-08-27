@@ -3,7 +3,7 @@ import os
 from typing import TypedDict, cast
 import uuid
 
-from sqlalchemy import delete, null, select
+from sqlalchemy import null, select
 from src.conf.env import get_env
 from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
@@ -18,7 +18,7 @@ from src.lib.data_structure import (
 from src.lib.algs.cbc import dec_aes_cbc, gen_aes_cbc
 from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
-from src.lib.db.idx import get_us_by_id
+from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import calc_exp, lt_now
 from src.lib.serialize_data import serialize
 from src.models.token import (
@@ -111,10 +111,10 @@ async def gen_cbc_hmac(
 
     hdr: HdrT = {"token_t": token_t}
 
-    await trx.execute(
-        delete(Token).where(
-            (Token.user_id == user_id) & (Token.token_t == token_t)
-        )
+    await del_token_by_t(
+        trx,
+        user_id,
+        token_t,
     )
 
     parsed_id = parse_id(user_id)
