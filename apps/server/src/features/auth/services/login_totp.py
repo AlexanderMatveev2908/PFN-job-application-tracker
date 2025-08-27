@@ -1,5 +1,4 @@
 from src.conf.db import db_trx
-from src.decorators.err import ErrAPI
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
@@ -14,8 +13,7 @@ async def login_topt_svc(
     async with db_trx() as trx:
         us = await get_us_by_id(trx=trx, us_id=grab(result_combo, "user_id"))
 
-        if not us.check_totp(user_code=result_combo["body"]["totp_code"]):
-            raise ErrAPI(msg="totp_code_invalid", status=401)
+        us.check_totp(user_code=result_combo["body"]["totp_code"])
 
         tokens_session: TokensSessionsReturnT = await gen_tokens_session(
             user_id=us.id, trx=trx

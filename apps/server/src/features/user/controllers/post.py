@@ -85,8 +85,7 @@ async def get_access_manage_account_TFA_totp_ctrl(
 
         us = await get_us_by_id(trx, grab(combo_result, "user_id"))
 
-        if not us.check_totp(user_code=combo_result["body"]["totp_code"]):
-            raise ErrAPI(msg="totp_code_invalid", status=401)
+        us.check_totp(user_code=combo_result["body"]["totp_code"])
 
         cbc_result: GenTokenReturnT = await gen_cbc_hmac(
             trx=trx,

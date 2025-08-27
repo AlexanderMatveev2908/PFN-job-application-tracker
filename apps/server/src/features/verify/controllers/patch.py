@@ -1,7 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
 from src.conf.db import db_trx
-from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
@@ -35,8 +34,7 @@ async def confirm_new_email_2FA_top_ctrl(
             ),
         )
 
-        if not us.check_totp(user_code=combo_result["body"]["totp_code"]):
-            raise ErrAPI(msg="totp_code_invalid", status=401)
+        us.check_totp(user_code=combo_result["body"]["totp_code"])
 
         us.toggle_mails()
 
