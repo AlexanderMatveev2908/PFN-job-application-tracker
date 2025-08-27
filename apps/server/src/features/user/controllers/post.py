@@ -3,13 +3,10 @@ from sqlalchemy import func, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.features.auth.middleware.login_backup_code import BackupCodeFormT
-from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.user.middleware.manage_account import get_access_account_mdw
 from src.lib.TFA.backup import gen_backup_codes
 from src.lib.combo.TFA import check_2FA_lib
 from src.lib.data_structure import dest_d
-from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.validators.idx import Check2FAFormT
@@ -96,63 +93,7 @@ async def get_access_manage_account_2FA_ctrl(
             user_id=us.id,
         )
 
-        return ResAPI.ok_200(cbc_hmac_token=cbc_result["client_token"])
-
-
-async def get_access_manage_account_TFA_totp_ctrl(
-    req: Request,
-    combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_jwt_cbc_hmac_body_mdw(
-            check_jwt=True, model=TotpFormT, token_t=TokenT.MANAGE_ACC_2FA
-        )
-    ),
-) -> ResAPI:
-
-    async with db_trx() as trx:
-
-        us = await get_us_by_id(trx, grab(combo_result, "user_id"))
-
-        us.check_totp(user_code=combo_result["body"]["totp_code"])
-
-        cbc_result: GenTokenReturnT = await gen_cbc_hmac(
-            trx=trx,
-            token_t=TokenT.MANAGE_ACC,
-            user_id=us.id,
-        )
-
-        await del_token_by_t(trx, us.id, TokenT.MANAGE_ACC_2FA)
-
-        return ResAPI.ok_200(cbc_hmac_token=cbc_result["client_token"])
-
-
-async def get_access_manage_account_backup_code_ctrl(
-    req: Request,
-    combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_jwt_cbc_hmac_body_mdw(
-            check_jwt=True,
-            model=BackupCodeFormT,
-            token_t=TokenT.MANAGE_ACC_2FA,
-        )
-    ),
-) -> ResAPI:
-
-    async with db_trx() as trx:
-
-        us = await get_us_by_id(trx, grab(combo_result, "user_id"))
-
-        res_backup_check = await us.check_backup_code(
-            trx, backup_code=grab(combo_result, "backup_code")
-        )
-
-        await del_token_by_t(trx, us.id, TokenT.MANAGE_ACC_2FA)
-
-        cbc_result: GenTokenReturnT = await gen_cbc_hmac(
-            trx=trx,
-            token_t=TokenT.MANAGE_ACC,
-            user_id=us.id,
-        )
-
         return ResAPI.ok_200(
             cbc_hmac_token=cbc_result["client_token"],
-            backup_codes_left=res_backup_check["backup_codes_left"],
+            backup_codes_left=backup_codes_left,
         )

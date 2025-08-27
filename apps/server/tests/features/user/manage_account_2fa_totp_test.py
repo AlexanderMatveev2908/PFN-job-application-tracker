@@ -35,7 +35,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_totp = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-totp",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         data={
             "totp_code": gen_totp(res_logged["totp_secret"]),
@@ -92,7 +92,7 @@ async def bad_cases_t(
 
     res_totp = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-totp",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         data={
             "totp_code": totp_code,

@@ -1034,9 +1034,9 @@
               }
             },
             "url": {
-              "raw": "{{DEF_URL}}/user/manage-account-2FA-totp",
+              "raw": "{{DEF_URL}}/user/manage-account-2FA",
               "host": ["{{DEF_URL}}"],
-              "path": ["user", "manage-account-2FA-totp"]
+              "path": ["user", "manage-account-2FA"]
             }
           },
           "response": []
@@ -1066,9 +1066,9 @@
               }
             },
             "url": {
-              "raw": "{{DEF_URL}}/user/manage-account-2FA-backup-code",
+              "raw": "{{DEF_URL}}/user/manage-account-2FA",
               "host": ["{{DEF_URL}}"],
-              "path": ["user", "manage-account-2FA-backup-code"]
+              "path": ["user", "manage-account-2FA"]
             }
           },
           "response": []

@@ -26,7 +26,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_backup = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-backup-code",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         expected_code=200,
         data={
@@ -73,7 +73,7 @@ async def bad_cases_t(
 
     res_backup = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-backup-code",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         expected_code=expected_code,
         data={
