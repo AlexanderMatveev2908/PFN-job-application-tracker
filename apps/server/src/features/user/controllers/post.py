@@ -10,6 +10,7 @@ from src.lib.TFA.backup import gen_backup_codes
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
+from src.lib.validators.idx import Check2FAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     ComboCheckJwtCbcReturnT,
@@ -70,6 +71,18 @@ async def new_backup_codes_ctrl(
         result_codes = await gen_backup_codes(trx=trx, us_id=us_id)
 
     return ResAPI.ok_200(backup_codes=result_codes["backup_codes_client"])
+
+
+async def get_access_manage_account_2FA_ctrl(
+    req: Request,
+    res_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=True, model=Check2FAFormT, token_t=TokenT.MANAGE_ACC_2FA
+        )
+    ),
+) -> ResAPI:
+
+    return ResAPI.ok_200()
 
 
 async def get_access_manage_account_TFA_totp_ctrl(
