@@ -1,5 +1,5 @@
 from src.conf.db import db_trx
-from src.lib.validators.idx import check_2FA_lib
+from src.lib.combo.TFA import check_2FA_lib
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 
 
