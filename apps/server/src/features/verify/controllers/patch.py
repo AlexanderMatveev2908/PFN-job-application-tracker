@@ -3,6 +3,7 @@ from fastapi import Depends, Request
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
@@ -52,5 +53,14 @@ async def confirm_new_email_2FA_top_ctrl(
         )
 
 
-async def confirm_new_email_2FA_backup_code_ctrl(req: Request) -> ResAPI:
+async def confirm_new_email_2FA_backup_code_ctrl(
+    req: Request,
+    res_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=False,
+            model=BackupCodeFormT,
+            token_t=TokenT.CHANGE_EMAIL_2FA,
+        )
+    ),
+) -> ResAPI:
     return ResAPI.ok_200()
