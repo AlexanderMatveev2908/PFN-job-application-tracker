@@ -29,3 +29,7 @@ async def forgot_pwd_2FA_totp_ctrl(
             raise ErrAPI(msg="totp_code_invalid", status=401)
 
         return ResAPI.ok_200(msg="verification successful")
+
+
+async def forgot_pwd_2FA_backup_code_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
