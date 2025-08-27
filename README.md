@@ -20,6 +20,8 @@ The name **PFN** comes from the core stack that powers the project:
 
 Together they form a clean, modern **full-stack architecture** 🚀
 
+---
+
 ### 🖥️ **Client**
 
 - **Next.js** (App Router) — Framework for React with built-in SSR, ISR, routing, and SEO optimization
@@ -49,6 +51,12 @@ Together they form a clean, modern **full-stack architecture** 🚀
 - **JWT** — Used as short-lived access tokens for authenticating user requests.
 - **JWE** — Used as refresh tokens, securely storing session renewal data.
 - **CBC-HMAC tokens with HKDF-derived keys** — Special short-lived tokens, mainly for sensitive actions like account verification, password resets, or email confirmation.
+- **Fernet** — Symmetric encryption algorithm, used to securely encrypt sensitive secrets (e.g., **TOTP** seeds) before storing them in the database
+- **2FA** — Implemented via **TOTP** using **PyOTP**:
+  - **Secret Management** — Each user gets a **unique TOTP secret**, which is encrypted with **Fernet** before being saved in the database
+  - **QR Code Enrollment** — The secret can be encoded as a QR code (**qrcode** library) so users can easily register it in an authenticator app
+  - **Terminal Support** — For **CLI** users, the raw secret can also be provided directly
+  - **Backup Codes** — Extra **one-time** recovery codes are generated, hashed with **Argon2**, and allow login if a **TOTP device** is **lost**
 - **APScheduler** — Schedules recurring tasks
 
 ---
