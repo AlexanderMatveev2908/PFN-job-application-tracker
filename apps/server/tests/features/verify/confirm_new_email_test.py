@@ -1,8 +1,8 @@
 import os
 import pytest
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_JWE, REG_JWT
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -43,8 +43,7 @@ async def ok_t(api) -> None:
     )
 
     assert "email updated successfully" in res_verify["data"]["msg"].lower()
-    assert REG_JWT.fullmatch(res_verify["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_verify["refresh_token"])
+    assrt_sessions_tokens(res_verify)
 
 
 @pytest.mark.asyncio
