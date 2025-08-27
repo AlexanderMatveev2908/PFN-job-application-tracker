@@ -1,6 +1,5 @@
 from typing import cast
 from fastapi import Depends, Request
-
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -51,3 +50,15 @@ async def confirm_new_email_2FA_top_ctrl(
                 )
             ],
         )
+
+
+async def forgot_pwd_2FA_totp_ctrl(
+    req: Request,
+    combo_res: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=False, model=TotpFormT, token_t=TokenT.RECOVER_PWD_2FA
+        )
+    ),
+) -> ResAPI:
+
+    return ResAPI.ok_200(msg="verification successful")

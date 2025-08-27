@@ -6,6 +6,7 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
@@ -48,12 +49,33 @@ async def confirm_email_ctrl(
 
 async def forgot_pwd_ctrl(
     _: Request,
-    __: CheckTokenWithUsReturnT = Depends(
+    combo_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.RECOVER_PWD)
     ),
 ) -> ResAPI:
 
-    return ResAPI.ok_200(msg="verification successful")
+    us = combo_result["user_d"]
+
+    if not us["totp_secret"]:
+        return ResAPI.ok_200(msg="verification successful")
+
+    async with db_trx() as trx:
+        cbc_hmac = (
+            await gen_cbc_hmac(
+                trx=trx,
+                user_id=us["id"],
+                token_t=TokenT.RECOVER_PWD_2FA,
+            )
+        )["client_token"]
+
+        await trx.execute(
+            delete(Token).where(
+                (Token.user_id == grab(combo_result, "user_id"))
+                & (Token.token_t == TokenT.RECOVER_PWD)
+            )
+        )
+
+        return ResAPI.ok_200(cbc_hmac_token=cbc_hmac)
 
 
 async def confirm_new_email_ctrl(

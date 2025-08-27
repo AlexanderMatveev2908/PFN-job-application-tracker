@@ -108,6 +108,7 @@ def upgrade() -> None:
                 "REFRESH",
                 "CONF_EMAIL",
                 "RECOVER_PWD",
+                "RECOVER_PWD_2FA",
                 "CHANGE_EMAIL",
                 "CHANGE_EMAIL_2FA",
                 "CHANGE_PWD",

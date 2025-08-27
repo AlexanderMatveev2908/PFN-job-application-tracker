@@ -6,6 +6,7 @@ from src.features.verify.controllers.get import (
 )
 from src.features.verify.controllers.patch import (
     confirm_new_email_2FA_top_ctrl,
+    forgot_pwd_2FA_totp_ctrl,
 )
 from src.middleware.rate_limiter import rate_limit_mdw
 
@@ -23,6 +24,13 @@ verify_router.add_api_route(
     "/forgot-pwd",
     forgot_pwd_ctrl,
     methods=["GET"],
+    dependencies=[Depends(rate_limit_mdw(limit=3))],
+)
+
+verify_router.add_api_route(
+    "/forgot-pwd-2FA-totp",
+    forgot_pwd_2FA_totp_ctrl,
+    methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=3))],
 )
 
