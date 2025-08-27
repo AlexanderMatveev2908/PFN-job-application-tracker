@@ -4,7 +4,7 @@ import pytest
 from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, gen_totp
-from tests.conf.lib.get_us import get_us_with_2FA
+from tests.conf.lib.get_us import get_us_2FA_lib
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.login import make_flow_log_2FA
 
@@ -60,7 +60,7 @@ async def ok_t(api: AsyncClient) -> None:
     #     existing_payload=res_logged["payload"],
     # )
 
-    res_no_codes = await get_us_with_2FA(api, empty_codes=True)
+    res_no_codes = await get_us_2FA_lib(api, empty_codes=True)
 
     res_manage_0 = await wrap_httpx(
         api,
@@ -105,7 +105,7 @@ async def ok_t(api: AsyncClient) -> None:
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    res_logged = await get_us_with_2FA(
+    res_logged = await get_us_2FA_lib(
         api,
         expired=case.split("_expired"),
         cbc_hmac_t=TokenT.MANAGE_ACC,

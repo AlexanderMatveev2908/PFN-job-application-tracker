@@ -56,7 +56,7 @@ async def make_setup_2FA(
     }
 
 
-async def get_us_with_2FA(
+async def get_us_2FA_lib(
     api: AsyncClient,
     cbc_hmac_t: TokenT = TokenT.MANAGE_ACC,
     empty_codes: bool = False,
