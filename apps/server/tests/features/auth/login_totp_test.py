@@ -40,7 +40,7 @@ async def bad_cases_t(
 
     res_totp = await wrap_httpx(
         api,
-        url="/auth/login-2FA-totp",
+        url="/auth/login-2FA",
         data={
             "totp_code": (
                 totp_code[:-2] + "12"
