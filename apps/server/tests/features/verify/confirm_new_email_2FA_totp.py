@@ -6,7 +6,7 @@ from src.constants.reg import REG_JWE, REG_JWT
 from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
-    assert_msg,
+    assrt_msg,
     gen_totp,
     get_aad_cbc_hmac,
 )
@@ -33,7 +33,7 @@ async def ok_t(api: AsyncClient) -> None:
         method="PATCH",
     )
 
-    assert_msg(res_change, "email sent")
+    assrt_msg(res_change, "email sent")
 
     tokens_res = await get_tokens_lib(
         api,

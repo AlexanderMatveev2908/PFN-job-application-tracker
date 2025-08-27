@@ -49,5 +49,5 @@ def gen_totp(totp_secret: str) -> str:
     return pyotp.TOTP(parsed).now()
 
 
-def assert_msg(d: Any, msg: str) -> None:
+def assrt_msg(d: Any, msg: str) -> None:
     assert msg in grab(d, "msg")
