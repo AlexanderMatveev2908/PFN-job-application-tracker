@@ -634,9 +634,9 @@
               }
             },
             "url": {
-              "raw": "{{DEF_URL}}/verify/new-email-2FA-backup-code",
+              "raw": "{{DEF_URL}}/verify/new-email-2FA",
               "host": ["{{DEF_URL}}"],
-              "path": ["verify", "new-email-2FA-backup-code"]
+              "path": ["verify", "new-email-2FA"]
             }
           },
           "response": []

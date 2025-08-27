@@ -56,7 +56,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_verify_1 = await wrap_httpx(
         api,
-        url="/verify/new-email-2FA-totp",
+        url="/verify/new-email-2FA",
         method="PATCH",
         expected_code=200,
         data={
@@ -125,7 +125,7 @@ async def bad_cases_t(
 
     res_totp = await wrap_httpx(
         api,
-        url="/verify/new-email-2FA-totp",
+        url="/verify/new-email-2FA",
         method="PATCH",
         data={
             "cbc_hmac_token": token_2fa,

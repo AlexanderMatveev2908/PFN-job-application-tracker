@@ -54,7 +54,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_verify_code = await wrap_httpx(
         api,
-        url="/verify/new-email-2FA-backup-code",
+        url="/verify/new-email-2FA",
         data={
             "cbc_hmac_token": token_2fa,
             "backup_code": res_2fa["backup_codes"][0],
@@ -126,7 +126,7 @@ async def bad_cases_t(
 
     res_verify_code = await wrap_httpx(
         api,
-        url="/verify/new-email-2FA-backup-code",
+        url="/verify/new-email-2FA",
         data={
             "cbc_hmac_token": token_2fa,
             "backup_code": (
