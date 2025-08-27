@@ -76,7 +76,10 @@ async def ok_t(api: AsyncClient) -> None:
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "case, expected_code, expected_msg",
-    [("wrong_code", 401, "totp_code_invalid")],
+    [
+        ("wrong_code", 401, "totp_code_invalid"),
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
+    ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
@@ -105,7 +108,18 @@ async def bad_cases_t(
         method="GET",
     )
 
-    token_2fa = grab(res_verify, "cbc_hmac_token")
+    token_2fa = (
+        (
+            await get_tokens_lib(
+                api,
+                existing_payload=res_2fa["payload"],
+                cbc_hmac_t=TokenT.CHANGE_EMAIL_2FA,
+                expired=["cbc_hmac"],
+            )
+        )["cbc_hmac_token"]
+        if case == "cbc_hmac_expired"
+        else grab(res_verify, "cbc_hmac_token")
+    )
 
     get_aad_cbc_hmac(token_2fa, TokenT.CHANGE_EMAIL_2FA)
 
