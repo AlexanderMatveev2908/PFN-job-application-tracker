@@ -50,4 +50,4 @@ def gen_totp(totp_secret: str) -> str:
 
 
 def assrt_msg(d: Any, msg: str) -> None:
-    assert msg in grab(d, "msg")
+    assert msg in grab(d, "msg").lower()
