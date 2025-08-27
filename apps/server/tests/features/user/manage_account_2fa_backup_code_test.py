@@ -3,7 +3,7 @@ from httpx import AsyncClient
 import pytest
 from src.lib.etc import grab
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import get_aad_cbc_hmac
+from tests.conf.lib.data_structure import assrt_msg, get_aad_cbc_hmac
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.login import make_flow_log_2FA
 
@@ -26,12 +26,12 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_backup = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-backup-code",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         expected_code=200,
         data={
             "backup_code": res_logged["backup_codes"][0],
-            "cbc_hmac_token": res_pwd["data"]["cbc_hmac_token"],
+            "cbc_hmac_token": grab(res_pwd, "cbc_hmac_token"),
         },
     )
 
@@ -66,14 +66,14 @@ async def bad_cases_t(
     )
 
     if case == "wrong_pwd":
-        assert expected_msg in res_pwd["data"]["msg"]
+        assrt_msg(res_pwd, expected_msg)
         return
 
     code = cast(list, grab(cast(dict, res_logged), "backup_codes"))[0]
 
     res_backup = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-backup-code",
+        url="/user/manage-account-2FA",
         access_token=res_logged["access_token"],
         expected_code=expected_code,
         data={
@@ -82,4 +82,4 @@ async def bad_cases_t(
         },
     )
 
-    assert expected_msg in res_backup["data"]["msg"]
+    assrt_msg(res_backup, expected_msg)

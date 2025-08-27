@@ -1,5 +1,17 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
-from src.constants.reg import REG_CBC_HMAC, REG_PWD
+from typing import Self
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    Field,
+    field_validator,
+    model_validator,
+)
+from src.constants.reg import (
+    REG_BACKUP_CODE,
+    REG_CBC_HMAC,
+    REG_PWD,
+    REG_TOTP_CODE,
+)
 from src.decorators.err import ErrAPI
 
 
@@ -38,3 +50,17 @@ def check_basic_cbc_shape_lib(v: str | None) -> str:
         raise ErrAPI(msg="cbc_hmac_invalid_format", status=401)
 
     return v
+
+
+class TFAFormT(BaseModel):
+    totp_code: str | None = Field(default=None, pattern=REG_TOTP_CODE)
+    backup_code: str | None = Field(default=None, pattern=REG_BACKUP_CODE)
+
+    @model_validator(mode="after")
+    def check_one_or_throw(self) -> Self:
+        if not self.totp_code and not self.backup_code:
+            raise ErrAPI(
+                msg="neither totp_code nor backup_code provided",
+                status=401,
+            )
+        return self

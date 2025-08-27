@@ -1,5 +1,6 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -56,4 +57,4 @@ async def bad_cases_t(
         expected_code=expected_code,
     )
 
-    assert expected_msg in res["data"]["msg"].lower()
+    assrt_msg(res, expected_msg)

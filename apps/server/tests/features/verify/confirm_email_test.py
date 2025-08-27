@@ -1,7 +1,7 @@
-import re
 import pytest
+from src.lib.etc import grab
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import get_aad_cbc_hmac
+from tests.conf.lib.data_structure import assrt_msg, get_aad_cbc_hmac
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -20,7 +20,7 @@ async def ok_t(api) -> None:
         expected_code=200,
     )
 
-    assert res_conf["data"]["updated_user"]["is_verified"] is True
+    assert grab(res_conf, "is_verified") is True
 
 
 @pytest.mark.asyncio
@@ -29,7 +29,7 @@ async def ok_t(api) -> None:
     [
         ("already_verified", 409, "user already verified"),
         ("expired", 401, "cbc_hmac_expired"),
-        ("invalid", 401, re.compile(r".*cbc_hmac_invalid$")),
+        ("invalid", 401, "cbc_hmac_invalid"),
     ],
 )
 async def bad_cases_t(
@@ -46,7 +46,7 @@ async def bad_cases_t(
             url=f'{URL}{res_register["cbc_hmac_token"]}',
             expected_code=200,
         )
-        assert res_conf["data"]["updated_user"]["is_verified"] is True
+        assert grab(res_conf, "is_verified") is True
 
         res_tokens = await get_tokens_lib(
             api, existing_payload=res_register["payload"]
@@ -55,7 +55,7 @@ async def bad_cases_t(
         parsed = get_aad_cbc_hmac(
             token=res_tokens["cbc_hmac_token"], token_t=TokenT.CONF_EMAIL
         )
-        assert parsed["user_id"] == res_conf["data"]["updated_user"]["id"]
+        assert parsed["user_id"] == grab(res_conf, "id", parent="updated_user")
 
         url = f'{URL}{res_tokens["cbc_hmac_token"]}'
 
@@ -71,7 +71,4 @@ async def bad_cases_t(
         api, method="GET", url=url, expected_code=expected_code
     )
 
-    if isinstance(expected_msg, re.Pattern):
-        assert expected_msg.fullmatch(res_conf["data"]["msg"])
-    else:
-        assert expected_msg in res_conf["data"]["msg"]
+    assrt_msg(res_conf, expected_msg)

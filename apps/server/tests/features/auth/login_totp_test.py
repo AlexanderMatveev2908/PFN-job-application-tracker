@@ -40,12 +40,10 @@ async def bad_cases_t(
 
     res_totp = await wrap_httpx(
         api,
-        url="/auth/login-2FA-totp",
+        url="/auth/login-2FA",
         data={
             "totp_code": (
-                totp_code[:-2] + "12"
-                if case == "totp_code_invalid"
-                else totp_code
+                "123456" if case == "totp_code_invalid" else totp_code
             ),
             "cbc_hmac_token": res_tokens["cbc_hmac_token"],
         },

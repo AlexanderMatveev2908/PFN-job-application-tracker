@@ -2,7 +2,7 @@ import os
 import pytest
 from src.__dev_only.payloads import RegisterPayloadT
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import assrt_sessions_tokens
+from tests.conf.lib.data_structure import assrt_msg, assrt_sessions_tokens
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -42,7 +42,7 @@ async def ok_t(api) -> None:
         expected_code=200,
     )
 
-    assert "email updated successfully" in res_verify["data"]["msg"].lower()
+    assrt_msg(res_verify, "email updated successfully")
     assrt_sessions_tokens(res_verify)
 
 
@@ -94,4 +94,4 @@ async def bad_cases_t(
         expected_code=expected_code,
     )
 
-    assert expected_msg in res_verify["data"]["msg"].lower()
+    assrt_msg(res_verify, expected_msg)

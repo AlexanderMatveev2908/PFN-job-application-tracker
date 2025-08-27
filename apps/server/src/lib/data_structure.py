@@ -108,5 +108,5 @@ def pick(
     }
 
 
-def dest_d(d: dict, keys: list[str]) -> tuple:
+def dest_d(d: Any, keys: list[str]) -> tuple:
     return tuple(d[k] for k in keys if k in d)

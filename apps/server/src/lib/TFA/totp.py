@@ -36,4 +36,8 @@ def check_totp_lib(secret: str | bytes | None, user_code: str) -> bool:
     secret_b_32 = decrypted_secret.decode()
 
     totp = pyotp.TOTP(secret_b_32)
-    return totp.verify(user_code, valid_window=1)
+
+    if not totp.verify(user_code, valid_window=1):
+        raise ErrAPI(msg="totp_code_invalid", status=401)
+
+    return True

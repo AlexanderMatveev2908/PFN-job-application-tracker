@@ -30,7 +30,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     await wrap_httpx(
         api,
-        url="/verify/recover-pwd-2FA-backup-code",
+        url="/verify/recover-pwd-2FA",
         expected_code=200,
         data={
             "cbc_hmac_token": token_2FA,
@@ -93,7 +93,7 @@ async def bad_cases_t(
 
     res_backup = await wrap_httpx(
         api,
-        url="/verify/recover-pwd-2FA-backup-code",
+        url="/verify/recover-pwd-2FA",
         expected_code=expected_code,
         data={
             "cbc_hmac_token": token_2fa,

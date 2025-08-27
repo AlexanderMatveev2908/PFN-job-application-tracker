@@ -3,24 +3,20 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.middleware.login import LoginForm, login_mdw
-from src.features.auth.middleware.login_backup_code import BackupCodeFormT
-from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
-from src.features.auth.services.login_backup_code import (
-    LoginBackupCodeSvcReturnT,
-    login_backup_code_svc,
-)
-from src.features.auth.services.login_totp import login_topt_svc
+from src.features.auth.services.login_2FA import login_2FA_svc
 from src.features.auth.services.register import (
     RegisterSvcReturnT,
     register_user_svc,
 )
 from src.lib.cookies import gen_refresh_cookie
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
+from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
@@ -89,46 +85,19 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
             return ResAPI.err_401(msg=msg, clear_cookies=["refresh_token"])
 
 
-async def login_totp_ctrl(
+async def login_2FA_ctrl(
     _: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
-            check_jwt=False, model=TotpFormT, token_t=TokenT.LOGIN_2FA
+            check_jwt=False, model=TFAFormT, token_t=TokenT.LOGIN_2FA
         )
     ),
 ) -> ResAPI:
 
-    tokens_session = await login_topt_svc(result_combo)
+    res_check = await login_2FA_svc(result_combo)
 
     return ResAPI.ok_200(
-        access_token=tokens_session["access_token"],
-        cookies=[
-            gen_refresh_cookie(
-                refresh_token=tokens_session["result_jwe"]["client_token"]
-            )
-        ],
-    )
-
-
-async def login_backup_code_ctrl(
-    _: Request,
-    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
-        combo_check_jwt_cbc_hmac_body_mdw(
-            model=BackupCodeFormT, token_t=TokenT.LOGIN_2FA, check_jwt=False
-        )
-    ),
-) -> ResAPI:
-
-    result_svc: LoginBackupCodeSvcReturnT = await login_backup_code_svc(
-        result_combo
-    )
-
-    return ResAPI.ok_200(
-        access_token=result_svc["result_tokens"]["access_token"],
-        backup_codes_left=result_svc["backup_codes_left"],
-        cookies=[
-            gen_refresh_cookie(
-                result_svc["result_tokens"]["result_jwe"]["client_token"]
-            )
-        ],
+        access_token=res_check["access_token"],
+        backup_codes_left=res_check["backup_codes_left"],
+        cookies=[gen_refresh_cookie(grab(res_check, "client_token"))],
     )

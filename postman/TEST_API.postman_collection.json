@@ -237,7 +237,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/test/tokens-health?cbc_hmac_token_t=RECOVER_PWD&verify_user=false",
+							"raw": "{{DEF_URL}}/test/tokens-health?cbc_hmac_token_t=CHANGE_EMAIL&verify_user=false",
 							"host": [
 								"{{DEF_URL}}"
 							],
@@ -248,7 +248,7 @@
 							"query": [
 								{
 									"key": "cbc_hmac_token_t",
-									"value": "RECOVER_PWD"
+									"value": "CHANGE_EMAIL"
 								},
 								{
 									"key": "verify_user",
@@ -436,7 +436,7 @@
 					"response": []
 				},
 				{
-					"name": "login_2FA_totp",
+					"name": "login_2FA",
 					"event": [
 						{
 							"listen": "test",
@@ -467,40 +467,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/auth/login-2FA-totp",
+							"raw": "{{DEF_URL}}/auth/login-2FA",
 							"host": [
 								"{{DEF_URL}}"
 							],
 							"path": [
 								"auth",
-								"login-2FA-totp"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login_2FA_backup_code",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"EEF0-7306\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{DEF_URL}}/auth/login-2FA-backup-code",
-							"host": [
-								"{{DEF_URL}}"
-							],
-							"path": [
-								"auth",
-								"login-2FA-backup-code"
+								"login-2FA"
 							]
 						}
 					},
@@ -645,7 +618,7 @@
 					"response": []
 				},
 				{
-					"name": "verify_new_email_2FA_totp",
+					"name": "verify_new_email_2FA",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -659,20 +632,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/verify/new-email-2TFA-totp",
+							"raw": "{{DEF_URL}}/verify/new-email-2TFA",
 							"host": [
 								"{{DEF_URL}}"
 							],
 							"path": [
 								"verify",
-								"new-email-2TFA-totp"
+								"new-email-2TFA"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "recover_pwd_2FA_totp",
+					"name": "recover_pwd_2FA",
 					"event": [
 						{
 							"listen": "test",
@@ -691,7 +664,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -703,13 +676,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/verify/recover-pwd-2FA-totp",
+							"raw": "{{DEF_URL}}/verify/recover-pwd-2FA",
 							"host": [
 								"{{DEF_URL}}"
 							],
 							"path": [
 								"verify",
-								"recover-pwd-2FA-totp"
+								"recover-pwd-2FA"
 							]
 						}
 					},
@@ -1115,7 +1088,7 @@
 					"response": []
 				},
 				{
-					"name": "get_access_manage_account_2FA_totp",
+					"name": "get_access_manage_account_2FA",
 					"event": [
 						{
 							"listen": "test",
@@ -1156,50 +1129,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/user/manage-account-2FA-totp",
+							"raw": "{{DEF_URL}}/user/manage-account-2FA",
 							"host": [
 								"{{DEF_URL}}"
 							],
 							"path": [
 								"user",
-								"manage-account-2FA-totp"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_access_manage_account_2FA_backup_code",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"E90E-E22E\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{DEF_URL}}/user/manage-account-2FA-backup-code",
-							"host": [
-								"{{DEF_URL}}"
-							],
-							"path": [
-								"user",
-								"manage-account-2FA-backup-code"
+								"manage-account-2FA"
 							]
 						}
 					},

@@ -39,7 +39,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     #     res_login1 = await wrap_httpx(
     #         api,
-    #         url="/auth/login-2FA-backup-code",
+    #         url="/auth/login-2FA",
     #         expected_code=200,
     #         data={
     #             "cbc_hmac_token": token_login,
@@ -72,7 +72,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_manage_1 = await wrap_httpx(
         api,
-        url="/user/manage-account-2FA-totp",
+        url="/user/manage-account-2FA",
         access_token=res_no_codes["access_token"],
         expected_code=200,
         data={

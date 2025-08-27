@@ -49,7 +49,7 @@ async def make_flow_log_2FA(
 
     res_login_2fa = await wrap_httpx(
         api,
-        url="/auth/login-2FA-totp",
+        url="/auth/login-2FA",
         data={
             "totp_code": gen_totp(res_us_2fa["totp_secret"]),
             "cbc_hmac_token": login_token,

@@ -4,6 +4,7 @@ from src.lib.TFA.backup import GenBackupCodesReturnT, gen_backup_codes
 from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
 from src.lib.algs.fernet import gen_fernet
 from src.lib.db.idx import get_us_by_id
+from src.lib.etc import grab
 from src.lib.qrcode.idx import GenQrcodeReturnT, gen_qrcode
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,9 +19,7 @@ class TFASVCReturnT(TypedDict):
 async def TFA_svc(
     trx: AsyncSession, result_combo: ComboCheckJwtCbcBodyReturnT
 ) -> TFASVCReturnT:
-    us = await get_us_by_id(
-        trx=trx, us_id=result_combo["cbc_hmac_result"]["user_d"]["id"]
-    )
+    us = await get_us_by_id(trx=trx, us_id=grab(result_combo, "user_id"))
 
     if not us.is_verified:
         raise ErrAPI(msg="user must be verified to set up 2FA", status=403)

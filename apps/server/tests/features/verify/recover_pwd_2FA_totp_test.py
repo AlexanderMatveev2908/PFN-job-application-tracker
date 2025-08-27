@@ -64,7 +64,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     res_totp = await wrap_httpx(
         api,
-        url="/verify/recover-pwd-2FA-totp",
+        url="/verify/recover-pwd-2FA",
         data={
             "cbc_hmac_token": grab(res_verify, "cbc_hmac_token"),
             "totp_code": gen_totp(grab(res_logged, "totp_secret")),
@@ -125,7 +125,7 @@ async def bad_cases_t(
 
     res_totp = await wrap_httpx(
         api,
-        url="/verify/recover-pwd-2FA-totp",
+        url="/verify/recover-pwd-2FA",
         expected_code=expected_code,
         data={
             "cbc_hmac_token": token_2FA,
