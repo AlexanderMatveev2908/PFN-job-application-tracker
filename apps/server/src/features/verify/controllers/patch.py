@@ -3,6 +3,7 @@ from fastapi import Depends, Request
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
@@ -48,5 +49,37 @@ async def confirm_new_email_2FA_top_ctrl(
                 gen_refresh_cookie(
                     tokens_session["result_jwe"]["client_token"]
                 )
+            ],
+        )
+
+
+async def confirm_new_email_2FA_backup_code_ctrl(
+    req: Request,
+    res_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=False,
+            model=BackupCodeFormT,
+            token_t=TokenT.CHANGE_EMAIL_2FA,
+        )
+    ),
+) -> ResAPI:
+
+    async with db_trx() as trx:
+        us = await get_us_by_id(trx, grab(res_combo, "user_id"))
+
+        res_check = await us.check_backup_code(
+            trx, grab(res_combo, "backup_code")
+        )
+
+        res_session = await gen_tokens_session(trx=trx, user_id=us.id)
+
+        us.toggle_mails()
+
+        return ResAPI.ok_200(
+            msg="new email verified successfully",
+            access_token=res_session["access_token"],
+            backup_codes_left=res_check["backup_codes_left"],
+            cookies=[
+                gen_refresh_cookie(res_session["result_jwe"]["client_token"])
             ],
         )
