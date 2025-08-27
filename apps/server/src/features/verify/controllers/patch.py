@@ -63,4 +63,23 @@ async def confirm_new_email_2FA_backup_code_ctrl(
         )
     ),
 ) -> ResAPI:
-    return ResAPI.ok_200()
+
+    async with db_trx() as trx:
+        us = await get_us_by_id(trx, grab(res_combo, "user_id"))
+
+        res_check = await us.check_backup_code(
+            trx, grab(res_combo, "backup_code")
+        )
+
+        res_session = await gen_tokens_session(trx=trx, user_id=us.id)
+
+        us.toggle_mails()
+
+        return ResAPI.ok_200(
+            msg="new email verified successfully",
+            access_token=res_session["access_token"],
+            backup_codes_left=res_check["backup_codes_left"],
+            cookies=[
+                gen_refresh_cookie(res_session["result_jwe"]["client_token"])
+            ],
+        )
