@@ -17,6 +17,7 @@ from src.features.auth.services.register import (
     register_user_svc,
 )
 from src.lib.cookies import gen_refresh_cookie
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
@@ -126,9 +127,5 @@ async def login_backup_code_ctrl(
     return ResAPI.ok_200(
         access_token=result_svc["result_tokens"]["access_token"],
         backup_codes_left=result_svc["backup_codes_left"],
-        cookies=[
-            gen_refresh_cookie(
-                result_svc["result_tokens"]["result_jwe"]["client_token"]
-            )
-        ],
+        cookies=[gen_refresh_cookie(grab(result_svc, "client_token"))],
     )

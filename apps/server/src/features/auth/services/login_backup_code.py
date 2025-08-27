@@ -1,5 +1,4 @@
 from typing import TypedDict
-from sqlalchemy import text
 from src.conf.db import db_trx
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
@@ -26,23 +25,11 @@ async def login_backup_code_svc(
 
         await del_token_by_t(trx=trx, us_id=us.id, token_t=TokenT.LOGIN_2FA)
 
-        await trx.execute(
-            text(
-                """
-                DELETE FROM tokens
-                    WHERE user_id = :user_id
-                    AND token_t = :token_t
-                """
-            ),
-            {
-                "user_id": result_combo["cbc_hmac_result"]["user_d"]["id"],
-                "token_t": TokenT.LOGIN_2FA.value,
-            },
-        )
+        await del_token_by_t(trx=trx, token_t=TokenT.LOGIN_2FA, us_id=us.id)
 
         result_tokens: TokensSessionsReturnT = await gen_tokens_session(
             trx=trx,
-            user_id=result_combo["cbc_hmac_result"]["user_d"]["id"],
+            user_id=us.id,
         )
 
         return {
