@@ -2,3 +2,6 @@
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
 /.pnp.*              binary linguist-generated
+
+/postman/*.postman_collection.json linguist-vendored
+/postman/*.postman_environment.json linguist-vendored

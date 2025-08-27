@@ -480,6 +480,26 @@ To improve stability and speed, the recommended workflow is:
 
 ---
 
+##### 🟧 Postman testing
+
+A ready-to-use **Postman setup** is available at the root of the repo in the **postman directory**:
+
+- [TEST_API.postman_collection.json](/postman/TEST_API.postman_collection.json) — Contains all API request
+- [ENV_VAR.postman_environment.json](postman/ENV_VAR.postman_environment.json) — Contains the required environment variables
+- [scripts](/postman/scripts/) — Contains reusable scripts used during testing to improve **efficiency** by automatically setting some environment variables **dynamically** based on **responses**
+
+**📑 Notes**:
+
+- Variables like **email** and **pwd** are only **placeholders**. You need to configure them with your **own test credentials**.
+- Variables like **URL** (for **HTTPS endpoints**) and **DEF_URL** (for **plain HTTP endpoints**) are already preset to match the **expected app configuration**, so you don’t need to change them.
+- To use in Postman, click **Import → Choose Files** and select both the collection and environment JSON.
+- To add the **scripts** to your **workspace**:
+  1. Open a **request tab** in Postman and go to **Scripts**.
+  2. Click **Packages → Open Package Library → New Package**
+  3. For each file in[ /postman/scripts/](/postman/scripts/), create a **separate package** and paste its **JavaScript** code.
+
+---
+
 ## 🛠️ CI/CD
 
 The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch.

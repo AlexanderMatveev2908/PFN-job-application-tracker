@@ -1,0 +1,1270 @@
+{
+	"info": {
+		"_postman_id": "42fdfd04-fa49-4a93-a8a3-552d844523d7",
+		"name": "TEST_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40442632"
+	},
+	"item": [
+		{
+			"name": "dummy",
+			"item": [
+				{
+					"name": "post_msg",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"msg\":\"a\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/test",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_msg",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/test/",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_form_data",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "color",
+									"value": "red",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "green",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "blue",
+									"type": "text"
+								},
+								{
+									"key": "val",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/home/ninja/Pictures/books/albert_camus/il_mito_sisifo.jpg",
+										"/home/ninja/Pictures/books/albert_camus/la_caduta.jpg",
+										"/home/ninja/Pictures/books/albert_camus/la_peste.jpg",
+										"/home/ninja/Pictures/books/albert_camus/lo_starniero.jpg"
+									]
+								},
+								{
+									"key": "video",
+									"type": "file",
+									"src": [
+										"/home/ninja/Videos/libraries/0.mp4",
+										"/home/ninja/Videos/libraries/6.mp4"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/test/form",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"test",
+								"form"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_protected_data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const refreshToken = pm.require('refresh_token');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"refresh_token": {
+										"id": "01972604-1209-7ec9-b462-f22dec0575f5"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/test/protected",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								"protected"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_verified_user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/test/get-verified-user?cbc_hmac_t=MANAGE_ACC&expired=jwt&expired=jwe",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								"get-verified-user"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_t",
+									"value": "MANAGE_ACC"
+								},
+								{
+									"key": "expired",
+									"value": "jwt"
+								},
+								{
+									"key": "expired",
+									"value": "jwe"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tokens",
+			"item": [
+				{
+					"name": "tokens_health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{pwd}}\",\n    \"confirm_password\":\"{{pwd}}\",\n    \"terms\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/test/tokens-health?cbc_hmac_token_t=RECOVER_PWD&verify_user=false",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								"tokens-health"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_token_t",
+									"value": "RECOVER_PWD"
+								},
+								{
+									"key": "verify_user",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_err_expired",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"act\":\"CBC_HMAC\",\n    \"token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/test/get-err",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								"get-err"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{pwd}}\",\n    \"confirm_password\":\"{{pwd}}\",\n    \"terms\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/register",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"email\":\"{{email}}\",\n      \"password\":\"{{pwd}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/login",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover_pwd",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"{{new_pwd}}\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/recover-pwd",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"recover-pwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh_token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/auth/refresh",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_2FA_totp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totp_code\":\"197340\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/login-2FA-totp",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"login-2FA-totp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_2FA_backup_code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"EEF0-7306\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/login-2FA-backup-code",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"login-2FA-backup-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revocer_pwd_2FA",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"{{new_pwd}}\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/auth/recover-pwd-2FA",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"auth",
+								"recover-pwd-2FA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "verify",
+			"item": [
+				{
+					"name": "confirm_email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/verify/confirm-email?cbc_hmac_token={{cbc_hmac_token}}",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"confirm-email"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_token",
+									"value": "{{cbc_hmac_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover_pwd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/verify/recover-pwd?cbc_hmac_token={{cbc_hmac_token}}",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"recover-pwd"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_token",
+									"value": "{{cbc_hmac_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm_new_email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/verify/new-email?cbc_hmac_token={{cbc_hmac_token}}",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"new-email"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_token",
+									"value": "{{cbc_hmac_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify_new_email_2FA_totp",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totp_code\":\"246833\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/verify/new-email-2TFA-totp",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"new-email-2TFA-totp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover_pwd_2FA_totp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totp_code\":\"606873\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/verify/recover-pwd-2FA-totp",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"recover-pwd-2FA-totp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "require_email",
+			"item": [
+				{
+					"name": "recover_pwd",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/require-email/recover-pwd",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"require-email",
+								"recover-pwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm_email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/require-email/confirm-email",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"require-email",
+								"confirm-email"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get_access_manage_account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									"const refreshToken = pm.require('refresh_token');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									},
+									"refresh_token": {
+										"id": "01972604-1209-7ec9-b462-f22dec0575f5"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"{{pwd}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/manage-account",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"manage-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_pwd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const refreshToken = pm.require('refresh_token');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"refresh_token": {
+										"id": "01972604-1209-7ec9-b462-f22dec0575f5"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"password\":\"{{pwd}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/change-pwd",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"change-pwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const refreshToken = pm.require('refresh_token');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"refresh_token": {
+										"id": "01972604-1209-7ec9-b462-f22dec0575f5"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"email\":\"{{email_2}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/change-email",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"change-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const refreshToken = pm.require('refresh_token');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"refresh_token": {
+										"id": "01972604-1209-7ec9-b462-f22dec0575f5"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/user/delete-account?cbc_hmac_token={{cbc_hmac_token}}",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"delete-account"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_token",
+									"value": "{{cbc_hmac_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2FA",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/2FA",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"2FA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2FA_zip",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/2FA-zip",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"2FA-zip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new_backup_codes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/new-backup-codes",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"new-backup-codes"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_access_manage_account_2FA_totp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"totp_code\":\"506903\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/manage-account-2FA-totp",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"manage-account-2FA-totp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_access_manage_account_2FA_backup_code",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"E90E-E22E\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/user/manage-account-2FA-backup-code",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"user",
+								"manage-account-2FA-backup-code"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get_user",
+			"item": [
+				{
+					"name": "get_user_2FA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const getTokens = pm.require('get_tokens');",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {
+									"get_tokens": {
+										"id": "0198b989-bb0c-76dd-978b-9d4c51b08726"
+									}
+								}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{pwd}}\",\n    \"confirm_password\":\"{{pwd}}\",\n    \"terms\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/test/get-user-2FA?cbc_hmac_t=MANAGE_ACC&empty_codes=false",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"test",
+								"get-user-2FA"
+							],
+							"query": [
+								{
+									"key": "cbc_hmac_t",
+									"value": "MANAGE_ACC"
+								},
+								{
+									"key": "empty_codes",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
