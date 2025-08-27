@@ -119,6 +119,10 @@ async def get_us_2FA_ctrl(
 
     q = req.state.parsed_q
     empty_codes = q.get("empty_codes")
+    expired: list[str] = q.get("expired") or []
+
+    if isinstance(expired, str):
+        expired = [expired]
 
     try:
         token_t = TokenT(q.get("cbc_hmac_t"))
@@ -146,10 +150,15 @@ async def get_us_2FA_ctrl(
                 "backup_codes_client"
             ]
 
-        tokens_session = await gen_tokens_session(trx=trx, user_id=us.id)
+        tokens_session = await gen_tokens_session(
+            trx=trx, user_id=us.id, expired=expired
+        )
 
         cbc_hmac_res = await gen_cbc_hmac(
-            trx=trx, token_t=token_t, user_id=us.id
+            trx=trx,
+            token_t=token_t,
+            user_id=us.id,
+            reverse="cbc_hmac" in expired,
         )
 
         qrcode_result: GenQrcodeReturnT = gen_qrcode(uri=secret_result["uri"])

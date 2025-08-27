@@ -3,7 +3,7 @@ import pytest
 
 from src.lib.etc import grab
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import gen_totp
+from tests.conf.lib.data_structure import assrt_msg, gen_totp
 from tests.conf.lib.get_us import get_us_with_2FA
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.login import make_flow_log_2FA
@@ -92,3 +92,37 @@ async def ok_t(api: AsyncClient) -> None:
     codes = grab(res_new_codes, "backup_codes")
     assert isinstance(codes, list)
     assert len(codes) == 8
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
+        ("cbc_hmac_invalid", 401, "cbc_hmac_invalid"),
+    ],
+)
+async def bad_cases_t(
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
+) -> None:
+    res_logged = await get_us_with_2FA(
+        api,
+        expired=case.split("_expired"),
+        cbc_hmac_t=TokenT.MANAGE_ACC,
+        empty_codes=True,
+    )
+
+    token_manage = res_logged["cbc_hmac_token"]
+
+    if case == "cbc_hmac_invalid":
+        token_manage = token_manage[:-4] + "aaf2"
+
+    res_require = await wrap_httpx(
+        api,
+        url="/user/new-backup-codes",
+        access_token=res_logged["access_token"],
+        expected_code=expected_code,
+        data={"cbc_hmac_token": token_manage},
+    )
+
+    assrt_msg(res_require, expected_msg)

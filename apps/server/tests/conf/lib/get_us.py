@@ -60,8 +60,13 @@ async def get_us_with_2FA(
     api: AsyncClient,
     cbc_hmac_t: TokenT = TokenT.MANAGE_ACC,
     empty_codes: bool = False,
+    expired: list[TokenArgT] | list[str] = [],
 ) -> User2FAReturnT:
-    params = {"cbc_hmac_t": cbc_hmac_t.value, "empty_codes": empty_codes}
+    params = {
+        "cbc_hmac_t": cbc_hmac_t.value,
+        "empty_codes": empty_codes,
+        "expired": expired,
+    }
 
     res = await wrap_httpx(
         api,

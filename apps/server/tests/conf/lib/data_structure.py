@@ -1,10 +1,14 @@
-from typing import Literal, cast
+import base64
+from typing import Any, Literal, cast
 
 import pyotp
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC
+from src.constants.reg import REG_CBC_HMAC, REG_SECRET_TOTP
+from src.decorators.err import ErrAPI
+from src.lib.algs.fernet import check_fernet
 from src.lib.data_structure import b_to_d, h_to_b
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import AadT
 from src.models.token import TokenT
 
@@ -29,4 +33,21 @@ def get_aad_cbc_hmac(token: str, token_t: TokenT) -> AadT:
 
 
 def gen_totp(totp_secret: str) -> str:
-    return pyotp.TOTP(totp_secret).now()
+
+    parsed = totp_secret
+    try:
+        if not REG_SECRET_TOTP.fullmatch(totp_secret):
+            raise ErrAPI(
+                msg="secret probably encrypted with fernet alg", status=500
+            )
+        base64.b32decode(totp_secret, casefold=False)
+
+    except Exception:
+        print("value was not b32")
+        parsed = (check_fernet(h_to_b(totp_secret))).decode()
+
+    return pyotp.TOTP(parsed).now()
+
+
+def assrt_msg(d: Any, msg: str) -> None:
+    assert msg in grab(d, "msg")
