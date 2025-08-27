@@ -50,3 +50,7 @@ async def confirm_new_email_2FA_top_ctrl(
                 )
             ],
         )
+
+
+async def confirm_new_email_2FA_backup_code_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()

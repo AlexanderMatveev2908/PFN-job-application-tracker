@@ -5,6 +5,7 @@ from src.features.verify.controllers.get import (
     forgot_pwd_ctrl,
 )
 from src.features.verify.controllers.patch import (
+    confirm_new_email_2FA_backup_code_ctrl,
     confirm_new_email_2FA_top_ctrl,
 )
 from src.features.verify.controllers.post import (
@@ -55,6 +56,13 @@ verify_router.add_api_route(
 verify_router.add_api_route(
     "/new-email-2FA-totp",
     confirm_new_email_2FA_top_ctrl,
+    methods=["PATCH"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+verify_router.add_api_route(
+    "/new-email-2FA-backup-code",
+    confirm_new_email_2FA_backup_code_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
