@@ -2,13 +2,13 @@ import asyncio
 from typing import Any, cast
 import uuid
 from jose import jwe
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.algs.hmac import hash_db_hmac
 from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b, parse_id
-from src.lib.db.idx import get_us_by_id
+from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import calc_exp, lt_now
 from src.models.token import (
     AlgT,
@@ -38,10 +38,10 @@ async def gen_jwe(
 
     parsed_id: str = parse_id(user_id)
 
-    await trx.execute(
-        delete(Token).where(
-            (Token.user_id == parsed_id) & (Token.token_t == TokenT.REFRESH)
-        )
+    await del_token_by_t(
+        trx,
+        parsed_id,
+        TokenT.REFRESH,
     )
 
     payload = {"user_id": parsed_id, **kwargs}

@@ -1,7 +1,9 @@
-from sqlalchemy import select, text
+import uuid
+from sqlalchemy import delete, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.decorators.err import ErrAPI
+from src.models.token import Token, TokenT
 from src.models.user import User
 
 
@@ -27,3 +29,13 @@ async def get_us_by_email(
             raise ErrAPI(msg="user not found", status=404)
 
     return us
+
+
+async def del_token_by_t(
+    trx: AsyncSession, us_id: str | uuid.UUID, token_t: TokenT
+) -> None:
+    await trx.execute(
+        delete(Token).where(
+            (Token.user_id == us_id) & (Token.token_t == token_t)
+        )
+    )

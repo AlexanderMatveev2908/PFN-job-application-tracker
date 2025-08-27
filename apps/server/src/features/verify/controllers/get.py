@@ -5,7 +5,7 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.db.idx import get_us_by_id
+from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
@@ -68,11 +68,13 @@ async def forgot_pwd_ctrl(
             )
         )["client_token"]
 
-        await trx.execute(
-            delete(Token).where(
-                (Token.user_id == grab(combo_result, "user_id"))
-                & (Token.token_t == TokenT.RECOVER_PWD)
-            )
+        await del_token_by_t(
+            trx,
+            grab(
+                combo_result,
+                "user_id",
+            ),
+            TokenT.RECOVER_PWD,
         )
 
         return ResAPI.ok_200(cbc_hmac_token=cbc_hmac)
@@ -90,11 +92,13 @@ async def confirm_new_email_ctrl(
             User, await get_us_by_id(trx=trx, us_id=result_cbc["user_d"]["id"])
         )
 
-        await trx.execute(
-            delete(Token).where(
-                (Token.user_id == result_cbc["user_d"]["id"])
-                & (Token.token_t == TokenT.CHANGE_EMAIL)
-            )
+        await del_token_by_t(
+            trx,
+            grab(
+                result_cbc,
+                "user_id",
+            ),
+            TokenT.CHANGE_EMAIL,
         )
 
         if us.totp_secret:
