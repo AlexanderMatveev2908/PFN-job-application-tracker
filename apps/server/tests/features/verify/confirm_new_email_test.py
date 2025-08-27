@@ -22,7 +22,7 @@ async def _local_wrapper(api) -> RegisterPayloadT:
         expected_code=200,
         method="PATCH",
     )
-    assert "email sent to new address" in res_change["data"]["msg"]
+    assrt_msg(res_change, "email sent to new address")
 
     return res_tk["payload"]
 

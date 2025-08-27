@@ -1,5 +1,6 @@
 import pytest
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 from typing import Callable
@@ -55,7 +56,7 @@ async def bad_cases_t(
     res = await wrap_httpx(
         api, url=URL, data=payload, expected_code=expected_code
     )
-    assert expected_msg in res["data"]["msg"].lower()
+    assrt_msg(res, expected_msg)
 
 
 # @pytest.mark.asyncio

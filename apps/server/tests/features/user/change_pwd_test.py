@@ -1,8 +1,9 @@
 import os
 import pytest
 from src.constants.reg import REG_CBC_HMAC
+from src.lib.etc import grab
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import extract_login_payload
+from tests.conf.lib.data_structure import assrt_msg, extract_login_payload
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -24,7 +25,7 @@ async def ok_t(api) -> None:
         data={"password": res_register["payload"]["password"]},
         expected_code=200,
     )
-    assert REG_CBC_HMAC.fullmatch(res_manage["data"]["cbc_hmac_token"])
+    assert REG_CBC_HMAC.fullmatch(grab(res_manage, "cbc_hmac_token"))
 
     new_pwd = res_register["payload"]["password"] + os.urandom(5).hex()
 
@@ -34,12 +35,13 @@ async def ok_t(api) -> None:
         expected_code=200,
         data={
             "password": new_pwd,
-            "cbc_hmac_token": res_manage["data"]["cbc_hmac_token"],
+            "cbc_hmac_token": grab(res_manage, "cbc_hmac_token"),
         },
         access_token=res_register["access_token"],
         method="PATCH",
     )
-    assert "password updated" in res_change["data"]["msg"].lower()
+
+    assrt_msg(res_change, "password updated")
 
 
 @pytest.mark.asyncio
@@ -99,7 +101,7 @@ async def bad_cases_t(
             "cbc_hmac_token": res_expired["cbc_hmac_token"],
             "password": res_expired["payload"]["password"],
         }
-        access_token = login_res["data"]["access_token"]
+        access_token = grab(login_res, "access_token")
 
     res = await wrap_httpx(
         api,
@@ -109,4 +111,4 @@ async def bad_cases_t(
         expected_code=expected_code,
         method=method,
     )
-    assert expected_msg in res["data"]["msg"].lower()
+    assrt_msg(res, expected_msg)

@@ -1,5 +1,6 @@
 import pytest
 from src.constants.reg import REG_CBC_HMAC
+from src.lib.etc import grab
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
@@ -22,7 +23,7 @@ async def ok_t(api) -> None:
         expected_code=200,
     )
 
-    assert REG_CBC_HMAC.fullmatch(res_manage["data"]["cbc_hmac_token"])
+    assert REG_CBC_HMAC.fullmatch(grab(res_manage, "cbc_hmac_token"))
 
 
 @pytest.mark.asyncio
