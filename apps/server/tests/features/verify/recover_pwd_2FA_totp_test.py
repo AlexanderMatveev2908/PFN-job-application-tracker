@@ -17,7 +17,7 @@ async def ok_t(api: AsyncClient) -> None:
         data={
             "email": grab(res_logged, "email"),
         },
-        expected_code=200,
+        expected_code=201,
     )
 
-    # assrt_msg(res_forgot, "email sent")
+    assrt_msg(res_require, "email sent")

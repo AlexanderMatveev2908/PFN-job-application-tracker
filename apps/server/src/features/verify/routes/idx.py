@@ -21,14 +21,14 @@ verify_router.add_api_route(
 )
 
 verify_router.add_api_route(
-    "/forgot-pwd",
+    "/recover-pwd",
     forgot_pwd_ctrl,
     methods=["GET"],
     dependencies=[Depends(rate_limit_mdw(limit=3))],
 )
 
 verify_router.add_api_route(
-    "/forgot-pwd-2FA-totp",
+    "/recover-pwd-2FA-totp",
     forgot_pwd_2FA_totp_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=3))],

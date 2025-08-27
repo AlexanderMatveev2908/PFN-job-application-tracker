@@ -4,7 +4,7 @@ from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 
-URL = "/verify/forgot-pwd?cbc_hmac_token="
+URL = "/verify/recover-pwd?cbc_hmac_token="
 
 
 @pytest.mark.asyncio
