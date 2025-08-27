@@ -16,7 +16,7 @@ from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
-from src.lib.validators.idx import Check2FAFormT
+from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
@@ -89,7 +89,7 @@ async def login_2FA_ctrl(
     _: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
-            check_jwt=False, model=Check2FAFormT, token_t=TokenT.LOGIN_2FA
+            check_jwt=False, model=TFAFormT, token_t=TokenT.LOGIN_2FA
         )
     ),
 ) -> ResAPI:

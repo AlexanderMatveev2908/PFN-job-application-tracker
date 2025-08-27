@@ -4,7 +4,7 @@ from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.combo.TFA import check_2FA_lib
 from src.lib.data_structure import dest_d
-from src.lib.validators.idx import Check2FAFormT
+from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
@@ -17,7 +17,7 @@ async def recover_pwd_2FA_ctrl(
     combo_res: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=False,
-            model=Check2FAFormT,
+            model=TFAFormT,
             token_t=TokenT.RECOVER_PWD_2FA,
         )
     ),

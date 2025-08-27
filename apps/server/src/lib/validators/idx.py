@@ -52,7 +52,7 @@ def check_basic_cbc_shape_lib(v: str | None) -> str:
     return v
 
 
-class Check2FAFormT(BaseModel):
+class TFAFormT(BaseModel):
     totp_code: str | None = Field(default=None, pattern=REG_TOTP_CODE)
     backup_code: str | None = Field(default=None, pattern=REG_BACKUP_CODE)
 

@@ -9,7 +9,7 @@ from src.lib.combo.TFA import check_2FA_lib
 from src.lib.data_structure import dest_d
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
-from src.lib.validators.idx import Check2FAFormT
+from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     ComboCheckJwtCbcReturnT,
@@ -76,7 +76,7 @@ async def get_access_manage_account_2FA_ctrl(
     req: Request,
     res_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
-            check_jwt=True, model=Check2FAFormT, token_t=TokenT.MANAGE_ACC_2FA
+            check_jwt=True, model=TFAFormT, token_t=TokenT.MANAGE_ACC_2FA
         )
     ),
 ) -> ResAPI:
