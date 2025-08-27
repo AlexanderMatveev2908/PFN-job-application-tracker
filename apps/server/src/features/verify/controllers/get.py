@@ -48,12 +48,26 @@ async def confirm_email_ctrl(
 
 async def forgot_pwd_ctrl(
     _: Request,
-    __: CheckTokenWithUsReturnT = Depends(
+    combo_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.RECOVER_PWD)
     ),
 ) -> ResAPI:
 
-    return ResAPI.ok_200(msg="verification successful")
+    us = combo_result["user_d"]
+
+    if not us["totp_secret"]:
+        return ResAPI.ok_200(msg="verification successful")
+
+    async with db_trx() as trx:
+        cbc_hmac = (
+            await gen_cbc_hmac(
+                trx=trx,
+                user_id=us["id"],
+                token_t=TokenT.RECOVER_PWD_2FA,
+            )
+        )["client_token"]
+
+        return ResAPI.ok_200(cbc_hmac_token=cbc_hmac)
 
 
 async def confirm_new_email_ctrl(

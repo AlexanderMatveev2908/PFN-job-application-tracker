@@ -51,3 +51,7 @@ async def confirm_new_email_2FA_top_ctrl(
                 )
             ],
         )
+
+
+async def forgot_pwd_2FA_totp_ctrl(req: Request) -> ResAPI:
+    return ResAPI.ok_200()
