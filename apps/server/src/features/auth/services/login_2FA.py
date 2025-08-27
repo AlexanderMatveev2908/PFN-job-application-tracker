@@ -14,7 +14,7 @@ async def login_2FA_svc(
 ) -> Login2FASvcReturnT:
     async with db_trx() as trx:
         us, backup_codes_left = dest_d(
-            d=await check_2FA_lib(trx, result_combo),
+            d=await check_2FA_lib(trx, result_combo, delete_tok_on_check=True),
             keys=["user", "backup_codes_left"],
         )
 

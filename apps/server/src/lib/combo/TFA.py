@@ -14,7 +14,9 @@ class Check2FALibReturnT(TypedDict):
 
 
 async def check_2FA_lib(
-    trx: AsyncSession, res_combo: ComboCheckJwtCbcBodyReturnT
+    trx: AsyncSession,
+    res_combo: ComboCheckJwtCbcBodyReturnT,
+    delete_tok_on_check: bool,
 ) -> Check2FALibReturnT:
 
     us = await get_us_by_id(trx, grab(res_combo, "user_id"))
@@ -27,10 +29,11 @@ async def check_2FA_lib(
             "backup_codes_left"
         ]
 
-    await del_token_by_t(
-        trx=trx,
-        us_id=us.id,
-        token_t=TokenT(grab(res_combo, "token_t")),
-    )
+    if delete_tok_on_check:
+        await del_token_by_t(
+            trx=trx,
+            us_id=us.id,
+            token_t=TokenT(grab(res_combo, "token_t")),
+        )
 
     return {"user": us, "backup_codes_left": backup_codes_left}

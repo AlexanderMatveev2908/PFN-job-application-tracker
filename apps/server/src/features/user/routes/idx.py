@@ -24,7 +24,6 @@ user_router.add_api_route(
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
 
-
 user_router.add_api_route(
     "/change-pwd",
     change_pwd_ctrl,

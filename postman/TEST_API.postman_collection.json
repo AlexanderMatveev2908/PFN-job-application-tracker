@@ -590,9 +590,9 @@
               }
             },
             "url": {
-              "raw": "{{DEF_URL}}/verify/recover-pwd-2FA-totp",
+              "raw": "{{DEF_URL}}/verify/recover-pwd-2FA",
               "host": ["{{DEF_URL}}"],
-              "path": ["verify", "recover-pwd-2FA-totp"]
+              "path": ["verify", "recover-pwd-2FA"]
             }
           },
           "response": []
@@ -612,9 +612,9 @@
               }
             },
             "url": {
-              "raw": "{{DEF_URL}}/verify/recover-pwd-2FA-backup-code",
+              "raw": "{{DEF_URL}}/verify/recover-pwd-2FA",
               "host": ["{{DEF_URL}}"],
-              "path": ["verify", "recover-pwd-2FA-backup-code"]
+              "path": ["verify", "recover-pwd-2FA"]
             }
           },
           "response": []
