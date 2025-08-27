@@ -571,3 +571,5 @@ In my view, this makes the development process easier to follow because you can 
 I hope you find the project interesting — if not, the app doesn’t come with a refund policy 💰
 
 Thanks for checking out the repo ✌🏼
+
+<!--  -->
