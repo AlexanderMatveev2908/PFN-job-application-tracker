@@ -6,6 +6,7 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import get_us_by_id
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
@@ -66,6 +67,13 @@ async def forgot_pwd_ctrl(
                 token_t=TokenT.RECOVER_PWD_2FA,
             )
         )["client_token"]
+
+        await trx.execute(
+            delete(Token).where(
+                (Token.user_id == grab(combo_result, "user_id"))
+                & (Token.token_t == TokenT.RECOVER_PWD)
+            )
+        )
 
         return ResAPI.ok_200(cbc_hmac_token=cbc_hmac)
 

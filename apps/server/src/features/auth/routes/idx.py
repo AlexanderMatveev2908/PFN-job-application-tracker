@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from src.features.auth.controllers.patch import recover_pwd_ctrl
+from src.features.auth.controllers.patch import (
+    recover_pwd_ctrl,
+    revocer_pwd_2FA_ctrl,
+)
 from src.features.auth.controllers.post import (
     login_backup_code_ctrl,
     login_ctrl,
@@ -30,6 +33,13 @@ auth_router.add_api_route(
 auth_router.add_api_route(
     "/recover-pwd",
     recover_pwd_ctrl,
+    methods=["PATCH"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+auth_router.add_api_route(
+    "/recover-pwd-2FA",
+    revocer_pwd_2FA_ctrl,
     methods=["PATCH"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
