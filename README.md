@@ -566,6 +566,38 @@ In my view, this makes the development process easier to follow because you can 
 
 ---
 
+### 📑 Emoji Legend
+
+Recently, I also started adopting an emoji system in my commits to add extra clarity:
+
+- **⚠️ Critical** → local build works, but errors appear at **deploy** / **CI/CD**
+
+- **📜 Docs** → documentation updates
+
+- **🐛 Bugfix** → fixes for reported issues or errors
+
+- **🔥 New** → new features
+
+- **🎨 Refactor** → code cleanups / restructuring without changing behavior
+
+- **🧪 Tests** → adding or improving test coverage
+
+- **🛠️ Default** → normal workflow / maintenance
+
+For example:
+
+```bash
+🪾 recover_pwd_2FA_backup_code => 🐛 fix backup_code validation
+
+🪾 sql_root_table => 🎨 refactor method to_d to parse bytes as hex
+
+🪾 main => 📜 updated project readme
+```
+
+I find that this style makes the **Git history** much easier to **scan quickly** and to **search** by **commit type**
+
+---
+
 ## ✏️ Final Notes
 
 I hope you find the project interesting — if not, the app doesn’t come with a refund policy 💰
