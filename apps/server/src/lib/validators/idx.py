@@ -57,7 +57,7 @@ class Check2FAFormT(BaseModel):
     backup_code: str | None = Field(default=None, pattern=REG_BACKUP_CODE)
 
     @model_validator(mode="after")
-    def check_one_or_none(self) -> Self:
+    def check_one_or_throw(self) -> Self:
         if not self.totp_code and not self.backup_code:
             raise ErrAPI(
                 msg="neither totp_code nor backup_code provided",

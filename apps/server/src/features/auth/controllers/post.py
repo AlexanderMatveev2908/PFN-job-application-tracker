@@ -7,6 +7,7 @@ from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.auth.services.login import login_svc
+from src.features.auth.services.login_2FA import login_2FA_svc
 from src.features.auth.services.login_backup_code import (
     LoginBackupCodeSvcReturnT,
     login_backup_code_svc,
@@ -22,6 +23,7 @@ from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
+from src.lib.validators.idx import Check2FAFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
@@ -88,6 +90,24 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
             msg = err.msg if isinstance(err, ErrAPI) else str(err)
 
             return ResAPI.err_401(msg=msg, clear_cookies=["refresh_token"])
+
+
+async def login_2FA_ctrl(
+    _: Request,
+    result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
+        combo_check_jwt_cbc_hmac_body_mdw(
+            check_jwt=False, model=Check2FAFormT, token_t=TokenT.LOGIN_2FA
+        )
+    ),
+) -> ResAPI:
+
+    res_check = await login_2FA_svc(result_combo)
+
+    return ResAPI.ok_200(
+        access_token=res_check["access_token"],
+        backup_codes_left=res_check["backup_codes_left"],
+        cookies=[gen_refresh_cookie(grab(res_check, "client_token"))],
+    )
 
 
 async def login_totp_ctrl(

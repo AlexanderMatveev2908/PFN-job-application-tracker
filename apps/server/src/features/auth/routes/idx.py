@@ -5,6 +5,7 @@ from src.features.auth.controllers.patch import (
     revocer_pwd_2FA_ctrl,
 )
 from src.features.auth.controllers.post import (
+    login_2FA_ctrl,
     login_backup_code_ctrl,
     login_ctrl,
     login_totp_ctrl,
@@ -45,18 +46,25 @@ auth_router.add_api_route(
 )
 
 auth_router.add_api_route(
-    "/login-2FA-totp",
-    login_totp_ctrl,
+    "/login-2FA",
+    login_2FA_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
 )
 
-auth_router.add_api_route(
-    "/login-2FA-backup-code",
-    login_backup_code_ctrl,
-    methods=["POST"],
-    dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
-)
+# auth_router.add_api_route(
+#     "/login-2FA-totp",
+#     login_totp_ctrl,
+#     methods=["POST"],
+#     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
+# )
+
+# auth_router.add_api_route(
+#     "/login-2FA-backup-code",
+#     login_backup_code_ctrl,
+#     methods=["POST"],
+#     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
+# )
 
 auth_router.add_api_route(
     "/refresh",
