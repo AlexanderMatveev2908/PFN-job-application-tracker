@@ -1,4 +1,5 @@
 import pytest
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -19,7 +20,7 @@ async def ok_t(api) -> None:
         expected_code=201,
     )
 
-    assert "email sent" in res_require["data"]["msg"].lower()
+    assrt_msg(res_require, "email sent")
 
 
 @pytest.mark.asyncio
@@ -61,4 +62,4 @@ async def bad_cases_t(
     )
 
     if expected_msg:
-        assert expected_msg in res["data"]["msg"].lower()
+        assrt_msg(res, expected_msg)

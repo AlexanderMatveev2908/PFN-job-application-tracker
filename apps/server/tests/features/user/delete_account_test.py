@@ -1,5 +1,7 @@
 import pytest
+from src.lib.etc import grab
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -24,13 +26,13 @@ async def ok_t(api) -> None:
 
     res_delete = await wrap_httpx(
         api,
-        url=URL + res_manage["data"]["cbc_hmac_token"],
+        url=URL + grab(res_manage, "cbc_hmac_token"),
         method="DELETE",
         access_token=res_register["access_token"],
         expected_code=200,
     )
 
-    assert "account deleted" in res_delete["data"]["msg"].lower()
+    assrt_msg(res_delete, "account deleted")
 
 
 @pytest.mark.asyncio
@@ -84,4 +86,4 @@ async def bad_cases_t(
         method="DELETE",
     )
 
-    assert expected_msg in res["data"]["msg"].lower()
+    assrt_msg(res, expected_msg)

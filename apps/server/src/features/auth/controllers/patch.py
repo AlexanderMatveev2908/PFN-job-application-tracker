@@ -29,9 +29,7 @@ async def recover_pwd_ctrl(
     return ResAPI.ok_200(
         msg="password updated",
         access_token=result_tokens["access_token"],
-        cookies=[
-            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
-        ],
+        cookies=[gen_refresh_cookie(grab(result_tokens, "client_token"))],
     )
 
 
@@ -49,7 +47,5 @@ async def revocer_pwd_2FA_ctrl(
     return ResAPI.ok_200(
         msg="password updated",
         access_token=result_tokens["access_token"],
-        cookies=[
-            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
-        ],
+        cookies=[gen_refresh_cookie(grab(result_tokens, "client_token"))],
     )

@@ -1,7 +1,7 @@
-import re
 from typing import Callable
 import pytest
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -68,6 +68,4 @@ async def bad_cases_t(
         expected_code=401,
     )
 
-    assert re.compile(rf".*{expected_msg}$").fullmatch(
-        res["data"]["msg"].lower()
-    )
+    assrt_msg(res, expected_msg)

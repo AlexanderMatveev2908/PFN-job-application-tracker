@@ -1,6 +1,8 @@
 import pytest
 from src.constants.reg import REG_JWT
+from src.lib.etc import grab
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -22,7 +24,8 @@ async def ok_t(api) -> None:
         method="GET",
         access_token=res_tokens_expired["access_token"],
     )
-    assert "jwt_expired" in res_err["data"]["msg"].lower()
+
+    assrt_msg(res_err, "jwt_expired")
 
     await get_tokens_lib(api, existing_payload=res_tokens_expired["payload"])
 
@@ -33,7 +36,7 @@ async def ok_t(api) -> None:
         access_token=res_tokens_expired["access_token"],
         method="GET",
     )
-    assert REG_JWT.fullmatch(res_refresh["data"]["access_token"])
+    assert REG_JWT.fullmatch(grab(res_refresh, "access_token"))
 
 
 @pytest.mark.asyncio
@@ -52,4 +55,5 @@ async def bad_cases_t(api: AsyncClient, expected_msg: str) -> None:
         expected_code=401,
         method="GET",
     )
-    assert expected_msg in res_err["data"]["msg"].lower()
+
+    assrt_msg(res_err, expected_msg)

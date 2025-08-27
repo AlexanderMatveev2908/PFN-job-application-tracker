@@ -1,4 +1,6 @@
 import pytest
+from src.lib.etc import grab
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
 
@@ -14,11 +16,11 @@ async def ok_t(api) -> None:
     res_forgot_pwd = await wrap_httpx(
         api,
         url=URL,
-        data={"email": res_register["payload"]["email"]},
+        data={"email": grab(res_register, "email")},
         expected_code=201,
     )
 
-    assert "email sent" in res_forgot_pwd["data"]["msg"].lower()
+    assrt_msg(res_forgot_pwd, "email sent")
 
 
 @pytest.mark.asyncio
@@ -46,4 +48,4 @@ async def bad_cases_t(
     )
 
     if expected_msg:
-        assert expected_msg in res["data"]["msg"].lower()
+        assrt_msg(res, expected_msg)

@@ -6,6 +6,7 @@ from src.conf.db import db_trx
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id, pick
 from src.lib.db.idx import get_us_by_email
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,
 )
@@ -58,6 +59,6 @@ async def tokens_health_svc(
         return {
             "user": us,
             "access_token": result_tokens["access_token"],
-            "refresh_token": result_tokens["result_jwe"]["client_token"],
+            "refresh_token": grab(result_tokens, "client_token"),
             "cbc_hmac_token": result_cbc_hmac["client_token"],
         }

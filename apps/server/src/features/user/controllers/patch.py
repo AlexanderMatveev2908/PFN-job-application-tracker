@@ -72,7 +72,7 @@ async def change_email_ctrl(
 
         await gen_token_send_email_svc(
             trx=trx,
-            us_d=combo_result["cbc_hmac_result"]["user_d"],
+            us_d=grab(combo_result, "user_d"),
             token_t=TokenT.CHANGE_EMAIL,
             email_to=combo_result["body"]["email"],
         )
@@ -93,11 +93,9 @@ async def TFA_ctrl(
         result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
 
         return ResAPI.ok_200(
-            totp_secret=result_svc["secret_result"]["secret"],
-            backup_codes=result_svc["backup_codes_result"][
-                "backup_codes_client"
-            ],
-            totp_secret_qrcode=result_svc["qrcode_result"]["base_64"],
+            totp_secret=grab(result_svc, "secret"),
+            backup_codes=grab(result_svc, "backup_codes_client"),
+            totp_secret_qrcode=grab(result_svc, "base_64"),
         )
 
 
@@ -112,14 +110,12 @@ async def TFA_zip_ctrl(
     async with db_trx() as trx:
         result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
 
-        codes: list[str] = result_svc["backup_codes_result"][
-            "backup_codes_client"
-        ]
+        codes: list[str] = grab(result_svc, "backup_codes_client")
 
         buf = await TFA_zip_svc(
             backup_codes=codes,
-            binary_qr_code=result_svc["qrcode_result"]["binary"],
-            totp_secret=result_svc["secret_result"]["secret"],
+            binary_qr_code=grab(result_svc, "binary"),
+            totp_secret=grab(result_svc, "secret"),
         )
 
         return StreamingResponse(

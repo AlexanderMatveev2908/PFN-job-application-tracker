@@ -21,7 +21,7 @@ async def ok_t(api: AsyncClient) -> None:
     )
 
     get_aad_cbc_hmac(
-        token=res_pwd["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC_2FA
+        token=grab(res_pwd, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC_2FA
     )
 
     res_backup = await wrap_httpx(
@@ -36,10 +36,10 @@ async def ok_t(api: AsyncClient) -> None:
     )
 
     get_aad_cbc_hmac(
-        res_backup["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC
+        grab(res_backup, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC
     )
 
-    assert res_backup["data"]["backup_codes_left"] == 7
+    assert grab(res_backup, "backup_codes_left") == 7
 
 
 @pytest.mark.asyncio

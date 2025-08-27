@@ -4,6 +4,7 @@ from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
 from src.lib.db.idx import get_us_by_email
+from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
@@ -51,6 +52,6 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
         return {
             "new_user": new_user.to_d(exclude_keys=["password"]),
             "access_token": result_tokens["access_token"],
-            "refresh_token": result_tokens["result_jwe"]["client_token"],
+            "refresh_token": grab(result_tokens, "client_token"),
             "cbc_hmac_token": cbc_hmac_res["client_token"],
         }
