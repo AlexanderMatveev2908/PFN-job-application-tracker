@@ -1,7 +1,7 @@
 from httpx import AsyncClient
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import gen_totp, get_aad_cbc_hmac
+from tests.conf.lib.data_structure import assrt_msg, gen_totp, get_aad_cbc_hmac
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.login import make_flow_log_2FA
@@ -56,7 +56,7 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    assert "user account deleted" in res_delete["data"]["msg"]
+    assrt_msg(res_delete, "user account deleted")
 
 
 @pytest.mark.asyncio
@@ -101,4 +101,4 @@ async def bad_cases_t(
         expected_code=expected_code,
     )
 
-    assert expected_msg in res_totp["data"]["msg"]
+    assrt_msg(res_totp, expected_msg)

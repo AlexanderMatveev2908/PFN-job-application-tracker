@@ -1,5 +1,6 @@
 import pytest
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -18,7 +19,7 @@ async def ok_t(api) -> None:
         method="GET",
     )
 
-    assert "verification successful" in res_check["data"]["msg"].lower()
+    assrt_msg(res_check, "verification successful")
 
 
 @pytest.mark.asyncio
@@ -53,4 +54,4 @@ async def bad_cases_t(
         method="GET",
     )
 
-    assert expected_msg in res_check["data"]["msg"].lower()
+    assrt_msg(res_check, expected_msg)
