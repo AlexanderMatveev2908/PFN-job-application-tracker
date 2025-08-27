@@ -8,6 +8,7 @@ from src.features.require_email.services.combo import gen_token_send_email_svc
 from src.features.user.services.TFA import TFA_svc
 from src.features.user.services.TFA_zip import TFA_zip_svc
 from src.lib.db.idx import get_us_by_email, get_us_by_id
+from src.lib.etc import grab
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -27,9 +28,7 @@ async def change_pwd_ctrl(
 ) -> ResAPI:
 
     async with db_trx() as trx:
-        us = await get_us_by_id(
-            trx=trx, us_id=result_combo["cbc_hmac_result"]["user_d"]["id"]
-        )
+        us = await get_us_by_id(trx=trx, us_id=grab(result_combo, "user_id"))
         new_pwd = result_combo["body"]["password"]
 
         if await us.check_pwd(plain=new_pwd):
@@ -67,9 +66,7 @@ async def change_email_ctrl(
 
         us = cast(
             User,
-            await get_us_by_id(
-                trx, combo_result["cbc_hmac_result"]["user_d"]["id"]
-            ),
+            await get_us_by_id(trx, grab(combo_result, "user_id")),
         )
         us.tmp_email = combo_result["body"]["email"]
 

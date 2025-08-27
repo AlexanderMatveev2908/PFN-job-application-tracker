@@ -52,7 +52,7 @@ async def new_backup_codes_ctrl(
     ),
 ) -> ResAPI:
 
-    us_id: str = result_combo["cbc_hmac_result"]["user_d"]["id"]
+    us_id: str = grab(result_combo, "user_id")
 
     async with db_trx() as trx:
 
@@ -83,9 +83,7 @@ async def get_access_manage_account_TFA_totp_ctrl(
 
     async with db_trx() as trx:
 
-        us = await get_us_by_id(
-            trx, combo_result["cbc_hmac_result"]["user_d"]["id"]
-        )
+        us = await get_us_by_id(trx, grab(combo_result, "user_id"))
 
         if not us.check_totp(user_code=combo_result["body"]["totp_code"]):
             raise ErrAPI(msg="totp_code_invalid", status=401)
