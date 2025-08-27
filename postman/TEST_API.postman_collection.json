@@ -237,7 +237,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{DEF_URL}}/test/tokens-health?cbc_hmac_token_t=RECOVER_PWD&verify_user=false",
+							"raw": "{{DEF_URL}}/test/tokens-health?cbc_hmac_token_t=CHANGE_EMAIL&verify_user=false",
 							"host": [
 								"{{DEF_URL}}"
 							],
@@ -248,7 +248,7 @@
 							"query": [
 								{
 									"key": "cbc_hmac_token_t",
-									"value": "RECOVER_PWD"
+									"value": "CHANGE_EMAIL"
 								},
 								{
 									"key": "verify_user",
@@ -691,7 +691,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -710,6 +710,60 @@
 							"path": [
 								"verify",
 								"recover-pwd-2FA-totp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recover_pwd_2FA_backup_code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"E31C-771A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/verify/recover-pwd-2FA-backup-code",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"recover-pwd-2FA-backup-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify_new_email_2FA_backup_code",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\",\n    \"backup_code\":\"06B9-1840\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/verify/new-email-2FA-backup-code",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"verify",
+								"new-email-2FA-backup-code"
 							]
 						}
 					},
