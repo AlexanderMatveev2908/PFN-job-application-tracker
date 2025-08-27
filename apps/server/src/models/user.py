@@ -2,11 +2,12 @@ from typing import TYPE_CHECKING, Self, TypedDict, cast
 from sqlalchemy import Boolean, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 from src.decorators.err import ErrAPI
+from src.lib.TFA.backup import CheckBackupCodeReturnT, check_backup_code_lib
 from src.lib.TFA.totp import check_totp_lib
 from src.lib.hashing.idx import check_argon, hash_argon
 from src.lib.logger import clg
 from src.models.root import RootTable
-
+from sqlalchemy.ext.asyncio import AsyncSession
 
 if TYPE_CHECKING:
     from .token import Token
@@ -82,6 +83,13 @@ class User(RootTable):
 
     def check_totp(self, user_code: str) -> bool:
         return check_totp_lib(secret=self.totp_secret, user_code=user_code)
+
+    async def check_backup_code(
+        self, trx: AsyncSession, backup_code: str
+    ) -> CheckBackupCodeReturnT:
+        return await check_backup_code_lib(
+            trx=trx, us_id=self.id, backup_code=backup_code
+        )
 
     def verify_email(
         self,

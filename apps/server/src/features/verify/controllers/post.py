@@ -42,4 +42,15 @@ async def forgot_pwd_2FA_backup_code_ctrl(
         )
     ),
 ) -> ResAPI:
-    return ResAPI.ok_200()
+
+    async with db_trx() as trx:
+        us = await get_us_by_id(trx, grab(res_combo, "user_id"))
+
+        backup_code = await us.check_backup_code(
+            trx, grab(res_combo, "backup_code")
+        )
+
+        return ResAPI.ok_200(
+            msg="verification successful",
+            backup_codes_left=backup_code["backup_codes_left"],
+        )

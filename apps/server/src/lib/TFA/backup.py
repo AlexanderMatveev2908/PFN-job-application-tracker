@@ -45,7 +45,7 @@ class CheckBackupCodeReturnT(TypedDict):
     backup_codes_left: int
 
 
-async def check_backup_code(
+async def check_backup_code_lib(
     trx: AsyncSession, us_id: str | uuid.UUID, backup_code: str
 ) -> CheckBackupCodeReturnT:
     backup_codes = cast(

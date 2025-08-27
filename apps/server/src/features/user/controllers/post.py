@@ -6,7 +6,7 @@ from src.decorators.res import ResAPI
 from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.user.middleware.manage_account import get_access_account_mdw
-from src.lib.TFA.backup import check_backup_code, gen_backup_codes
+from src.lib.TFA.backup import check_backup_code_lib, gen_backup_codes
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.middleware.combo.idx import (
@@ -114,7 +114,7 @@ async def get_access_manage_account_backup_code_ctrl(
     async with db_trx() as trx:
 
         us_id = combo_result["cbc_hmac_result"]["user_d"]["id"]
-        res_backup_check = await check_backup_code(
+        res_backup_check = await check_backup_code_lib(
             trx,
             us_id=us_id,
             backup_code=combo_result["body"]["backup_code"],

@@ -1,7 +1,7 @@
 from typing import TypedDict
 from sqlalchemy import text
 from src.conf.db import db_trx
-from src.lib.TFA.backup import check_backup_code
+from src.lib.TFA.backup import check_backup_code_lib
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 from src.models.token import TokenT
@@ -17,7 +17,7 @@ async def login_backup_code_svc(
 ) -> LoginBackupCodeSvcReturnT:
     async with db_trx() as trx:
 
-        result_backup_code = await check_backup_code(
+        result_backup_code = await check_backup_code_lib(
             trx,
             us_id=result_combo["cbc_hmac_result"]["user_d"]["id"],
             backup_code=result_combo["body"]["backup_code"],
