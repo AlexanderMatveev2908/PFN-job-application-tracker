@@ -68,12 +68,19 @@ user_router.add_api_route(
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
 
-user_router.add_api_route(
-    "/manage-account-2FA-backup-code",
-    get_access_manage_account_backup_code_ctrl,
-    methods=["POST"],
-    dependencies=[Depends(rate_limit_mdw(limit=5))],
-)
+# user_router.add_api_route(
+#     "/manage-account-2FA-totp",
+#     get_access_manage_account_TFA_totp_ctrl,
+#     methods=["POST"],
+#     dependencies=[Depends(rate_limit_mdw(limit=5))],
+# )
+
+# user_router.add_api_route(
+#     "/manage-account-2FA-backup-code",
+#     get_access_manage_account_backup_code_ctrl,
+#     methods=["POST"],
+#     dependencies=[Depends(rate_limit_mdw(limit=5))],
+# )
 
 user_router.add_api_route(
     "/new-backup-codes",

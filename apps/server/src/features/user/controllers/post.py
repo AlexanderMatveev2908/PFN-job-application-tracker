@@ -7,6 +7,8 @@ from src.features.auth.middleware.login_backup_code import BackupCodeFormT
 from src.features.auth.middleware.login_totp import TotpFormT
 from src.features.user.middleware.manage_account import get_access_account_mdw
 from src.lib.TFA.backup import gen_backup_codes
+from src.lib.combo.TFA import check_2FA_lib
+from src.lib.data_structure import dest_d
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
@@ -82,7 +84,19 @@ async def get_access_manage_account_2FA_ctrl(
     ),
 ) -> ResAPI:
 
-    return ResAPI.ok_200()
+    async with db_trx() as trx:
+        us, backup_codes_left = dest_d(
+            d=await check_2FA_lib(trx, res_combo),
+            keys=["user", "backup_codes_left"],
+        )
+
+        cbc_result: GenTokenReturnT = await gen_cbc_hmac(
+            trx=trx,
+            token_t=TokenT.MANAGE_ACC,
+            user_id=us.id,
+        )
+
+        return ResAPI.ok_200(cbc_hmac_token=cbc_result["client_token"])
 
 
 async def get_access_manage_account_TFA_totp_ctrl(
