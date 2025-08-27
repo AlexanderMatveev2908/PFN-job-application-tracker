@@ -1,11 +1,15 @@
 from httpx import AsyncClient
 import pytest
 
-from src.constants.reg import REG_JWE, REG_JWT
 from src.lib.etc import grab
 from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import assrt_msg, gen_totp, get_aad_cbc_hmac
+from tests.conf.lib.data_structure import (
+    assrt_msg,
+    assrt_sessions_tokens,
+    gen_totp,
+    get_aad_cbc_hmac,
+)
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.get_us import get_us_2FA_lib
 from tests.conf.lib.idx import wrap_httpx
@@ -81,8 +85,7 @@ async def ok_t(api: AsyncClient) -> None:
         method="PATCH",
     )
 
-    assert REG_JWT.fullmatch(grab(res_new_pwd, "access_token"))
-    assert REG_JWE.fullmatch(res_new_pwd["refresh_token"])
+    assrt_sessions_tokens(res_new_pwd)
 
     assrt_msg(res_new_pwd, "password updated")
 

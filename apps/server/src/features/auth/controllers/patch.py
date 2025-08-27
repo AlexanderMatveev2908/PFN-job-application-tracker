@@ -22,7 +22,7 @@ async def recover_pwd_ctrl(
 ) -> ResAPI:
 
     if grab(result_combo, "totp_secret"):
-        raise ErrAPI(msg="user need to follow 2FA flow", status=403)
+        raise ErrAPI(msg="user must follow 2fa flow", status=403)
 
     result_tokens = await change_pwd_svc(result_combo)
 

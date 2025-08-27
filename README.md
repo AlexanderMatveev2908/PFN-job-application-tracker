@@ -548,6 +548,56 @@ To allow GitHub Actions to deploy the app, you’ll need to configure deployment
 
 ---
 
+## 🪾 Branches & Commits
+
+When looking at the **Git history**, you’ll notice a recurring pattern where each entry shows the **branch name** followed by an arrow **=>** and then the **commit message**.
+
+For example:
+
+```bash
+recover_pwd_2FA_backup_code => validated endpoint
+```
+
+This is the convention I follow to make it obvious which branch the work came from. That way, even after I **merge** and **delete** a branch, its commits still carry a **clear trace** of their **origin**.
+
+For clarity, I also configure Git to always create a **merge commit** (**no fast-forward** merges).
+This ensures that the history explicitly shows where a branch **forked off** and where it was **merged back in**.
+In my view, this makes the development process easier to follow because you can see the **“passages”** of **each feature** or fix across the **project timeline**
+
+---
+
+### 📑 Emoji Legend
+
+Recently, I also started adopting an emoji system in my commits to add extra clarity:
+
+- **⚠️ Critical** → local build works, but errors appear at **deploy** / **CI/CD**
+
+- **📜 Docs** → documentation updates
+
+- **🐛 Bugfix** → fixes for reported issues or errors
+
+- **🔥 New** → new features
+
+- **🎨 Refactor** → code cleanups / restructuring without changing behavior
+
+- **🧪 Tests** → adding or improving test coverage
+
+- **🛠️ Default** → normal workflow / maintenance
+
+For example:
+
+```bash
+🪾 recover_pwd_2FA_backup_code => 🐛 fix backup_code validation
+
+🪾 sql_root_table => 🎨 refactor method to_d to parse bytes as hex
+
+🪾 main => 📜 updated project readme
+```
+
+I find that this style makes the **Git history** much easier to **scan quickly** and to **search** by **commit type**
+
+---
+
 ## ✏️ Final Notes
 
 I hope you find the project interesting — if not, the app doesn’t come with a refund policy 💰

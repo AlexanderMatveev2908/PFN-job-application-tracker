@@ -1,8 +1,8 @@
 from httpx import AsyncClient
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_JWE, REG_JWT
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
+    assrt_sessions_tokens,
     gen_totp,
     get_aad_cbc_hmac,
     extract_login_payload,
@@ -24,8 +24,7 @@ async def make_flow_log(
         expected_code=200,
     )
 
-    assert REG_JWE.fullmatch(res_login["refresh_token"])
-    assert REG_JWT.fullmatch(res_login["data"]["access_token"])
+    assrt_sessions_tokens(res_login)
 
     return {
         "access_token": res_login["data"]["access_token"],
@@ -58,8 +57,7 @@ async def make_flow_log_2FA(
         expected_code=200,
     )
 
-    assert REG_JWT.fullmatch(res_login_2fa["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_login_2fa["refresh_token"])
+    assrt_sessions_tokens(res_login_2fa)
 
     res_tokens = await get_tokens_lib(
         api,

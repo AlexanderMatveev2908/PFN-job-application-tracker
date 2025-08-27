@@ -2,11 +2,11 @@ import faker
 from httpx import AsyncClient
 import pytest
 
-from src.constants.reg import REG_JWE, REG_JWT
 from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
     assrt_msg,
+    assrt_sessions_tokens,
     gen_totp,
     get_aad_cbc_hmac,
 )
@@ -70,5 +70,4 @@ async def ok_t(api: AsyncClient) -> None:
         },
     )
 
-    assert REG_JWT.fullmatch(res_verify_1["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_verify_1["refresh_token"])
+    assrt_sessions_tokens(res_verify_1)

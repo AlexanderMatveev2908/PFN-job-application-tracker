@@ -3,9 +3,10 @@ from urllib.parse import urlencode
 from httpx import AsyncClient
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_SECRET_TOTP
+from src.constants.reg import REG_CBC_HMAC, REG_SECRET_TOTP
 from src.lib.etc import grab
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.etc import TokenArgT, get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.types import User2FAReturnT, SuccessReqTokensReturnT
@@ -74,8 +75,7 @@ async def get_us_2FA_lib(
         expected_code=200,
     )
 
-    assert REG_JWT.fullmatch(grab(res, "access_token"))
-    assert REG_JWE.fullmatch(res["refresh_token"])
+    assrt_sessions_tokens(res)
     assert REG_CBC_HMAC.fullmatch(grab(res, "cbc_hmac_token"))
     assert len(res["data"]["backup_codes"]) == (0 if empty_codes else 8)
 

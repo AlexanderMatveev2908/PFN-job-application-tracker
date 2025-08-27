@@ -1,8 +1,11 @@
 from httpx import AsyncClient
 import pytest
 
-from src.constants.reg import REG_CBC_HMAC, REG_JWT
-from tests.conf.lib.data_structure import extract_login_payload
+from src.constants.reg import REG_CBC_HMAC
+from tests.conf.lib.data_structure import (
+    assrt_sessions_tokens,
+    extract_login_payload,
+)
 from tests.conf.lib.get_us import make_setup_2FA
 from tests.conf.lib.idx import wrap_httpx
 
@@ -32,7 +35,7 @@ async def ok_t(api: AsyncClient) -> None:
         },
     )
 
-    assert REG_JWT.fullmatch(res_login_2fa["data"]["access_token"])
+    assrt_sessions_tokens(res_login_2fa)
     assert res_login_2fa["data"]["backup_codes_left"] == 7
 
 
@@ -70,7 +73,7 @@ async def bad_cases_t(
                 },
             )
 
-            assert REG_JWT.fullmatch(res_login_2fa["data"]["access_token"])
+            assrt_sessions_tokens(res_login_2fa)
 
     res_login = await wrap_httpx(
         api,

@@ -5,10 +5,9 @@ from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.constants.reg import (
     REG_CBC_HMAC,
     REG_ID,
-    REG_JWE,
-    REG_JWT,
 )
 from src.models.token import TokenT
+from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.idx import wrap_httpx
 from tests.conf.lib.types import (
     SuccessReqTokensReturnT,
@@ -44,8 +43,7 @@ async def get_tokens_lib(
         expected_code=200,
     )
 
-    assert REG_JWT.fullmatch(res_tokens["data"]["access_token"])
-    assert REG_JWE.fullmatch(res_tokens["refresh_token"])
+    assrt_sessions_tokens(res_tokens)
     assert REG_CBC_HMAC.fullmatch(res_tokens["data"]["cbc_hmac_token"])
     assert REG_ID.fullmatch(res_tokens["data"]["user"]["id"])
 
