@@ -85,3 +85,45 @@ async def ok_t(api: AsyncClient) -> None:
     assert REG_JWE.fullmatch(res_new_pwd["refresh_token"])
 
     assrt_msg(res_new_pwd, "password updated")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "case, expected_code, expected_msg",
+    [("totp_wrong", 401, "totp_code_invalid")],
+)
+async def bad_cases_t(
+    api: AsyncClient, case: str, expected_code: int, expected_msg: str
+) -> None:
+    res_logged = await get_us_2FA_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
+
+    res_verify = await wrap_httpx(
+        api,
+        url=f"/verify/recover-pwd?cbc_hmac_token={res_logged['cbc_hmac_token']}",  # noqa: E501
+        method="GET",
+        expected_code=200,
+    )
+
+    get_aad_cbc_hmac(
+        grab(res_verify, "cbc_hmac_token"), TokenT.RECOVER_PWD_2FA
+    )
+
+    res_totp = await wrap_httpx(
+        api,
+        url="/verify/recover-pwd-2FA-totp",
+        expected_code=expected_code,
+        data={
+            "cbc_hmac_token": grab(res_verify, "cbc_hmac_token"),
+            "totp_code": (
+                "123456"
+                if case == "totp_wrong"
+                else gen_totp(
+                    totp_secret=grab(
+                        res_logged, "totp_secret", exclude_parents=["user"]
+                    )
+                )
+            ),
+        },
+    )
+
+    assrt_msg(res_totp, expected_msg)
