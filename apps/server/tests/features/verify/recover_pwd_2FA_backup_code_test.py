@@ -1,7 +1,5 @@
 from httpx import AsyncClient
 import pytest
-
-from src.lib.etc import grab
 from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
@@ -24,7 +22,7 @@ async def ok_t(api: AsyncClient) -> None:
         method="GET",
     )
 
-    token_2FA = grab(res_verify, "cbc_hmac_token")
+    token_2FA = res_verify["data"]["cbc_hmac_token"]
 
     get_aad_cbc_hmac(token_2FA, TokenT.RECOVER_PWD_2FA)
 
@@ -89,7 +87,7 @@ async def bad_cases_t(
         expected_code=200,
     )
 
-    token_2fa = grab(res_verify, "cbc_hmac_token")
+    token_2fa = res_verify["data"]["cbc_hmac_token"]
 
     res_backup = await wrap_httpx(
         api,
