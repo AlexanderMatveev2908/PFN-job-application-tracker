@@ -4,9 +4,9 @@ from fastapi.responses import StreamingResponse
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
-from src.features.require_email.services.combo import gen_token_send_email_svc
 from src.features.user.services.TFA import TFA_svc
 from src.features.user.services.TFA_zip import TFA_zip_svc
+from src.lib.combo.token_mail import gen_token_send_email_svc
 from src.lib.db.idx import get_us_by_email, get_us_by_id
 from src.lib.validators.idx import EmailFormT, PwdFormT
 from src.middleware.combo.idx import (

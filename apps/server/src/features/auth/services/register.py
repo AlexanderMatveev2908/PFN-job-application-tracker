@@ -3,8 +3,8 @@ import uuid
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
+from src.lib.combo.token_mail import gen_token_send_email_svc
 from src.lib.db.idx import get_us_by_email
-from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.models.token import GenTokenReturnT, TokenT
 from src.models.user import User
@@ -42,10 +42,12 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             user_id=new_user.id,
             trx=trx,
         )
-        cbc_hmac_res: GenTokenReturnT = await gen_cbc_hmac(
-            token_t=TokenT.CONF_EMAIL,
-            user_id=new_user.id,
+
+        cbc_hmac_res: GenTokenReturnT = await gen_token_send_email_svc(
             trx=trx,
+            us_d=new_user,
+            token_t=TokenT.CONF_EMAIL,
+            callback_url="",
         )
 
         return {
