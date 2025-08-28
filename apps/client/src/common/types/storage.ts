@@ -1,1 +1,1 @@
-export type StorageKey = "WAKE_UP";
+export type StorageKey = "WAKE_UP" | "NOTICE" | "ACCESS_TOKEN";

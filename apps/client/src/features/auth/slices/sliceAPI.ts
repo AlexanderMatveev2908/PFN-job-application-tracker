@@ -6,7 +6,10 @@ const BASE = "/auth";
 
 export const authSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    registerUser: builder.mutation<UnwrappedResApiT<void>, RegisterFormT>({
+    registerUser: builder.mutation<
+      UnwrappedResApiT<{ access_token: string }>,
+      RegisterFormT
+    >({
       query: (data) => ({
         url: `${BASE}/register`,
         method: "POST",

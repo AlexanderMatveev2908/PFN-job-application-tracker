@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useWrapClientListener } from "../etc/useWrapClientListener";
-import { isStr } from "@/core/lib/dataStructure";
+import { isSerializable, isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -42,10 +42,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     if (isSuccess) {
       __cg("wrapper query", data);
 
-      if (
-        showToast &&
-        !((data as UnwrappedResApiT<{ blob: Blob }>)?.blob instanceof Blob)
-      )
+      if (showToast && isSerializable(data))
         dispatch(
           toastSlice.actions.open({
             msg: isStr(data?.msg) ? data!.msg! : "Things went good ✅",

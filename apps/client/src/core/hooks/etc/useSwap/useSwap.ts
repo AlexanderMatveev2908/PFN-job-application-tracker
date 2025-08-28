@@ -13,7 +13,7 @@ type Params<T extends FieldValues> = {
 
 export const useSwap = <T extends FieldValues>(params: Params<T>) => {
   const [state, dispatchRCT] = useReducer(reducer, initState);
-  const timerWapMode = useRef<NodeJS.Timeout | null>(null);
+  const timerSwapMode = useRef<NodeJS.Timeout | null>(null);
   const lockFocusRef = useRef<boolean>(false);
 
   useFocusSwap({
@@ -37,15 +37,17 @@ export const useSwap = <T extends FieldValues>(params: Params<T>) => {
   }, []);
 
   useEffect(() => {
-    clearTmr(timerWapMode);
+    if (state.swapMode !== "swapping") return;
 
-    timerWapMode.current = setTimeout(() => {
+    clearTmr(timerSwapMode);
+
+    timerSwapMode.current = setTimeout(() => {
       endSwap();
-      clearTmr(timerWapMode);
+      clearTmr(timerSwapMode);
     }, 400);
 
     return () => {
-      clearTmr(timerWapMode);
+      clearTmr(timerSwapMode);
     };
   }, [state, endSwap]);
 

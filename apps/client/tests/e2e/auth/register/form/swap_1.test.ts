@@ -15,13 +15,14 @@ test("swap 1", async ({ page }) => {
   const pwd = await getByID(el, "password");
   await expect(pwd).toBeFocused();
 
+  const confPwd = await getByID(el, "confirm_password");
+
   const msgs = ["invalid password", "you must confirm password"];
 
   await pwd.fill("abc");
+  await confPwd.fill("");
 
   await checkTxtList(page, msgs);
-
-  const confPwd = await getByID(el, "confirm_password");
 
   await confPwd.fill("123");
 
@@ -52,9 +53,7 @@ test("swap 1", async ({ page }) => {
 
   await resGen.click();
 
-  await page.waitForTimeout(500);
-
-  await getByTxt(page, "copied to clipboard");
+  await expect(page.getByText("copied to clipboard")).toBeAttached();
 
   const content = await (
     await getByID(resGen, "cpy_paste__result")

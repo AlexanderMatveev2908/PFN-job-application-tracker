@@ -15,14 +15,17 @@ type PropsType = {
 
 const variants = {
   hidden: {
-    y: "0%",
+    scale: 0,
     opacity: 0,
-    transition: { duration: 0.2, ease: easeInOut },
   },
   visible: {
-    y: "-150%",
-    opacity: 1,
-    transition: { duration: 0.3, ease: easeInOut },
+    scale: [0, 1.4, 0.8, 1.1, 0.9, 1, 1],
+    opacity: [0, 1, 1, 1, 1, 1, 0],
+    transition: {
+      duration: 1.6,
+      times: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 1],
+      ease: easeInOut,
+    },
   },
 };
 
@@ -59,7 +62,7 @@ const CpyClip: FC<PropsType> = ({ isCopied, x, coords }) => {
       <motion.div
         css={css`
           left: ${coords.left - 75 / 2}px;
-          top: ${coords.top}px;
+          top: ${coords.top - coords.height - 10}px;
           width: ${coords.width + 75}px;
         `}
         initial="hidden"

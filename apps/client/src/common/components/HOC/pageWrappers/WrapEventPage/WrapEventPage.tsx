@@ -4,25 +4,24 @@
 import { AppEventT } from "@/common/types/api";
 import type { FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
-import BounceIconSSR from "../../elements/BounceIconSSR/BounceIconSSR";
-import { IconType } from "react-icons";
+import BounceIconSSR from "../../../elements/BounceIconSSR/BounceIconSSR";
 import { ChildrenT } from "@/common/types/ui";
+import { SvgsAppEvents } from "./uiFactory";
 
 type PropsType = {
   act: AppEventT;
   msg: string;
-  Svg: IconType;
 } & ChildrenT;
 
-const WrapEventPage: FC<PropsType> = ({ act, msg, Svg, children }) => {
+const WrapEventPage: FC<PropsType> = ({ act, msg, children }) => {
   const $clr = $argClr[act];
 
   return (
-    <div className="w-full min-h-screen flex flex-col -mt-[5%] items-center justify-center gap-10 sm:gap-16">
+    <div className="w-full flex flex-col items-center justify-center gap-10 sm:gap-16">
       <BounceIconSSR
         {...{
           act,
-          Svg,
+          Svg: SvgsAppEvents[act],
         }}
       />
 
