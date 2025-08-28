@@ -13,7 +13,7 @@ export const useNotice = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { keyCb: _, ...rest } = noticeArg;
 
-      saveStorage(rest, { key: "NOTICE" });
+      saveStorage(rest, { key: "notice" });
     },
     [disp]
   );

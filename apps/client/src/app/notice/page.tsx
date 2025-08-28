@@ -23,7 +23,7 @@ const Page: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const saved = getStorage("NOTICE") as Partial<NoticeStateT>;
+    const saved = getStorage("notice") as Partial<NoticeStateT>;
     if (saved) dispatch(noticeSlice.actions.setNotice(saved));
   }, [dispatch]);
 

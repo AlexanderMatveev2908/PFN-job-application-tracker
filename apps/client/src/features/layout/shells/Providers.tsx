@@ -12,6 +12,7 @@ type PropsType = {
 
 const Providers: FC<PropsType> = ({ children, preloadedState }) => {
   useScroll();
+
   const store = useRef(genStoreSSR(preloadedState)).current;
 
   return <Provider store={store}>{children}</Provider>;

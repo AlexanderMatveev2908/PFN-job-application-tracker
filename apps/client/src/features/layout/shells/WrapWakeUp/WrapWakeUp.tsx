@@ -43,7 +43,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
 
   useEffect(() => {
     const listener = () => {
-      const lastVal = getStorage("WAKE_UP");
+      const lastVal = getStorage("wake_up");
 
       const delta = Date.now() - +(lastVal ?? 0);
       const min = delta / 1000 / 60;
@@ -75,7 +75,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
                 const r = await triggerAPI();
 
                 if (isStr(r?.msg)) {
-                  saveStorage(Date.now(), { key: "WAKE_UP" });
+                  saveStorage(Date.now(), { key: "wake_up" });
                   isAwakeRef.current = true;
                   setIsPop(false);
                 } else {

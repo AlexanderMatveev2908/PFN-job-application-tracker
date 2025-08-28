@@ -19,8 +19,7 @@ import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
-import { genLorem } from "@/core/lib/etc";
-import { saveStorage } from "@/core/lib/storage";
+import { useUs } from "@/features/user/hooks/useUs";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -48,6 +47,7 @@ const Register: FC = ({}) => {
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
   const { wrapMutation } = useWrapMutation();
   const { setNotice } = useNotice();
+  const { loginUser } = useUs();
   const nav = useRouter();
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
@@ -62,12 +62,17 @@ const Register: FC = ({}) => {
       const res = await wrapMutation({
         cbAPI: () => mutate(data),
       });
-      __cg("res api", res);
 
       if (!res) return;
 
-      saveStorage(res?.access_token, { key: "ACCESS_TOKEN" });
-      setNotice({ msg: genLorem(5), type: "OK", keyCb: "LOGIN" });
+      loginUser(res.access_token);
+
+      setNotice({
+        msg: "We've sent you an email to confirm the account. If you don't see it, check your spam folder, it might be partying there 🎉",
+        type: "OK",
+        keyCb: "LOGIN",
+      });
+
       nav.replace("/notice");
     },
     (errs) => {
