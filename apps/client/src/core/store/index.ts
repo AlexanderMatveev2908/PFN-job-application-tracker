@@ -3,12 +3,14 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
+import { noticeSlice } from "@/features/notice/slices/slice";
 
 const rootReducer = combineReducers({
   test: testSlice.reducer,
   apiApp: apiSlice.reducer,
   toast: toastSlice.reducer,
   side: sideSlice.reducer,
+  notice: noticeSlice.reducer,
 });
 
 export const genStoreSSR = (
