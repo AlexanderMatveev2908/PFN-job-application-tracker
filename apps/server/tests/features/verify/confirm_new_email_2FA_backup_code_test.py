@@ -2,7 +2,6 @@ import os
 from httpx import AsyncClient
 import pytest
 
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
     assrt_msg,
@@ -24,7 +23,7 @@ async def ok_t(api: AsyncClient) -> None:
         api,
         url="/user/change-email",
         data={
-            "email": grab(res_2fa, "first_name")[:-20]
+            "email": res_2fa["user"]["first_name"][:-20]
             + os.urandom(10).hex()
             + "@gmail.com",
             "cbc_hmac_token": res_2fa["cbc_hmac_token"],
@@ -48,7 +47,7 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    token_2fa = grab(res_verify, "cbc_hmac_token")
+    token_2fa = res_verify["data"]["cbc_hmac_token"]
 
     get_aad_cbc_hmac(token_2fa, TokenT.CHANGE_EMAIL_2FA)
 
@@ -85,7 +84,7 @@ async def bad_cases_t(
         api,
         url="/user/change-email",
         data={
-            "email": grab(res_2fa, "first_name")[:-20]
+            "email": res_2fa["user"]["first_name"][:-20]
             + os.urandom(10).hex()
             + "@gmail.com",
             "cbc_hmac_token": res_2fa["cbc_hmac_token"],
@@ -119,7 +118,7 @@ async def bad_cases_t(
             )
         )["cbc_hmac_token"]
         if case == "cbc_hmac_expired"
-        else grab(res_verify, "cbc_hmac_token")
+        else res_verify["data"]["cbc_hmac_token"]
     )
 
     get_aad_cbc_hmac(token_2fa, TokenT.CHANGE_EMAIL_2FA)
