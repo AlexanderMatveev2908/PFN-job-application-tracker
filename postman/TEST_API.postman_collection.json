@@ -167,38 +167,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "get_verified_user",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{DEF_URL}}/test/get-verified-user?cbc_hmac_t=MANAGE_ACC&expired=jwt&expired=jwe",
-							"host": [
-								"{{DEF_URL}}"
-							],
-							"path": [
-								"test",
-								"get-verified-user"
-							],
-							"query": [
-								{
-									"key": "cbc_hmac_t",
-									"value": "MANAGE_ACC"
-								},
-								{
-									"key": "expired",
-									"value": "jwt"
-								},
-								{
-									"key": "expired",
-									"value": "jwe"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
