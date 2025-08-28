@@ -68,7 +68,7 @@ const BodyForm: FC<PropsType> = ({ swapState }) => {
                 el,
                 control,
                 portalConf: {
-                  showPortal: !currSwap && swapMode === "swapped",
+                  showPortal: !currSwap && swapMode !== "swapping",
                   optDep: [currSwap, swapMode],
                 },
               }}

@@ -75,8 +75,6 @@ const Register: FC = ({}) => {
     }
   );
 
-  console.log("render");
-
   return (
     <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
       <ProgressSwap
