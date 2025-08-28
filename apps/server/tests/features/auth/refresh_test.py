@@ -1,6 +1,5 @@
 import pytest
 from src.constants.reg import REG_JWT
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
@@ -36,7 +35,7 @@ async def ok_t(api) -> None:
         access_token=res_tokens_expired["access_token"],
         method="GET",
     )
-    assert REG_JWT.fullmatch(grab(res_refresh, "access_token"))
+    assert REG_JWT.fullmatch(res_refresh["data"]["access_token"])
 
 
 @pytest.mark.asyncio

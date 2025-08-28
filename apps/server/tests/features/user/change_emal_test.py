@@ -1,7 +1,6 @@
 import os
 import pytest
 from src.constants.reg import REG_CBC_HMAC
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
@@ -25,7 +24,7 @@ async def ok_t(api) -> None:
         access_token=res_register["access_token"],
         expected_code=200,
     )
-    assert REG_CBC_HMAC.fullmatch(grab(res_manage, "cbc_hmac_token"))
+    assert REG_CBC_HMAC.fullmatch(res_manage["data"]["cbc_hmac_token"])
 
     new_email = os.urandom(20).hex() + "@gmail.com"
 
@@ -34,7 +33,7 @@ async def ok_t(api) -> None:
         url=URL,
         data={
             "email": new_email,
-            "cbc_hmac_token": grab(res_manage, "cbc_hmac_token"),
+            "cbc_hmac_token": res_manage["data"]["cbc_hmac_token"],
         },
         access_token=res_register["access_token"],
         expected_code=200,

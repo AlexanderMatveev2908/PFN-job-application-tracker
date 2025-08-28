@@ -6,7 +6,6 @@ from src.constants.reg import (
     REG_CBC_HMAC,
     REG_ID,
 )
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.idx import wrap_httpx
@@ -46,10 +45,10 @@ async def get_tokens_lib(
 
     assrt_sessions_tokens(res_tokens)
     assert REG_CBC_HMAC.fullmatch(res_tokens["data"]["cbc_hmac_token"])
-    assert REG_ID.fullmatch(grab(res_tokens, "id"))
+    assert REG_ID.fullmatch(res_tokens["data"]["user"]["id"])
 
     if verify_user:
-        assert grab(res_tokens, "is_verified")
+        assert res_tokens["data"]["user"]["is_verified"]
 
     return {
         "user": res_tokens["data"]["user"],

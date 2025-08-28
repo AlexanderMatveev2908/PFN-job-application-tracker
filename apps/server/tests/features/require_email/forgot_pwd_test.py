@@ -1,5 +1,4 @@
 import pytest
-from src.lib.etc import grab
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -16,7 +15,7 @@ async def ok_t(api) -> None:
     res_forgot_pwd = await wrap_httpx(
         api,
         url=URL,
-        data={"email": grab(res_register, "email")},
+        data={"email": res_register["payload"]["email"]},
         expected_code=201,
     )
 
