@@ -17,6 +17,7 @@ import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
+import { useRouter } from "next/navigation";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -25,18 +26,19 @@ const Register: FC = ({}) => {
     mode: "onChange",
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      terms: false,
+      first_name: "Alex",
+      last_name: "Matveev",
+      email: "matveevalexander470@gmail.com",
+      password: "0$EM09btNPiC}!3d+t2{",
+      confirm_password: "0$EM09btNPiC}!3d+t2{",
+      terms: true,
     },
   });
   const { setFocus, handleSubmit } = formCtx;
 
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
   const { wrapMutation } = useWrapMutation();
+  const nav = useRouter();
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
 
@@ -47,11 +49,12 @@ const Register: FC = ({}) => {
 
   const handleSave = handleSubmit(
     async (data) => {
-      const res = await wrapMutation({
-        cbAPI: () => mutate(data),
-      });
+      // const res = await wrapMutation({
+      //   cbAPI: () => mutate(data),
+      // });
+      // __cg("res api", res);
 
-      __cg("res api", res);
+      nav.replace("/notice");
     },
     (errs) => {
       __cg("errors", errs);

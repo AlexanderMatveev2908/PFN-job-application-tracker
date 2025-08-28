@@ -2,12 +2,23 @@
 "use client";
 
 import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
-import { getNoticeState } from "@/features/notice/slices/slice";
-import type { FC } from "react";
-import { useSelector } from "react-redux";
+import { getStorage } from "@/core/lib/storage";
+import {
+  getNoticeState,
+  noticeSlice,
+  NoticeStateT,
+} from "@/features/notice/slices/slice";
+import { useEffect, type FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Page: FC = () => {
   const noticeState = useSelector(getNoticeState);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const saved = getStorage("NOTICE") as Partial<NoticeStateT>;
+    if (saved) dispatch(noticeSlice.actions.setNotice(saved));
+  }, [dispatch]);
 
   return (
     <div className="w-full">
