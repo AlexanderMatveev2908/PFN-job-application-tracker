@@ -6,7 +6,6 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import del_token_by_t, get_us_by_id
-from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.middleware.check_cbc_hmac import (
@@ -70,10 +69,7 @@ async def forgot_pwd_ctrl(
 
         await del_token_by_t(
             trx,
-            grab(
-                combo_result,
-                "user_id",
-            ),
+            combo_result["decrypted"]["user_id"],
             TokenT.RECOVER_PWD,
         )
 
@@ -94,10 +90,7 @@ async def confirm_new_email_ctrl(
 
         await del_token_by_t(
             trx,
-            grab(
-                result_cbc,
-                "user_id",
-            ),
+            result_cbc["decrypted"]["user_id"],
             TokenT.CHANGE_EMAIL,
         )
 

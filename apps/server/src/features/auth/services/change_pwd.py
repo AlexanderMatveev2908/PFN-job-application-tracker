@@ -2,7 +2,6 @@ from typing import cast
 
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.lib.etc import grab
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 from src.models.token import Token
@@ -15,7 +14,9 @@ async def change_pwd_svc(
     async with db_trx() as trx:
         us = cast(
             User,
-            await trx.get(User, grab(result_combo, "user_id")),
+            await trx.get(
+                User, result_combo["cbc_hmac_result"]["decrypted"]["user_id"]
+            ),
         )
 
         if await us.check_pwd(plain=result_combo["body"]["password"]):

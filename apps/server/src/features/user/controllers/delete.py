@@ -4,7 +4,6 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.db.idx import get_us_by_id
-from src.lib.etc import grab
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
@@ -24,7 +23,9 @@ async def delete_account_ctrl(
 ) -> ResAPI:
 
     async with db_trx() as trx:
-        us = await get_us_by_id(trx, grab(result_cbc, "user_id"))
+        us = await get_us_by_id(
+            trx, result_cbc["cbc_hmac_result"]["decrypted"]["user_id"]
+        )
 
         await trx.execute(delete(Token).where(Token.user_id == us.id))
 

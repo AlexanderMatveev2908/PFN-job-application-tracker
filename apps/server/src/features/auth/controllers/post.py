@@ -11,7 +11,6 @@ from src.features.auth.services.register import (
     register_user_svc,
 )
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.tokens.jwe import check_jwe_with_us
@@ -57,7 +56,11 @@ async def login_ctrl(
         tokens_session = await gen_tokens_session(user_id=us.id, trx=trx)
         return ResAPI.ok_200(
             access_token=tokens_session["access_token"],
-            cookies=[gen_refresh_cookie(grab(tokens_session, "client_token"))],
+            cookies=[
+                gen_refresh_cookie(
+                    tokens_session["result_jwe"]["client_token"]
+                )
+            ],
         )
 
 
@@ -95,5 +98,5 @@ async def login_2FA_ctrl(
     return ResAPI.ok_200(
         access_token=res_check["access_token"],
         backup_codes_left=res_check["backup_codes_left"],
-        cookies=[gen_refresh_cookie(grab(res_check, "client_token"))],
+        cookies=[gen_refresh_cookie(res_check["result_jwe"]["client_token"])],
     )

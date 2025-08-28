@@ -3,7 +3,6 @@ from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.services.change_pwd import change_pwd_svc
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.etc import grab
 from src.lib.validators.idx import PwdFormT
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
@@ -21,7 +20,7 @@ async def recover_pwd_ctrl(
     ),
 ) -> ResAPI:
 
-    if grab(result_combo, "totp_secret"):
+    if result_combo["cbc_hmac_result"]["user_d"]["totp_secret"]:
         raise ErrAPI(msg="user must follow 2fa flow", status=403)
 
     result_tokens = await change_pwd_svc(result_combo)
@@ -29,7 +28,9 @@ async def recover_pwd_ctrl(
     return ResAPI.ok_200(
         msg="password updated",
         access_token=result_tokens["access_token"],
-        cookies=[gen_refresh_cookie(grab(result_tokens, "client_token"))],
+        cookies=[
+            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
+        ],
     )
 
 
@@ -47,5 +48,7 @@ async def revocer_pwd_2FA_ctrl(
     return ResAPI.ok_200(
         msg="password updated",
         access_token=result_tokens["access_token"],
-        cookies=[gen_refresh_cookie(grab(result_tokens, "client_token"))],
+        cookies=[
+            gen_refresh_cookie(result_tokens["result_jwe"]["client_token"])
+        ],
     )

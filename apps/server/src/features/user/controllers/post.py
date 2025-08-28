@@ -7,7 +7,6 @@ from src.features.user.middleware.manage_account import get_access_account_mdw
 from src.lib.TFA.backup import gen_backup_codes
 from src.lib.combo.TFA import check_2FA_lib
 from src.lib.data_structure import dest_d
-from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (
@@ -52,7 +51,7 @@ async def new_backup_codes_ctrl(
     ),
 ) -> ResAPI:
 
-    us_id: str = grab(result_combo, "user_id")
+    us_id: str = result_combo["cbc_hmac_result"]["decrypted"]["user_id"]
 
     async with db_trx() as trx:
 
