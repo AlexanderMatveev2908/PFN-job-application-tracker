@@ -2,16 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppEventT } from "@/common/types/api";
 import { StoreStateT } from "@/core/store";
 
+export type KeyCbT = "LOGIN";
+
 export interface NoticeStateT {
   type: AppEventT;
   msg: string;
-  keyCb: string;
+  keyCb: KeyCbT;
 }
 
 const initState: NoticeStateT = {
   type: "NONE",
   msg: "",
-  keyCb: "",
+  keyCb: "" as KeyCbT,
 };
 
 export const noticeSlice = createSlice({
@@ -23,7 +25,7 @@ export const noticeSlice = createSlice({
 
       state.msg = msg ?? "";
       state.type = type ?? "NONE";
-      state.keyCb = keyCb ?? "";
+      state.keyCb = keyCb ?? ("" as KeyCbT);
     },
   },
 });

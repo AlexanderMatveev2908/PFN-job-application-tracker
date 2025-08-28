@@ -18,6 +18,8 @@ import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useRouter } from "next/navigation";
+import { useNotice } from "@/features/notice/hooks/useNotice";
+import { genLorem } from "@/core/lib/etc";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -38,6 +40,7 @@ const Register: FC = ({}) => {
 
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
   const { wrapMutation } = useWrapMutation();
+  const { setNotice } = useNotice();
   const nav = useRouter();
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
@@ -54,6 +57,7 @@ const Register: FC = ({}) => {
       // });
       // __cg("res api", res);
 
+      setNotice({ msg: genLorem(5), type: "OK", keyCb: "LOGIN" });
       nav.replace("/notice");
     },
     (errs) => {
