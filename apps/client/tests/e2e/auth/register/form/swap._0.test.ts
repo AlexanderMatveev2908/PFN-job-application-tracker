@@ -13,7 +13,7 @@ test("swap 0", async ({ page }) => {
 
   const msgs = ["invalid characters", "last name is required", "invalid email"];
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(750);
 
   await checkTxtList(page, msgs);
 
@@ -21,7 +21,7 @@ test("swap 0", async ({ page }) => {
   await el.getByTestId("last_name").fill("Doe");
   await el.getByTestId("email").fill("john@gmail.com");
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(750);
 
   await checkTxtListOpc(page, msgs);
 });
