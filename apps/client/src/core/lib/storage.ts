@@ -23,3 +23,5 @@ export const getStorage = <T>(key: StorageKey): T | null => {
 
 export const delStorageItm = (key: StorageKey) =>
   sessionStorage.removeItem(key);
+
+export const clearStorage = () => sessionStorage.clear();
