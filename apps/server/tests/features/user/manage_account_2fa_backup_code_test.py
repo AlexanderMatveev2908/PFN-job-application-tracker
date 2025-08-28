@@ -1,7 +1,6 @@
 from typing import cast
 from httpx import AsyncClient
 import pytest
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, get_aad_cbc_hmac
 from tests.conf.lib.idx import wrap_httpx
@@ -21,7 +20,7 @@ async def ok_t(api: AsyncClient) -> None:
     )
 
     get_aad_cbc_hmac(
-        token=grab(res_pwd, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC_2FA
+        token=res_pwd["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC_2FA
     )
 
     res_backup = await wrap_httpx(
@@ -31,15 +30,15 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
         data={
             "backup_code": res_logged["backup_codes"][0],
-            "cbc_hmac_token": grab(res_pwd, "cbc_hmac_token"),
+            "cbc_hmac_token": res_pwd["data"]["cbc_hmac_token"],
         },
     )
 
     get_aad_cbc_hmac(
-        grab(res_backup, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC
+        res_backup["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC
     )
 
-    assert grab(res_backup, "backup_codes_left") == 7
+    assert res_backup["data"]["backup_codes_left"] == 7
 
 
 @pytest.mark.asyncio
@@ -69,7 +68,7 @@ async def bad_cases_t(
         assrt_msg(res_pwd, expected_msg)
         return
 
-    code = cast(list, grab(cast(dict, res_logged), "backup_codes"))[0]
+    code = cast(list, res_logged["backup_codes"])[0]
 
     res_backup = await wrap_httpx(
         api,
@@ -77,7 +76,7 @@ async def bad_cases_t(
         access_token=res_logged["access_token"],
         expected_code=expected_code,
         data={
-            "cbc_hmac_token": grab(cast(dict, res_pwd), "cbc_hmac_token"),
+            "cbc_hmac_token": res_pwd["data"]["cbc_hmac_token"],
             "backup_code": "1234-1234" if case == "wrong_code" else code,
         },
     )

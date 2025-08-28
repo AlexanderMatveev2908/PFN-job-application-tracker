@@ -1,5 +1,4 @@
 import pytest
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
@@ -26,7 +25,7 @@ async def ok_t(api) -> None:
 
     res_delete = await wrap_httpx(
         api,
-        url=URL + grab(res_manage, "cbc_hmac_token"),
+        url=URL + res_manage["data"]["cbc_hmac_token"],
         method="DELETE",
         access_token=res_register["access_token"],
         expected_code=200,
