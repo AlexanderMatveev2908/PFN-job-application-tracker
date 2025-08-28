@@ -74,8 +74,9 @@ class EnvVar(BaseSettings):
     brevo_smpt_port: int = Field(..., validation_alias="BREVO_SMPT_PORT")
     brevo_smpt_user: str = Field(..., validation_alias="BREVO_SMPT_USER")
     brevo_smpt_pwd: str = Field(..., validation_alias="BREVO_SMPT_PWD")
-    smpt_from: str = Field(..., validation_alias="SMPT_FROM")
-
+    next_public_smpt_from: str = Field(
+        ..., validation_alias="NEXT_PUBLIC_SMPT_FROM"
+    )
     # ? redis upstash
     redis_url: str = Field(..., validation_alias="REDIS_URL")
 

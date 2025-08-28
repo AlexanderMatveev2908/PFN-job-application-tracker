@@ -19,7 +19,7 @@ async def send_email(
     us_shape = user.to_d() if isinstance(user, User) else user
 
     msg = EmailMessage()
-    msg["From"] = env_var.smpt_from
+    msg["From"] = env_var.next_public_smpt_from
     msg["To"] = email_to or us_shape["email"]
     msg["Subject"] = subj
     msg.set_content(

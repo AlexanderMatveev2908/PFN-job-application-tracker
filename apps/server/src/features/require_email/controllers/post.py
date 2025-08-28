@@ -5,7 +5,7 @@ from src.decorators.res import ResAPI
 from src.features.require_email.middleware.require_email import (
     require_email_mdw,
 )
-from src.features.require_email.services.combo import gen_token_send_email_svc
+from src.lib.combo.token_mail import gen_token_send_email_svc
 from src.models.token import TokenT
 from src.models.user import UserDcT
 

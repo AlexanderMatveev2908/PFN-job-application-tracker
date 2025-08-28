@@ -19,6 +19,7 @@ jobs:
       NEXT_PUBLIC_BACK_URL_DEV: ${{secrets.NEXT_PUBLIC_BACK_URL_DEV}}
       NEXT_PUBLIC_FRONT_URL: ${{secrets.NEXT_PUBLIC_FRONT_URL}}
       NEXT_PUBLIC_FRONT_URL_DEV: ${{secrets.NEXT_PUBLIC_FRONT_URL_DEV}}
+      NEXT_PUBLIC_SMPT_FROM: ${{secrets.NEXT_PUBLIC_SMPT_FROM}}
       PY_ENV: "test"
       PORT: ${{secrets.PORT}}
       FRONT_URL: ${{secrets.FRONT_URL}}
@@ -36,7 +37,6 @@ jobs:
       BREVO_SMPT_PORT: ${{secrets.BREVO_SMPT_PORT}}
       BREVO_SMPT_USER: ${{secrets.BREVO_SMPT_USER}}
       BREVO_SMPT_PWD: ${{secrets.BREVO_SMPT_PWD}}
-      SMPT_FROM: ${{secrets.SMPT_FROM}}
       REDIS_URL: ${{secrets.REDIS_URL}}
       SUPABASE_CA: ${{secrets.SUPABASE_CA}}
       JWT_SECRET: ${{secrets.JWT_SECRET}}
@@ -121,6 +121,7 @@ jobs:
               "NEXT_PUBLIC_BACK_URL_DEV",
               "NEXT_PUBLIC_FRONT_URL",
               "NEXT_PUBLIC_FRONT_URL_DEV",
+              "NEXT_PUBLIC_SMPT_FROM",
               "PY_ENV",
               "PORT",
               "FRONT_URL",
@@ -138,7 +139,6 @@ jobs:
               "BREVO_SMPT_PORT",
               "BREVO_SMPT_USER",
               "BREVO_SMPT_PWD",
-              "SMPT_FROM",
               "REDIS_URL",
               "SUPABASE_CA",
               "JWT_SECRET",

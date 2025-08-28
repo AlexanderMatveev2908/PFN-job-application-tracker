@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserT } from "../types";
 import { StoreStateT } from "@/core/store";
+import { getStorage } from "@/core/lib/storage";
 
 export interface UserStateT {
   canManageAccount: boolean;
+  // ? pending-action is specific for moments like logging in or logging out / being pushed out , where i need a reference to avoid being interrupted by existing custom route blocker that protect pages but that are generic while exists specific cases must be handled manually
+  pendingAction: boolean;
   access_token: string;
   cbc_hmac_token: string;
   user: UserT | null;
@@ -11,7 +14,8 @@ export interface UserStateT {
 
 const initState: UserStateT = {
   canManageAccount: false,
-  access_token: "",
+  pendingAction: false,
+  access_token: getStorage("access_token") ?? "",
   cbc_hmac_token: "",
   user: null,
 };
