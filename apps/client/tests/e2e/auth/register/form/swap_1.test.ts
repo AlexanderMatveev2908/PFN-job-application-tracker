@@ -52,9 +52,7 @@ test("swap 1", async ({ page }) => {
 
   await resGen.click();
 
-  await page.waitForTimeout(500);
-
-  await getByTxt(page, "copied to clipboard");
+  await expect(page.getByText("copied to clipboard")).toBeAttached();
 
   const content = await (
     await getByID(resGen, "cpy_paste__result")
