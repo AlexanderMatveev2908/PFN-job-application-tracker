@@ -20,6 +20,7 @@ import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { genLorem } from "@/core/lib/etc";
+import { saveStorage } from "@/core/lib/storage";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -52,11 +53,12 @@ const Register: FC = ({}) => {
 
   const handleSave = handleSubmit(
     async (data) => {
-      // const res = await wrapMutation({
-      //   cbAPI: () => mutate(data),
-      // });
-      // __cg("res api", res);
+      const res = await wrapMutation({
+        cbAPI: () => mutate(data),
+      });
+      __cg("res api", res);
 
+      saveStorage(res?.access_token, { key: "ACCESS_TOKEN" });
       setNotice({ msg: genLorem(5), type: "OK", keyCb: "LOGIN" });
       nav.replace("/notice");
     },

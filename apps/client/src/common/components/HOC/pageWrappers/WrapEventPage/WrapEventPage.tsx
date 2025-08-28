@@ -17,7 +17,7 @@ const WrapEventPage: FC<PropsType> = ({ act, msg, children }) => {
   const $clr = $argClr[act];
 
   return (
-    <div className="w-full min-h-screen flex flex-col -mt-[5%] items-center justify-center gap-10 sm:gap-16">
+    <div className="w-full flex flex-col items-center justify-center gap-10 sm:gap-16">
       <BounceIconSSR
         {...{
           act,

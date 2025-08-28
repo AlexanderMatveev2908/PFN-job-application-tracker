@@ -3,6 +3,7 @@ import {
   TypedLazyQueryTrigger,
   TypedUseLazyQueryStateResult,
 } from "@reduxjs/toolkit/query/react";
+import { AxiosRequestConfig } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -17,6 +18,12 @@ export type ResApiT<T> = {
   data: {
     msg?: string;
     status?: number;
+    conf: {
+      url: string;
+      method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+      params: AxiosRequestConfig["params"];
+      responseType: AxiosRequestConfig["responseType"];
+    };
   } & T;
 };
 

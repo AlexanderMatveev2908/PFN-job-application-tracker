@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { __cg } from "@/core/lib/log";
+import { serialize } from "@/core/lib/dataStructure";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ArgType = {
@@ -19,6 +20,13 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
   params,
   responseType,
 }) => {
+  const conf = {
+    url: instanceAxs.defaults.baseURL + url,
+    params,
+    responseType,
+    data: serialize(data),
+  };
+
   try {
     const { data: resData, status } = await instanceAxs({
       url,
@@ -31,12 +39,14 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     return responseType === "blob" && resData instanceof Blob
       ? {
           data: {
+            conf,
             blob: resData,
             status,
           },
         }
       : {
           data: {
+            conf,
             ...resData,
             status,
           },
@@ -56,14 +66,8 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
 
     return {
       error: {
-        config: {
-          url: instanceAxs.defaults.baseURL + url,
-          params,
-          responseType,
-          data: !(data instanceof FormData) ? data : null,
-        },
-
         data: {
+          conf,
           ...errData,
           msg:
             errData?.msg ??
