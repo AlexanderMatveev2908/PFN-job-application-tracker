@@ -3,7 +3,7 @@ import { getByTxt } from "./get";
 
 export const clickByID = async (loc: Page | Locator, id: string) => {
   const el = loc.getByTestId(id);
-  await el.waitFor({ state: "visible" });
+  await el.waitFor({ state: "visible", timeout: 5000 });
 
   await el.click();
 };
