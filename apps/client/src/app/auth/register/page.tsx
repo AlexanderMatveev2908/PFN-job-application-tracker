@@ -77,6 +77,7 @@ const Register: FC = ({}) => {
         msg: "We've sent you an email to confirm the account. If you don't see it, check your spam folder, it might be partying there 🎉",
         type: "OK",
         keyCb: "LOGIN",
+        child: "OPEN_MAIL",
       });
 
       nav.replace("/notice");

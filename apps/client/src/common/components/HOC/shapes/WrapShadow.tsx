@@ -76,7 +76,13 @@ const WrapShadow: FC<PropsType> = ({
   );
 
   return wrapper === "next_link" ? (
-    <Link href={href!} {...objProps}>
+    <Link
+      href={href!}
+      {...objProps}
+      {...(href?.startsWith("https://")
+        ? { rel: "noopener noreferrer", target: "_blank" }
+        : {})}
+    >
       {content}
     </Link>
   ) : (
