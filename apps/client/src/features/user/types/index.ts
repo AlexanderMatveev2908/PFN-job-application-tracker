@@ -1,5 +1,6 @@
-export interface UserT {
-  id: string;
+import { SqlTableRoot } from "@/common/types/db";
+
+export interface UserT extends SqlTableRoot {
   first_name: string;
   last_name: string;
   email: string;

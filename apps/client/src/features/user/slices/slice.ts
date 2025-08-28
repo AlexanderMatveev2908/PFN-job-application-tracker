@@ -4,13 +4,15 @@ import { StoreStateT } from "@/core/store";
 
 export interface UserStateT {
   isLogged: boolean;
-  cbc_hmac_token: string;
+  canManageAccount: boolean;
   access_token: string;
+  cbc_hmac_token: string;
   user: UserT | null;
 }
 
 const initState: UserStateT = {
   isLogged: false,
+  canManageAccount: false,
   access_token: "",
   cbc_hmac_token: "",
   user: null,
