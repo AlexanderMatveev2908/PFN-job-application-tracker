@@ -4,6 +4,7 @@ import { apiSlice } from "./api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { noticeSlice } from "@/features/notice/slices/slice";
+import { userSlice } from "@/features/user/slices/slice";
 
 const rootReducer = combineReducers({
   test: testSlice.reducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   toast: toastSlice.reducer,
   side: sideSlice.reducer,
   notice: noticeSlice.reducer,
+  user: userSlice.reducer,
 });
 
 export const genStoreSSR = (
