@@ -51,7 +51,7 @@ async def bad_cases_t(
             expected_code=200,
             method="GET",
         )
-        assert "email verified" in res_verify["data"]["msg"].lower()
+        assrt_msg(res_verify, "email verified")
         payload = {"email": res_tokens["payload"]["email"]}
 
     res = await wrap_httpx(
