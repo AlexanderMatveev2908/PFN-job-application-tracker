@@ -188,6 +188,7 @@ jobs:
             --config fly.toml \
             --build-arg NEXT_PUBLIC_ENV=${{ secrets.NEXT_PUBLIC_ENV }} \
             --build-arg NEXT_PUBLIC_FRONT_URL=${{ secrets.NEXT_PUBLIC_FRONT_URL }} \
-            --build-arg NEXT_PUBLIC_BACK_URL=${{ secrets.NEXT_PUBLIC_BACK_URL }}
+            --build-arg NEXT_PUBLIC_BACK_URL=${{ secrets.NEXT_PUBLIC_BACK_URL }} \
+            --build-arg NEXT_PUBLIC_SMPT_FROM=${{ secrets.NEXT_PUBLIC_SMPT_FROM }}
         env:
           FLY_API_TOKEN: ${{ secrets.PFN_JOB_APPLICATION_TRACKER__CLIENT }}
