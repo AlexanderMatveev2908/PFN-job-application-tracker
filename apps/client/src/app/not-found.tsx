@@ -1,8 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { FaCircleQuestion } from "react-icons/fa6";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage";
+import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import LinkShadow from "@/common/components/links/LinkShadow";
 
 const NotFound: FC = () => {
@@ -11,7 +10,6 @@ const NotFound: FC = () => {
       {...{
         act: "INFO",
         msg: "The treasure chest is empty. Someone got here before you... 💰",
-        Svg: FaCircleQuestion,
       }}
     >
       <div className="w-[250px]">
