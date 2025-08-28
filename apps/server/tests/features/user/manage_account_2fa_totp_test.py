@@ -1,6 +1,5 @@
 from httpx import AsyncClient
 import pytest
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, gen_totp, get_aad_cbc_hmac
 from tests.conf.lib.etc import get_tokens_lib
@@ -21,12 +20,12 @@ async def ok_t(api: AsyncClient) -> None:
     )
 
     get_aad_cbc_hmac(
-        grab(res_pwd, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC_2FA
+        res_pwd["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC_2FA
     )
 
     res_err = await wrap_httpx(
         api,
-        url=f"/user/delete-account?cbc_hmac_token={grab(res_pwd, 'cbc_hmac_token')}",  # noqa: E501
+        url=f"/user/delete-account?cbc_hmac_token={res_pwd['data']['cbc_hmac_token']}",  # noqa: E501
         access_token=res_logged["access_token"],
         expected_code=401,
         method="DELETE",
@@ -40,18 +39,18 @@ async def ok_t(api: AsyncClient) -> None:
         access_token=res_logged["access_token"],
         data={
             "totp_code": gen_totp(res_logged["totp_secret"]),
-            "cbc_hmac_token": grab(res_pwd, "cbc_hmac_token"),
+            "cbc_hmac_token": res_pwd["data"]["cbc_hmac_token"],
         },
         expected_code=200,
     )
 
     get_aad_cbc_hmac(
-        token=grab(res_totp, "cbc_hmac_token"), token_t=TokenT.MANAGE_ACC
+        token=res_totp["data"]["cbc_hmac_token"], token_t=TokenT.MANAGE_ACC
     )
 
     res_delete = await wrap_httpx(
         api,
-        url=f"/user/delete-account?cbc_hmac_token={grab(res_totp, 'cbc_hmac_token')}",  # noqa: E501
+        url=f"/user/delete-account?cbc_hmac_token={res_totp['data']['cbc_hmac_token']}",  # noqa: E501
         access_token=res_logged["access_token"],
         method="DELETE",
         expected_code=200,

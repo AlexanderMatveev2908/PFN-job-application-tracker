@@ -1,8 +1,6 @@
 import faker
 from httpx import AsyncClient
 import pytest
-
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import (
     assrt_msg,
@@ -48,7 +46,7 @@ async def ok_t(api: AsyncClient) -> None:
         method="GET",
     )
 
-    token_verify = grab(res_verify_0, "cbc_hmac_token")
+    token_verify = res_verify_0["data"]["cbc_hmac_token"]
     get_aad_cbc_hmac(
         token=token_verify,
         token_t=TokenT.CHANGE_EMAIL_2FA,
@@ -62,10 +60,7 @@ async def ok_t(api: AsyncClient) -> None:
         data={
             "cbc_hmac_token": token_verify,
             "totp_code": gen_totp(
-                totp_secret=grab(
-                    res_logged,
-                    "totp_secret",
-                ),
+                totp_secret=res_logged["totp_secret"],
             ),
         },
     )
@@ -118,7 +113,7 @@ async def bad_cases_t(
             )
         )["cbc_hmac_token"]
         if case == "cbc_hmac_expired"
-        else grab(res_verify, "cbc_hmac_token")
+        else res_verify["data"]["cbc_hmac_token"]
     )
 
     get_aad_cbc_hmac(token_2fa, TokenT.CHANGE_EMAIL_2FA)

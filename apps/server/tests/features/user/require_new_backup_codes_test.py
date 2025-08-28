@@ -1,7 +1,5 @@
 from httpx import AsyncClient
 import pytest
-
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, gen_totp
 from tests.conf.lib.get_us import get_us_2FA_lib
@@ -21,44 +19,7 @@ async def ok_t(api: AsyncClient) -> None:
         data={"cbc_hmac_token": res_logged["cbc_hmac_token"]},
     )
 
-    assert "user already has backup codes" in grab(res_err, "msg")
-
-    # for i in range(8):
-    #     res_login_0 = await wrap_httpx(
-    #         api,
-    #         url="/auth/login",
-    #         expected_code=200,
-    #         data=extract_login_payload(res_logged["payload"]),
-    #     )
-
-    #     token_login = cast(str, grab(res_login_0, "cbc_hmac_token"))
-    #     get_aad_cbc_hmac(
-    #         token=token_login,
-    #         token_t=TokenT.LOGIN_2FA,
-    #     )
-
-    #     res_login1 = await wrap_httpx(
-    #         api,
-    #         url="/auth/login-2FA",
-    #         expected_code=200,
-    #         data={
-    #             "cbc_hmac_token": token_login,
-    #             "backup_code": cast(
-    #                 list[str], grab(res_logged, "backup_codes")
-    #             )[i],
-    #         },
-    #     )
-
-    #     access_token: str = cast(str, grab(res_login1, "access_token"))
-    #     assert REG_JWT.fullmatch(access_token)
-    #     assert grab(res_login1, "backup_codes_left") == (
-    #         len(cast(list, grab(res_logged, "backup_codes"))) - (i + 1)
-    #     )
-
-    # res_tokens = await get_tokens_lib(
-    #     api,
-    #     existing_payload=res_logged["payload"],
-    # )
+    assrt_msg(res_err, "user already has backup codes")
 
     res_no_codes = await get_us_2FA_lib(api, empty_codes=True)
 
@@ -67,7 +28,7 @@ async def ok_t(api: AsyncClient) -> None:
         url="/user/manage-account",
         access_token=res_no_codes["access_token"],
         expected_code=200,
-        data={"password": grab(res_no_codes, "password", parent="payload")},
+        data={"password": res_no_codes["payload"]["password"]},
     )
 
     res_manage_1 = await wrap_httpx(
@@ -76,7 +37,7 @@ async def ok_t(api: AsyncClient) -> None:
         access_token=res_no_codes["access_token"],
         expected_code=200,
         data={
-            "cbc_hmac_token": grab(res_manage_0, "cbc_hmac_token"),
+            "cbc_hmac_token": res_manage_0["data"]["cbc_hmac_token"],
             "totp_code": gen_totp(res_no_codes["totp_secret"]),
         },
     )
@@ -86,10 +47,10 @@ async def ok_t(api: AsyncClient) -> None:
         url="/user/new-backup-codes",
         access_token=res_no_codes["access_token"],
         expected_code=200,
-        data={"cbc_hmac_token": grab(res_manage_1, "cbc_hmac_token")},
+        data={"cbc_hmac_token": res_manage_1["data"]["cbc_hmac_token"]},
     )
 
-    codes = grab(res_new_codes, "backup_codes")
+    codes = res_new_codes["data"]["backup_codes"]
     assert isinstance(codes, list)
     assert len(codes) == 8
 

@@ -1,5 +1,4 @@
 import pytest
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, get_aad_cbc_hmac
 from tests.conf.lib.etc import get_tokens_lib
@@ -20,7 +19,7 @@ async def ok_t(api) -> None:
         expected_code=200,
     )
 
-    assert grab(res_conf, "is_verified") is True
+    assert res_conf["data"]["updated_user"]["is_verified"] is True
 
 
 @pytest.mark.asyncio
@@ -46,7 +45,7 @@ async def bad_cases_t(
             url=f'{URL}{res_register["cbc_hmac_token"]}',
             expected_code=200,
         )
-        assert grab(res_conf, "is_verified") is True
+        assert res_conf["data"]["updated_user"]["is_verified"] is True
 
         res_tokens = await get_tokens_lib(
             api, existing_payload=res_register["payload"]
@@ -55,7 +54,7 @@ async def bad_cases_t(
         parsed = get_aad_cbc_hmac(
             token=res_tokens["cbc_hmac_token"], token_t=TokenT.CONF_EMAIL
         )
-        assert parsed["user_id"] == grab(res_conf, "id", parent="updated_user")
+        assert parsed["user_id"] == res_conf["data"]["updated_user"]["id"]
 
         url = f'{URL}{res_tokens["cbc_hmac_token"]}'
 

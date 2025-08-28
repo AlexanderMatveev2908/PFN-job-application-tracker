@@ -1,7 +1,6 @@
 import os
 import pytest
 from src.constants.reg import REG_CBC_HMAC
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg, extract_login_payload
 from tests.conf.lib.etc import get_tokens_lib
@@ -25,7 +24,7 @@ async def ok_t(api) -> None:
         data={"password": res_register["payload"]["password"]},
         expected_code=200,
     )
-    assert REG_CBC_HMAC.fullmatch(grab(res_manage, "cbc_hmac_token"))
+    assert REG_CBC_HMAC.fullmatch(res_manage["data"]["cbc_hmac_token"])
 
     new_pwd = res_register["payload"]["password"] + os.urandom(5).hex()
 
@@ -35,7 +34,7 @@ async def ok_t(api) -> None:
         expected_code=200,
         data={
             "password": new_pwd,
-            "cbc_hmac_token": grab(res_manage, "cbc_hmac_token"),
+            "cbc_hmac_token": res_manage["data"]["cbc_hmac_token"],
         },
         access_token=res_register["access_token"],
         method="PATCH",
@@ -101,7 +100,7 @@ async def bad_cases_t(
             "cbc_hmac_token": res_expired["cbc_hmac_token"],
             "password": res_expired["payload"]["password"],
         }
-        access_token = grab(login_res, "access_token")
+        access_token = login_res["data"]["access_token"]
 
     res = await wrap_httpx(
         api,

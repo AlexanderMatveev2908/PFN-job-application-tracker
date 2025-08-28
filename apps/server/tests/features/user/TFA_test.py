@@ -4,7 +4,6 @@ import pytest
 
 from src.__dev_only.payloads import get_payload_register
 from src.constants.reg import REG_SECRET_TOTP
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import (
@@ -34,7 +33,7 @@ async def ok_t(api: AsyncClient) -> None:
 
     assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
 
-    assert len(grab(res_2FA, "backup_codes")) == 8
+    assert len(res_2FA["data"]["backup_codes"]) == 8
 
 
 @pytest.mark.asyncio

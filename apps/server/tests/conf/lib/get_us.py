@@ -4,7 +4,6 @@ from httpx import AsyncClient
 
 from src.__dev_only.payloads import RegisterPayloadT
 from src.constants.reg import REG_CBC_HMAC, REG_SECRET_TOTP
-from src.lib.etc import grab
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.etc import TokenArgT, get_tokens_lib
@@ -48,12 +47,12 @@ async def make_setup_2FA(
 
     assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
 
-    assert len(grab(res_2FA, "backup_codes")) == 8
+    assert len(res_2FA["data"]["backup_codes"]) == 8
 
     return {
         **res_us,
         "totp_secret": res_2FA["data"]["totp_secret"],
-        "backup_codes": grab(res_2FA, "backup_codes"),
+        "backup_codes": res_2FA["data"]["backup_codes"],
     }
 
 
@@ -76,7 +75,7 @@ async def get_us_2FA_lib(
     )
 
     assrt_sessions_tokens(res)
-    assert REG_CBC_HMAC.fullmatch(grab(res, "cbc_hmac_token"))
+    assert REG_CBC_HMAC.fullmatch(res["data"]["cbc_hmac_token"])
     assert len(res["data"]["backup_codes"]) == (0 if empty_codes else 8)
 
     assert REG_SECRET_TOTP.fullmatch(res["data"]["totp_secret"])

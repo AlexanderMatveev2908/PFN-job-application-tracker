@@ -2,7 +2,6 @@ from httpx import AsyncClient
 import pytest
 
 from src.constants.reg import REG_CBC_HMAC
-from src.lib.etc import grab
 from tests.conf.lib.data_structure import (
     assrt_sessions_tokens,
     extract_login_payload,
@@ -24,20 +23,20 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    assert REG_CBC_HMAC.fullmatch(grab(res_login, "cbc_hmac_token"))
+    assert REG_CBC_HMAC.fullmatch(res_login["data"]["cbc_hmac_token"])
 
     res_login_2fa = await wrap_httpx(
         api,
         url="/auth/login-2FA",
         expected_code=200,
         data={
-            "cbc_hmac_token": grab(res_login, "cbc_hmac_token"),
+            "cbc_hmac_token": res_login["data"]["cbc_hmac_token"],
             "backup_code": res_us_2fa["backup_codes"][0],
         },
     )
 
     assrt_sessions_tokens(res_login_2fa)
-    assert grab(res_login_2fa, "backup_codes_left") == 7
+    assert res_login_2fa["data"]["backup_codes_left"] == 7
 
 
 @pytest.mark.asyncio
@@ -69,7 +68,7 @@ async def bad_cases_t(
                 url="/auth/login-2FA",
                 expected_code=200,
                 data={
-                    "cbc_hmac_token": grab(res_login, "cbc_hmac_token"),
+                    "cbc_hmac_token": res_login["data"]["cbc_hmac_token"],
                     "backup_code": (code),
                 },
             )
