@@ -19,8 +19,6 @@ import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
-import { genLorem } from "@/core/lib/etc";
-import { saveStorage } from "@/core/lib/storage";
 import { useUs } from "@/features/user/hooks/useUs";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
