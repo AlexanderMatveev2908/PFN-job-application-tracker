@@ -20,6 +20,7 @@ import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
+import { envApp } from "@/core/constants/env";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -28,18 +29,23 @@ const Register: FC = ({}) => {
     mode: "onChange",
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      terms: false,
-      // first_name: "Alex",
-      // last_name: "Matveev",
-      // email: "matveevalexander470@gmail.com",
-      // password: "0$EM09btNPiC}!3d+t2{",
-      // confirm_password: "0$EM09btNPiC}!3d+t2{",
-      // terms: true,
+      ...(!envApp.isDev
+        ? {
+            first_name: "",
+            last_name: "",
+            email: "",
+            password: "",
+            confirm_password: "",
+            terms: false,
+          }
+        : {
+            first_name: "Alex",
+            last_name: "Matveev",
+            email: "matveevalexander470@gmail.com",
+            password: "0$EM09btNPiC}!3d+t2{",
+            confirm_password: "0$EM09btNPiC}!3d+t2{",
+            terms: true,
+          }),
     },
   });
   const { setFocus, handleSubmit } = formCtx;
