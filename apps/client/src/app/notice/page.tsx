@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import { getStorage } from "@/core/lib/storage";
 import {
@@ -21,7 +22,7 @@ const Page: FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="w-full">
+    <WrapCSR>
       <WrapEventPage
         {...{
           act: noticeState.type,
@@ -30,7 +31,7 @@ const Page: FC = () => {
       >
         <div className=""></div>
       </WrapEventPage>
-    </div>
+    </WrapCSR>
   );
 };
 
