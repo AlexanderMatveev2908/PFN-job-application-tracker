@@ -34,22 +34,23 @@ async def ok_t(api) -> None:
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    url = ""
+
+    res_tokens = await get_tokens_lib(
+        api,
+        cbc_hmac_t=TokenT[
+            "CONF_EMAIL" if case == "wrong_type" else "RECOVER_PWD"
+        ],
+    )
+    cbc = res_tokens["cbc_hmac_token"]
 
     if case == "not_provided":
-        url = f"{URL}"
-
+        cbc = ""
     elif case == "invalid_format":
-        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
-        url = f"{URL}{'hack' + res_tokens['cbc_hmac_token'][4:]}"
-
-    elif case == "wrong_type":
-        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.CHANGE_PWD)
-        url = f"{URL}{res_tokens['cbc_hmac_token']}"
+        cbc += "12345"
 
     res_check = await wrap_httpx(
         api,
-        url=url,
+        url=f"{URL}{cbc}",
         expected_code=expected_code,
         method="GET",
     )

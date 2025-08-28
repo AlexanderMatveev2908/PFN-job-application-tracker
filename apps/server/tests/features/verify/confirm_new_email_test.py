@@ -52,44 +52,27 @@ async def ok_t(api) -> None:
     [
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
         ("invalid", 401, "cbc_hmac_invalid"),
-        ("expired", 401, "cbc_hmac_expired"),
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
     ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    url = ""
 
-    if case == "wrong_type":
-        res_tk_body = await get_tokens_lib(
-            api,
-            cbc_hmac_t=TokenT.CONF_EMAIL,
-            existing_payload=await _local_wrapper(api),
-        )
-        url = f'{URL}{res_tk_body["cbc_hmac_token"]}'
-
-    elif case == "invalid":
-        res_tk_body = await get_tokens_lib(
-            api,
-            cbc_hmac_t=TokenT.CHANGE_EMAIL,
-            existing_payload=await _local_wrapper(api),
-        )
-        url = (
-            f'{URL}{res_tk_body["cbc_hmac_token"][:-10]}{os.urandom(5).hex()}'
-        )
-
-    elif case == "expired":
-        res_tk_body = await get_tokens_lib(
-            api,
-            cbc_hmac_t=TokenT.CHANGE_EMAIL,
-            existing_payload=await _local_wrapper(api),
-            reverse=True,
-        )
-        url = f'{URL}{res_tk_body["cbc_hmac_token"]}'
+    res_tk = await get_tokens_lib(
+        api,
+        cbc_hmac_t=(
+            TokenT.MANAGE_ACC if case == "wrong_type" else TokenT.CHANGE_EMAIL
+        ),
+        existing_payload=await _local_wrapper(api),
+        expired=case.split("_expired"),
+    )
+    cbc = res_tk["cbc_hmac_token"]
+    cbc = cbc[:-4] + "aaff" if case == "invalid" else cbc
 
     res_verify = await wrap_httpx(
         api,
-        url=url,
+        url=f"{URL}{cbc}",
         method="GET",
         expected_code=expected_code,
     )

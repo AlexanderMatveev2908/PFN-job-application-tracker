@@ -35,39 +35,30 @@ async def ok_t(api) -> None:
     "case, expected_code, expected_msg",
     [
         ("same_pwd", 400, "new password must be different from old one"),
-        ("expired", 401, "cbc_hmac_expired"),
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
         ("wrong_type", 401, "cbc_hmac_wrong_type"),
     ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    new_pwd = gen_pwd(n=5)
 
-    payload: dict | None = None
+    res_tokens = await get_tokens_lib(
+        api,
+        cbc_hmac_t=(
+            TokenT.MANAGE_ACC if case == "wrong_type" else TokenT.RECOVER_PWD
+        ),
+        expired=case.split("_expired"),
+    )
 
-    if case == "same_pwd":
-        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
-        payload = {
-            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "password": res_tokens["payload"]["password"],
-        }
-
-    elif case == "expired":
-        res_tokens = await get_tokens_lib(
-            api, cbc_hmac_t=TokenT.RECOVER_PWD, reverse=True
-        )
-        payload = {
-            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "password": new_pwd,
-        }
-
-    elif case == "wrong_type":
-        res_tokens = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
-        payload = {
-            "cbc_hmac_token": res_tokens["cbc_hmac_token"],
-            "password": new_pwd,
-        }
+    payload = {
+        "cbc_hmac_token": res_tokens["cbc_hmac_token"],
+        "password": (
+            res_tokens["payload"]["password"]
+            if case == "same_pwd"
+            else gen_pwd(n=5)
+        ),
+    }
 
     res_change = await wrap_httpx(
         api,
