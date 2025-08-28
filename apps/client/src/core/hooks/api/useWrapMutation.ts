@@ -7,9 +7,10 @@ import {
 } from "@reduxjs/toolkit/query";
 import { useErrAPI } from "./useErrAPI";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
-import { ErrApiT } from "@/common/types/api";
+import { ErrApiT, TagAPI } from "@/common/types/api";
 import { isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
+import { BaseQueryT } from "@/core/store/conf/baseQuery";
 
 export const useWrapMutation = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export const useWrapMutation = () => {
   const { handleErr } = useErrAPI();
 
   const wrapMutation = useCallback(
-    async <T extends MutationDefinition<any, any, any, any>>({
+    async <T extends MutationDefinition<any, BaseQueryT, TagAPI, any>>({
       cbAPI,
       showToast = true,
       hideErr,

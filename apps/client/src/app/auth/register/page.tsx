@@ -58,6 +58,8 @@ const Register: FC = ({}) => {
       });
       __cg("res api", res);
 
+      if (!res) return;
+
       saveStorage(res?.access_token, { key: "ACCESS_TOKEN" });
       setNotice({ msg: genLorem(5), type: "OK", keyCb: "LOGIN" });
       nav.replace("/notice");

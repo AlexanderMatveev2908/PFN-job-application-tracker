@@ -14,19 +14,6 @@ export enum TagAPI {
 
 export type AppEventT = "OK" | "INFO" | "WARN" | "ERR" | "NONE";
 
-export type ResApiT<T> = {
-  data: {
-    msg?: string;
-    status?: number;
-    conf: {
-      url: string;
-      method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-      params: AxiosRequestConfig["params"];
-      responseType: AxiosRequestConfig["responseType"];
-    };
-  } & T;
-};
-
 export type ReqApiT<T extends Record<string, any> | void> = T extends void
   ? {
       _?: number;
@@ -35,13 +22,24 @@ export type ReqApiT<T extends Record<string, any> | void> = T extends void
       _?: number;
     } & T;
 
-export type UnwrappedResApiT<T extends void | Record<string, any>> =
-  T extends void
-    ? { msg?: string; status?: number }
-    : { msg?: string; status?: number } & T;
+type ConfApiT = {
+  url: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  params: AxiosRequestConfig["params"];
+  responseType: AxiosRequestConfig["responseType"];
+};
+type DataApiT = {
+  msg?: string;
+  status?: number;
+  conf: ConfApiT;
+};
+export type ResApiT<T> = T extends void
+  ? { data: DataApiT }
+  : { data: DataApiT & T };
 
+export type UnwrappedResApiT<T> = ResApiT<T>["data"];
 export type ErrApiT<T> = {
-  data: { msg?: string; status?: number };
+  data: { msg?: string; status?: number; conf: ConfApiT };
 } & T;
 
 export type TriggerTypeRTK<T, K> = TypedLazyQueryTrigger<T, K, BaseQueryT>;
