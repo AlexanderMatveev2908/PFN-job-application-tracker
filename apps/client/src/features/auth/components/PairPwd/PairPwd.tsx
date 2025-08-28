@@ -49,7 +49,9 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           swapMode,
           isFocus,
           pwd,
-          isDirty: getFieldState("password", formState).isDirty,
+          isDirty:
+            formState.touchedFields.password ||
+            getFieldState("password", formState).isDirty,
         }}
       />
 
