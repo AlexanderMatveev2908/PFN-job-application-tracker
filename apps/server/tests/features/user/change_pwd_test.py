@@ -1,8 +1,9 @@
 import os
 import pytest
 from src.constants.reg import REG_CBC_HMAC
+from src.lib.pwd_gen import gen_pwd
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import assrt_msg, extract_login_payload
+from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -49,65 +50,34 @@ async def ok_t(api) -> None:
     [
         ("same_pwd", 400, "new password must be different from old one"),
         ("invalid_cbc", 401, "cbc_hmac_invalid"),
-        ("expired_access", 401, "jwt_expired"),
-        ("expired_cbc", 401, "cbc_hmac_expired"),
+        ("jwt_expired", 401, "jwt_expired"),
+        ("cbc_hmac_expired", 401, "cbc_hmac_expired"),
     ],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    payload = {}
-    access_token = ""
-    method = "PATCH"
 
-    if case == "same_pwd":
-        res_tk = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
-        payload = {
-            "cbc_hmac_token": res_tk["cbc_hmac_token"],
-            "password": res_tk["payload"]["password"],
-        }
-        access_token = res_tk["access_token"]
+    res_tk = await get_tokens_lib(
+        api, cbc_hmac_t=TokenT.MANAGE_ACC, expired=case.split("_expired")
+    )
 
-    elif case == "invalid_cbc":
-        res_tk = await get_tokens_lib(api, cbc_hmac_t=TokenT.MANAGE_ACC)
-        payload = {
-            "cbc_hmac_token": "abcd" + res_tk["cbc_hmac_token"][4:],
-            "password": res_tk["payload"]["password"],
-        }
-        access_token = res_tk["access_token"]
-
-    elif case == "expired_access":
-        res_expired = await get_tokens_lib(
-            api, cbc_hmac_t=TokenT.MANAGE_ACC, reverse=True
-        )
-        payload = {
-            "cbc_hmac_token": res_expired["cbc_hmac_token"],
-            "password": res_expired["payload"]["password"],
-        }
-        access_token = res_expired["access_token"]
-
-    elif case == "expired_cbc":
-        res_expired = await get_tokens_lib(
-            api, cbc_hmac_t=TokenT.MANAGE_ACC, reverse=True
-        )
-        login_res = await wrap_httpx(
-            api,
-            url="/auth/login",
-            data=extract_login_payload(res_expired["payload"]),
-            expected_code=200,
-        )
-        payload = {
-            "cbc_hmac_token": res_expired["cbc_hmac_token"],
-            "password": res_expired["payload"]["password"],
-        }
-        access_token = login_res["data"]["access_token"]
+    cbc_tk = res_tk["cbc_hmac_token"]
+    payload = {
+        "cbc_hmac_token": (
+            cbc_tk[:-4] + "aaff" if case == "invalid_cbc" else cbc_tk
+        ),
+        "password": (
+            res_tk["payload"]["password"] if case == "same_pwd" else gen_pwd(5)
+        ),
+    }
 
     res = await wrap_httpx(
         api,
         url=URL_CHG,
         data=payload,
-        access_token=access_token,
+        access_token=res_tk["access_token"],
         expected_code=expected_code,
-        method=method,
+        method="PATCH",
     )
     assrt_msg(res, expected_msg)
