@@ -23,7 +23,8 @@ const CallbacksWrapper: FC<ChildrenT> = ({ children }) => {
     const cb = () => {
       const access_token = (getStorage("access_token") ?? "") as string;
       const notice = getStorage("notice");
-      if (access_token) dispatch(userSlice.actions.login({ access_token }));
+      if (access_token)
+        dispatch(userSlice.actions.setAccessToken({ access_token }));
       if (notice) dispatch(noticeSlice.actions.setNotice(notice));
     };
 

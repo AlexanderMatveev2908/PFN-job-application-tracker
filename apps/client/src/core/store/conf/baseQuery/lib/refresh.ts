@@ -8,6 +8,20 @@ import { extractHeaders, extractMsgErr } from "./etc";
 import { __cg } from "@/core/lib/log";
 import { AxiosError } from "axios";
 
+const getFreshAccessToken = async (): Promise<string> => {
+  const { data } = await instanceAxs.get("/auth/refresh");
+  const access_token = data?.access_token;
+
+  if (!isStr(access_token)) throw new Error("refresh_failed");
+
+  saveStorage(access_token, { key: "access_token" });
+  instanceAxs.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${access_token}`;
+
+  return access_token;
+};
+
 export const refreshToken = async ({
   url,
   method,
@@ -16,17 +30,9 @@ export const refreshToken = async ({
   responseType,
   conf,
 }: ArgType & { conf: Partial<ConfApiT> }) => {
-  const { data: dataRefresh } = await instanceAxs.get("/auth/refresh");
-
-  const access_token = dataRefresh?.access_token;
+  const access_token = await getFreshAccessToken();
 
   if (!isStr(access_token)) throw new Error("refresh_failed");
-
-  saveStorage(access_token, { key: "access_token" });
-
-  instanceAxs.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${access_token}`;
 
   const {
     data: dataRetry,

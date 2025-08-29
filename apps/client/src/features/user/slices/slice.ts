@@ -28,6 +28,12 @@ export const userSlice = createSlice({
       state.pendingAction = true;
       state.access_token = action.payload.access_token;
     },
+    setAccessToken: (
+      state,
+      action: PayloadAction<{ access_token: string }>
+    ) => {
+      state.access_token = action.payload.access_token;
+    },
     setUser: (state, action: PayloadAction<UserT>) => {
       state.user = action.payload;
     },
