@@ -1,4 +1,5 @@
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -11,9 +12,9 @@ from src.models.user import UserDcT
 
 
 async def require_email_forgot_pwd_ctrl(
-    _: Request,
+    req: Request,
     us_d: UserDcT = Depends(require_email_mdw),
-) -> ResAPI:
+) -> JSONResponse:
     async with db_trx() as trx:
 
         await gen_token_send_email_svc(
@@ -22,13 +23,13 @@ async def require_email_forgot_pwd_ctrl(
             TokenT.RECOVER_PWD,
         )
 
-        return ResAPI.ok_201(msg="📮 email sent")
+        return ResAPI(req).ok_201(msg="📮 email sent")
 
 
 async def confirm_email_ctrl(
-    _: Request,
+    req: Request,
     us_d: UserDcT = Depends(require_email_mdw),
-) -> ResAPI:
+) -> JSONResponse:
 
     if us_d["is_verified"]:
         raise ErrAPI(msg="user already verified", status=409)
@@ -40,4 +41,4 @@ async def confirm_email_ctrl(
             TokenT.CONF_EMAIL,
         )
 
-        return ResAPI.ok_201(msg="📮 email sent", user=us_d)
+        return ResAPI(req).ok_201(msg="📮 email sent", user=us_d)

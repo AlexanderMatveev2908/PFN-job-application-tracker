@@ -1,5 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -18,11 +19,11 @@ from src.models.user import User
 
 
 async def confirm_email_ctrl(
-    _: Request,
+    req: Request,
     cbc_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.CONF_EMAIL)
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
 
@@ -42,28 +43,30 @@ async def confirm_email_ctrl(
             user_id=us.id,
         )
 
-        return ResAPI.ok_200(
-            access_token=session_tokens["access_token"],
+        return ResAPI(
+            req,
             cookies=[
                 gen_refresh_cookie(
                     session_tokens["result_jwe"]["client_token"]
                 )
             ],
+        ).ok_200(
+            access_token=session_tokens["access_token"],
             msg="email verified",
         )
 
 
 async def forgot_pwd_ctrl(
-    _: Request,
+    req: Request,
     combo_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.RECOVER_PWD)
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     us = combo_result["user_d"]
 
     if not us["totp_secret"]:
-        return ResAPI.ok_200(msg="verification successful")
+        return ResAPI(req).ok_200(msg="verification successful")
 
     async with db_trx() as trx:
         cbc_hmac = (
@@ -80,15 +83,15 @@ async def forgot_pwd_ctrl(
             TokenT.RECOVER_PWD,
         )
 
-        return ResAPI.ok_200(cbc_hmac_token=cbc_hmac)
+        return ResAPI(req).ok_200(cbc_hmac_token=cbc_hmac)
 
 
 async def confirm_new_email_ctrl(
-    _: Request,
+    req: Request,
     result_cbc: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.CHANGE_EMAIL)
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         us = cast(
@@ -108,7 +111,7 @@ async def confirm_new_email_ctrl(
                 token_t=TokenT.CHANGE_EMAIL_2FA,
             )
 
-            return ResAPI.ok_200(
+            return ResAPI(req).ok_200(
                 msg="email verified",
                 cbc_hmac_token=cbc_hmac_res["client_token"],
             )
@@ -120,12 +123,14 @@ async def confirm_new_email_ctrl(
             user_id=result_cbc["user_d"]["id"],
         )
 
-        return ResAPI.ok_200(
-            msg="email updated successfully",
-            access_token=result_tokens["access_token"],
+        return ResAPI(
+            req,
             cookies=[
                 gen_refresh_cookie(
                     refresh_token=result_tokens["result_jwe"]["client_token"]
                 )
             ],
+        ).ok_200(
+            msg="email updated successfully",
+            access_token=result_tokens["access_token"],
         )

@@ -1,4 +1,5 @@
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -24,22 +25,24 @@ from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 
 async def register_ctrl(
-    _: Request, user_data: RegisterFormT = Depends(register_mdw)
-) -> ResAPI:
+    req: Request, user_data: RegisterFormT = Depends(register_mdw)
+) -> JSONResponse:
 
     result: RegisterSvcReturnT = await register_user_svc(user_data)
 
-    return ResAPI.ok_201(
-        access_token=result["access_token"],
+    return ResAPI(
+        req,
         cookies=[
             gen_refresh_cookie(result["refresh_token"]),
         ],
+    ).ok_201(
+        access_token=result["access_token"],
     )
 
 
 async def login_ctrl(
-    _: Request, login_data: LoginForm = Depends(login_mdw)
-) -> ResAPI:
+    req: Request, login_data: LoginForm = Depends(login_mdw)
+) -> JSONResponse:
     async with db_trx() as trx:
         us = await login_svc(login_data=login_data, trx=trx)
 
@@ -49,22 +52,24 @@ async def login_ctrl(
                 trx=trx,
                 user_id=us.id,
             )
-            return ResAPI.ok_200(
+            return ResAPI(req).ok_200(
                 cbc_hmac_token=cbc_hmac_result["client_token"],
             )
 
         tokens_session = await gen_tokens_session(user_id=us.id, trx=trx)
-        return ResAPI.ok_200(
-            access_token=tokens_session["access_token"],
+        return ResAPI(
+            req,
             cookies=[
                 gen_refresh_cookie(
                     tokens_session["result_jwe"]["client_token"]
                 )
             ],
+        ).ok_200(
+            access_token=tokens_session["access_token"],
         )
 
 
-async def refresh_token_ctrl(req: Request) -> ResAPI:
+async def refresh_token_ctrl(req: Request) -> JSONResponse:
     refresh = req.cookies.get("refresh_token")
 
     if not refresh:
@@ -77,26 +82,30 @@ async def refresh_token_ctrl(req: Request) -> ResAPI:
             )
             access_token = gen_jwt(user_id=result_jwe["user_d"]["id"])
 
-            return ResAPI.ok_200(access_token=access_token)
+            return ResAPI(req).ok_200(access_token=access_token)
         except Exception as err:
             msg = err.msg if isinstance(err, ErrAPI) else str(err)
 
-            return ResAPI.err_401(msg=msg, clear_cookies=["refresh_token"])
+            return ResAPI(req, clear_cookies=["refresh_token"]).err_401(
+                msg=msg,
+            )
 
 
 async def login_2FA_ctrl(
-    _: Request,
+    req: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=False, model=TFAFormT, token_t=TokenT.LOGIN_2FA
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     res_check = await login_2FA_svc(result_combo)
 
-    return ResAPI.ok_200(
+    return ResAPI(
+        req,
+        cookies=[gen_refresh_cookie(res_check["result_jwe"]["client_token"])],
+    ).ok_200(
         access_token=res_check["access_token"],
         backup_codes_left=res_check["backup_codes_left"],
-        cookies=[gen_refresh_cookie(res_check["result_jwe"]["client_token"])],
     )

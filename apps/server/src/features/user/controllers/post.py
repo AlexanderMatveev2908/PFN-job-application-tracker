@@ -1,4 +1,5 @@
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy import func, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
@@ -21,7 +22,7 @@ from src.models.user import UserDcT
 
 async def get_access_account_ctrl(
     req: Request, us: UserDcT = Depends(get_access_account_mdw)
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
 
@@ -35,7 +36,7 @@ async def get_access_account_ctrl(
             ),
         )
 
-        return ResAPI.ok_200(
+        return ResAPI(req).ok_200(
             msg="verification successful",
             cbc_hmac_token=result_cbc["client_token"],
         )
@@ -49,7 +50,7 @@ async def new_backup_codes_ctrl(
             check_jwt=True,
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     us_id: str = result_combo["cbc_hmac_result"]["decrypted"]["user_id"]
 
@@ -68,7 +69,7 @@ async def new_backup_codes_ctrl(
 
         result_codes = await gen_backup_codes(trx=trx, us_id=us_id)
 
-    return ResAPI.ok_200(backup_codes=result_codes["backup_codes_client"])
+    return ResAPI(req).ok_200(backup_codes=result_codes["backup_codes_client"])
 
 
 async def get_access_manage_account_2FA_ctrl(
@@ -78,7 +79,7 @@ async def get_access_manage_account_2FA_ctrl(
             check_jwt=True, model=TFAFormT, token_t=TokenT.MANAGE_ACC_2FA
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         us, backup_codes_left = dest_d(
@@ -92,7 +93,7 @@ async def get_access_manage_account_2FA_ctrl(
             user_id=us.id,
         )
 
-        return ResAPI.ok_200(
+        return ResAPI(req).ok_200(
             cbc_hmac_token=cbc_result["client_token"],
             backup_codes_left=backup_codes_left,
         )

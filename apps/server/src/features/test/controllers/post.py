@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.decorators.res import ResAPI, ResAPIProt
+from src.decorators.res import ResAPI
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.test.lib.idx import get_query_token_t
 from src.features.test.services.tokens_health import (
@@ -30,7 +30,7 @@ from src.models.token import TokenT
 from src.models.user import User
 
 
-async def post_form_ctrl(req: Request) -> ResAPI:
+async def post_form_ctrl(req: Request) -> JSONResponse:
 
     parsed_f = req.state.parsed_f
 
@@ -42,7 +42,7 @@ async def post_form_ctrl(req: Request) -> ResAPI:
 
     del_vid(parsed_f)
 
-    return ResAPI.ok_201(
+    return ResAPI(req).ok_201(
         uploaded_images=uploaded_images, uploaded_video=uploaded_video
     )
 
@@ -52,29 +52,29 @@ async def post_msg_ctrl(req: Request) -> JSONResponse:
     b = (json.loads(await req.body())).get("msg", None)
 
     if isinstance(b, str) and len(b.strip()):
-        # return ResAPI.ok_200(msg="✅ msg received ☎️")
-        return ResAPIProt(req).ok_200(
+        return ResAPI(req).ok_200(
             msg="ok",
         )
 
-    return ResAPI.err_400()
+    return ResAPI(req).err_400()
 
 
 async def tokens_health_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
-) -> ResAPI:
+) -> JSONResponse:
 
     res = await tokens_health_svc(
         user_data, token_t=get_query_token_t(req), parsed_q=req.state.parsed_q
     )
 
-    return ResAPI.ok_200(
+    return ResAPI(
+        req, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
+    ).ok_200(
         **pick(res, keys_off=["refresh_token"]),
-        cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])],
     )
 
 
-async def get_err_ctrl(req: Request) -> ResAPI:
+async def get_err_ctrl(req: Request) -> JSONResponse:
     data = await parse_bd(req)
 
     act, token = dest_d(data, keys=["act", "token"])
@@ -99,12 +99,12 @@ async def get_err_ctrl(req: Request) -> ResAPI:
             case _:
                 raise ErrAPI(msg="unknown action", status=400)
 
-    return ResAPI.ok_200(payload=payload)
+    return ResAPI(req).ok_200(payload=payload)
 
 
 async def get_us_2FA_ctrl(
     req: Request,
-) -> ResAPI:
+) -> JSONResponse:
 
     body: RegisterPayloadT | None = None
     try:
@@ -173,16 +173,18 @@ async def get_us_2FA_ctrl(
             totp_secret=secret_result["secret"],
         )
 
-        return ResAPI.ok_200(
+        return ResAPI(
+            req,
+            cookies=[
+                gen_refresh_cookie(
+                    tokens_session["result_jwe"]["client_token"]
+                )
+            ],
+        ).ok_200(
             payload=payload,
             user=us,
             totp_secret=secret_result["secret"],
             backup_codes=backup_codes,
             access_token=tokens_session["access_token"],
             cbc_hmac_token=cbc_hmac_res["client_token"],
-            cookies=[
-                gen_refresh_cookie(
-                    tokens_session["result_jwe"]["client_token"]
-                )
-            ],
         )
