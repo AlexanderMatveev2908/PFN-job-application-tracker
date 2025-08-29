@@ -53,7 +53,7 @@ async def post_msg_ctrl(req: Request) -> ResAPI:
     if isinstance(b, str) and len(b.strip()):
         return ResAPI.ok_200(msg="✅ msg received ☎️")
 
-    return ResAPI.ok_200()
+    return ResAPI.err_400()
 
 
 async def tokens_health_ctrl(

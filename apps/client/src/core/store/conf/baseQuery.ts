@@ -28,13 +28,19 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
   };
 
   try {
-    const { data: resData, status } = await instanceAxs({
+    const {
+      data: resData,
+      status,
+      headers,
+    } = await instanceAxs({
       url,
       method,
       data,
       params,
       responseType,
     });
+
+    console.log(headers);
 
     return responseType === "blob" && resData instanceof Blob
       ? {
@@ -53,6 +59,9 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
         };
   } catch (err: any) {
     const { response } = err ?? {};
+
+    console.log(err);
+
     let errData: any = response?.data ?? {};
 
     if (errData instanceof Blob && errData.type === "application/json") {
