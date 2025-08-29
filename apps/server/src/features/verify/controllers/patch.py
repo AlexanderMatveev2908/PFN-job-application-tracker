@@ -1,4 +1,5 @@
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.combo.TFA import check_2FA_lib
@@ -14,7 +15,7 @@ from src.models.token import TokenT
 
 
 async def confirm_new_email_2FA_ctrl(
-    _: Request,
+    req: Request,
     combo_res: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=False,
@@ -22,7 +23,7 @@ async def confirm_new_email_2FA_ctrl(
             token_t=TokenT.CHANGE_EMAIL_2FA,
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         us, backup_codes_left = dest_d(
@@ -34,13 +35,15 @@ async def confirm_new_email_2FA_ctrl(
 
         tokens_session = await gen_tokens_session(trx=trx, user_id=us.id)
 
-        return ResAPI.ok_200(
-            msg="new email verified successfully",
-            access_token=tokens_session["access_token"],
-            backup_codes_left=backup_codes_left,
+        return ResAPI(
+            req,
             cookies=[
                 gen_refresh_cookie(
                     tokens_session["result_jwe"]["client_token"]
                 )
             ],
+        ).ok_200(
+            msg="new email verified successfully",
+            access_token=tokens_session["access_token"],
+            backup_codes_left=backup_codes_left,
         )

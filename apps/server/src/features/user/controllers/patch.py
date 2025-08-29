@@ -1,6 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
@@ -18,13 +18,13 @@ from src.models.user import User
 
 
 async def change_pwd_ctrl(
-    _: Request,
+    req: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             model=PwdFormT, token_t=TokenT.MANAGE_ACC, check_jwt=True
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         us = await get_us_by_id(
@@ -34,37 +34,41 @@ async def change_pwd_ctrl(
         new_pwd = result_combo["body"]["password"]
 
         if await us.check_pwd(plain=new_pwd):
-            return ResAPI.err_400(
+            return ResAPI(req).err_400(
                 msg="new password must be different from old one",
             )
 
         await cast(User, us).set_pwd(plain=new_pwd)
 
-        return ResAPI.ok_200(msg="password updated")
+        return ResAPI(req).ok_200(msg="password updated")
 
 
 async def change_email_ctrl(
-    _: Request,
+    req: Request,
     combo_result: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=True, token_t=TokenT.MANAGE_ACC, model=EmailFormT
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         if (
             combo_result["body"]["email"]
             == combo_result["cbc_hmac_result"]["user_d"]["email"]
         ):
-            return ResAPI.err_400(msg="new email can not be same as old one")
+            return ResAPI(req).err_400(
+                msg="new email can not be same as old one"
+            )
 
         existing = await get_us_by_email(
             must_exists=False, trx=trx, email=combo_result["body"]["email"]
         )
 
         if existing:
-            return ResAPI.err_409(msg="a user with this email already exists")
+            return ResAPI(req).err_409(
+                msg="a user with this email already exists"
+            )
 
         us = cast(
             User,
@@ -81,22 +85,22 @@ async def change_email_ctrl(
             email_to=combo_result["body"]["email"],
         )
 
-        return ResAPI.ok_200(msg="email sent to new address")
+        return ResAPI(req).ok_200(msg="email sent to new address")
 
 
 async def TFA_ctrl(
-    _: Request,
+    req: Request,
     result_combo: ComboCheckJwtCbcBodyReturnT = Depends(
         combo_check_jwt_cbc_hmac_body_mdw(
             check_jwt=True, token_t=TokenT.MANAGE_ACC
         )
     ),
-) -> ResAPI:
+) -> JSONResponse:
 
     async with db_trx() as trx:
         result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
 
-        return ResAPI.ok_200(
+        return ResAPI(req).ok_200(
             totp_secret=result_svc["secret_result"]["secret"],
             backup_codes=result_svc["backup_codes_result"][
                 "backup_codes_client"

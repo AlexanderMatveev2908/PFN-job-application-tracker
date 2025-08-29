@@ -3,6 +3,7 @@ from typing import Callable
 
 # import attr
 from fastapi import Request
+from fastapi.responses import JSONResponse
 from src.decorators.res import ResAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
@@ -31,11 +32,11 @@ class CorsMDW(BaseHTTPMiddleware):
 
     async def dispatch(
         self, request: Request, call_next: Callable
-    ) -> Response | ResAPI:
+    ) -> Response | JSONResponse:
 
         origin = request.headers.get("origin")
 
         if origin and not any(origin.startswith(w) for w in self.whitelist):
-            return ResAPI.err_403(msg=f"{origin} not allowed 🚫")
+            return ResAPI(request).err_403(msg=f"{origin} not allowed 🚫")
 
         return await call_next(request)
