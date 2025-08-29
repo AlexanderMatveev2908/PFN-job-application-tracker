@@ -3,6 +3,7 @@
 
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { REG_CBC_HMAC } from "@/core/constants/regex";
+import { hexToDict } from "@/core/lib/dataStructure";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, type FC } from "react";
@@ -23,6 +24,11 @@ const Page: FC = () => {
       nav.replace("/notice");
     }
   }, [cbcHmacToken, setNotice, nav]);
+
+  const hexStr = cbcHmacToken?.split(".")[0];
+
+  console.log(hexToDict(hexStr!));
+
   return (
     <WrapCSR
       {...{

@@ -22,6 +22,7 @@ import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
 import { envApp } from "@/core/constants/env";
 import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
+import { genMailNoticeMsg } from "@/core/constants/etc";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -77,7 +78,7 @@ const Register: FC = ({}) => {
       loginUser(res.access_token);
 
       setNotice({
-        msg: "We've sent you an email to confirm the account. If you don't see it, check your spam folder, it might be partying there 🎉",
+        msg: genMailNoticeMsg("to confirm the account"),
         type: "OK",
         child: "OPEN_MAIL_APP",
       });
