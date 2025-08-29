@@ -25,12 +25,16 @@ export const userSlice = createSlice({
   initialState: initState,
   reducers: {
     login: (state, action: PayloadAction<{ access_token: string }>) => {
+      state.pendingAction = true;
       state.access_token = action.payload.access_token;
     },
     setUser: (state, action: PayloadAction<UserT>) => {
       state.user = action.payload;
     },
-    logout: () => initState,
+    logout: () => ({ ...initState, pendingAction: true }),
+    endPendingAction: (state) => {
+      state.pendingAction = false;
+    },
   },
 });
 

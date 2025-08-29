@@ -5,7 +5,8 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
 import { testSliceAPI } from "@/features/test/slices/api";
-import { type FC } from "react";
+import { useUs } from "@/features/user/hooks/useUs";
+import { useEffect, type FC } from "react";
 
 const Home: FC = () => {
   const [mutate, { isLoading }] = testSliceAPI.usePosHelloMutation();
@@ -16,6 +17,12 @@ const Home: FC = () => {
       cbAPI: () => mutate({ msg: "Client message" }),
     });
   };
+
+  const usState = useUs();
+
+  useEffect(() => {
+    if (usState.pendingAction) usState.endPendingAction();
+  }, [usState]);
 
   return (
     <WrapCSR>

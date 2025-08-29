@@ -13,6 +13,7 @@ import {
   noticeSlice,
   NoticeStateT,
 } from "@/features/notice/slices/slice";
+import { useUs } from "@/features/user/hooks/useUs";
 import { useEffect, type FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,6 +23,7 @@ const mapCbs: Record<KeyCbT, () => void> = {
 
 const Page: FC = () => {
   const noticeState = useSelector(getNoticeState);
+  const usState = useUs();
 
   const dispatch = useDispatch();
 
@@ -33,6 +35,10 @@ const Page: FC = () => {
   useEffect(() => {
     if (isStr(noticeState.keyCb)) mapCbs[noticeState.keyCb]();
   }, [noticeState.keyCb]);
+
+  useEffect(() => {
+    if (usState.pendingAction) usState.endPendingAction();
+  }, [usState]);
 
   return (
     <WrapCSR>
