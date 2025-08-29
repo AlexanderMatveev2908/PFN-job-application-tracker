@@ -17,7 +17,6 @@ export const useUs = () => {
   );
 
   return {
-    disp,
     userState,
     loginUser,
   };

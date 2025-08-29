@@ -4,7 +4,7 @@ from typing import Any, Literal, cast
 import pyotp
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_SECRET_TOTP
+from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_TOTP_SECRET
 from src.decorators.err import ErrAPI
 from src.lib.algs.fernet import check_fernet
 from src.lib.data_structure import b_to_d, h_to_b
@@ -36,7 +36,7 @@ def gen_totp(totp_secret: str) -> str:
 
     parsed = totp_secret
     try:
-        if not REG_SECRET_TOTP.fullmatch(totp_secret):
+        if not REG_TOTP_SECRET.fullmatch(totp_secret):
             raise ErrAPI(
                 msg="secret probably encrypted with fernet alg", status=500
             )
