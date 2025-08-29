@@ -1,5 +1,5 @@
 import { TokenT } from "@/common/types/tokens";
-import { verifySliceAPI, VerifyUserReturnT } from "../slices/sliceAPI";
+import { verifySliceAPI, VerifyUserReturnT } from "../slices/api";
 import { useUs } from "@/features/user/hooks/useUs";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
