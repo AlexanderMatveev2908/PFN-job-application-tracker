@@ -4,9 +4,11 @@ import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 
 export const handleErrorsActions =
   (store: any) => (next: Dispatch<any>) => (action: UnknownAction) => {
-    const { payload, type } = action;
+    const { payload: { data } = {} } = (action ?? {}) as any;
 
-    __cg("mdw", payload, type);
+    if (!data?.refreshFailed) return action;
+
+    __cg("mdw", data);
 
     return next(action);
   };

@@ -15,9 +15,9 @@ const Page: FC = () => {
   const res = testSliceAPI.useGetProtectedQuery();
   useWrapQuery(res);
 
-  useEffect(() => {
-    if (canBePushed) nav.replace("/auth/login");
-  }, [canBePushed, nav]);
+  // useEffect(() => {
+  //   if (canBePushed) nav.replace("/auth/login");
+  // }, [canBePushed, nav]);
 
   return <div></div>;
 };
