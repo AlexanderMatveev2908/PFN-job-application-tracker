@@ -2,16 +2,18 @@
 "use client";
 
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import { AadCbcHmacT, CbcHmacTokenT } from "@/common/types/tokens";
+import { AadCbcHmacT } from "@/common/types/tokens";
 import { REG_CBC_HMAC } from "@/core/constants/regex";
 import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
 import { hexToDict } from "@/core/lib/dataStructure";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useVerify } from "@/features/verify/hooks/useVerify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 
 const Page: FC = () => {
+  const hasRun = useRef<boolean>(false);
+
   const cbcHmacToken = useSearchParams().get("cbc_hmac_token");
   const nav = useRouter();
 
@@ -21,6 +23,9 @@ const Page: FC = () => {
 
   useEffect(() => {
     const cb = async () => {
+      if (hasRun.current) return;
+      hasRun.current = true;
+
       let aad: AadCbcHmacT | null = null;
       try {
         if (cbcHmacToken && REG_CBC_HMAC.test(cbcHmacToken))
@@ -29,21 +34,19 @@ const Page: FC = () => {
         aad = null;
       }
 
-      if (!aad) {
+      if (!aad || !(aad.token_t in mapperVerify)) {
         setNotice({
-          msg: "Invalid Token",
+          msg: "Invalid Token Format",
           type: "ERR",
         });
         nav.replace("/notice");
       }
 
-      await mapperVerify[aad!.token_t as CbcHmacTokenT](cbcHmacToken!);
+      await mapperVerify[aad!.token_t](cbcHmacToken!);
     };
 
     wrapClientListener(cb);
   }, [cbcHmacToken, setNotice, nav, mapperVerify, wrapClientListener]);
-
-  useEffect(() => {}, []);
 
   return (
     <WrapCSR

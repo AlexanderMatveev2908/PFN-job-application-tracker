@@ -50,7 +50,6 @@ async def confirm_email_ctrl(
                 )
             ],
             msg="email verified",
-            updated_user=us.to_d(exclude_keys=["password"]),
         )
 
 

@@ -26,11 +26,12 @@ export const useVerify = () => {
   const mapperVerify: MapperVerifyT = useMemo(
     () => ({
       CONF_EMAIL: async (cbc_hmac_token: string) => {
-        const [triggerRTK, res] = hookConfEmail;
+        const [triggerRTK] = hookConfEmail;
 
         const { data, isSuccess, error } = await triggerRTK(cbc_hmac_token);
 
-        __cg(data, res);
+        if (isSuccess) __cg("conf email res", data);
+        else __cg("conf email err", error);
 
         disp(
           toastSlice.actions.open({
@@ -42,19 +43,12 @@ export const useVerify = () => {
         );
 
         if (data?.access_token) {
-          disp(
-            toastSlice.actions.open({
-              msg: data?.msg ?? "👻",
-              type: "OK",
-            })
-          );
-
           loginUser(data.access_token);
 
           nav.replace("/");
         } else {
           setNotice({
-            msg: data?.msg,
+            msg: (error as ResApiT<void>)?.data?.msg ?? "👻",
             type: "ERR",
           });
 
