@@ -1,10 +1,8 @@
-import { AxiosError } from "axios";
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import { __cg } from "@/core/lib/log";
 import { serialize } from "@/core/lib/dataStructure";
 import { ArgType, BaseQueryReturnT } from "./lib/types";
-import { extractHeaders, extractMsgErr } from "./lib/etc";
+import { extractHeaders, extractMsgErr, parseErr } from "./lib/etc";
 import { handleRefreshErr, refreshToken } from "./lib/refresh";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -36,14 +34,12 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
       responseType,
     });
 
-    const confWithHeaders = {
-      ...conf,
-      ...extractHeaders(headers),
-    };
-
     const resultReturn: BaseQueryReturnT = {
       data: {
-        conf: confWithHeaders,
+        conf: {
+          ...conf,
+          ...extractHeaders(headers),
+        },
         status,
       },
     };
@@ -58,38 +54,23 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
 
     return resultReturn;
   } catch (err: any) {
-    const { response } = (err ?? {}) as AxiosError<any>;
-
-    const status = response?.status;
-
-    const confWithHeaders = {
-      ...conf,
-      ...extractHeaders(response?.headers),
-    };
-    let errData: any = response?.data ?? {};
-
-    if (errData instanceof Blob && errData.type === "application/json") {
-      try {
-        const text = await errData.text();
-        errData = JSON.parse(text);
-      } catch (parseErr: any) {
-        __cg("Failed parse blob error", parseErr);
-      }
-    }
+    const { response, errData, status } = await parseErr(err);
 
     if (
       status !== 401 ||
-      !["jwt_expired", "jwt_invalid", "jwt_not_provided"].some(
-        (txt) =>
-          (errData?.msg ?? "")?.includes(txt) ||
-          response?.config?.url === "/auth/refresh"
-      )
+      !["jwt_expired", "jwt_invalid", "jwt_not_provided"].some((txt) =>
+        (errData?.msg ?? "")?.includes(txt)
+      ) ||
+      response?.config?.url === "/auth/refresh"
     )
       return {
         error: {
           data: {
             ...errData,
-            conf: confWithHeaders,
+            conf: {
+              ...conf,
+              ...extractHeaders(response?.headers),
+            },
             msg: extractMsgErr(errData),
             status,
           },

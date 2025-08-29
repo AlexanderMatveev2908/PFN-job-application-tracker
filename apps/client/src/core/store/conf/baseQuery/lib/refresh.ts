@@ -40,12 +40,12 @@ export const refreshToken = async ({
     responseType,
   });
 
+  __cg("refresh access");
+
   const confWithHeaders = {
     ...conf,
     ...extractHeaders(headers),
   } as ConfApiT;
-
-  __cg("refresh access");
 
   const resultRetryReturn: BaseQueryReturnT = {
     data: {
