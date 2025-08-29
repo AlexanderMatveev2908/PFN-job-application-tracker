@@ -18,6 +18,4 @@ export const useGetUsProfile = () => {
     if (isSuccess && isObjOk(data?.user))
       dispatch(userSlice.actions.setUser(data.user));
   }, [data, isSuccess, dispatch]);
-
-  return {};
 };
