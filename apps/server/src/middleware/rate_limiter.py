@@ -48,7 +48,7 @@ def rate_limit_mdw(
 
             now_ms = get_now()
 
-            k = f"rl:{ip}:{req.url.path}"
+            k = f"rl:{ip}:{req.url.path}__{req.method}"
             v = f"{now_ms}:{uuid.uuid4()}"
 
             await r.execute_command(
@@ -88,9 +88,9 @@ def rate_limit_mdw(
 
                 req.state.res_hdr["RateLimit-Reset"] = str(reset_ms)
 
-            raise ErrAPI(
-                status=429,
-                msg="Our hamster-powered server took a break — try again later! 🐹",  # noqa: E501
-            )
+                raise ErrAPI(
+                    status=429,
+                    msg="Our hamster-powered server took a break — try again later! 🐹",  # noqa: E501
+                )
 
     return _dep

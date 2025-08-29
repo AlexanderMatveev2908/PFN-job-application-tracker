@@ -7,7 +7,7 @@ import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { __cg } from "@/core/lib/log";
 import { serialize } from "@/core/lib/dataStructure";
-import { BaseQueryReturnT } from "@/common/types/api";
+import { ConfApiT } from "@/common/types/api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ArgType = {
@@ -16,6 +16,10 @@ type ArgType = {
   data?: AxiosRequestConfig["data"];
   params?: AxiosRequestConfig["params"];
   responseType?: AxiosRequestConfig["responseType"];
+};
+
+type BaseQueryReturnT = {
+  data: { conf: ConfApiT; status: number; blob?: Blob };
 };
 
 const extractHeaders = (

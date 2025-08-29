@@ -5,6 +5,7 @@ import { AxiosRequestConfig } from "axios";
 export enum TagAPI {
   TEST = "TEST",
   WAKE_UP = "WAKE_UP",
+  USER = "USER",
 }
 
 export type AppEventT = "OK" | "INFO" | "WARN" | "ERR" | "NONE";
@@ -36,10 +37,8 @@ export type DataApiT = {
   conf?: ConfApiT;
 };
 
-export type BaseQueryReturnT = {
-  data: { conf: ConfApiT; status: number; blob?: Blob };
-};
-
 export type ResApiT<T> = T extends void
   ? { data: DataApiT }
   : { data: DataApiT & T };
+
+export type UnwrappedResT<T> = ResApiT<T>["data"];
