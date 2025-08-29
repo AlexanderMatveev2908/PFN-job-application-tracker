@@ -1,4 +1,3 @@
-import { UnwrappedResApiT } from "@/common/types/api";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
@@ -6,6 +5,7 @@ import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useWrapClientListener } from "../etc/useWrapClientListener";
 import { isSerializable, isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
+import { ResApiT } from "@/common/types/api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Params<T extends Record<string, any> | void> = {
@@ -16,7 +16,7 @@ type Params<T extends Record<string, any> | void> = {
   isSuccess?: boolean;
   isError?: boolean;
   error?: any;
-  data?: UnwrappedResApiT<T>;
+  data?: ResApiT<T>["data"];
 };
 
 export const useWrapQuery = <T extends Record<string, any> | void>({

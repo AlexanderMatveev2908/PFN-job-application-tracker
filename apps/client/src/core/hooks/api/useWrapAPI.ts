@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
-import { ResApiT, UnwrappedResApiT } from "@/common/types/api";
+import { ResApiT } from "@/common/types/api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { __cg } from "@/core/lib/log";
 import { isStr } from "@/core/lib/dataStructure";
@@ -17,13 +17,13 @@ export const useWrapAPI = () => {
       hideErr,
       throwErr,
     }: {
-      cbAPI: () => { unwrap: () => Promise<UnwrappedResApiT<T>> };
+      cbAPI: () => { unwrap: () => Promise<ResApiT<T>> };
       showToast?: boolean;
       hideErr?: boolean;
       throwErr?: boolean;
-    }): Promise<UnwrappedResApiT<T>> => {
+    }): Promise<ResApiT<T>["data"]> => {
       try {
-        const data = await cbAPI().unwrap();
+        const data = (await cbAPI().unwrap()) as ResApiT<T>["data"];
 
         __cg("wrapper res api", data);
 

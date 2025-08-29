@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ResApiT, UnwrappedResApiT } from "@/common/types/api";
+import { ResApiT } from "@/common/types/api";
 import { isStr, serialize } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
@@ -10,7 +10,7 @@ export const useErrAPI = () => {
   const dispatch = useDispatch();
 
   const handleErr = useCallback(
-    <T extends Record<string, any>>({
+    <T>({
       err,
       hideErr,
       throwErr,
@@ -18,10 +18,10 @@ export const useErrAPI = () => {
       err: ResApiT<T>;
       hideErr?: boolean;
       throwErr?: boolean;
-    }): UnwrappedResApiT<T> => {
-      __cg("wrapper err api", err);
-
+    }): ResApiT<T>["data"] => {
       const { data } = err;
+
+      __cg("wrapper err api", data);
 
       if (!hideErr)
         dispatch(
@@ -34,7 +34,7 @@ export const useErrAPI = () => {
       if (throwErr) throw err;
 
       return {
-        ...(serialize(err?.data) as any),
+        ...(serialize(data) as any),
         isErr: true,
       };
     },
