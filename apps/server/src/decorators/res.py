@@ -37,10 +37,6 @@ class ResAPI(JSONResponse):
                 **content,
                 "msg": f"{'✅' if status in [200, 201, 204] else '💣'} {content['msg']}",  # noqa: E501
             },
-            # content={
-            #     **content,
-            #     **{k: v for k, v in (headers or {}).items()},
-            # },
             headers=headers,
         )
 

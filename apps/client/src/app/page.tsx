@@ -3,17 +3,17 @@
 
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { testSliceAPI } from "@/features/test/slices/api";
 import { useUs } from "@/features/user/hooks/useUs";
 import { useEffect, type FC } from "react";
 
 const Home: FC = () => {
   const [mutate, { isLoading }] = testSliceAPI.usePosHelloMutation();
-  const { wrapMutation } = useWrapMutation();
+  const { wrapAPI } = useWrapAPI();
 
   const handleClick = async () => {
-    await wrapMutation({
+    await wrapAPI({
       cbAPI: () => mutate({ msg: "Client message" }),
     });
   };

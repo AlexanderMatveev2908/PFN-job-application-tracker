@@ -12,7 +12,7 @@ export interface NoticeStateT {
   child: ChildNoticeT;
 }
 
-const initState: NoticeStateT = {
+export const noticeInitState: NoticeStateT = {
   type: "NONE",
   msg: "",
   keyCb: "" as KeyCbT,
@@ -21,7 +21,7 @@ const initState: NoticeStateT = {
 
 export const noticeSlice = createSlice({
   name: "notice",
-  initialState: initState,
+  initialState: noticeInitState,
   reducers: {
     setNotice: (state, action: PayloadAction<Partial<NoticeStateT>>) => {
       const { keyCb, msg, type, child } = action.payload;

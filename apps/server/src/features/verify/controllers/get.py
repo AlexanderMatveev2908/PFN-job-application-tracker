@@ -1,6 +1,5 @@
 from typing import cast
 from fastapi import Depends, Request
-from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -13,7 +12,6 @@ from src.middleware.check_cbc_hmac import (
 )
 from src.models.token import (
     CheckTokenWithUsReturnT,
-    Token,
     TokenT,
 )
 from src.models.user import User
@@ -36,13 +34,22 @@ async def confirm_email_ctrl(
         us = cast(User, await trx.get(User, us_d["id"]))
 
         us.verify_email()
-        await trx.execute(
-            delete(Token).where(Token.id == cbc_result["token_d"]["id"])
+
+        await del_token_by_t(trx=trx, token_t=TokenT.CONF_EMAIL, us_id=us.id)
+
+        session_tokens = await gen_tokens_session(
+            trx=trx,
+            user_id=us.id,
         )
 
         return ResAPI.ok_200(
+            access_token=session_tokens["access_token"],
+            cookies=[
+                gen_refresh_cookie(
+                    session_tokens["result_jwe"]["client_token"]
+                )
+            ],
             msg="email verified",
-            updated_user=us.to_d(exclude_keys=["password"]),
         )
 
 

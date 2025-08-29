@@ -6,16 +6,10 @@ import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/Wr
 import LinkShadow from "@/common/components/links/LinkShadow";
 import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
-import { getStorage } from "@/core/lib/storage";
-import {
-  getNoticeState,
-  KeyCbT,
-  noticeSlice,
-  NoticeStateT,
-} from "@/features/notice/slices/slice";
+import { getNoticeState, KeyCbT } from "@/features/notice/slices/slice";
 import { useUs } from "@/features/user/hooks/useUs";
 import { useEffect, type FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const mapCbs: Record<KeyCbT, () => void> = {
   LOGIN: () => console.log("action mapped for key => LOGIN"),
@@ -24,13 +18,6 @@ const mapCbs: Record<KeyCbT, () => void> = {
 const Page: FC = () => {
   const noticeState = useSelector(getNoticeState);
   const usState = useUs();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const saved = getStorage("notice") as Partial<NoticeStateT>;
-    if (saved) dispatch(noticeSlice.actions.setNotice(saved));
-  }, [dispatch]);
 
   useEffect(() => {
     if (isStr(noticeState.keyCb)) mapCbs[noticeState.keyCb]();

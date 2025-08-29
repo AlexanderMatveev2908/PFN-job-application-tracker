@@ -1,8 +1,10 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from src.decorators.err import ErrAPI
 
 
 HERE = Path(__file__)
@@ -12,7 +14,7 @@ ROOT_ENV = ROOT / ".env"
 
 class EnvVar(BaseSettings):
     # ? I pass also client env cause I copy paste them in every environment
-    #  __ so I do not lost pieces during road
+    # ? so I do not lost pieces during road
 
     model_config = SettingsConfigDict(
         env_file=[ROOT_ENV, ".env"],
@@ -21,7 +23,7 @@ class EnvVar(BaseSettings):
 
     app_name: str = Field(..., validation_alias="APP_NAME")
 
-    # ? client stuff
+    # ? client stuff used also on server to not repeat same vars
     next_public_env: str | None = Field(
         None, validation_alias="NEXT_PUBLIC_ENV"
     )
@@ -46,11 +48,7 @@ class EnvVar(BaseSettings):
     ] = Field(..., validation_alias="PY_ENV")
     port: int = Field(..., validation_alias="PORT")
 
-    # ? communication client
-    front_url: str = Field(..., validation_alias="FRONT_URL")
-    front_url_dev: str = Field(..., validation_alias="FRONT_URL_DEV")
-
-    #  __ AWS
+    # ? AWS
     aws_access_key: str = Field(..., validation_alias="AWS_ACCESS_KEY")
     aws_access_secret_key: str = Field(
         ..., validation_alias="AWS_ACCESS_SECRET_KEY"
@@ -105,3 +103,19 @@ class EnvVar(BaseSettings):
 @lru_cache
 def get_env() -> EnvVar:
     return EnvVar()  # type: ignore
+
+
+@lru_cache
+def get_client_url() -> str:
+    env_vars = get_env()
+
+    if env_vars.py_env == "development":
+        base_url = env_vars.next_public_front_url_dev
+    elif env_vars.py_env == "test":
+        base_url = env_vars.next_public_front_url_test
+    elif env_vars.py_env == "production":
+        base_url = env_vars.next_public_front_url
+    else:
+        raise ErrAPI(msg="invalid py env", status=500)
+
+    return cast(str, base_url)

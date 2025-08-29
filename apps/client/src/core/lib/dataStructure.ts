@@ -103,3 +103,19 @@ export function serialize(
 
   return null;
 }
+
+export const hexToBytes = (hex: string) => {
+  const arg = new Uint8Array(hex.length / 2);
+
+  let i = 0;
+
+  while (i < arg.length) {
+    arg[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+    i++;
+  }
+
+  return arg;
+};
+
+export const hexToDict = (hex: string) =>
+  JSON.parse(new TextDecoder().decode(hexToBytes(hex)));

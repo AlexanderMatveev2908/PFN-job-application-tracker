@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
 import { wakeUpSliceAPI } from "./slices/api";
-import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import SpinBtn from "@/common/components/spinners/SpinBtn";
 import { isStr } from "@/core/lib/dataStructure";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 
 type PropsType = {
   children: React.ReactNode;
@@ -24,22 +24,8 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
 
   const { wrapClientListener } = useWrapClientListener();
 
-  const [triggerRTK, res] = wakeUpSliceAPI.useLazyWakeServerQuery();
-  const { triggerRef } = useWrapQuery({
-    ...res,
-    showToast: true,
-  });
-  const triggerAPI = useCallback(async () => {
-    triggerRef();
-    const resAPI = await triggerRTK(
-      {
-        _: Date.now(),
-      },
-      false
-    );
-
-    return resAPI.data;
-  }, [triggerRef, triggerRTK]);
+  const [triggerRTK] = wakeUpSliceAPI.useLazyWakeServerQuery();
+  const { wrapAPI } = useWrapAPI();
 
   useEffect(() => {
     const listener = () => {
@@ -72,7 +58,15 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
           timerID.current = setTimeout(
             async () => {
               try {
-                const r = await triggerAPI();
+                const r = await wrapAPI({
+                  cbAPI: () =>
+                    triggerRTK(
+                      {
+                        _: Date.now(),
+                      },
+                      false
+                    ),
+                });
 
                 if (isStr(r?.msg)) {
                   saveStorage(Date.now(), { key: "wake_up" });
@@ -88,7 +82,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
               clearTmr(timerID);
               resPrm();
             },
-            count ? 2000 : 0
+            count ? 1000 : 0
           );
         });
       }
@@ -99,7 +93,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
     return () => {
       clearTmr(timerID);
     };
-  }, [triggerAPI, triggerRTK, canGo, wrapClientListener]);
+  }, [wrapAPI, triggerRTK, canGo, wrapClientListener]);
 
   return (
     <div className="w-full h-full pt-[25px] pb-[200px] px-[25px] sm:px-[50px]">

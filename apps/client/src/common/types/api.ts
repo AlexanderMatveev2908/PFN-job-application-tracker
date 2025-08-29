@@ -1,8 +1,3 @@
-import { BaseQueryT } from "@/core/store/conf/baseQuery";
-import {
-  TypedLazyQueryTrigger,
-  TypedUseLazyQueryStateResult,
-} from "@reduxjs/toolkit/query/react";
 import { AxiosRequestConfig } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -31,20 +26,9 @@ type ConfApiT = {
 type DataApiT = {
   msg?: string;
   status?: number;
-  conf: ConfApiT;
+  isErr?: boolean;
+  conf?: ConfApiT;
 };
 export type ResApiT<T> = T extends void
   ? { data: DataApiT }
   : { data: DataApiT & T };
-
-export type UnwrappedResApiT<T> = ResApiT<T>["data"];
-export type ErrApiT<T> = {
-  data: { msg?: string; status?: number; conf: ConfApiT };
-} & T;
-
-export type TriggerTypeRTK<T, K> = TypedLazyQueryTrigger<T, K, BaseQueryT>;
-export type ResultTypeRTK<T, K> = TypedUseLazyQueryStateResult<
-  T,
-  K,
-  BaseQueryT
->;

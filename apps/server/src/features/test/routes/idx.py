@@ -23,6 +23,7 @@ router_test.add_api_route(
 router_test.add_api_route(
     "/",
     post_msg_ctrl,
+    dependencies=[Depends(rate_limit_mdw(limit=10))],
     methods=["POST"],
 )
 

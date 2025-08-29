@@ -1,6 +1,6 @@
 import pytest
 from src.models.token import TokenT
-from tests.conf.lib.data_structure import assrt_msg
+from tests.conf.lib.data_structure import assrt_msg, assrt_sessions_tokens
 from tests.conf.lib.etc import get_tokens_lib
 from tests.conf.lib.idx import wrap_httpx
 from httpx import AsyncClient
@@ -19,7 +19,7 @@ async def ok_t(api) -> None:
         expected_code=200,
     )
 
-    assert res_conf["data"]["updated_user"]["is_verified"] is True
+    assrt_sessions_tokens(res_conf)
 
 
 @pytest.mark.asyncio

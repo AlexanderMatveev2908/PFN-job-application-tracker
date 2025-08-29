@@ -22,8 +22,6 @@ jobs:
       NEXT_PUBLIC_SMPT_FROM: ${{secrets.NEXT_PUBLIC_SMPT_FROM}}
       PY_ENV: "test"
       PORT: ${{secrets.PORT}}
-      FRONT_URL: ${{secrets.FRONT_URL}}
-      FRONT_URL_DEV: ${{secrets.FRONT_URL_DEV}}
       SECRET: ${{secrets.SECRET}}
       AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
       AWS_ACCESS_SECRET_KEY: ${{secrets.AWS_ACCESS_SECRET_KEY}}
@@ -124,8 +122,6 @@ jobs:
               "NEXT_PUBLIC_SMPT_FROM",
               "PY_ENV",
               "PORT",
-              "FRONT_URL",
-              "FRONT_URL_DEV",
               "SECRET",
               "AWS_ACCESS_KEY",
               "AWS_ACCESS_SECRET_KEY",
@@ -150,6 +146,7 @@ jobs:
               "NEXT_PUBLIC_BACK_URL_TEST",
               "NEXT_PUBLIC_FRONT_URL_TEST",
             ];
+
 
 
             const envPath = path.join(process.cwd(), "apps/server/.env");
