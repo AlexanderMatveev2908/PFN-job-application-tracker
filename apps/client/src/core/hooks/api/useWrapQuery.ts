@@ -40,7 +40,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     if (isSuccess || isError) hasRun.current = true;
 
     if (isSuccess) {
-      __cg("wrapper query", data);
+      __cg("wrapper query api", data);
 
       if (showToast && isSerializable(data?.msg))
         dispatch(

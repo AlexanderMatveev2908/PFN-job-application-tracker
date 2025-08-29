@@ -4,10 +4,12 @@ import { RegisterFormT } from "../pages/register/schemas/register";
 
 const BASE = "/auth";
 
+export type RegisterUserReturnT = { access_token: string };
+
 export const authSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation<
-      UnwrappedResApiT<{ access_token: string }>,
+      UnwrappedResApiT<RegisterUserReturnT>,
       RegisterFormT
     >({
       query: (data) => ({

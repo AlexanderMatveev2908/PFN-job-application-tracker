@@ -15,14 +15,17 @@ import {
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
-import { authSliceAPI } from "@/features/auth/slices/sliceAPI";
-import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
+import {
+  authSliceAPI,
+  RegisterUserReturnT,
+} from "@/features/auth/slices/sliceAPI";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
 import { envApp } from "@/core/constants/env";
 import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -53,7 +56,7 @@ const Register: FC = ({}) => {
   const { setFocus, handleSubmit, reset } = formCtx;
 
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
-  const { wrapMutation } = useWrapMutation();
+  const { wrapAPI } = useWrapAPI();
   const { setNotice } = useNotice();
   const { loginUser } = useUs();
   const nav = useRouter();
@@ -67,15 +70,15 @@ const Register: FC = ({}) => {
 
   const handleSave = handleSubmit(
     async (data) => {
-      const res = await wrapMutation({
+      const res = await wrapAPI<RegisterUserReturnT>({
         cbAPI: () => mutate(data),
       });
 
-      if (!res) return;
+      if (res?.isErr) return;
 
       reset(resetValsRegister);
 
-      loginUser(res.access_token);
+      loginUser(res!.access_token);
 
       setNotice({
         msg: genMailNoticeMsg("to confirm the account"),

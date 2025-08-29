@@ -1,13 +1,10 @@
 import { TokenT } from "@/common/types/tokens";
-import { verifySliceAPI } from "../slices/sliceAPI";
+import { verifySliceAPI, VerifyUserReturnT } from "../slices/sliceAPI";
 import { useUs } from "@/features/user/hooks/useUs";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
-import { useDispatch } from "react-redux";
-import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useMemo } from "react";
-import { __cg } from "@/core/lib/log";
-import { ResApiT } from "@/common/types/api";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 
 export type MapperVerifyT = Record<
   TokenT,
@@ -19,8 +16,8 @@ export const useVerify = () => {
 
   const { loginUser } = useUs();
   const { setNotice } = useNotice();
+  const { wrapAPI } = useWrapAPI();
 
-  const disp = useDispatch();
   const nav = useRouter();
 
   const mapperVerify: MapperVerifyT = useMemo(
@@ -28,27 +25,17 @@ export const useVerify = () => {
       CONF_EMAIL: async (cbc_hmac_token: string) => {
         const [triggerRTK] = hookConfEmail;
 
-        const { data, isSuccess, error } = await triggerRTK(cbc_hmac_token);
+        const res = await wrapAPI<VerifyUserReturnT>({
+          cbAPI: () => triggerRTK(cbc_hmac_token),
+        });
 
-        if (isSuccess) __cg("conf email res", data);
-        else __cg("conf email err", error);
-
-        disp(
-          toastSlice.actions.open({
-            msg:
-              (isSuccess ? data?.msg : (error as ResApiT<void>)?.data?.msg) ??
-              "👻",
-            type: isSuccess ? "OK" : "ERR",
-          })
-        );
-
-        if (data?.access_token) {
-          loginUser(data.access_token);
+        if (res?.access_token) {
+          loginUser(res.access_token);
 
           nav.replace("/");
         } else {
           setNotice({
-            msg: (error as ResApiT<void>)?.data?.msg ?? "👻",
+            msg: res?.msg ?? "👻",
             type: "ERR",
           });
 
@@ -56,7 +43,7 @@ export const useVerify = () => {
         }
       },
     }),
-    [disp, hookConfEmail, loginUser, nav, setNotice]
+    [wrapAPI, hookConfEmail, loginUser, nav, setNotice]
   ) as MapperVerifyT;
 
   return {

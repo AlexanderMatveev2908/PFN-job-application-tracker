@@ -32,6 +32,7 @@ type DataApiT = {
   msg: string;
   status?: number;
   conf: ConfApiT;
+  isErr?: boolean;
 };
 export type ResApiT<T> = T extends void
   ? { data: DataApiT }

@@ -9,7 +9,7 @@ import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import SpinBtn from "@/common/components/spinners/SpinBtn";
 import { isStr } from "@/core/lib/dataStructure";
-import { useWrapTriggerRTK } from "@/core/hooks/api/useWrapTriggerRTK";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 
 type PropsType = {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
   const { wrapClientListener } = useWrapClientListener();
 
   const [triggerRTK] = wakeUpSliceAPI.useLazyWakeServerQuery();
-  const { wrapTrigger } = useWrapTriggerRTK();
+  const { wrapAPI } = useWrapAPI();
 
   useEffect(() => {
     const listener = () => {
@@ -58,7 +58,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
           timerID.current = setTimeout(
             async () => {
               try {
-                const r = await wrapTrigger({
+                const r = await wrapAPI({
                   cbAPI: () =>
                     triggerRTK(
                       {
@@ -93,7 +93,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
     return () => {
       clearTmr(timerID);
     };
-  }, [wrapTrigger, triggerRTK, canGo, wrapClientListener]);
+  }, [wrapAPI, triggerRTK, canGo, wrapClientListener]);
 
   return (
     <div className="w-full h-full pt-[25px] pb-[200px] px-[25px] sm:px-[50px]">

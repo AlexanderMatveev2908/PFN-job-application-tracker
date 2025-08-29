@@ -1,30 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
-import { useCallback } from "react";
 import { ResApiT, UnwrappedResApiT } from "@/common/types/api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
-import { isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
+import { isStr } from "@/core/lib/dataStructure";
 
-export const useWrapTriggerRTK = () => {
+export const useWrapAPI = () => {
   const dispatch = useDispatch();
   const { handleErr } = useErrAPI();
 
-  const wrapTrigger = useCallback(
+  const wrapAPI = useCallback(
     async <T>({
       cbAPI,
       showToast = true,
       hideErr,
+      throwErr,
     }: {
       cbAPI: () => { unwrap: () => Promise<UnwrappedResApiT<T>> };
       showToast?: boolean;
       hideErr?: boolean;
-    }) => {
+      throwErr?: boolean;
+    }): Promise<UnwrappedResApiT<T>> => {
       try {
         const data = await cbAPI().unwrap();
 
-        __cg("wrapper trigger RTK", data);
+        __cg("wrapper res api", data);
 
         if (showToast)
           dispatch(
@@ -36,14 +37,13 @@ export const useWrapTriggerRTK = () => {
 
         return data;
       } catch (err) {
-        handleErr({ err: err as ResApiT<any>, hideErr });
+        return handleErr({ err: err as ResApiT<T>, hideErr, throwErr });
       }
     },
-
-    [dispatch, handleErr]
+    [handleErr, dispatch]
   );
 
   return {
-    wrapTrigger,
+    wrapAPI,
   };
 };
