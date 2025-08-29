@@ -5,18 +5,18 @@ import { saveStorage } from "@/core/lib/storage";
 import { useGetUsState } from "./useGetUsState";
 
 export const useUs = () => {
-  const disp = useDispatch();
+  const dispatch = useDispatch();
 
   const loginUser = useCallback(
     (access_token: string) => {
       saveStorage(access_token, { key: "access_token" });
-      disp(userSlice.actions.login({ access_token }));
+      dispatch(userSlice.actions.login({ access_token }));
     },
-    [disp]
+    [dispatch]
   );
   const endPendingAction = useCallback(() => {
-    disp(userSlice.actions.endPendingAction());
-  }, [disp]);
+    dispatch(userSlice.actions.endPendingAction());
+  }, [dispatch]);
 
   return {
     ...useGetUsState(),

@@ -5,6 +5,7 @@ import { AxiosRequestConfig } from "axios";
 export enum TagAPI {
   TEST = "TEST",
   WAKE_UP = "WAKE_UP",
+  USER = "USER",
 }
 
 export type AppEventT = "OK" | "INFO" | "WARN" | "ERR" | "NONE";
@@ -17,18 +18,27 @@ export type ReqApiT<T extends Record<string, any> | void> = T extends void
       _?: number;
     } & T;
 
-type ConfApiT = {
+export type HeadersT = {
+  "ratelimit-limit": string;
+  "ratelimit-remaining": string;
+  "ratelimit-window": string;
+  "ratelimit-reset": string;
+};
+export type ConfApiT = {
   url: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   params: AxiosRequestConfig["params"];
   responseType: AxiosRequestConfig["responseType"];
+  headers: HeadersT;
 };
-type DataApiT = {
+export type DataApiT = {
   msg?: string;
   status?: number;
   isErr?: boolean;
   conf?: ConfApiT;
 };
+
 export type ResApiT<T> = T extends void
   ? { data: DataApiT }
   : { data: DataApiT & T };
+
+export type UnwrappedResT<T> = ResApiT<T>["data"];

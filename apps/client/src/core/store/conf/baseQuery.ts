@@ -1,8 +1,13 @@
-import { AxiosRequestConfig } from "axios";
+import {
+  AxiosRequestConfig,
+  AxiosResponseHeaders,
+  RawAxiosResponseHeaders,
+} from "axios";
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { __cg } from "@/core/lib/log";
 import { serialize } from "@/core/lib/dataStructure";
+import { ConfApiT } from "@/common/types/api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ArgType = {
@@ -12,6 +17,21 @@ type ArgType = {
   params?: AxiosRequestConfig["params"];
   responseType?: AxiosRequestConfig["responseType"];
 };
+
+type BaseQueryReturnT = {
+  data: { conf: ConfApiT; status: number; blob?: Blob };
+};
+
+const extractHeaders = (
+  headers: AxiosResponseHeaders | RawAxiosResponseHeaders
+) => ({
+  headers: {
+    "ratelimit-limit": headers?.["ratelimit-limit"] ?? null,
+    "ratelimit-remaining": headers?.["ratelimit-remaining"] ?? null,
+    "ratelimit-window": headers?.["ratelimit-window"] ?? null,
+    "ratelimit-reset": headers?.["ratelimit-reset"] ?? null,
+  },
+});
 
 export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
   url,
@@ -24,7 +44,7 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     url: instanceAxs.defaults.baseURL + url,
     params,
     responseType,
-    data: serialize(data),
+    reqData: serialize(data),
   };
 
   try {
@@ -40,27 +60,29 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
       responseType,
     });
 
-    console.log(headers);
+    const confWithHeaders = {
+      ...conf,
+      ...extractHeaders(headers),
+    };
 
-    return responseType === "blob" && resData instanceof Blob
-      ? {
-          data: {
-            conf,
-            blob: resData,
-            status,
-          },
-        }
-      : {
-          data: {
-            conf,
-            ...resData,
-            status,
-          },
-        };
+    const result: BaseQueryReturnT = {
+      data: {
+        conf: confWithHeaders,
+        status,
+      },
+    };
+
+    if (responseType === "blob" && resData instanceof Blob)
+      result.data.blob = resData;
+    else
+      result.data = {
+        ...result.data,
+        ...resData,
+      };
+
+    return result;
   } catch (err: any) {
     const { response } = err ?? {};
-
-    console.log(err);
 
     let errData: any = response?.data ?? {};
 
@@ -76,7 +98,10 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     return {
       error: {
         data: {
-          conf,
+          conf: {
+            ...conf,
+            ...extractHeaders(response.headers),
+          },
           ...errData,
           msg:
             errData?.msg ??

@@ -7,6 +7,7 @@ import Toast from "@/features/layout/components/Toast/Toast";
 import WrapWakeUp from "@/features/layout/shells/WrapWakeUp/WrapWakeUp";
 import Header from "@/features/layout/components/Header/Header";
 import Sidebar from "@/features/layout/components/Sidebar/Sidebar";
+import CallbacksWrapper from "@/features/layout/shells/CallbacksWrapper";
 
 const fira_code = Fira_Code({
   subsets: ["latin"],
@@ -39,16 +40,18 @@ export default function RootLayout({
             preloadedState: store.getState(),
           }}
         >
-          <div
-            id="portal-root"
-            className="w-full max-w-full min-h-full overflow-x-hidden absolute pointer-events-none"
-          ></div>
+          <CallbacksWrapper>
+            <div
+              id="portal-root"
+              className="w-full max-w-full min-h-full overflow-x-hidden absolute pointer-events-none"
+            ></div>
 
-          <Header />
-          <Sidebar />
-          <Toast />
+            <Header />
+            <Sidebar />
+            <Toast />
 
-          <WrapWakeUp>{children}</WrapWakeUp>
+            <WrapWakeUp>{children}</WrapWakeUp>
+          </CallbacksWrapper>
         </Providers>
       </body>
     </html>
