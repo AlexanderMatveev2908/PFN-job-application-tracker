@@ -79,18 +79,18 @@ def rate_limit_mdw(
 
                 if oldest_req:
                     oldest_ms = int(float(oldest_req[1]))
-                    reset_s = max(
-                        0, math.ceil((oldest_ms + window_ms - now_ms) / 1000)
+                    reset_ms = max(
+                        0,
+                        math.ceil((window_ms - (now_ms - oldest_ms))),
                     )
                 else:
-                    reset_s = int(window_ms / 1000)
+                    reset_ms = int(window_ms)
 
-                req.state.res_hdr["RateLimit-Reset"] = str(reset_s)
+                req.state.res_hdr["RateLimit-Reset"] = str(reset_ms)
 
-                raise ErrAPI(
-                    status=429,
-                    msg="Our hamster-powered server took a break"
-                    " — try again later! 🐹",
-                )
+            raise ErrAPI(
+                status=429,
+                msg="Our hamster-powered server took a break — try again later! 🐹",  # noqa: E501
+            )
 
     return _dep
