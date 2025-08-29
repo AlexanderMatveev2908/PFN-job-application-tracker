@@ -3,7 +3,7 @@ from httpx import AsyncClient
 import pytest
 
 from src.__dev_only.payloads import get_payload_register
-from src.constants.reg import REG_SECRET_TOTP
+from src.constants.reg import REG_TOTP_SECRET
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import (
@@ -31,7 +31,7 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
     )
 
-    assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
+    assert REG_TOTP_SECRET.fullmatch(res_2FA["data"]["totp_secret"])
 
     assert len(res_2FA["data"]["backup_codes"]) == 8
 

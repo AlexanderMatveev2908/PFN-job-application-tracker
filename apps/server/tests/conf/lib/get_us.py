@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from httpx import AsyncClient
 
 from src.__dev_only.payloads import RegisterPayloadT
-from src.constants.reg import REG_CBC_HMAC, REG_SECRET_TOTP
+from src.constants.reg import REG_CBC_HMAC, REG_TOTP_SECRET
 from src.models.token import TokenT
 from tests.conf.lib.data_structure import assrt_sessions_tokens
 from tests.conf.lib.etc import TokenArgT, get_tokens_lib
@@ -45,7 +45,7 @@ async def make_setup_2FA(
         expected_code=200,
     )
 
-    assert REG_SECRET_TOTP.fullmatch(res_2FA["data"]["totp_secret"])
+    assert REG_TOTP_SECRET.fullmatch(res_2FA["data"]["totp_secret"])
 
     assert len(res_2FA["data"]["backup_codes"]) == 8
 
@@ -78,7 +78,7 @@ async def get_us_2FA_lib(
     assert REG_CBC_HMAC.fullmatch(res["data"]["cbc_hmac_token"])
     assert len(res["data"]["backup_codes"]) == (0 if empty_codes else 8)
 
-    assert REG_SECRET_TOTP.fullmatch(res["data"]["totp_secret"])
+    assert REG_TOTP_SECRET.fullmatch(res["data"]["totp_secret"])
 
     return cast(
         User2FAReturnT,

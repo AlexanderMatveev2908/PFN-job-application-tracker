@@ -4,41 +4,28 @@
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useWrapMutation } from "@/core/hooks/api/useWrapMutation";
-// import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-// import { isStr } from "@/core/lib/dataStructure";
-import { __cg } from "@/core/lib/log";
 import { testSliceAPI } from "@/features/test/slices/api";
-import { type FC } from "react";
+import { useUs } from "@/features/user/hooks/useUs";
+import { useEffect, type FC } from "react";
 
 const Home: FC = () => {
-  // const res = testSliceAPI.useGetHelloQuery();
-
-  // useWrapQuery({
-  //   ...res,
-  //   showToast: true,
-  // });
-
-  const [mutate] = testSliceAPI.usePosHelloMutation();
+  const [mutate, { isLoading }] = testSliceAPI.usePosHelloMutation();
   const { wrapMutation } = useWrapMutation();
 
   const handleClick = async () => {
-    const res = await wrapMutation({
+    await wrapMutation({
       cbAPI: () => mutate({ msg: "Client message" }),
     });
-
-    __cg("home res", res);
   };
 
+  const usState = useUs();
+
+  useEffect(() => {
+    if (usState.pendingAction) usState.endPendingAction();
+  }, [usState]);
+
   return (
-    <WrapCSR
-      {
-        ...{
-          // ...res,
-          // isApiOk: isStr(res.data?.msg),
-          // throwErr: true,
-        }
-      }
-    >
+    <WrapCSR>
       <div className="w-full h-full min-h-screen flex flex-col justify-center items-center gap-20">
         <span className="text-3xl font-bold">Script worked ✌🏽</span>
 
@@ -50,8 +37,7 @@ const Home: FC = () => {
               el: {
                 label: "Click me",
               },
-              // isLoading: true,
-              // isEnabled: false,
+              isLoading,
             }}
           />
         </div>

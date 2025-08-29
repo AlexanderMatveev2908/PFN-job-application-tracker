@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getUserState, userSlice } from "../slices/slice";
+import { useDispatch } from "react-redux";
+import { userSlice } from "../slices/slice";
 import { useCallback } from "react";
 import { saveStorage } from "@/core/lib/storage";
+import { useGetUsState } from "./useGetUsState";
 
 export const useUs = () => {
-  const userState = useSelector(getUserState);
-
   const disp = useDispatch();
 
   const loginUser = useCallback(
@@ -15,10 +14,13 @@ export const useUs = () => {
     },
     [disp]
   );
+  const endPendingAction = useCallback(() => {
+    disp(userSlice.actions.endPendingAction());
+  }, [disp]);
 
   return {
-    disp,
-    userState,
+    ...useGetUsState(),
     loginUser,
+    endPendingAction,
   };
 };

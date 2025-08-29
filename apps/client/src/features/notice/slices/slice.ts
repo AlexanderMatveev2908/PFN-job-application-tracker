@@ -3,7 +3,7 @@ import { AppEventT } from "@/common/types/api";
 import { StoreStateT } from "@/core/store";
 
 export type KeyCbT = "LOGIN";
-export type ChildNoticeT = "OPEN_MAIL";
+export type ChildNoticeT = "OPEN_MAIL_APP";
 
 export interface NoticeStateT {
   type: AppEventT;

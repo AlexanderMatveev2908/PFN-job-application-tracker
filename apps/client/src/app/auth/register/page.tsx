@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
 import { envApp } from "@/core/constants/env";
+import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -48,7 +49,7 @@ const Register: FC = ({}) => {
           }),
     },
   });
-  const { setFocus, handleSubmit } = formCtx;
+  const { setFocus, handleSubmit, reset } = formCtx;
 
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
   const { wrapMutation } = useWrapMutation();
@@ -71,13 +72,14 @@ const Register: FC = ({}) => {
 
       if (!res) return;
 
+      reset(resetValsRegister);
+
       loginUser(res.access_token);
 
       setNotice({
         msg: "We've sent you an email to confirm the account. If you don't see it, check your spam folder, it might be partying there 🎉",
         type: "OK",
-        keyCb: "LOGIN",
-        child: "OPEN_MAIL",
+        child: "OPEN_MAIL_APP",
       });
 
       nav.replace("/notice");
