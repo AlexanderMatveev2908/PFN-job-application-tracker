@@ -9,7 +9,7 @@ import { useUs } from "@/features/user/hooks/useUs";
 import { useEffect, type FC } from "react";
 
 const Home: FC = () => {
-  const [mutate, { isLoading }] = testSliceAPI.usePosHelloMutation();
+  const [mutate, { isLoading }] = testSliceAPI.usePostHelloMutation();
   const { wrapAPI } = useWrapAPI();
 
   const handleClick = async () => {

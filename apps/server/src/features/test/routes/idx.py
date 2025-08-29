@@ -52,5 +52,4 @@ router_test.add_api_route(
     "/protected",
     get_protected_data_ctrl,
     methods=["GET"],
-    dependencies=[Depends(rate_limit_mdw(limit=5))],
 )

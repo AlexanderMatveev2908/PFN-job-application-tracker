@@ -1,4 +1,5 @@
 import {
+  AxiosError,
   AxiosRequestConfig,
   AxiosResponseHeaders,
   RawAxiosResponseHeaders,
@@ -6,8 +7,9 @@ import {
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { __cg } from "@/core/lib/log";
-import { serialize } from "@/core/lib/dataStructure";
+import { isStr, serialize } from "@/core/lib/dataStructure";
 import { ConfApiT } from "@/common/types/api";
+import { saveStorage } from "@/core/lib/storage";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ArgType = {
@@ -19,11 +21,11 @@ type ArgType = {
 };
 
 type BaseQueryReturnT = {
-  data: { conf: ConfApiT; status: number; blob?: Blob };
+  data: { conf: ConfApiT; status: number; blob?: Blob; refreshed?: boolean };
 };
 
 const extractHeaders = (
-  headers: AxiosResponseHeaders | RawAxiosResponseHeaders
+  headers?: AxiosResponseHeaders | RawAxiosResponseHeaders
 ) => ({
   headers: {
     "ratelimit-limit": headers?.["ratelimit-limit"] ?? null,
@@ -36,7 +38,7 @@ const extractHeaders = (
 export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
   url,
   method,
-  data,
+  data: originalDataRequest,
   params,
   responseType,
 }) => {
@@ -44,18 +46,18 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     url: instanceAxs.defaults.baseURL + url,
     params,
     responseType,
-    reqData: serialize(data),
+    reqData: serialize(originalDataRequest),
   };
 
   try {
     const {
-      data: resData,
+      data: responseData,
       status,
       headers,
     } = await instanceAxs({
       url,
       method,
-      data,
+      data: originalDataRequest,
       params,
       responseType,
     });
@@ -65,25 +67,26 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
       ...extractHeaders(headers),
     };
 
-    const result: BaseQueryReturnT = {
+    const resultReturn: BaseQueryReturnT = {
       data: {
         conf: confWithHeaders,
         status,
       },
     };
 
-    if (responseType === "blob" && resData instanceof Blob)
-      result.data.blob = resData;
+    if (responseType === "blob" && responseData instanceof Blob)
+      resultReturn.data.blob = responseData;
     else
-      result.data = {
-        ...result.data,
-        ...resData,
+      resultReturn.data = {
+        ...resultReturn.data,
+        ...responseData,
       };
 
-    return result;
+    return resultReturn;
   } catch (err: any) {
-    const { response } = err ?? {};
+    const { response } = (err ?? {}) as AxiosError<any>;
 
+    const status = response?.status;
     let errData: any = response?.data ?? {};
 
     if (errData instanceof Blob && errData.type === "application/json") {
@@ -95,19 +98,73 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
       }
     }
 
+    if (
+      status === 401 &&
+      ["jwt_expired", "jwt_invalid", "jwt_not_provided"].some((txt) =>
+        (errData?.msg ?? "")?.includes(txt)
+      )
+    ) {
+      const { data } = await instanceAxs.get("/auth/refresh");
+
+      const access_token = data?.access_token;
+
+      if (isStr(access_token)) {
+        saveStorage(access_token, { key: "access_token" });
+
+        instanceAxs.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${access_token}`;
+
+        const {
+          data: dataRetry,
+          status,
+          headers,
+        } = await instanceAxs({
+          url,
+          method,
+          data: originalDataRequest,
+          params,
+          responseType,
+        });
+
+        const confWithHeaders = {
+          ...conf,
+          ...extractHeaders(headers),
+        };
+
+        __cg("refresh access");
+
+        const resultRetryReturn: BaseQueryReturnT = {
+          data: {
+            conf: confWithHeaders,
+            status,
+            refreshed: true,
+          },
+        };
+
+        if (responseType === "blob" && dataRetry instanceof Blob)
+          resultRetryReturn.data.blob = dataRetry;
+        else
+          resultRetryReturn.data = {
+            ...resultRetryReturn.data,
+            ...dataRetry,
+          };
+      }
+    }
+
     return {
       error: {
         data: {
           conf: {
             ...conf,
-            ...extractHeaders(response.headers),
+            ...extractHeaders(response?.headers),
           },
           ...errData,
           msg:
             errData?.msg ??
             errData?.message ??
             "A wild Snorlax is fast asleep blocking the road 💤. Try later",
-          status: response?.status ?? 500,
+          status,
         },
       },
     };

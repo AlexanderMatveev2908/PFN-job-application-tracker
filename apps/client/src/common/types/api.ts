@@ -31,10 +31,12 @@ export type ConfApiT = {
   headers: HeadersT;
 };
 export type DataApiT = {
+  conf: ConfApiT;
+  status: number;
   msg?: string;
-  status?: number;
+  refreshed?: boolean;
   isErr?: boolean;
-  conf?: ConfApiT;
+  blob?: Blob;
 };
 
 export type ResApiT<T> = T extends void
