@@ -2,10 +2,11 @@ import asyncio
 import json
 from typing import cast
 from fastapi import Depends, Request
+from fastapi.responses import JSONResponse
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
-from src.decorators.res import ResAPI
+from src.decorators.res import ResAPI, ResAPIProt
 from src.features.auth.middleware.register import RegisterFormT, register_mdw
 from src.features.test.lib.idx import get_query_token_t
 from src.features.test.services.tokens_health import (
@@ -46,12 +47,15 @@ async def post_form_ctrl(req: Request) -> ResAPI:
     )
 
 
-async def post_msg_ctrl(req: Request) -> ResAPI:
+async def post_msg_ctrl(req: Request) -> JSONResponse:
 
     b = (json.loads(await req.body())).get("msg", None)
 
     if isinstance(b, str) and len(b.strip()):
-        return ResAPI.ok_200(msg="✅ msg received ☎️")
+        # return ResAPI.ok_200(msg="✅ msg received ☎️")
+        return ResAPIProt(req).ok_200(
+            msg="ok",
+        )
 
     return ResAPI.err_400()
 
