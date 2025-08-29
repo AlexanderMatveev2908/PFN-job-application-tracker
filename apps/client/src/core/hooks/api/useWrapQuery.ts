@@ -42,7 +42,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     if (isSuccess) {
       __cg("wrapper query", data);
 
-      if (showToast && isSerializable(data))
+      if (showToast && isSerializable(data?.msg))
         dispatch(
           toastSlice.actions.open({
             msg: isStr(data?.msg) ? data!.msg! : "Things went good ✅",

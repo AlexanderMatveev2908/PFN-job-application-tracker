@@ -29,7 +29,7 @@ type ConfApiT = {
   responseType: AxiosRequestConfig["responseType"];
 };
 type DataApiT = {
-  msg?: string;
+  msg: string;
   status?: number;
   conf: ConfApiT;
 };
@@ -39,9 +39,13 @@ export type ResApiT<T> = T extends void
 
 export type UnwrappedResApiT<T> = ResApiT<T>["data"];
 
-export type TriggerTypeRTK<T, K> = TypedLazyQueryTrigger<T, K, BaseQueryT>;
-export type ResultTypeRTK<T, K> = TypedUseLazyQueryStateResult<
+export type TriggerRTKT<T, K> = TypedLazyQueryTrigger<
   T,
-  K,
+  ResApiT<K>,
+  BaseQueryT
+>;
+export type ResultRTKT<T, K> = TypedUseLazyQueryStateResult<
+  T,
+  ResApiT<K>,
   BaseQueryT
 >;
