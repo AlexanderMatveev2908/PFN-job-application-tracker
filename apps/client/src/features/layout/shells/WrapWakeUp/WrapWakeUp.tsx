@@ -29,6 +29,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
     ...res,
     showToast: true,
   });
+
   const triggerAPI = useCallback(async () => {
     triggerRef();
     const resAPI = await triggerRTK(
@@ -88,7 +89,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
               clearTmr(timerID);
               resPrm();
             },
-            count ? 2000 : 0
+            count ? 1000 : 0
           );
         });
       }

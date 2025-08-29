@@ -10,10 +10,12 @@ export type TokenT =
   | "LOGIN_2FA"
   | "MANAGE_ACC_2FA";
 
+export type CbcHmacTokenT = Exclude<TokenT, "REFRESH">;
+
 export interface AadCbcHmacT {
   alg: string;
   token_id: string;
-  token_t: string;
+  token_t: TokenT;
   salt: string;
   user_id: string;
 }

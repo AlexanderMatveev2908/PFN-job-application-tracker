@@ -38,9 +38,6 @@ export type ResApiT<T> = T extends void
   : { data: DataApiT & T };
 
 export type UnwrappedResApiT<T> = ResApiT<T>["data"];
-export type ErrApiT<T> = {
-  data: { msg?: string; status?: number; conf: ConfApiT };
-} & T;
 
 export type TriggerTypeRTK<T, K> = TypedLazyQueryTrigger<T, K, BaseQueryT>;
 export type ResultTypeRTK<T, K> = TypedUseLazyQueryStateResult<

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrApiT } from "@/common/types/api";
+import { ResApiT } from "@/common/types/api";
 import { isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
@@ -15,7 +15,7 @@ export const useErrAPI = () => {
       hideErr,
       throwErr,
     }: {
-      err: ErrApiT<T>;
+      err: ResApiT<T>;
       hideErr?: boolean;
       throwErr?: boolean;
     }) => {

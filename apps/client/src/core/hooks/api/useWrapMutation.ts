@@ -7,7 +7,7 @@ import {
 } from "@reduxjs/toolkit/query";
 import { useErrAPI } from "./useErrAPI";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
-import { ErrApiT, TagAPI } from "@/common/types/api";
+import { ResApiT, TagAPI } from "@/common/types/api";
 import { isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 import { BaseQueryT } from "@/core/store/conf/baseQuery";
@@ -42,7 +42,7 @@ export const useWrapMutation = () => {
 
         return data;
       } catch (err) {
-        handleErr({ err: err as ErrApiT<T>, hideErr });
+        handleErr({ err: err as ResApiT<T>, hideErr });
       }
     },
     [handleErr, dispatch]
