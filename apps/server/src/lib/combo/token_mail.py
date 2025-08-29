@@ -1,5 +1,5 @@
 from typing import cast
-from src.conf.env import get_env
+from src.conf.env import get_client_url, get_env
 from src.lib.emails.aiosmtp.idx import send_email
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.models.token import GenTokenReturnT, TokenT
@@ -19,7 +19,6 @@ async def gen_token_send_email_svc(
     trx: AsyncSession,
     us_d: User | UserDcT,
     token_t: TokenT,
-    callback_url: str = "",
     email_to: str | None = None,
 ) -> GenTokenReturnT:
 
@@ -34,8 +33,7 @@ async def gen_token_send_email_svc(
 
     if can_send:
         await send_email(
-            callback_url=callback_url
-            or f"https://pfn-job-application-tracker-client.fly.dev?cbc_hmac_token={cbc_hmac_result['client_token']}",  # noqa: E501
+            callback_url=f"{get_client_url()}/verify?cbc_hmac_token={cbc_hmac_result['client_token']}",  # noqa: E501
             subj=mapper_subj[token_t],
             user=us_d,
             email_to=email_to,

@@ -8,7 +8,7 @@ whitelist: list[str] = [
         [
             cast(
                 str,
-                (env_var.front_url_dev),
+                (env_var.next_public_front_url_dev),
             )
         ]
         if env_var.py_env == "development"
@@ -20,7 +20,7 @@ whitelist: list[str] = [
         else []
     ),
     *(
-        [cast(str, env_var.front_url)]
+        [cast(str, env_var.next_public_front_url)]
         if env_var.py_env == "production"
         else []
     ),

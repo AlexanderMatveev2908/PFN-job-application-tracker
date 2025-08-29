@@ -47,7 +47,6 @@ async def register_user_svc(user_data: RegisterFormT) -> RegisterSvcReturnT:
             trx=trx,
             us_d=new_user,
             token_t=TokenT.CONF_EMAIL,
-            callback_url="",
         )
 
         return {

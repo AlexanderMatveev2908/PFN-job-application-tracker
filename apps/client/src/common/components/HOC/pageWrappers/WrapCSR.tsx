@@ -9,7 +9,7 @@ type PropsType = {
   isLoading?: boolean;
   isApiOk?: boolean;
   throwErr?: boolean;
-  children:
+  children?:
     | ReactNode
     | (({ isHydrated }: { isHydrated: boolean }) => ReactNode);
 };
