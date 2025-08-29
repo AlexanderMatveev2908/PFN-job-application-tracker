@@ -31,8 +31,8 @@ export type ConfApiT = {
   headers: HeadersT;
 };
 export type DataApiT = {
-  conf: ConfApiT;
-  status: number;
+  conf?: ConfApiT;
+  status?: number;
   msg?: string;
   refreshed?: boolean;
   isErr?: boolean;
