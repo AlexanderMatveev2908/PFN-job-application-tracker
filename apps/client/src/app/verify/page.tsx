@@ -2,6 +2,7 @@
 "use client";
 
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
+import { AadCbcHmacT } from "@/common/types/tokens";
 import { REG_CBC_HMAC } from "@/core/constants/regex";
 import { hexToDict } from "@/core/lib/dataStructure";
 import { useNotice } from "@/features/notice/hooks/useNotice";
@@ -23,11 +24,11 @@ const Page: FC = () => {
       });
       nav.replace("/notice");
     }
+
+    const aad: AadCbcHmacT = hexToDict(cbcHmacToken!.split(".")[0]!);
+
+    console.log(aad);
   }, [cbcHmacToken, setNotice, nav]);
-
-  const hexStr = cbcHmacToken?.split(".")[0];
-
-  console.log(hexToDict(hexStr!));
 
   return (
     <WrapCSR
