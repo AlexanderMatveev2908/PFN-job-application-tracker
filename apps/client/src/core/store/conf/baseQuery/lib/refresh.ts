@@ -58,6 +58,7 @@ export const refreshToken = async ({
       conf: confWithHeaders,
       status,
       refreshed: true,
+      access_token: access_token,
     },
   };
 
@@ -91,8 +92,8 @@ export const handleRefreshErr = ({
 
   const refreshFailed =
     status === 401 &&
-    ["jwe_expired", "jwe_invalid", "jwe_not_provided"].some((txt) =>
-      (dataFail?.msg ?? "")?.includes(txt)
+    ["jwe_expired", "jwe_invalid", "jwe_not_provided", "jwe_not_found"].some(
+      (txt) => (dataFail?.msg ?? "")?.includes(txt)
     );
 
   if (refreshFailed) {

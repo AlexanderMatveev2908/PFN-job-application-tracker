@@ -1,4 +1,4 @@
-import { ConfApiT } from "@/common/types/api";
+import { DataApiT } from "@/common/types/api";
 import { AxiosRequestConfig } from "axios";
 
 export type ArgType = {
@@ -10,5 +10,5 @@ export type ArgType = {
 };
 
 export type BaseQueryReturnT = {
-  data: { conf: ConfApiT; status: number; blob?: Blob; refreshed?: boolean };
+  data: DataApiT;
 };

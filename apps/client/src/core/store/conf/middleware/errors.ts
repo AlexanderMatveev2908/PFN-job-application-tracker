@@ -7,27 +7,29 @@ import { StoreStateT } from "../..";
 
 export const handleErrorsActions =
   (store: any) => (next: Dispatch<any>) => (action: UnknownAction) => {
-    const { payload: { data } = {} } = (action ?? {}) as any;
+    const { payload } = (action ?? {}) as any;
 
     try {
       const pendingAction = store.getState().user.pendingAction;
-      if (pendingAction || (!data?.refreshFailed && !data?.refreshed))
+
+      if (
+        pendingAction ||
+        (!payload?.data?.refreshFailed && !payload?.refreshed)
+      )
         return next(action);
 
       const isLogged = REG_JWT.test(
-        (store.getState() as StoreStateT).user.access_token ?? ""
+        (store.getState() as StoreStateT).user.access_token
       );
 
-      if (data?.refreshed && !isLogged) {
+      if (payload?.refreshed && !isLogged) {
         store.dispatch(
-          userSlice.actions.login({ access_token: data.access_token })
+          userSlice.actions.login({ access_token: payload.access_token })
         );
         window.location.replace("/");
-      }
-
-      if (data?.refreshFailed && isLogged) {
+      } else if (payload?.data?.refreshFailed && isLogged) {
         store.dispatch(userSlice.actions.logout());
-        window.location.replace("/");
+        window.location.replace("/auth/login");
       }
     } catch (err: any) {
       __cg("err mdw", err);

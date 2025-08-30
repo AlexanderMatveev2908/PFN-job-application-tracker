@@ -35,6 +35,8 @@ export type DataApiT = {
   status?: number;
   msg?: string;
   refreshed?: boolean;
+  refreshFailed?: boolean;
+  access_token?: string;
   isErr?: boolean;
   blob?: Blob;
 };
