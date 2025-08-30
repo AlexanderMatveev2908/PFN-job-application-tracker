@@ -31,10 +31,15 @@ export type ConfApiT = {
   headers: HeadersT;
 };
 export type DataApiT = {
-  msg?: string;
-  status?: number;
-  isErr?: boolean;
   conf?: ConfApiT;
+  status?: number;
+  msg?: string;
+  refreshed?: boolean;
+  refreshFailed?: boolean;
+  restoredSession?: boolean;
+  access_token?: string;
+  isErr?: boolean;
+  blob?: Blob;
 };
 
 export type ResApiT<T> = T extends void

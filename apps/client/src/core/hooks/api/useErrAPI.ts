@@ -3,11 +3,14 @@ import { ResApiT } from "@/common/types/api";
 import { isStr, serialize } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 export const useErrAPI = () => {
   const dispatch = useDispatch();
+
+  const nav = useRouter();
 
   const handleErr = useCallback(
     <T>({
@@ -15,30 +18,39 @@ export const useErrAPI = () => {
       hideErr,
       throwErr,
     }: {
-      err: ResApiT<T>;
+      err: ResApiT<T>["data"];
       hideErr?: boolean;
       throwErr?: boolean;
     }): ResApiT<T>["data"] => {
-      const { data } = err;
+      __cg("wrapper err api", err);
 
-      __cg("wrapper err api", data);
-
-      if (!hideErr)
+      if (err?.refreshFailed) {
         dispatch(
           toastSlice.actions.open({
-            msg: isStr(data?.msg) ? data.msg! : "Ops something went wrong ❌",
+            msg: "session expired",
             type: "ERR",
           })
         );
 
+        nav.replace("/auth/login");
+      } else {
+        if (!hideErr)
+          dispatch(
+            toastSlice.actions.open({
+              msg: isStr(err?.msg) ? err.msg! : "Ops something went wrong ❌",
+              type: "ERR",
+            })
+          );
+      }
+
       if (throwErr) throw err;
 
       return {
-        ...(serialize(data) as any),
+        ...(serialize(err) as any),
         isErr: true,
       };
     },
-    [dispatch]
+    [dispatch, nav]
   );
 
   return {

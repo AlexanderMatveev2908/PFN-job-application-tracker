@@ -15,10 +15,7 @@ import {
 } from "@/features/auth/pages/register/schemas/register";
 import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
-import {
-  authSliceAPI,
-  RegisterUserReturnT,
-} from "@/features/auth/slices/sliceAPI";
+import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";

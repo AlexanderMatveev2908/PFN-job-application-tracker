@@ -33,17 +33,22 @@ class ResAPI:
     def _make(
         self,
         status: int,
-        msg: str,
+        msg: str | None = None,
         data: dict[str, Any] | None = None,
     ) -> JSONResponse:
         payload = data or {}
         content = serialize(payload, max_depth=5)
 
+        if "data" in content and not content["data"]:
+            del content["data"]
+
+        if msg:
+            content["msg"] = f"{'✅' if status in [200, 201] else '💣'} {msg}"
+
         res = JSONResponse(
             status_code=status,
             content={
                 **content,
-                "msg": f"{'✅' if status in [200, 201, 204] else '💣'} {msg}",
             },
             headers=dict(getattr(self.req.state, "res_hdr", {})),
         )
@@ -78,6 +83,11 @@ class ResAPI:
             201,
             msg,
             data=kwargs,
+        )
+
+    def ok_204(self) -> JSONResponse:
+        return self._make(
+            204,
         )
 
     def err_400(

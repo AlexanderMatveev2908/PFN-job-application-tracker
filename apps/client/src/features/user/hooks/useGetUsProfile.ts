@@ -1,5 +1,5 @@
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { userSliceAPI } from "../slices/sliceAPI";
+import { userSliceAPI } from "../slices/api";
 import { useEffect } from "react";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { useDispatch } from "react-redux";

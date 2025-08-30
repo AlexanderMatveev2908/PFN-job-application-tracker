@@ -1,10 +1,11 @@
 import { testSlice } from "@/features/test/slices/slice";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, Middleware } from "@reduxjs/toolkit";
 import { apiSlice } from "./api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { noticeSlice } from "@/features/notice/slices/slice";
 import { userSlice } from "@/features/user/slices/slice";
+import { handleErrorsActions } from "./conf/middleware/errors";
 
 const rootReducer = combineReducers({
   test: testSlice.reducer,
@@ -21,7 +22,11 @@ export const genStoreSSR = (
   configureStore({
     reducer: rootReducer,
 
-    middleware: (getDefMdw) => getDefMdw().concat(apiSlice.middleware),
+    middleware: (getDefMdw) =>
+      getDefMdw().concat(
+        apiSlice.middleware,
+        handleErrorsActions as Middleware
+      ),
     preloadedState,
   });
 

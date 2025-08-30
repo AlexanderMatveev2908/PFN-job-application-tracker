@@ -6,26 +6,20 @@ import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/Wr
 import LinkShadow from "@/common/components/links/LinkShadow";
 import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
-import { getNoticeState, KeyCbT } from "@/features/notice/slices/slice";
-import { useUs } from "@/features/user/hooks/useUs";
+import { mapperCbs } from "@/features/notice/lib/etc";
+import { getNoticeState } from "@/features/notice/slices/slice";
+import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
 import { useEffect, type FC } from "react";
 import { useSelector } from "react-redux";
 
-const mapCbs: Record<KeyCbT, () => void> = {
-  LOGIN: () => console.log("action mapped for key => LOGIN"),
-};
-
 const Page: FC = () => {
   const noticeState = useSelector(getNoticeState);
-  const usState = useUs();
 
   useEffect(() => {
-    if (isStr(noticeState.keyCb)) mapCbs[noticeState.keyCb]();
+    if (isStr(noticeState.keyCb)) mapperCbs[noticeState.keyCb]();
   }, [noticeState.keyCb]);
 
-  useEffect(() => {
-    if (usState.pendingAction) usState.endPendingAction();
-  }, [usState]);
+  useEndPendingActionUser();
 
   return (
     <WrapCSR>

@@ -8,7 +8,7 @@ from src.models.user import User, UserDcT
 
 
 async def get_access_account_mdw(req: Request) -> UserDcT:
-    us = cast(User, await check_jwt_search_us_mdw(req, inst=True))
+    us = cast(User, await check_jwt_search_us_mdw(inst=True)(req))
 
     result = await check_form_mdw(PwdFormT, req)
 

@@ -12,11 +12,18 @@ export const testSliceAPI = apiSlice.injectEndpoints({
       }),
     }),
 
-    posHello: builder.mutation<ResApiT<void>, { msg: string }>({
+    postHello: builder.mutation<ResApiT<void>, { msg: string }>({
       query: ({ msg }) => ({
         url: BASE_URL,
         method: "POST",
         data: { msg },
+      }),
+    }),
+
+    getProtected: builder.query<ResApiT<void>, void>({
+      query: () => ({
+        url: `${BASE_URL}protected`,
+        method: "GET",
       }),
     }),
   }),
