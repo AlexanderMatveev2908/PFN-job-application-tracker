@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserT } from "../types";
 import { StoreStateT } from "@/core/store";
-import { getStorage } from "@/core/lib/storage";
 
 export interface UserStateT {
   canManageAccount: boolean;
@@ -15,7 +14,7 @@ export interface UserStateT {
 const initState: UserStateT = {
   canManageAccount: false,
   pendingAction: false,
-  access_token: getStorage("access_token") ?? "",
+  access_token: "",
   cbc_hmac_token: "",
   user: null,
 };

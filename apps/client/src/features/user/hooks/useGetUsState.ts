@@ -6,6 +6,7 @@ export const useGetUsState = () => {
   const userState = useSelector(getUserState);
 
   const isLogged = REG_JWT.test(userState.access_token);
+
   return {
     ...userState,
     isLogged,

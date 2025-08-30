@@ -2,8 +2,10 @@
 "use client";
 
 import { ChildrenT } from "@/common/types/ui";
+import { REG_JWT } from "@/core/constants/regex";
 import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
 import { useScroll } from "@/core/hooks/ui/useScroll";
+import { isObjOk } from "@/core/lib/dataStructure";
 import { getStorage } from "@/core/lib/storage";
 import { noticeSlice } from "@/features/notice/slices/slice";
 import { useGetUsProfile } from "@/features/user/hooks/useGetUsProfile";
@@ -23,9 +25,10 @@ const CallbacksWrapper: FC<ChildrenT> = ({ children }) => {
     const cb = () => {
       const access_token = (getStorage("access_token") ?? "") as string;
       const notice = getStorage("notice");
-      if (access_token)
+
+      if (REG_JWT.test(access_token))
         dispatch(userSlice.actions.setAccessToken({ access_token }));
-      if (notice) dispatch(noticeSlice.actions.setNotice(notice));
+      if (isObjOk(notice)) dispatch(noticeSlice.actions.setNotice(notice!));
     };
 
     wrapClientListener(cb);

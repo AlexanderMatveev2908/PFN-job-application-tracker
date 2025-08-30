@@ -42,8 +42,6 @@ class ResAPI:
         if "data" in content and not content["data"]:
             del content["data"]
 
-        print(payload)
-        print(content)
         res = JSONResponse(
             status_code=status,
             content={

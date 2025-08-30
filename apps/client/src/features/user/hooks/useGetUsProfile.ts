@@ -11,7 +11,7 @@ export const useGetUsProfile = () => {
   const dispatch = useDispatch();
 
   const res = userSliceAPI.useGetProfileQuery(undefined, {
-    skip: !REG_JWT.test(getStorage("access_token") ?? ""),
+    // skip: !REG_JWT.test(getStorage("access_token") ?? ""),
   });
   const { data, isSuccess } = res;
   useWrapQuery({
