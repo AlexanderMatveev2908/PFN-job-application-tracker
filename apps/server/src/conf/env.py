@@ -120,7 +120,7 @@ def get_client_url() -> str:
     if env_vars.py_env == "development":
         base_url = env_vars.next_public_front_url_dev
     elif env_vars.py_env == "test":
-        base_url = env_vars.next_public_front_url_test
+        base_url = cast(str, env_vars.next_public_front_url_test)
     elif env_vars.py_env == "production":
         base_url = env_vars.next_public_front_url
     else:
