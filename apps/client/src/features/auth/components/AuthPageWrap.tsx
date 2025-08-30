@@ -25,7 +25,7 @@ const AuthPageWrap: FC<PropsType> = ({ propsProgressSwap, children }) => {
         />
       )}
 
-      <div className=" w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300">
+      <div className="w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300">
         {children}
       </div>
     </div>
