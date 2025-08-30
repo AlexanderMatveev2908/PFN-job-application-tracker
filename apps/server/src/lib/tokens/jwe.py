@@ -57,7 +57,7 @@ async def gen_jwe(
     refresh_db = Token(
         user_id=parsed_id,
         alg=AlgT.RSA_OAEP_256_A256GCM,
-        exp=calc_exp("30s", reverse),
+        exp=calc_exp("1h", reverse),
         token_t=TokenT.REFRESH,
         hashed=hash_db_hmac(enc_bytes),
     )
