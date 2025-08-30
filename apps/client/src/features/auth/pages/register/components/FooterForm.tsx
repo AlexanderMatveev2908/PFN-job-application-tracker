@@ -2,7 +2,7 @@
 "use client";
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
-import BtnsSwapper from "@/common/components/HOC/shapes/BtnsSwapper";
+import BtnsSwapper from "@/common/components/swap/BtnsSwapper";
 import type { FC } from "react";
 import {
   PayloadStartSwapT,

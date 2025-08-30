@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import Portal from "@/common/components/elements/Portal";
+import Portal from "@/common/components/elements/tooltips/subComponents/Portal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
 
@@ -88,6 +88,7 @@ const RawField = <T extends FieldValues>({
           control={control}
           render={({ field, fieldState }) => {
             const msg = fieldState?.error?.message ?? manualMsg;
+
             return (
               <>
                 {el.type === "textarea" ? (
