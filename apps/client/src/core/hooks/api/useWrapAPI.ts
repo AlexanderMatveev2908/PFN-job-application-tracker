@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
 import { ResApiT } from "@/common/types/api";
-import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { __cg } from "@/core/lib/log";
-import { isStr } from "@/core/lib/dataStructure";
+import { useMsgAPI } from "./useMsgAPI";
 
 export const useWrapAPI = () => {
-  const dispatch = useDispatch();
   const { handleErr } = useErrAPI();
+
+  const { handleMsgSession } = useMsgAPI();
 
   const wrapAPI = useCallback(
     async <T>({
@@ -28,20 +27,14 @@ export const useWrapAPI = () => {
 
         __cg("wrapper res api", data);
 
-        if (showToast)
-          dispatch(
-            toastSlice.actions.open({
-              msg: isStr(data?.msg) ? data.msg! : "Things went good ✅",
-              type: "OK",
-            })
-          );
+        handleMsgSession({ data, showToast });
 
         return data;
       } catch (err: any) {
         return handleErr({ err: err, hideErr, throwErr });
       }
     },
-    [handleErr, dispatch]
+    [handleErr, handleMsgSession]
   );
 
   return {

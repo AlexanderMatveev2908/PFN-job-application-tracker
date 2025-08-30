@@ -5,8 +5,8 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { testSliceAPI } from "@/features/test/slices/api";
-import { useUs } from "@/features/user/hooks/useUs";
-import { useEffect, type FC } from "react";
+import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
+import { type FC } from "react";
 
 const Home: FC = () => {
   const [mutate, { isLoading }] = testSliceAPI.usePostHelloMutation();
@@ -18,11 +18,7 @@ const Home: FC = () => {
     });
   };
 
-  const usState = useUs();
-
-  useEffect(() => {
-    if (usState.pendingAction) usState.endPendingAction();
-  }, [usState]);
+  useEndPendingActionUser();
 
   return (
     <WrapCSR>

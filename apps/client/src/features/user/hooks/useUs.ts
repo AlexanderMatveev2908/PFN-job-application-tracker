@@ -14,13 +14,9 @@ export const useUs = () => {
     },
     [dispatch]
   );
-  const endPendingAction = useCallback(() => {
-    dispatch(userSlice.actions.endPendingAction());
-  }, [dispatch]);
 
   return {
     ...useGetUsState(),
     loginUser,
-    endPendingAction,
   };
 };

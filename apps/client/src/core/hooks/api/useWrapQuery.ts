@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
-import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useWrapClientListener } from "../etc/useWrapClientListener";
-import { isSerializable, isStr } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
 import { ResApiT } from "@/common/types/api";
+import { useMsgAPI } from "./useMsgAPI";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Params<T extends Record<string, any> | void> = {
@@ -28,33 +26,25 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   error,
   data,
 }: Params<T>) => {
-  const dispatch = useDispatch();
   const { handleErr } = useErrAPI();
   const hasRun = useRef(false);
 
   const { wrapClientListener } = useWrapClientListener();
+  const { handleMsgSession } = useMsgAPI();
 
   const handleQuery = useCallback(() => {
     if (hasRun.current) return;
-
     if (isSuccess || isError) hasRun.current = true;
 
     if (isSuccess) {
       __cg("wrapper query api", data);
 
-      if (showToast && isSerializable(data?.msg))
-        dispatch(
-          toastSlice.actions.open({
-            msg: isStr(data?.msg) ? data!.msg! : "Things went good ✅",
-            type: "OK",
-          })
-        );
+      handleMsgSession({ data: data as ResApiT<T>["data"], showToast });
     } else if (isError) {
       handleErr({ err: error, hideErr, throwErr });
     }
   }, [
     handleErr,
-    dispatch,
     showToast,
     hideErr,
     isSuccess,
@@ -62,6 +52,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     error,
     data,
     throwErr,
+    handleMsgSession,
   ]);
 
   useEffect(() => {

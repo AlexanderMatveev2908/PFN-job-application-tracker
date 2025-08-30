@@ -23,10 +23,9 @@ export const handleErrorsActions =
         store.dispatch(
           userSlice.actions.login({ access_token: payload.access_token })
         );
-        window.location.replace("/");
+        payload.restoredSession = true;
       } else if (payload?.refreshFailed && isLogged) {
         store.dispatch(userSlice.actions.logout());
-        window.location.replace("/auth/login");
       }
     } catch (err: any) {
       __cg("err mdw", err);
