@@ -19,7 +19,6 @@ import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
-import { envApp } from "@/core/constants/env";
 import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
@@ -30,25 +29,7 @@ const Register: FC = ({}) => {
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      ...(!envApp.isDev
-        ? {
-            first_name: "",
-            last_name: "",
-            email: "",
-            password: "",
-            confirm_password: "",
-            terms: false,
-          }
-        : {
-            first_name: "Alex",
-            last_name: "Matveev",
-            email: "matveevalexander470@gmail.com",
-            password: "0$EM09btNPiC}!3d+t2{",
-            confirm_password: "0$EM09btNPiC}!3d+t2{",
-            terms: true,
-          }),
-    },
+    defaultValues: resetValsRegister,
   });
   const { setFocus, handleSubmit, reset } = formCtx;
 

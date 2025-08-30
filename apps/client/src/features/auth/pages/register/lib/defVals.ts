@@ -6,6 +6,7 @@ export const resetValsRegister = {
   email: "",
   password: "",
   confirm_password: "",
+  terms: false,
 };
 
 export const getDefValsRegister = () =>
