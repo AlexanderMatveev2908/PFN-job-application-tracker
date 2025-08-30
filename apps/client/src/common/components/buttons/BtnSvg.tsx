@@ -2,7 +2,9 @@
 "use client";
 
 import { type FC } from "react";
-import WrapSvgTooltip, { WrapSvgTltPropsT } from "../HOC/shapes/WrapSvgTooltip";
+import WrapElWithSvgTooltip, {
+  WrapSvgTltPropsT,
+} from "../HOC/shapes/WrapElWithSvgTooltip";
 import { TestIdT } from "@/common/types/ui";
 
 type PropsType = {
@@ -20,7 +22,7 @@ const BtnSvg: FC<PropsType> = ({
   t_id,
 }) => {
   return (
-    <WrapSvgTooltip
+    <WrapElWithSvgTooltip
       {...{
         wrapper: "html_button",
         propsBtn: {

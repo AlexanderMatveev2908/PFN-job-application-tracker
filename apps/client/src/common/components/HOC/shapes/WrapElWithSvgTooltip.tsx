@@ -9,7 +9,7 @@ import { $argClr } from "@/core/uiFactory/style";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
-import PortalTooltip from "./PortalTooltip";
+import PortalTooltip from "../../elements/tooltips/PortalTooltip";
 import Link from "next/link";
 import { RefObject } from "react";
 
@@ -31,7 +31,7 @@ type PropsType = {
 } & WrapSvgTltPropsT &
   TestIdT;
 
-const WrapSvgTooltip: FC<PropsType> = ({
+const WrapElWithSvgTooltip: FC<PropsType> = ({
   Svg,
   act = "NONE",
   confPortal,
@@ -110,4 +110,4 @@ const WrapSvgTooltip: FC<PropsType> = ({
   );
 };
 
-export default WrapSvgTooltip;
+export default WrapElWithSvgTooltip;

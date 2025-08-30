@@ -20,7 +20,7 @@ type PropsType = {
   act: AppEventT;
 } & TestIdT;
 
-const WrapShadow: FC<PropsType> = ({
+const WrapElWithShadow: FC<PropsType> = ({
   wrapper,
   $customLabelCSS,
   act = "NONE",
@@ -94,4 +94,4 @@ const WrapShadow: FC<PropsType> = ({
   );
 };
 
-export default WrapShadow;
+export default WrapElWithShadow;

@@ -2,7 +2,9 @@
 "use client";
 
 import type { FC } from "react";
-import WrapSvgTooltip, { WrapSvgTltPropsT } from "../HOC/shapes/WrapSvgTooltip";
+import WrapElWithSvgTooltip, {
+  WrapSvgTltPropsT,
+} from "../HOC/shapes/WrapElWithSvgTooltip";
 
 type PropsType = {
   href: string;
@@ -10,7 +12,7 @@ type PropsType = {
 
 const LinkSvg: FC<PropsType> = ({ Svg, act, confPortal, href }) => {
   return (
-    <WrapSvgTooltip
+    <WrapElWithSvgTooltip
       {...{
         wrapper: "next_link",
         Svg,

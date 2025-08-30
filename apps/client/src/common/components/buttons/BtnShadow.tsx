@@ -2,7 +2,7 @@
 "use client";
 
 import type { FC } from "react";
-import WrapShadow from "../HOC/shapes/WrapShadow";
+import WrapElWithShadow from "../HOC/shapes/WrapElWithShadow";
 import { SerializedStyles } from "@emotion/react";
 import { FieldTxtSvgT, TestIdT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
@@ -18,7 +18,7 @@ type PropsType = {
 
 const BtnShadow: FC<PropsType> = (arg: PropsType) => {
   return (
-    <WrapShadow
+    <WrapElWithShadow
       {...{
         ...arg,
         wrapper: "html_button",

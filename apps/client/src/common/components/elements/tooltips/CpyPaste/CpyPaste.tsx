@@ -11,8 +11,8 @@ import {
 } from "react";
 import CpyClip from "./components/CpyClip";
 import { __cg } from "@/core/lib/log";
-import { reducer } from "./atc/reducer";
-import { initState } from "./atc/initState";
+import { reducer } from "./etc/reducer";
+import { initState } from "./etc/initState";
 import { clearTmr } from "@/core/lib/etc";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import { PortalConfT, TestIdT } from "@/common/types/ui";
@@ -27,7 +27,7 @@ const CpyPaste: FC<PropsType> = ({ txt, portalConf, t_id }) => {
     if (!state.isCopied) return;
     clearTmr(timerID);
 
-    timerID.current = setTimeout(() => dispatch({ type: "CLOSE" }), 1500);
+    timerID.current = setTimeout(() => dispatch({ type: "CLOSE" }), 1600);
 
     return () => {
       clearTmr(timerID);

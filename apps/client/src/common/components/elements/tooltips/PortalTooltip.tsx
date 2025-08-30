@@ -2,13 +2,13 @@
 "use client";
 
 import type { FC } from "react";
-import Portal from "../../elements/Portal";
+import Portal from "../Portal";
 import { css } from "@emotion/react";
 import { SerializedStyles } from "@emotion/react";
 import { ChildrenT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
 import { $argClr } from "@/core/uiFactory/style";
-import TriangleTooltip from "../../elements/Tooltip/subComponents/TriangleTooltip";
+import TriangleTooltip from "./Tooltip/subComponents/TriangleTooltip";
 
 type PropsType = {
   $CSS: SerializedStyles;
