@@ -142,8 +142,11 @@ Available scripts:
 - [`dbc`](scripts/docker.zsh) — Build the Docker image for the client, passing build variables
 - [`dbs`](scripts/docker.zsh) — Build the Docker image for the server
 - [`dsi`](scripts/docker.zsh) — Start a Docker container
-- [`kcc`](scripts/kind.zsh) — Create Kind cluster and apply all manifest files
-- [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via symlink
+- [`calc_path_k`](scripts/kind.zsh) — Calculate the path of a Kind manifest dynamically, accepting the config file name and a target (`server` or `client`)
+- [`kacw`](scripts/kind.zsh) — Use `calc_path_k` to apply all manifests for either the client or the server.
+- [`kac`](scripts/kind.zsh) — Apply manifests to both `client` and `server`, inject `secrets` into the cluster, and start the `nginx reverse proxy`.
+- [`kcc`](scripts/kind.zsh) — Create a Kind `cluster` and apply all manifest files using `kaf`
+- [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via `symlink`
 
 ---
 
