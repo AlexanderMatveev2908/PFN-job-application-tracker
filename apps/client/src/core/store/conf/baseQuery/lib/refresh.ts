@@ -105,13 +105,11 @@ export const handleRefreshErr = ({
 
   return {
     error: {
-      data: {
-        ...dataFail,
-        conf: confWithHeaders,
-        msg: extractMsgErr(dataFail),
-        status,
-        refreshFailed,
-      },
+      ...dataFail,
+      conf: confWithHeaders,
+      msg: extractMsgErr(dataFail),
+      status,
+      refreshFailed,
     },
   };
 };

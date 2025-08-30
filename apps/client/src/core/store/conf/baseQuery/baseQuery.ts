@@ -65,15 +65,13 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     )
       return {
         error: {
-          data: {
-            ...errData,
-            conf: {
-              ...conf,
-              ...extractHeaders(response?.headers),
-            },
-            msg: extractMsgErr(errData),
-            status,
+          ...errData,
+          conf: {
+            ...conf,
+            ...extractHeaders(response?.headers),
           },
+          msg: extractMsgErr(errData),
+          status,
         },
       };
 

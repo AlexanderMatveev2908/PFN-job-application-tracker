@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useErrAPI } from "./useErrAPI";
@@ -36,8 +37,8 @@ export const useWrapAPI = () => {
           );
 
         return data;
-      } catch (err) {
-        return handleErr({ err: err as ResApiT<T>, hideErr, throwErr });
+      } catch (err: any) {
+        return handleErr({ err: err, hideErr, throwErr });
       }
     },
     [handleErr, dispatch]

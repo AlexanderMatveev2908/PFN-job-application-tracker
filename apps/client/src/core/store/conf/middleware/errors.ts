@@ -12,10 +12,7 @@ export const handleErrorsActions =
     try {
       const pendingAction = store.getState().user.pendingAction;
 
-      if (
-        pendingAction ||
-        (!payload?.data?.refreshFailed && !payload?.refreshed)
-      )
+      if (pendingAction || (!payload?.refreshFailed && !payload?.refreshed))
         return next(action);
 
       const isLogged = REG_JWT.test(
@@ -27,7 +24,7 @@ export const handleErrorsActions =
           userSlice.actions.login({ access_token: payload.access_token })
         );
         window.location.replace("/");
-      } else if (payload?.data?.refreshFailed && isLogged) {
+      } else if (payload?.refreshFailed && isLogged) {
         store.dispatch(userSlice.actions.logout());
         window.location.replace("/auth/login");
       }

@@ -15,18 +15,16 @@ export const useErrAPI = () => {
       hideErr,
       throwErr,
     }: {
-      err: ResApiT<T>;
+      err: ResApiT<T>["data"];
       hideErr?: boolean;
       throwErr?: boolean;
     }): ResApiT<T>["data"] => {
-      const { data } = err;
-
-      __cg("wrapper err api", data);
+      __cg("wrapper err api", err);
 
       if (!hideErr)
         dispatch(
           toastSlice.actions.open({
-            msg: isStr(data?.msg) ? data.msg! : "Ops something went wrong ❌",
+            msg: isStr(err?.msg) ? err.msg! : "Ops something went wrong ❌",
             type: "ERR",
           })
         );
@@ -34,7 +32,7 @@ export const useErrAPI = () => {
       if (throwErr) throw err;
 
       return {
-        ...(serialize(data) as any),
+        ...(serialize(err) as any),
         isErr: true,
       };
     },
