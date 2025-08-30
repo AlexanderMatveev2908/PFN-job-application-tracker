@@ -2,10 +2,10 @@ import test from "@playwright/test";
 import { clickByID, clickByTxt } from "../../lib/click";
 import { getByID } from "../../lib/get";
 import { checkLinksList } from "../../lib/check";
-import { pre } from "./pre";
+import { preAuthNavigation } from "./pre";
 
 test("with sidebar", async ({ page }) => {
-  await pre(page);
+  await preAuthNavigation(page);
 
   await clickByID(page, "header__toggle_sidebar");
 

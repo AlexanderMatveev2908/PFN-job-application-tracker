@@ -1,12 +1,12 @@
 import test from "@playwright/test";
-import { pre } from "./pre";
 import { getByID } from "../../../lib/get";
 import { clickByID } from "../../../lib/click";
 import { checkIsFocused } from "../../../lib/check";
 import { waitTest } from "../../../lib/sideActions";
+import { preAuthRegister } from "../pre";
 
-test("err management", async ({ page }) => {
-  const el = await pre(page);
+test("swap err mgmt", async ({ page }) => {
+  const el = await preAuthRegister(page);
 
   const firstName = await getByID(el, "first_name");
 
