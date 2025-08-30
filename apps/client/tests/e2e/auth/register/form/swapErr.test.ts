@@ -1,7 +1,9 @@
-import test, { expect } from "@playwright/test";
+import test from "@playwright/test";
 import { pre } from "./pre";
 import { getByID } from "../../../lib/get";
 import { clickByID } from "../../../lib/click";
+import { checkIsFocused } from "../../../lib/check";
+import { waitTest } from "../../../lib/sideActions";
 
 test("err management", async ({ page }) => {
   const el = await pre(page);
@@ -12,27 +14,26 @@ test("err management", async ({ page }) => {
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await page.waitForTimeout(500);
+  await waitTest(page);
 
   const pwd = await getByID(el, "password");
-  await expect(pwd).toBeFocused();
+  await checkIsFocused(pwd);
 
   await clickByID(el, "register__footer_form__submit_btn");
 
-  await page.waitForTimeout(500);
-
+  await waitTest(page);
   const lastName = await getByID(el, "last_name");
-
-  await expect(lastName).toBeFocused();
+  await checkIsFocused(lastName);
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await page.waitForTimeout(500);
+  await waitTest(page);
 
-  await expect(pwd).toBeFocused();
+  await checkIsFocused(pwd);
 
   await clickByID(el, "btns_swapper_prev_swap");
-  await page.waitForTimeout(500);
 
-  await expect(firstName).toBeFocused();
+  await waitTest(page);
+
+  await checkIsFocused(firstName);
 });

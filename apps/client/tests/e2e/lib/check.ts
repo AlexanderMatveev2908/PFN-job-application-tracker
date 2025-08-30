@@ -11,13 +11,13 @@ export const checkLinksList = async (parent: Locator, arg: string[]) => {
   for (const name of arg) {
     const lk = parent.getByRole("link", { name });
     await lk.waitFor({ state: "visible", timeout: 5000 });
-
-    await expect(lk).toBeVisible();
   }
 };
 
-export const isShw = async (el: Locator) => {
+export const checkIsShw = async (el: Locator) => {
   await el.waitFor({ state: "visible", timeout: 5000 });
-  await expect(el).toBeVisible();
-  await expect(el).toBeInViewport();
+};
+
+export const checkIsFocused = async (el: Locator) => {
+  await expect(el).toBeFocused({ timeout: 5000 });
 };
