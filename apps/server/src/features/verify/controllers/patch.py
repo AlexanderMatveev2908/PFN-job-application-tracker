@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.combo.TFA import check_2FA_lib
@@ -23,7 +23,7 @@ async def confirm_new_email_2FA_ctrl(
             token_t=TokenT.CHANGE_EMAIL_2FA,
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         us, backup_codes_left = dest_d(

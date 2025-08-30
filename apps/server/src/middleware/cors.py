@@ -3,10 +3,9 @@ from typing import Callable
 
 # import attr
 from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.decorators.res import ResAPI
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import Response
 from starlette.types import ASGIApp
 
 
@@ -32,7 +31,7 @@ class CorsMDW(BaseHTTPMiddleware):
 
     async def dispatch(
         self, request: Request, call_next: Callable
-    ) -> Response | JSONResponse:
+    ) -> Response:
 
         origin = request.headers.get("origin")
 

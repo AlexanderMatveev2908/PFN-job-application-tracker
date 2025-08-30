@@ -2,7 +2,7 @@ import asyncio
 import json
 from typing import cast
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
@@ -30,7 +30,7 @@ from src.models.token import TokenT
 from src.models.user import User
 
 
-async def post_form_ctrl(req: Request) -> JSONResponse:
+async def post_form_ctrl(req: Request) -> Response:
 
     parsed_f = req.state.parsed_f
 
@@ -47,7 +47,7 @@ async def post_form_ctrl(req: Request) -> JSONResponse:
     )
 
 
-async def post_msg_ctrl(req: Request) -> JSONResponse:
+async def post_msg_ctrl(req: Request) -> Response:
 
     b = (json.loads(await req.body())).get("msg", None)
 
@@ -61,7 +61,7 @@ async def post_msg_ctrl(req: Request) -> JSONResponse:
 
 async def tokens_health_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
-) -> JSONResponse:
+) -> Response:
 
     res = await tokens_health_svc(
         user_data, token_t=get_query_token_t(req), parsed_q=req.state.parsed_q
@@ -74,7 +74,7 @@ async def tokens_health_ctrl(
     )
 
 
-async def get_err_ctrl(req: Request) -> JSONResponse:
+async def get_err_ctrl(req: Request) -> Response:
     data = await parse_bd(req)
 
     act, token = dest_d(data, keys=["act", "token"])
@@ -104,7 +104,7 @@ async def get_err_ctrl(req: Request) -> JSONResponse:
 
 async def get_us_2FA_ctrl(
     req: Request,
-) -> JSONResponse:
+) -> Response:
 
     body: RegisterPayloadT | None = None
     try:

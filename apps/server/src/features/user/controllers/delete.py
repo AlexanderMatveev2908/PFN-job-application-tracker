@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from sqlalchemy import delete
 
 from src.conf.db import db_trx
@@ -21,7 +21,7 @@ async def delete_account_ctrl(
             check_jwt=True,
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         us = await get_us_by_id(

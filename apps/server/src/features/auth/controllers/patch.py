@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.auth.services.change_pwd import change_pwd_svc
@@ -19,7 +19,7 @@ async def recover_pwd_ctrl(
             model=PwdFormT, token_t=TokenT.RECOVER_PWD, check_jwt=False
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     if result_combo["cbc_hmac_result"]["user_d"]["totp_secret"]:
         raise ErrAPI(msg="user must follow 2fa flow", status=403)
@@ -44,7 +44,7 @@ async def revocer_pwd_2FA_ctrl(
             model=PwdFormT, token_t=TokenT.RECOVER_PWD_2FA, check_jwt=False
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     result_tokens = await change_pwd_svc(result_combo)
 
