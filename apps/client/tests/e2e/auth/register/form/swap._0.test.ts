@@ -1,11 +1,11 @@
 import test from "@playwright/test";
 import { checkTxtList } from "../../../lib/check";
 import { checkTxtListOpc } from "../../../lib/style";
-import { pre } from "./pre";
 import { waitTest } from "../../../lib/sideActions";
+import { preAuthRegister } from "../pre";
 
 test("swap 0", async ({ page }) => {
-  const el = await pre(page);
+  const el = await preAuthRegister(page);
 
   const firstName = el.getByTestId("first_name");
   const lastName = el.getByTestId("last_name");

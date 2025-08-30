@@ -3,7 +3,7 @@ import { getByTxt } from "../../lib/get";
 import { closeToast } from "../../lib/sideActions";
 import { preTest } from "../../lib/pre";
 
-export const pre = async (page: Page) => {
+export const preAuthNavigation = async (page: Page) => {
   await preTest(page, "/");
 
   await closeToast(page);

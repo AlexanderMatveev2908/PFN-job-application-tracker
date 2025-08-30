@@ -3,11 +3,11 @@ import { getByID, getByTxt } from "../../../lib/get";
 import { checkTxtList } from "../../../lib/check";
 import { clickByID } from "../../../lib/click";
 import { checkTxtOpc } from "../../../lib/style";
-import { pre } from "./pre";
 import { waitTest } from "../../../lib/sideActions";
+import { preAuthRegister } from "../pre";
 
 test("swap 1", async ({ page }) => {
-  const el = await pre(page);
+  const el = await preAuthRegister(page);
 
   await clickByID(el, "btns_swapper_next_swap");
 
