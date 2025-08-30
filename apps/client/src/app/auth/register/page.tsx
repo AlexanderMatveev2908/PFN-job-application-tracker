@@ -6,7 +6,6 @@ import { __cg } from "@/core/lib/log";
 import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import ProgressSwap from "@/common/components/elements/ProgressSwap";
 import BodyForm from "@/features/auth/pages/register/components/BodyForm";
 import FooterForm from "@/features/auth/pages/register/components/FooterForm";
 import {
@@ -22,6 +21,7 @@ import { useUs } from "@/features/user/hooks/useUs";
 import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
+import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -89,40 +89,38 @@ const Register: FC = ({}) => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
-      <ProgressSwap
-        {...{
+    <AuthPageWrap
+      {...{
+        propsProgressSwap: {
           currSwap: swapState.currSwap,
-          maxW: 800,
           totSwaps: 2,
-        }}
-      />
-      <div className="auth__form">
-        <FormProvider {...formCtx}>
-          <form
-            data-testid={"register_form"}
-            className="w-full grid grid-cols-1"
-            onSubmit={handleSave}
-          >
-            <BodyForm
-              {...{
-                swapState,
-              }}
-            />
+        },
+      }}
+    >
+      <FormProvider {...formCtx}>
+        <form
+          data-testid={"register_form"}
+          className="w-full grid grid-cols-1"
+          onSubmit={handleSave}
+        >
+          <BodyForm
+            {...{
+              swapState,
+            }}
+          />
 
-            <FooterForm
-              {...{
-                swapState,
-                startSwap,
-                isLoading,
-              }}
-            />
+          <FooterForm
+            {...{
+              swapState,
+              startSwap,
+              isLoading,
+            }}
+          />
 
-            <SpannerLinks />
-          </form>
-        </FormProvider>
-      </div>
-    </div>
+          <SpannerLinks />
+        </form>
+      </FormProvider>
+    </AuthPageWrap>
   );
 };
 

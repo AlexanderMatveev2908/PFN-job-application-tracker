@@ -322,10 +322,6 @@
   box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
 }
 
-.auth__form {
-  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300;
-}
-
 @keyframes skeleton {
   0% {
     background-position: 200% 0%;
