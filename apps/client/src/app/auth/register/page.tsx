@@ -7,7 +7,6 @@ import { FormProvider, Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import BodyForm from "@/features/auth/pages/register/components/BodyForm";
-import FooterForm from "@/features/auth/pages/register/components/FooterForm";
 import {
   RegisterFormT,
   registerSchema,
@@ -22,6 +21,7 @@ import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
+import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -109,11 +109,15 @@ const Page: FC = () => {
             }}
           />
 
-          <FooterForm
+          <AuthFormFooter
             {...{
-              swapState,
-              startSwap,
+              propsBtnsSwapper: {
+                swapState,
+                startSwap,
+                totSwaps: 2,
+              },
               isLoading,
+              submitBtnTestID: "register__footer_form__submit_btn",
             }}
           />
 
