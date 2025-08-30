@@ -489,7 +489,11 @@ A ready-to-use **Postman setup** is available at the root of the repo in the **p
 
 - [TEST_API.postman_collection.json](/postman/TEST_API.postman_collection.json) — Contains all API request
 - [ENV_VAR.postman_environment.json](postman/ENV_VAR.postman_environment.json) — Contains the required environment variables
-- [scripts](/postman/scripts/) — Contains reusable scripts used during testing to improve **efficiency** by automatically setting some environment variables **dynamically** based on **responses**
+- [scripts](/postman/scripts/) — Contains reusable scripts used during testing to improve **efficiency**:
+  - [get_tokens](/postman/scripts/get_tokens.js) — Extracts **access_token** and **cbc_hmac_token** from a response and sets them as **environment variables**.
+  - [refresh_token](postman/scripts/refresh_token.js) — If a response returns status **401**, attempts to obtain a **new access_token **by calling the **refresh endpoint**.
+
+---
 
 **📑 Notes**:
 
