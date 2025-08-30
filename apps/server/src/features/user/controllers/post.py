@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from sqlalchemy import func, select
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
@@ -22,7 +22,7 @@ from src.models.user import UserDcT
 
 async def get_access_account_ctrl(
     req: Request, us: UserDcT = Depends(get_access_account_mdw)
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
 
@@ -50,7 +50,7 @@ async def new_backup_codes_ctrl(
             check_jwt=True,
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     us_id: str = result_combo["cbc_hmac_result"]["decrypted"]["user_id"]
 
@@ -79,7 +79,7 @@ async def get_access_manage_account_2FA_ctrl(
             check_jwt=True, model=TFAFormT, token_t=TokenT.MANAGE_ACC_2FA
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         us, backup_codes_left = dest_d(

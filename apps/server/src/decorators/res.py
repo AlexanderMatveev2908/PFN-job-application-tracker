@@ -18,9 +18,6 @@ CookieT = list[CookieD] | None
 ClearCookieT = list[str | dict[str, CookieD]] | None
 
 
-ResT = JSONResponse | Response
-
-
 class ResAPI:
     def __init__(
         self,
@@ -32,7 +29,7 @@ class ResAPI:
         self.cookies = cookies or []
         self.clear_cookies = clear_cookies or []
 
-    def _apply_cookies(self, res: ResT) -> None:
+    def _apply_cookies(self, res: Response) -> None:
         for c in self.cookies:
             res.set_cookie(**c)
         for cc in self.clear_cookies:
@@ -45,7 +42,7 @@ class ResAPI:
         status: int,
         msg: str | None = None,
         data: dict[str, Any] | None = None,
-    ) -> ResT:
+    ) -> Response:
         payload = data or {}
         content = serialize(payload, max_depth=5)
 
@@ -71,7 +68,7 @@ class ResAPI:
         self,
         msg: str = "operation successful 📄",
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(
             200,
             msg,
@@ -82,44 +79,44 @@ class ResAPI:
         self,
         msg: str = "POST operation successful ✒️",
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(
             201,
             msg,
             data=kwargs,
         )
 
-    def ok_204(self) -> ResT:
+    def ok_204(self) -> Response:
         return self._make(
             204,
         )
 
-    def err_400(self, msg: str = "Bad request 😡", **kwargs: Any) -> ResT:
+    def err_400(self, msg: str = "Bad request 😡", **kwargs: Any) -> Response:
         return self._make(400, msg, data=kwargs)
 
     def err_401(
         self,
         msg: str = "Unauthorized 🔒",
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(
             401,
             msg,
             data=kwargs,
         )
 
-    def err_403(self, msg: str = "Forbidden 🚫", **kwargs: Any) -> ResT:
+    def err_403(self, msg: str = "Forbidden 🚫", **kwargs: Any) -> Response:
         return self._make(403, msg, data=kwargs)
 
-    def err_404(self, msg: str = "Not found 🥸", **kwargs: Any) -> ResT:
+    def err_404(self, msg: str = "Not found 🥸", **kwargs: Any) -> Response:
         return self._make(404, msg, data=kwargs)
 
-    def err_409(self, msg: str = "Conflict 😵", **kwargs: Any) -> ResT:
+    def err_409(self, msg: str = "Conflict 😵", **kwargs: Any) -> Response:
         return self._make(409, msg, data=kwargs)
 
     def err_422(
         self, msg: str = "Unprocessable entity 🧐", **kwargs: Any
-    ) -> ResT:
+    ) -> Response:
         return self._make(422, msg, data=kwargs)
 
     def err_429(
@@ -128,7 +125,7 @@ class ResAPI:
             "Our hamster-powered server took a break — try again later! 🐹"
         ),
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(
             429,
             msg,
@@ -139,7 +136,7 @@ class ResAPI:
         self,
         msg: str = "A wild slime appeared — the server took 30% damage! ⚔️",
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(500, msg, data=kwargs)
 
     def err_ctm(
@@ -147,7 +144,7 @@ class ResAPI:
         status: int,
         msg: str,
         **kwargs: Any,
-    ) -> ResT:
+    ) -> Response:
         return self._make(
             status,
             msg,

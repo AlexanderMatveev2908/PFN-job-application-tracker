@@ -1,6 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
@@ -24,7 +24,7 @@ async def change_pwd_ctrl(
             model=PwdFormT, token_t=TokenT.MANAGE_ACC, check_jwt=True
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         us = await get_us_by_id(
@@ -50,7 +50,7 @@ async def change_email_ctrl(
             check_jwt=True, token_t=TokenT.MANAGE_ACC, model=EmailFormT
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         if (
@@ -95,7 +95,7 @@ async def TFA_ctrl(
             check_jwt=True, token_t=TokenT.MANAGE_ACC
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         result_svc = await TFA_svc(trx=trx, result_combo=result_combo)

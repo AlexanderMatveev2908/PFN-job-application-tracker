@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
@@ -22,7 +22,7 @@ async def recover_pwd_2FA_ctrl(
             token_t=TokenT.RECOVER_PWD_2FA,
         )
     ),
-) -> JSONResponse:
+) -> Response:
     async with db_trx() as trx:
         _, backup_codes_left = dest_d(
             await check_2FA_lib(trx, combo_res, delete_tok_on_check=False),

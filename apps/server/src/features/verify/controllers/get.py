@@ -1,6 +1,6 @@
 from typing import cast
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -23,7 +23,7 @@ async def confirm_email_ctrl(
     cbc_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.CONF_EMAIL)
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
 
@@ -61,7 +61,7 @@ async def forgot_pwd_ctrl(
     combo_result: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.RECOVER_PWD)
     ),
-) -> JSONResponse:
+) -> Response:
 
     us = combo_result["user_d"]
 
@@ -91,7 +91,7 @@ async def confirm_new_email_ctrl(
     result_cbc: CheckTokenWithUsReturnT = Depends(
         check_cbc_hmac_with_us_mdw(token_t=TokenT.CHANGE_EMAIL)
     ),
-) -> JSONResponse:
+) -> Response:
 
     async with db_trx() as trx:
         us = cast(

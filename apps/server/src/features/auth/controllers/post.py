@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -26,7 +26,7 @@ from src.models.token import CheckTokenWithUsReturnT, TokenT
 
 async def register_ctrl(
     req: Request, user_data: RegisterFormT = Depends(register_mdw)
-) -> JSONResponse:
+) -> Response:
 
     result: RegisterSvcReturnT = await register_user_svc(user_data)
 
@@ -42,7 +42,7 @@ async def register_ctrl(
 
 async def login_ctrl(
     req: Request, login_data: LoginForm = Depends(login_mdw)
-) -> JSONResponse:
+) -> Response:
     async with db_trx() as trx:
         us = await login_svc(login_data=login_data, trx=trx)
 
@@ -69,7 +69,7 @@ async def login_ctrl(
         )
 
 
-async def refresh_token_ctrl(req: Request) -> JSONResponse:
+async def refresh_token_ctrl(req: Request) -> Response:
     refresh = req.cookies.get("refresh_token")
 
     if not refresh:
@@ -98,7 +98,7 @@ async def login_2FA_ctrl(
             check_jwt=False, model=TFAFormT, token_t=TokenT.LOGIN_2FA
         )
     ),
-) -> JSONResponse:
+) -> Response:
 
     res_check = await login_2FA_svc(result_combo)
 

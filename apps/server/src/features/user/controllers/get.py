@@ -1,5 +1,5 @@
 from fastapi import Depends, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 
 from src.decorators.res import ResAPI
 from src.lib.data_structure import pick
@@ -12,7 +12,7 @@ async def get_us_profile_ctrl(
     us: User | UserDcT | None = Depends(
         check_jwt_search_us_mdw(optional=True)
     ),
-) -> JSONResponse:
+) -> Response:
 
     if not us:
         return ResAPI(req).ok_204()
