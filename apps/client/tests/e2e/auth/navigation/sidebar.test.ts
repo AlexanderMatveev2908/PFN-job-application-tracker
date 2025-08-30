@@ -3,6 +3,7 @@ import { clickByID, clickByTxt } from "../../lib/click";
 import { getByID } from "../../lib/get";
 import { checkLinksList } from "../../lib/check";
 import { preAuthNavigation } from "./pre";
+import { waitURL } from "../../lib/sideActions";
 
 test("with sidebar", async ({ page }) => {
   await preAuthNavigation(page);
@@ -25,5 +26,5 @@ test("with sidebar", async ({ page }) => {
 
   await clickByTxt(el, "register");
 
-  await page.waitForURL("/auth/register");
+  await waitURL(page, "/auth/register");
 });

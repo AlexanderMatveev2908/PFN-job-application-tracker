@@ -5,6 +5,7 @@ import { clickByID } from "../../../lib/click";
 import { genPwd } from "@/core/lib/etc";
 import { getByTxt } from "../../../lib/get";
 import { genMailNoticeMsg } from "@/core/constants/etc";
+import { waitURL } from "../../../lib/sideActions";
 
 test("register ok", async ({ page }) => {
   const el = await preAuthRegister(page);
@@ -24,7 +25,7 @@ test("register ok", async ({ page }) => {
 
   await clickByID(el, "register__footer_form__submit_btn");
 
-  await page.waitForURL("/notice");
+  await waitURL(page, "/notice");
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
 

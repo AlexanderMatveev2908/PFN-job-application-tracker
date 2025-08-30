@@ -13,3 +13,7 @@ export const closeToast = async (page: Page): Promise<undefined> => {
 export const waitTest = async (page: Page, v: number = 750) => {
   await page.waitForTimeout(v);
 };
+
+export const waitURL = async (page: Page, url: string) => {
+  await page.waitForURL(url, { timeout: 7500 });
+};
