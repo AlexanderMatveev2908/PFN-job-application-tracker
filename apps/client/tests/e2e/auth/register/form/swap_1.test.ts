@@ -4,13 +4,14 @@ import { checkTxtList } from "../../../lib/check";
 import { clickByID } from "../../../lib/click";
 import { checkTxtOpc } from "../../../lib/style";
 import { pre } from "./pre";
+import { waitTest } from "../../../lib/sideActions";
 
 test("swap 1", async ({ page }) => {
   const el = await pre(page);
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await page.waitForTimeout(500);
+  await waitTest(page);
 
   const pwd = await getByID(el, "password");
   await expect(pwd).toBeFocused();
@@ -43,7 +44,7 @@ test("swap 1", async ({ page }) => {
 
   await btn.hover();
 
-  await page.waitForTimeout(500);
+  await waitTest(page);
 
   await getByTxt(page, "generate password");
 
@@ -62,16 +63,20 @@ test("swap 1", async ({ page }) => {
   await pwd.fill(content!);
   await confPwd.fill(content!);
 
-  await page.waitForTimeout(500);
+  await waitTest(page);
 
   await checkTxtOpc(page, msgs[0]);
   await checkTxtOpc(page, "passwords do not match");
 
   await clickByID(el, "form_field_pwd__toggle_password");
 
+  await waitTest(page);
+
   await expect(pwd).toHaveAttribute("type", "text");
 
   await clickByID(el, "form_field_pwd__toggle_confirm_password");
+
+  await waitTest(page);
 
   await expect(pwd).toHaveAttribute("type", "password");
   await expect(confPwd).toHaveAttribute("type", "text");

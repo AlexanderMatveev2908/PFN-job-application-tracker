@@ -1,10 +1,8 @@
 import { Locator, Page } from "@playwright/test";
-import { getByTxt } from "./get";
+import { getByID, getByTxt } from "./get";
 
 export const clickByID = async (loc: Page | Locator, id: string) => {
-  const el = loc.getByTestId(id);
-  await el.waitFor({ state: "visible", timeout: 5000 });
-
+  const el = await getByID(loc, id);
   await el.click();
 };
 

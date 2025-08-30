@@ -1,19 +1,18 @@
-import { expect, Locator, Page } from "@playwright/test";
-import { isShw } from "./check";
+import { Locator, Page } from "@playwright/test";
+import { checkIsShw } from "./check";
 
 export const getByID = async (loc: Page | Locator, id: string) => {
   const el = loc.locator(`[data-testid='${id}']`);
 
-  await el.waitFor({ state: "visible", timeout: 5000 });
-  await isShw(el);
+  await checkIsShw(el);
 
   return el;
 };
 
 export const getByTxt = async (loc: Locator | Page, x: string) => {
   const el = loc.getByText(new RegExp(x, "i"));
-  await el.first().waitFor({ state: "visible", timeout: 5000 });
-  await expect(el.first()).toBeVisible();
+
+  await checkIsShw(el);
 
   return el;
 };

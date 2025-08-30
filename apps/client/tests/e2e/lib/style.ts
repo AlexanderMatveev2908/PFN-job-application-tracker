@@ -8,13 +8,16 @@ export const checkTxtOpc = async (loc: Page | Locator, txt: string) => {
     if (!own) return true;
 
     let curr = el.parentElement;
+    let depth = 0;
+    const MAX_DEPTH = 5;
 
-    while (curr) {
+    while (curr && depth < MAX_DEPTH) {
       const s = getComputedStyle(curr);
 
       if (!parseFloat(s.opacity)) return true;
 
       curr = curr.parentElement;
+      depth++;
     }
 
     return false;

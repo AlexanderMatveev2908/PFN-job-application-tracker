@@ -62,7 +62,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           cbChange: () => trigger("confirm_password"),
           cbFocus: () => setIsFocus(true),
           cbBlur: () => setIsFocus(false),
-          isShw: isPwdShw,
+          checkIsShw: isPwdShw,
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
           portalConf: {
@@ -79,7 +79,7 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           el: pwdFields.confirm_password,
           control,
           cbChange: () => trigger("password"),
-          isShw: isConfPwdShw,
+          checkIsShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
           portalConf: {
             showPortal: isCurrSwap && swapMode === "swapped",
