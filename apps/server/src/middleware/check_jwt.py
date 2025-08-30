@@ -24,10 +24,13 @@ def extract_jwt(req: Request) -> str:
 
 def check_jwt_mdw(req: Request, optional: bool = False) -> PayloadT | None:
 
-    token = extract_jwt(req)
+    try:
+        token = extract_jwt(req)
 
-    if optional and not token:
-        return None
+    except Exception:
+        if optional:
+            return None
+        raise
 
     decoded: PayloadT = check_jwt_lib(token)
     return decoded
