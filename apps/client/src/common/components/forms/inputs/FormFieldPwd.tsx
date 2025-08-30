@@ -8,7 +8,7 @@ import { FaLock, FaLockOpen } from "react-icons/fa6";
 import RawField from "./subComponents/RawField";
 
 type PropsType<T extends FieldValues> = {
-  checkIsShw: boolean;
+  isPwdShw: boolean;
   handleSvgClick: () => void;
 } & RawFieldPropsT<T>;
 
@@ -21,12 +21,12 @@ const FormFieldPwd = <T extends FieldValues>({
   isDisabled,
   manualMsg,
   showLabel = true,
-  checkIsShw,
+  isPwdShw,
   handleSvgClick,
   optRef,
   portalConf,
 }: PropsType<T>) => {
-  const Svg = checkIsShw ? FaLockOpen : FaLock;
+  const Svg = isPwdShw ? FaLockOpen : FaLock;
 
   return (
     <RawField
@@ -40,7 +40,7 @@ const FormFieldPwd = <T extends FieldValues>({
         manualMsg,
         showLabel,
         optRef,
-        dynamicInputT: checkIsShw ? "text" : "password",
+        dynamicInputT: isPwdShw ? "text" : "password",
         portalConf,
       }}
     >

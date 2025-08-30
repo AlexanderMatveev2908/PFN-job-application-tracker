@@ -40,6 +40,11 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
 
   const { coords, parentRef } = useSyncPortal([swapMode]);
 
+  const portalConf = {
+    showPortal: isCurrSwap && swapMode !== "swapping",
+    optDep: [swapMode],
+  };
+
   return (
     <div className="w-full grid grid-cols-1 gap-6">
       <PwdMatchTracker
@@ -62,13 +67,10 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           cbChange: () => trigger("confirm_password"),
           cbFocus: () => setIsFocus(true),
           cbBlur: () => setIsFocus(false),
-          checkIsShw: isPwdShw,
+          isPwdShw: isPwdShw,
           handleSvgClick: handlePwdClick,
           optRef: parentRef,
-          portalConf: {
-            showPortal: isCurrSwap && swapMode === "swapped",
-            optDep: [swapMode],
-          },
+          portalConf,
         }}
       />
 
@@ -79,12 +81,9 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
           el: pwdFields.confirm_password,
           control,
           cbChange: () => trigger("password"),
-          checkIsShw: isConfPwdShw,
+          isPwdShw: isConfPwdShw,
           handleSvgClick: handleConfPwd,
-          portalConf: {
-            showPortal: isCurrSwap && swapMode === "swapped",
-            optDep: [swapMode],
-          },
+          portalConf,
         }}
       />
     </div>
