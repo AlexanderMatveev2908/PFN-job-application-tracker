@@ -21,23 +21,31 @@ class EnvVar(BaseSettings):
         extra="forbid",
     )
 
+    # ? calculated during custom custom zsh scripts getting cwd lowercase
     app_name: str = Field(..., validation_alias="APP_NAME")
 
+    # ? fly deploy tokens needed in CI/CD
+
+    pfn_job_application_tracker__server: str = Field(
+        ..., validation_alias="PFN_JOB_APPLICATION_TRACKER__SERVER"
+    )
+    pfn_job_application_tracker__client: str = Field(
+        ..., validation_alias="PFN_JOB_APPLICATION_TRACKER__CLIENT"
+    )
+
     # ? client stuff used also on server to not repeat same vars
-    next_public_env: str | None = Field(
-        None, validation_alias="NEXT_PUBLIC_ENV"
+    next_public_env: str = Field(..., validation_alias="NEXT_PUBLIC_ENV")
+    next_public_back_url: str = Field(
+        ..., validation_alias="NEXT_PUBLIC_BACK_URL"
     )
-    next_public_back_url: str | None = Field(
-        None, validation_alias="NEXT_PUBLIC_BACK_URL"
+    next_public_back_url_dev: str = Field(
+        ..., validation_alias="NEXT_PUBLIC_BACK_URL_DEV"
     )
-    next_public_back_url_dev: str | None = Field(
-        None, validation_alias="NEXT_PUBLIC_BACK_URL_DEV"
+    next_public_front_url: str = Field(
+        ..., validation_alias="NEXT_PUBLIC_FRONT_URL"
     )
-    next_public_front_url: str | None = Field(
-        None, validation_alias="NEXT_PUBLIC_FRONT_URL"
-    )
-    next_public_front_url_dev: str | None = Field(
-        None, validation_alias="NEXT_PUBLIC_FRONT_URL_DEV"
+    next_public_front_url_dev: str = Field(
+        ..., validation_alias="NEXT_PUBLIC_FRONT_URL_DEV"
     )
 
     # ? my real env
@@ -61,11 +69,11 @@ class EnvVar(BaseSettings):
     db_url: str = Field(..., validation_alias="DB_URL")
 
     # ? test only
-    secret: str | None = Field(None, validation_alias="SECRET")
+    secret: str = Field(..., validation_alias="SECRET")
 
     # ? email gmail provider
-    my_email: str | None = Field(None, validation_alias="MY_EMAIL")
-    email_pwd: str | None = Field(None, validation_alias="EMAIL_PWD")
+    my_email: str = Field(..., validation_alias="MY_EMAIL")
+    email_pwd: str = Field(..., validation_alias="EMAIL_PWD")
 
     # ? provider brevo
     brevo_smpt_server: str = Field(..., validation_alias="BREVO_SMPT_SERVER")
