@@ -25,7 +25,7 @@ import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
-const Register: FC = ({}) => {
+const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
@@ -124,4 +124,4 @@ const Register: FC = ({}) => {
   );
 };
 
-export default Register;
+export default Page;
