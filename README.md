@@ -142,7 +142,7 @@ Available scripts:
 - [`dbc`](scripts/docker.zsh) — Build the Docker image for the client, passing build variables
 - [`dbs`](scripts/docker.zsh) — Build the Docker image for the server
 - [`dsi`](scripts/docker.zsh) — Start a Docker container
-- [`kind.zsh`](scripts/kind.zsh) — Create and manage the Kind cluster
+- [`kcc`](scripts/kind.zsh) — Create Kind cluster and apply all manifest files
 - [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via symlink
 
 ---
