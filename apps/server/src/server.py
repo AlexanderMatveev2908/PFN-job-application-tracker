@@ -1,3 +1,4 @@
+from importlib.resources import files
 from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
@@ -44,6 +45,9 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(lifespan=lifespan)
 
+lib = files("src.lib")
+
+print(lib.joinpath("email"))
 
 app.add_middleware(LoggerJSON)
 app.add_middleware(ParserQuery)

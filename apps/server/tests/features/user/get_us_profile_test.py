@@ -31,7 +31,8 @@ async def ok_t(api: AsyncClient) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "case, expected_code, expected_msg", [("jwt_expired", 401, "jwt_expired")]
+    "case, expected_code, expected_msg",
+    [("jwt_expired", 401, "jwt_expired"), ("ignored", 204, "")],
 )
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
@@ -41,11 +42,12 @@ async def bad_cases_t(
     res_profile = await wrap_httpx(
         api,
         url="/user/profile",
-        access_token=res_tokens["access_token"],
+        access_token=res_tokens["access_token"] if case != "ignored" else "",
         expected_code=expected_code,
         method="GET",
     )
 
-    assrt_msg(res_profile, expected_msg)
+    if expected_msg:
+        assrt_msg(res_profile, expected_msg)
 
     assert res_profile["data"].get("user") is None

@@ -4,7 +4,6 @@ from src.lib.logger import clg
 
 
 def parse_res(res: Response, expected_code: int) -> dict:
-    data = res.json()
 
     full = str(res.request.url)
     part = (
@@ -13,8 +12,12 @@ def parse_res(res: Response, expected_code: int) -> dict:
 
     shorted: dict = {}
 
-    for k, v in data.items():
-        shorted[k] = v[:100] if isinstance(v, str) else v
+    data = {}
+
+    if expected_code != 204:
+        data = res.json()
+        for k, v in data.items():
+            shorted[k] = v[:100] if isinstance(v, str) else v
 
     if expected_code != res.status_code:
         clg(
