@@ -15,6 +15,7 @@ const SideLogout: FC<PropsType> = ({ handleClick }) => {
 
   return (
     <button
+      data-testid={`side_link__logout`}
       onClick={async () => {
         await logoutUser();
         handleClick();

@@ -58,7 +58,10 @@ const Sidebar: FC = () => {
       >
         <div className="w-full flex h-full flex-col">
           {usState.isUsOk && (
-            <div className="w-full min-h-[60px] h-[60px] sticky top-0 border-b-3 flex items-center justify-start px-5">
+            <div
+              data-testid={"sidebar__span_mail"}
+              className="w-full min-h-[60px] h-[60px] sticky top-0 border-b-3 flex items-center justify-start px-5"
+            >
               <TxtScroll
                 {...{
                   txt: usState.user!.email,

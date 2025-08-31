@@ -1,14 +1,12 @@
 import test from "@playwright/test";
-import { loginUserOk } from "../../lib/fullActions";
-import { preTest } from "../../lib/pre";
 import { getByID, getByTxt } from "../../lib/get";
 import { extractInitialsUser } from "@/core/lib/formatters";
 import { waitTest, waitURL } from "../../lib/sideActions";
+import { preAuthLogout } from "./pre";
+import { clickByID } from "../../lib/click";
 
-test("logout ok", async ({ browser }) => {
-  const { payload, loginPage: page } = await loginUserOk(browser);
-
-  await preTest(page, "/protected");
+test("logout header ok", async ({ browser }) => {
+  const { payload, page } = await preAuthLogout(browser);
 
   const drop = await getByID(page, "header__toggle_drop");
 
@@ -19,11 +17,7 @@ test("logout ok", async ({ browser }) => {
 
   await waitTest(page);
 
-  await page.pause();
-
-  const logoutBtn = await getByID(page, "header_link__logout");
-
-  await logoutBtn.click();
+  await clickByID(page, "header_link__logout");
 
   await waitURL(page, "/");
 

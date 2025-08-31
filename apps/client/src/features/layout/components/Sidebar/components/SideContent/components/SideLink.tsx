@@ -17,6 +17,7 @@ const SideLink: FC<PropsType> = ({ lk, isCurrPath, handleClick }) => {
     <Link
       href={lk.href}
       onClick={handleClick}
+      data-testid={`side_link__${lk.label.toLowerCase()}`}
       className={`link__app ${
         isCurrPath && "link__curr"
       } flex items-center justify-start gap-6`}
