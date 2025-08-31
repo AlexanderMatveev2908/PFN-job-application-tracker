@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { useState, type FC } from "react";
 import WrapBtnAPI from "../../HOC/buttonWrappers/WrapBtnAPI";
 import InnerShadow from "./components/InnerShadow";
-import { TestIdT } from "@/common/types/ui";
+import { TestIDT } from "@/common/types/ui";
 
 type PropsType = {
   label: string;
@@ -13,7 +13,7 @@ type PropsType = {
   handleClick?: () => void;
   isEnabled?: boolean;
   isLoading?: boolean;
-} & TestIdT;
+} & TestIDT;
 
 const BtnShim: FC<PropsType> = ({
   handleClick,
@@ -21,14 +21,14 @@ const BtnShim: FC<PropsType> = ({
   type = "button",
   isEnabled = true,
   isLoading,
-  t_id,
+  testID,
 }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
     <WrapBtnAPI {...{ isLoading }}>
       <button
-        data-testid={t_id}
+        data-testid={testID}
         type={type}
         onClick={handleClick}
         disabled={!isEnabled}

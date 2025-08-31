@@ -11,7 +11,7 @@ type PropsType = {
   Svg: IconType;
 };
 
-const BounceIcon: FC<PropsType> = ({ $customCSS, Svg }) => {
+const BounceIconCSR: FC<PropsType> = ({ $customCSS, Svg }) => {
   return (
     <motion.div
       className="w-full flex justify-center"
@@ -31,4 +31,4 @@ const BounceIcon: FC<PropsType> = ({ $customCSS, Svg }) => {
   );
 };
 
-export default BounceIcon;
+export default BounceIconCSR;

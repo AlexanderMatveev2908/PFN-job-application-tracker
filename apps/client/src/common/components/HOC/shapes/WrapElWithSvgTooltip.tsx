@@ -2,14 +2,14 @@
 "use client";
 
 import { AppEventT } from "@/common/types/api";
-import { PortalConfT, TestIdT } from "@/common/types/ui";
+import { PortalConfT, TestIDT } from "@/common/types/ui";
 import { CSSProperties, useMemo, useState, type FC } from "react";
 import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
-import PortalTooltip from "./PortalTooltip";
+import PortalTooltip from "../../elements/tooltips/PortalTooltip";
 import Link from "next/link";
 import { RefObject } from "react";
 
@@ -29,16 +29,16 @@ type PropsType = {
     handleClick: () => void;
   };
 } & WrapSvgTltPropsT &
-  TestIdT;
+  TestIDT;
 
-const WrapSvgTooltip: FC<PropsType> = ({
+const WrapElWithSvgTooltip: FC<PropsType> = ({
   Svg,
   act = "NONE",
   confPortal,
   wrapper,
   propsLink,
   propsBtn,
-  t_id,
+  testID,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const $clr = $argClr[act];
@@ -47,7 +47,7 @@ const WrapSvgTooltip: FC<PropsType> = ({
 
   const objProps = useMemo(
     () => ({
-      "data-testid": t_id,
+      "data-testid": testID,
       onMouseEnter: () => setIsHover(true),
       onMouseLeave: () => setIsHover(false),
       ref: parentRef,
@@ -61,7 +61,7 @@ const WrapSvgTooltip: FC<PropsType> = ({
         "--scale__up": 1.3,
       } as CSSProperties,
     }),
-    [$clr, parentRef, wrapper, t_id]
+    [$clr, parentRef, wrapper, testID]
   );
 
   const content = (
@@ -81,7 +81,7 @@ const WrapSvgTooltip: FC<PropsType> = ({
             $sizeTrg: 30,
           }}
         >
-          <span className="txt__md py-2 px-4 inline-block max-w-[250px] sm:max-w-[400px] md:max-w-[450px] break-all">
+          <span className="txt__md py-2 px-4 inline-block max-w-[200px] sm:max-w-[300px] break-all">
             {confPortal!.txt}
           </span>
         </PortalTooltip>
@@ -110,4 +110,4 @@ const WrapSvgTooltip: FC<PropsType> = ({
   );
 };
 
-export default WrapSvgTooltip;
+export default WrapElWithSvgTooltip;

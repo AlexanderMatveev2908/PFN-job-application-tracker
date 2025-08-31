@@ -2,7 +2,7 @@
 "use client";
 
 import type { FC } from "react";
-import WrapShadow from "../HOC/shapes/WrapShadow";
+import WrapElWithShadow from "../HOC/shapes/WrapElWithShadow";
 import { SerializedStyles } from "@emotion/react";
 import { FieldTxtSvgT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
@@ -16,7 +16,7 @@ type PropsType = {
 };
 const LinkShadow: FC<PropsType> = (arg: PropsType) => {
   return (
-    <WrapShadow
+    <WrapElWithShadow
       {...{
         ...arg,
         wrapper: "next_link",

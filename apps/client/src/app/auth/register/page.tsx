@@ -3,52 +3,33 @@
 
 import { type FC } from "react";
 import { __cg } from "@/core/lib/log";
-import { FormProvider, Path, useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import ProgressSwap from "@/common/components/elements/ProgressSwap";
-import BodyForm from "@/features/auth/pages/register/components/BodyForm";
-import FooterForm from "@/features/auth/pages/register/components/FooterForm";
+import BodyFormRegister from "@/features/auth/pages/register/components/BodyFormRegister";
 import {
   RegisterFormT,
   registerSchema,
-} from "@/features/auth/pages/register/schemas/register";
-import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
+  resetValsRegister,
+} from "@/features/auth/pages/register/paperwork";
 import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
-import { envApp } from "@/core/constants/env";
-import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
+import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
+import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
+import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
-const Register: FC = ({}) => {
+const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      ...(!envApp.isDev
-        ? {
-            first_name: "",
-            last_name: "",
-            email: "",
-            password: "",
-            confirm_password: "",
-            terms: false,
-          }
-        : {
-            first_name: "Alex",
-            last_name: "Matveev",
-            email: "matveevalexander470@gmail.com",
-            password: "0$EM09btNPiC}!3d+t2{",
-            confirm_password: "0$EM09btNPiC}!3d+t2{",
-            terms: true,
-          }),
-    },
+    defaultValues: resetValsRegister,
   });
   const { setFocus, handleSubmit, reset } = formCtx;
 
@@ -108,41 +89,41 @@ const Register: FC = ({}) => {
   );
 
   return (
-    <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
-      <ProgressSwap
-        {...{
+    <AuthPageWrap
+      {...{
+        propsProgressSwap: {
           currSwap: swapState.currSwap,
-          maxW: 800,
           totSwaps: 2,
+        },
+      }}
+    >
+      <AuthFormWrap
+        {...{
+          handleSave,
+          formCtx,
+          formTestID: "register",
         }}
-      />
-      <div className="auth__form">
-        <FormProvider {...formCtx}>
-          <form
-            data-testid={"register_form"}
-            className="w-full grid grid-cols-1"
-            onSubmit={handleSave}
-          >
-            <BodyForm
-              {...{
-                swapState,
-              }}
-            />
+      >
+        <BodyFormRegister
+          {...{
+            swapState,
+          }}
+        />
 
-            <FooterForm
-              {...{
-                swapState,
-                startSwap,
-                isLoading,
-              }}
-            />
-
-            <SpannerLinks />
-          </form>
-        </FormProvider>
-      </div>
-    </div>
+        <AuthFormFooter
+          {...{
+            propsBtnsSwapper: {
+              swapState,
+              startSwap,
+              totSwaps: 2,
+            },
+            isLoading,
+            submitBtnTestID: "register",
+          }}
+        />
+      </AuthFormWrap>
+    </AuthPageWrap>
   );
 };
 
-export default Register;
+export default Page;

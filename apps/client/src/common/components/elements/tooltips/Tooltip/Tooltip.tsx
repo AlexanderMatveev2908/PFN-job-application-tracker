@@ -6,7 +6,7 @@ import { easeInOut, motion } from "framer-motion";
 import { css, SerializedStyles } from "@emotion/react";
 import { $argClr } from "@/core/uiFactory/style";
 import { AppEventT } from "@/common/types/api";
-import TriangleTooltip from "./subComponents/TriangleTooltip";
+import TriangleTooltip from "../subComponents/TriangleTooltip";
 
 type PropsType = {
   isHover: boolean;

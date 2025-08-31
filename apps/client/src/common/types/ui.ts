@@ -26,18 +26,16 @@ export type FieldInputT = "text" | "email" | "password" | "url" | "textarea";
 
 export type FormFieldTxtT<T extends FieldValues> = {
   name: Path<T>;
-  label: string | null;
+  label: string;
   place: string;
   type: FieldInputT;
 };
-
-export type FormFieldSvgT<T extends FieldValues> = FormFieldTxtT<T> & {};
 
 export type FieldCheckT = "checkbox" | "radio";
 
 export type FormFieldCheckT<T extends FieldValues> = {
   name: Path<T>;
-  label: string | null;
+  label: string;
   type: FieldCheckT;
 };
 
@@ -63,6 +61,6 @@ export type RawFieldPropsT<T extends FieldValues> = {
 
 export type RawEventT = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-export type TestIdT = {
-  t_id?: string;
+export type TestIDT = {
+  testID?: string;
 };

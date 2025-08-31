@@ -47,7 +47,7 @@ const Header: FC = () => {
         <DropMenuAbsolute
           {...{
             isEnabled: isHydrated,
-            t_id: "header__toggle_drop",
+            testID: "header__toggle_drop",
             el: {
               Svg: TbUserFilled,
             },

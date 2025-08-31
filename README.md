@@ -142,8 +142,11 @@ Available scripts:
 - [`dbc`](scripts/docker.zsh) — Build the Docker image for the client, passing build variables
 - [`dbs`](scripts/docker.zsh) — Build the Docker image for the server
 - [`dsi`](scripts/docker.zsh) — Start a Docker container
-- [`kind.zsh`](scripts/kind.zsh) — Create and manage the Kind cluster
-- [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via symlink
+- [`calc_path_k`](scripts/kind.zsh) — Calculate the path of a Kind manifest dynamically, accepting the config file name and a target (`server` or `client`)
+- [`kacw`](scripts/kind.zsh) — Use `calc_path_k` to apply all manifests for either the client or the server.
+- [`kac`](scripts/kind.zsh) — Apply manifests to both `client` and `server`, inject `secrets` into the cluster, and start the `nginx reverse proxy`.
+- [`kcc`](scripts/kind.zsh) — Create a Kind `cluster` and apply all manifest files using `kaf`
+- [`ngx`](scripts/nginx.zsh) — Manage Nginx config switching via `symlink`
 
 ---
 
@@ -486,7 +489,11 @@ A ready-to-use **Postman setup** is available at the root of the repo in the **p
 
 - [TEST_API.postman_collection.json](/postman/TEST_API.postman_collection.json) — Contains all API request
 - [ENV_VAR.postman_environment.json](postman/ENV_VAR.postman_environment.json) — Contains the required environment variables
-- [scripts](/postman/scripts/) — Contains reusable scripts used during testing to improve **efficiency** by automatically setting some environment variables **dynamically** based on **responses**
+- [scripts](/postman/scripts/) — Contains reusable scripts used during testing to improve **efficiency**:
+  - [get_tokens](/postman/scripts/get_tokens.js) — Extracts **access_token** and **cbc_hmac_token** from a response and sets them as **environment variables**.
+  - [refresh_token](postman/scripts/refresh_token.js) — If a response returns status **401**, attempts to obtain a **new access_token **by calling the **refresh endpoint**.
+
+---
 
 **📑 Notes**:
 

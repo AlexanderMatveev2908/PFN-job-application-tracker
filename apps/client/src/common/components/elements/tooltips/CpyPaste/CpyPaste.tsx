@@ -11,15 +11,15 @@ import {
 } from "react";
 import CpyClip from "./components/CpyClip";
 import { __cg } from "@/core/lib/log";
-import { reducer } from "./atc/reducer";
-import { initState } from "./atc/initState";
+import { reducer } from "./etc/reducer";
+import { initState } from "./etc/initState";
 import { clearTmr } from "@/core/lib/etc";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
-import { PortalConfT, TestIdT } from "@/common/types/ui";
+import { PortalConfT, TestIDT } from "@/common/types/ui";
 
-type PropsType = { txt: string; portalConf?: PortalConfT } & TestIdT;
+type PropsType = { txt: string; portalConf?: PortalConfT } & TestIDT;
 
-const CpyPaste: FC<PropsType> = ({ txt, portalConf, t_id }) => {
+const CpyPaste: FC<PropsType> = ({ txt, portalConf, testID }) => {
   const [state, dispatch] = useReducer(reducer, initState);
   const timerID = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -27,7 +27,7 @@ const CpyPaste: FC<PropsType> = ({ txt, portalConf, t_id }) => {
     if (!state.isCopied) return;
     clearTmr(timerID);
 
-    timerID.current = setTimeout(() => dispatch({ type: "CLOSE" }), 1500);
+    timerID.current = setTimeout(() => dispatch({ type: "CLOSE" }), 1600);
 
     return () => {
       clearTmr(timerID);
@@ -47,7 +47,7 @@ const CpyPaste: FC<PropsType> = ({ txt, portalConf, t_id }) => {
 
   return (
     <button
-      data-testid={t_id}
+      data-testid={testID}
       ref={parentRef as RefObject<HTMLButtonElement>}
       onClick={handleClick}
       type="button"

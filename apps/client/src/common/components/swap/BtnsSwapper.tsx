@@ -8,15 +8,19 @@ import {
   PayloadStartSwapT,
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
-import BtnShadow from "../../buttons/BtnShadow";
+import BtnShadow from "../buttons/BtnShadow";
 
-type PropsType = {
+export type PropsTypeBtnsSwapper = {
   totSwaps: number;
   swapState: SwapStateT;
   startSwap: (v: PayloadStartSwapT) => void;
 };
 
-const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
+const BtnsSwapper: FC<PropsTypeBtnsSwapper> = ({
+  swapState,
+  startSwap,
+  totSwaps,
+}) => {
   const { ids } = useGenIDs({ lengths: [2] });
 
   const { currSwap } = swapState;
@@ -32,7 +36,7 @@ const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
         >
           <BtnShadow
             {...{
-              t_id: !i ? "btns_swapper_prev_swap" : "btns_swapper_next_swap",
+              testID: !i ? "btns_swapper_prev_swap" : "btns_swapper_next_swap",
               act: "NONE",
               el: { Svg: !i ? ChevronLeft : ChevronRight },
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
