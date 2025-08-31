@@ -1,5 +1,6 @@
 "use client";
 
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import { __cg } from "@/core/lib/log";
 import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
@@ -11,24 +12,42 @@ import {
   loginSchema,
   resetValsLogin,
 } from "@/features/auth/pages/login/paperwork";
+import { authSliceAPI, LoginUserReturnT } from "@/features/auth/slices/api";
 import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
+import { useUs } from "@/features/user/hooks/useUs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 
 const Page: FC = () => {
   useEndPendingActionUser();
 
+  const { wrapAPI } = useWrapAPI();
+  const nav = useRouter();
+  const [mutate, { isLoading }] = authSliceAPI.useLoginUserMutation();
+  const { loginUser } = useUs();
+
   const formCtx = useForm<LoginFormT>({
     mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: resetValsLogin,
   });
-  const { handleSubmit, setFocus } = formCtx;
+  const { handleSubmit, setFocus, reset } = formCtx;
 
   const handleSave = handleSubmit(
     async (data) => {
-      __cg("data", data);
+      const res = await wrapAPI<LoginUserReturnT>({
+        cbAPI: () => mutate(data),
+      });
+
+      if (res.isErr) return;
+
+      if (res.access_token) loginUser(res.access_token);
+
+      reset(resetValsLogin);
+
+      nav.replace("/");
     },
     (errs) => {
       __cg("errs", errs);
@@ -51,7 +70,7 @@ const Page: FC = () => {
 
         <AuthFormFooter
           {...{
-            isLoading: false,
+            isLoading,
             submitBtnTestID: "login",
           }}
         />

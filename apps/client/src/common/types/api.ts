@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosHeaderValue, AxiosRequestConfig } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -29,6 +29,7 @@ export type ConfApiT = {
   params: AxiosRequestConfig["params"];
   responseType: AxiosRequestConfig["responseType"];
   headers: HeadersT;
+  jwt?: string;
 };
 export type DataApiT = {
   conf?: ConfApiT;

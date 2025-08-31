@@ -4,6 +4,7 @@ import { serialize } from "@/core/lib/dataStructure";
 import { ArgType, BaseQueryReturnT } from "./lib/types";
 import { extractHeaders, extractMsgErr, parseErr } from "./lib/etc";
 import { handleRefreshErr, refreshToken } from "./lib/refresh";
+import { getStorage } from "@/core/lib/storage";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -19,6 +20,7 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
     params,
     responseType,
     reqData: serialize(originalDataRequest),
+    jwt: getStorage("access_token") as string,
   };
 
   try {
