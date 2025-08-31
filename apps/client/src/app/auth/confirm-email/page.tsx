@@ -19,6 +19,7 @@ const Page: FC = () => {
       return errs;
     }
   );
+
   return (
     <AuthEmailForm
       {...{
