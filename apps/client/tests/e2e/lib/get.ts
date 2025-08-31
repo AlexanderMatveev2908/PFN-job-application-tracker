@@ -1,7 +1,10 @@
 import { Locator, Page } from "@playwright/test";
 import { checkIsShw } from "./check";
 
-export const getByID = async (loc: Page | Locator, id: string) => {
+export const getByID = async (
+  loc: Page | Locator,
+  id: string
+): Promise<Locator> => {
   const el = loc.locator(`[data-testid='${id}']`);
 
   await checkIsShw(el);
