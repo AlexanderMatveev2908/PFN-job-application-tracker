@@ -11,11 +11,14 @@ import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 import { css } from "@emotion/react";
 import SideContent from "./components/SideContent/SideContent";
+import { useGetUsState } from "@/features/user/hooks/useGetUsState";
+import { isStr } from "@/core/lib/dataStructure";
 
 const Sidebar: FC = () => {
   const sideRef = useRef(null);
 
   const sideState = useSelector(getSideState);
+  const usState = useGetUsState();
 
   const dispatch = useDispatch();
 
@@ -55,13 +58,15 @@ const Sidebar: FC = () => {
         }}
       >
         <div className="w-full flex h-full flex-col">
-          <div className="w-full min-h-[60px] h-[60px] sticky top-0 border-b-3 flex items-center justify-start px-5">
-            <TxtScroll
-              {...{
-                txt: "example@gmail.com",
-              }}
-            />
-          </div>
+          {usState.isLogged && isStr(usState.user?.email) && (
+            <div className="w-full min-h-[60px] h-[60px] sticky top-0 border-b-3 flex items-center justify-start px-5">
+              <TxtScroll
+                {...{
+                  txt: usState.user!.email,
+                }}
+              />
+            </div>
+          )}
 
           <div
             className="scroll__app overflow-y-auto flex flex-col px-5 pt-3 pb-8"
