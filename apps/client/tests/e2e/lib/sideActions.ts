@@ -10,7 +10,7 @@ export const closeToast = async (page: Page): Promise<undefined> => {
   } catch {}
 };
 
-export const waitTest = async (page: Page, v: number = 750) => {
+export const waitTest = async (page: Page, v: number = 1000) => {
   await page.waitForTimeout(v);
 };
 

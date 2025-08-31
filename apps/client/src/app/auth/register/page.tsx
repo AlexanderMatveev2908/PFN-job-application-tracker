@@ -10,7 +10,7 @@ import BodyForm from "@/features/auth/pages/register/components/BodyForm";
 import {
   RegisterFormT,
   registerSchema,
-} from "@/features/auth/pages/register/schemas/register";
+} from "@/features/auth/pages/register/paperwork";
 import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";

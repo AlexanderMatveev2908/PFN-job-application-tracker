@@ -1,5 +1,5 @@
 import { FormFieldGen } from "@/core/uiFactory/classes";
-import { RegisterFormT } from "../schemas/register";
+import { RegisterFormT } from "../paperwork";
 import { FormFieldCheckT, FormFieldTxtT } from "@/common/types/ui";
 
 const gen = new FormFieldGen<RegisterFormT>();

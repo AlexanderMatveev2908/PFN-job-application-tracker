@@ -1,6 +1,6 @@
 import { ResApiT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
-import { RegisterFormT } from "../pages/register/schemas/register";
+import { RegisterFormT } from "../pages/register/paperwork";
 
 const BASE = "/auth";
 

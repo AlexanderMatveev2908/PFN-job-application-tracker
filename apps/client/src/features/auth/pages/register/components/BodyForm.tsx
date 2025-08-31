@@ -7,7 +7,7 @@ import { registerSwap_0, termsField } from "../uiFactory/register";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { RegisterFormT } from "../schemas/register";
+import { RegisterFormT } from "../paperwork";
 import { useListenHeight } from "@/core/hooks/ui/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
 import PairPwd from "@/features/auth/components/PairPwd/PairPwd";
