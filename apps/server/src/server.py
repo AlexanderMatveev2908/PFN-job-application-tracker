@@ -1,21 +1,23 @@
 from typing import AsyncIterator
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.conf.redis import clean_redis, get_all_redis  # noqa: F401
 from src.decorators.err import ErrAPI
-from src.__dev_only.db.delete import clean_tables  # noqa: F401
-from src.lib.emails.aiosmtp.idx import send_email  # noqa: F401
-from src.lib.etc import wrap_loop  # noqa: F401
 from src.lib.logger import cent
-from src.middleware.cors import CorsMDW
-from src.middleware.form_data_parser import FormDataParser
-from src.middleware.json_logger import LoggerJSON
+from src.middleware.security.cors import CorsMDW
+from src.middleware.parsers.form_data_parser import FormDataParser
+from src.middleware.dev_only.json_logger import LoggerJSON
 from src.middleware.wrap_api import WrapAPI
 from src.routes.idx import api
-from .middleware.query_parser import ParserQuery
+from .middleware.parsers.query_parser import ParserQuery
 from src.conf.env import get_env
 from fastapi.middleware.cors import CORSMiddleware
 from .constants.api import EXPOSE_HEADERS, whitelist
+from src.lib.ce import get_cost  # noqa: F401
+from src.lib.db.idx import get_all  # noqa: F401
+from src.lib.etc import wrap_loop  # noqa: F401
+from src.lib.resdis.idx import get_all_redis  # noqa: F401
+from src.lib.s3.get import gen_list_assets  # noqa: F401
+from src.__dev_only.delete import clean_DBs  # noqa: F401
 
 
 @asynccontextmanager
@@ -23,11 +25,11 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     cent(f"🚀 server running on {get_env().port}...")
 
     # await get_all()
+    # await get_all_redis()
     # await gen_list_assets()
     # await get_cost()
-    # await get_all_redis()
-    # await clean_tables()
-    # await clean_redis()
+
+    # await clean_DBs(True)
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)
@@ -39,9 +41,6 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
     cent("💣 server shutting down")
 
-
-# wrap_loop(send_email)
-# wrap_loop(clean_tables)
 
 app = FastAPI(lifespan=lifespan)
 

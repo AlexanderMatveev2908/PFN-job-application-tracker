@@ -3,7 +3,7 @@ from src.features.require_email.controllers.post import (
     confirm_email_ctrl,
     require_email_forgot_pwd_ctrl,
 )
-from src.middleware.rate_limiter import rate_limit_mdw
+from src.middleware.security.rate_limiter import rate_limit_mdw
 
 
 require_email_router = APIRouter(prefix="/require-email")

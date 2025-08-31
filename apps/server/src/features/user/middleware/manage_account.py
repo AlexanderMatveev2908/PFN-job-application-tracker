@@ -2,8 +2,8 @@ from typing import cast
 from fastapi import Request
 from src.decorators.err import ErrAPI
 from src.lib.validators.idx import PwdFormT
-from src.middleware.check_form import check_form_mdw
-from src.middleware.check_jwt import check_jwt_search_us_mdw
+from src.middleware.forms.check_form import check_form_mdw
+from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.user import User, UserDcT
 
 

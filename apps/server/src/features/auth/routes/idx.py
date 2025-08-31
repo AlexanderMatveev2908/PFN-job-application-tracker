@@ -10,7 +10,7 @@ from src.features.auth.controllers.post import (
     refresh_token_ctrl,
     register_ctrl,
 )
-from src.middleware.rate_limiter import rate_limit_mdw
+from src.middleware.security.rate_limiter import rate_limit_mdw
 
 
 auth_router = APIRouter(prefix="/auth")

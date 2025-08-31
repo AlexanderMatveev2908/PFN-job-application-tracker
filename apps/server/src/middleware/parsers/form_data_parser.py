@@ -11,7 +11,7 @@ from starlette.types import ASGIApp
 from starlette.datastructures import UploadFile
 
 from src.lib.data_structure import parse_bool
-from ..lib.system import APP_DIR
+from ...lib.system import APP_DIR
 
 
 UPLOAD_FIR = APP_DIR / "uploads"

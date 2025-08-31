@@ -7,7 +7,7 @@ from fastapi import Request
 
 from src.lib.data_structure import is_obj_ok
 from src.lib.logger import clg
-from ..lib.system import write_f
+from ...lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp

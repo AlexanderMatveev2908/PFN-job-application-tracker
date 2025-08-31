@@ -1,6 +1,6 @@
 from fastapi import Request
 from src.lib.validators.idx import EmailFormT, PwdFormT
-from src.middleware.check_form import check_form_mdw
+from src.middleware.forms.check_form import check_form_mdw
 
 
 class LoginForm(EmailFormT, PwdFormT):

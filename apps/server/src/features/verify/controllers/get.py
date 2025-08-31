@@ -8,7 +8,7 @@ from src.lib.cookies import gen_refresh_cookie
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
-from src.middleware.check_cbc_hmac import (
+from src.middleware.tokens.check_cbc_hmac import (
     check_cbc_hmac_with_us_mdw,
 )
 from src.models.token import (
