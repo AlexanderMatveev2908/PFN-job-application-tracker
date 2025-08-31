@@ -11,7 +11,6 @@ import {
   RegisterFormT,
   registerSchema,
 } from "@/features/auth/pages/register/schemas/register";
-import SpannerLinks from "@/features/auth/components/SpannerLinks/SpannerLinks";
 import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
@@ -120,8 +119,6 @@ const Page: FC = () => {
               submitBtnTestID: "register__footer_form__submit_btn",
             }}
           />
-
-          <SpannerLinks />
         </form>
       </FormProvider>
     </AuthPageWrap>

@@ -9,6 +9,7 @@ import {
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
+import SpannerLinks from "./SpannerLinks/SpannerLinks";
 
 type PropsType = {
   propsBtnsSwapper: {
@@ -26,26 +27,29 @@ const AuthFormFooter: FC<PropsType> = ({
   submitBtnTestID,
 }) => {
   return (
-    <div className="w-full grid grid-cols-1 gap-8 p-5">
-      {isObjOk(propsBtnsSwapper) && (
-        <BtnsSwapper
-          {...{
-            ...propsBtnsSwapper,
-          }}
-        />
-      )}
+    <>
+      <div className="w-full grid grid-cols-1 gap-8 p-5">
+        {isObjOk(propsBtnsSwapper) && (
+          <BtnsSwapper
+            {...{
+              ...propsBtnsSwapper,
+            }}
+          />
+        )}
 
-      <div className="w-[250px] justify-self-center">
-        <BtnShim
-          {...{
-            type: "submit",
-            label: "Submit",
-            t_id: submitBtnTestID,
-            isLoading,
-          }}
-        />
+        <div className="w-[250px] justify-self-center">
+          <BtnShim
+            {...{
+              type: "submit",
+              label: "Submit",
+              t_id: submitBtnTestID,
+              isLoading,
+            }}
+          />
+        </div>
       </div>
-    </div>
+      <SpannerLinks />
+    </>
   );
 };
 
