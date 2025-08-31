@@ -1,5 +1,6 @@
 "use client";
 
+import { logFormErrs } from "@/core/lib/etc";
 import { __cg } from "@/core/lib/log";
 import AuthEmailForm from "@/features/auth/components/AuthEmailForm/AuthEmailForm";
 import { useEmailForm } from "@/features/auth/components/AuthEmailForm/hooks/useEmailForm";
@@ -9,16 +10,9 @@ const Page: FC = () => {
   const { formCtx } = useEmailForm();
   const { handleSubmit } = formCtx;
 
-  const handleSave = handleSubmit(
-    async (data) => {
-      __cg(data);
-    },
-    (errs) => {
-      __cg("errs", errs);
-
-      return errs;
-    }
-  );
+  const handleSave = handleSubmit(async (data) => {
+    __cg(data);
+  }, logFormErrs);
 
   return (
     <AuthEmailForm

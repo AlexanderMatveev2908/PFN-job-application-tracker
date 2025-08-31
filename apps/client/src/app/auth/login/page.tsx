@@ -2,7 +2,7 @@
 
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocus } from "@/core/hooks/ui/useFocus";
-import { __cg } from "@/core/lib/log";
+import { logFormErrs } from "@/core/lib/etc";
 import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
 import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
@@ -32,25 +32,19 @@ const Page: FC = () => {
   });
   const { handleSubmit, setFocus, reset } = formCtx;
 
-  const handleSave = handleSubmit(
-    async (data) => {
-      const res = await wrapAPI<LoginUserReturnT>({
-        cbAPI: () => mutate(data),
-      });
+  const handleSave = handleSubmit(async (data) => {
+    const res = await wrapAPI<LoginUserReturnT>({
+      cbAPI: () => mutate(data),
+    });
 
-      if (res.isErr) return;
+    if (res.isErr) return;
 
-      if (res.access_token) loginUser(res.access_token);
+    if (res.access_token) loginUser(res.access_token);
 
-      reset(resetValsLogin);
+    reset(resetValsLogin);
 
-      nav.replace("/");
-    },
-    (errs) => {
-      __cg("errs", errs);
-      return errs;
-    }
-  );
+    nav.replace("/");
+  }, logFormErrs);
 
   useFocus("email", { setFocus });
 
