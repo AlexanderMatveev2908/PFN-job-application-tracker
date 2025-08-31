@@ -6,7 +6,7 @@ import { __cg } from "@/core/lib/log";
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import BodyForm from "@/features/auth/pages/register/components/BodyForm";
+import BodyFormRegister from "@/features/auth/pages/register/components/BodyFormRegister";
 import {
   RegisterFormT,
   registerSchema,
@@ -104,7 +104,7 @@ const Page: FC = () => {
           formTestID: "register",
         }}
       >
-        <BodyForm
+        <BodyFormRegister
           {...{
             swapState,
           }}

@@ -18,7 +18,7 @@ type PropsType = {
   swapState: SwapStateT;
 };
 
-const BodyForm: FC<PropsType> = ({ swapState }) => {
+const BodyFormRegister: FC<PropsType> = ({ swapState }) => {
   const { currSwap, swapMode } = swapState;
   const { contentRef, contentH } = useListenHeight({
     opdDep: [currSwap],
@@ -96,4 +96,4 @@ const BodyForm: FC<PropsType> = ({ swapState }) => {
   );
 };
 
-export default BodyForm;
+export default BodyFormRegister;
