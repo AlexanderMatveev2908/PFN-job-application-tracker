@@ -11,14 +11,14 @@ import DropMenuStatic from "@/common/components/dropMenus/DropMenuStatic";
 import { useDispatch } from "react-redux";
 import { sideSlice } from "../../slice";
 import { linkLogout, linksAll, linksNonLogged } from "@/core/uiFactory/links";
-import { useGetUsState } from "@/features/user/hooks/useGetUsState";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 
 const SideContent: FC = () => {
   const { ids } = useGenIDs({
     lengths: [linksAll.length, sideLinksLogged.length, linksNonLogged.length],
   });
 
-  const isLogged = useGetUsState().isLogged;
+  const isUsOk = useGetUserState().isUsOk;
   const dispatch = useDispatch();
   const path = usePathname();
 
@@ -39,7 +39,7 @@ const SideContent: FC = () => {
         />
       ))}
 
-      {!isLogged && (
+      {!isUsOk && (
         <DropMenuStatic {...{ el: sideDropAccount }}>
           {linksNonLogged.map((lk, i) => (
             <SideLink
@@ -54,7 +54,7 @@ const SideContent: FC = () => {
         </DropMenuStatic>
       )}
 
-      {isLogged && (
+      {isUsOk && (
         <SideLink {...{ lk: linkLogout, isCurrPath: false, handleClick }} />
       )}
     </div>

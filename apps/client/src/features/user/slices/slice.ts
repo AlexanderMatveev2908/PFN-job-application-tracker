@@ -9,6 +9,7 @@ export interface UserStateT {
   access_token: string;
   cbc_hmac_token: string;
   user: UserT | null;
+  touchedServer: boolean;
 }
 
 const initState: UserStateT = {
@@ -17,6 +18,7 @@ const initState: UserStateT = {
   access_token: "",
   cbc_hmac_token: "",
   user: null,
+  touchedServer: false,
 };
 
 export const userSlice = createSlice({
@@ -33,8 +35,9 @@ export const userSlice = createSlice({
     ) => {
       state.access_token = action.payload.access_token;
     },
-    setUser: (state, action: PayloadAction<UserT>) => {
-      state.user = action.payload;
+    setUser: (state, action: PayloadAction<UserT | undefined>) => {
+      state.user = action.payload ?? null;
+      state.touchedServer = true;
     },
     logout: () => ({ ...initState, pendingAction: true }),
     endPendingAction: (state) => {

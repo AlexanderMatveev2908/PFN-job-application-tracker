@@ -2,9 +2,9 @@ import { useDispatch } from "react-redux";
 import { userSlice } from "../slices/slice";
 import { useCallback } from "react";
 import { saveStorage } from "@/core/lib/storage";
-import { useGetUsState } from "./useGetUsState";
+import { useGetUserState } from "./useGetUserState";
 
-export const useUs = () => {
+export const useUser = () => {
   const dispatch = useDispatch();
 
   const loginUser = useCallback(
@@ -16,7 +16,7 @@ export const useUs = () => {
   );
 
   return {
-    userState: useGetUsState(),
+    userState: useGetUserState(),
     loginUser,
   };
 };

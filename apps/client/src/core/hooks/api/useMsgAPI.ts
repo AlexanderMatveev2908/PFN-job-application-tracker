@@ -1,7 +1,6 @@
 import { ResApiT } from "@/common/types/api";
 import { isStr } from "@/core/lib/dataStructure";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,13 +10,11 @@ type Params<T> = {
 };
 
 export const useMsgAPI = () => {
-  const nav = useRouter();
   const dispatch = useDispatch();
 
   const handleMsgSession = useCallback(
     <T>({ data, showToast }: Params<T>) => {
       if (data?.restoredSession) {
-        nav.replace("/");
         dispatch(
           toastSlice.actions.open({
             msg: "session restored",
@@ -34,7 +31,7 @@ export const useMsgAPI = () => {
           );
       }
     },
-    [nav, dispatch]
+    [dispatch]
   );
 
   return {

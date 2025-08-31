@@ -14,8 +14,8 @@ export interface LinkAppSvgT extends LinkAppT {
 }
 
 export interface FieldTxtSvgT {
-  label?: string;
-  Svg?: IconType;
+  label?: string | null;
+  Svg?: IconType | null;
 }
 
 export type ChildrenT = {
