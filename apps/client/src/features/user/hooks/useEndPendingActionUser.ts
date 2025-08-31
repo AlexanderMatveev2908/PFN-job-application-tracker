@@ -10,5 +10,4 @@ export const useEndPendingActionUser = () => {
   useEffect(() => {
     if (usState.pendingAction) dispatch(userSlice.actions.endPendingAction());
   }, [usState, dispatch]);
-  return {};
 };

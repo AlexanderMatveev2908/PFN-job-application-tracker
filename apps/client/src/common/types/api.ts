@@ -1,4 +1,4 @@
-import { AxiosHeaderValue, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

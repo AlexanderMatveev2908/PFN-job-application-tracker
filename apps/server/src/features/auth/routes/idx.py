@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from src.features.auth.controllers.get import refresh_token_ctrl
 from src.features.auth.controllers.patch import (
     recover_pwd_ctrl,
     revocer_pwd_2FA_ctrl,
@@ -7,7 +8,6 @@ from src.features.auth.controllers.patch import (
 from src.features.auth.controllers.post import (
     login_2FA_ctrl,
     login_ctrl,
-    refresh_token_ctrl,
     register_ctrl,
 )
 from src.middleware.security.rate_limiter import rate_limit_mdw

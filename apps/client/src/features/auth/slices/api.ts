@@ -1,4 +1,4 @@
-import { ResApiT } from "@/common/types/api";
+import { ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { RegisterFormT } from "../pages/register/paperwork";
 import { LoginFormT } from "../pages/login/paperwork";
@@ -20,14 +20,17 @@ export const authSliceAPI = apiSlice.injectEndpoints({
           method: "POST",
           data,
         }),
+        invalidatesTags: [TagAPI.USER],
       }
     ),
+
     loginUser: builder.mutation<ResApiT<LoginUserReturnT>, LoginFormT>({
       query: (data) => ({
         url: `${BASE}/login`,
         method: "POST",
         data,
       }),
+      invalidatesTags: [TagAPI.USER],
     }),
   }),
 });

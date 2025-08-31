@@ -56,7 +56,7 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
 
     return resultReturn;
   } catch (err: any) {
-    const { response, errData, status } = await parseErr(err);
+    const { response, errData, status = 500 } = await parseErr(err);
 
     if (
       status !== 401 ||
