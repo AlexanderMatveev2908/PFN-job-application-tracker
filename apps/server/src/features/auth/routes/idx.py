@@ -8,6 +8,7 @@ from src.features.auth.controllers.patch import (
 from src.features.auth.controllers.post import (
     login_2FA_ctrl,
     login_ctrl,
+    logout_ctrl,
     register_ctrl,
 )
 from src.middleware.security.rate_limiter import rate_limit_mdw
@@ -50,6 +51,7 @@ auth_router.add_api_route(
     dependencies=[Depends(rate_limit_mdw(limit=5, window_arg="1h"))],
 )
 
+auth_router.add_api_route("/logout", logout_ctrl, methods=["POST"])
 
 auth_router.add_api_route(
     "/refresh",
