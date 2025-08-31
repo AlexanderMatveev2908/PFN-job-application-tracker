@@ -1,12 +1,12 @@
-from pathlib import Path
 import re
 import aiofiles
 
 from src.decorators.err import ErrAPI
+from src.lib.system import APP_DIR
 
 
 async def grab_html() -> str | None:
-    p = Path.cwd() / "src" / "lib" / "emails" / "template.html"
+    p = APP_DIR / "src" / "lib" / "emails" / "template.html"
 
     txt = ""
     async with aiofiles.open(p, "r", encoding="utf-8") as f:
