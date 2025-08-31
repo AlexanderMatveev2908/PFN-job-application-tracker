@@ -13,7 +13,7 @@ from src.features.user.controllers.post import (
     get_access_manage_account_2FA_ctrl,
     new_backup_codes_ctrl,
 )
-from src.middleware.rate_limiter import rate_limit_mdw
+from src.middleware.security.rate_limiter import rate_limit_mdw
 
 
 user_router = APIRouter(prefix="/user")

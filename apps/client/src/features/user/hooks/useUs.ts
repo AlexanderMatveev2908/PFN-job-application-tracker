@@ -16,7 +16,7 @@ export const useUs = () => {
   );
 
   return {
-    ...useGetUsState(),
+    userState: useGetUsState(),
     loginUser,
   };
 };

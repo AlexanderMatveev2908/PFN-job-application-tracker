@@ -3,7 +3,7 @@ from src.features.test.controllers.get import (
     get_msg_ctrl,
     get_protected_data_ctrl,
 )
-from src.middleware.rate_limiter import rate_limit_mdw
+from src.middleware.security.rate_limiter import rate_limit_mdw
 from ..controllers.post import (
     get_err_ctrl,
     get_us_2FA_ctrl,

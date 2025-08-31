@@ -17,8 +17,6 @@ async def client(clean: bool = True) -> AsyncGenerator[AsyncClient, None]:
     ) as c:
         if clean:
             pass
-            # await clean_tables()
-            # await clean_redis()
         yield c
 
 

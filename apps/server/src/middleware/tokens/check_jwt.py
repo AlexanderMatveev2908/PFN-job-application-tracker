@@ -2,6 +2,7 @@ from typing import Awaitable, Callable, cast
 from fastapi import Request
 
 from src.conf.db import db_trx
+from src.constants.reg import REG_JWE
 from src.decorators.err import ErrAPI
 from src.lib.db.idx import get_us_by_id
 from src.lib.tokens.jwt import check_jwt_lib
@@ -29,6 +30,11 @@ def check_jwt_mdw(req: Request, optional: bool = False) -> PayloadT | None:
 
     except Exception:
         if optional:
+            refresh = req.cookies.get("refresh_token", "")
+
+            if REG_JWE.fullmatch(refresh):
+                raise
+
             return None
         raise
 

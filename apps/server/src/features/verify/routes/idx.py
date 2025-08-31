@@ -10,7 +10,7 @@ from src.features.verify.controllers.patch import (
 from src.features.verify.controllers.post import (
     recover_pwd_2FA_ctrl,
 )
-from src.middleware.rate_limiter import rate_limit_mdw
+from src.middleware.security.rate_limiter import rate_limit_mdw
 
 
 verify_router = APIRouter(prefix="/verify")

@@ -3,7 +3,7 @@ from fastapi import Request
 from src.conf.db import db_trx
 from src.lib.db.idx import get_us_by_email
 from src.lib.validators.idx import EmailFormT
-from src.middleware.check_form import check_form_mdw
+from src.middleware.forms.check_form import check_form_mdw
 from src.models.user import User, UserDcT
 
 

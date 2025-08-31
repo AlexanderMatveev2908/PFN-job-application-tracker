@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us
-from src.middleware.check_form import check_form_mdw
-from src.middleware.check_jwt import check_jwt_mdw
+from src.middleware.forms.check_form import check_form_mdw
+from src.middleware.tokens.check_jwt import check_jwt_mdw
 from src.models.token import CheckTokenWithUsReturnT, TokenT
 from src.my_types.idx import FormT
 
