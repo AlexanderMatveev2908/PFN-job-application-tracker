@@ -3,7 +3,7 @@
 
 import { type FC } from "react";
 import { __cg } from "@/core/lib/log";
-import { FormProvider, Path, useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import BodyForm from "@/features/auth/pages/register/components/BodyForm";
@@ -21,6 +21,7 @@ import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
 import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
+import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -96,31 +97,31 @@ const Page: FC = () => {
         },
       }}
     >
-      <FormProvider {...formCtx}>
-        <form
-          data-testid={"register_form"}
-          className="w-full grid grid-cols-1"
-          onSubmit={handleSave}
-        >
-          <BodyForm
-            {...{
-              swapState,
-            }}
-          />
+      <AuthFormWrap
+        {...{
+          handleSave,
+          formCtx,
+          testID: "register_form",
+        }}
+      >
+        <BodyForm
+          {...{
+            swapState,
+          }}
+        />
 
-          <AuthFormFooter
-            {...{
-              propsBtnsSwapper: {
-                swapState,
-                startSwap,
-                totSwaps: 2,
-              },
-              isLoading,
-              submitBtnTestID: "register__footer_form__submit_btn",
-            }}
-          />
-        </form>
-      </FormProvider>
+        <AuthFormFooter
+          {...{
+            propsBtnsSwapper: {
+              swapState,
+              startSwap,
+              totSwaps: 2,
+            },
+            isLoading,
+            submitBtnTestID: "register__footer_form__submit_btn",
+          }}
+        />
+      </AuthFormWrap>
     </AuthPageWrap>
   );
 };
