@@ -15,6 +15,7 @@ type PropsType = {
 const HeaderLink: FC<PropsType> = ({ lk, isCurrPath, handleClick }) => {
   return (
     <Link
+      data-testid={`header_link__${lk.label.toLowerCase()}`}
       href={lk.href}
       onClick={handleClick}
       className={`${

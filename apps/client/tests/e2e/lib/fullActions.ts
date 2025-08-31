@@ -3,8 +3,9 @@ import { preAuthRegister } from "../auth/register/pre";
 import { clickByID } from "./click";
 import { getByID, getByTxt } from "./get";
 import { waitTest, waitURL } from "./sideActions";
-import { Page } from "@playwright/test";
+import { Browser, Page } from "@playwright/test";
 import { genRegisterPayload, PayloadRegisterT } from "./gen";
+import { preAuthLogin } from "../auth/login/pre";
 
 export const registerUserOk = async (
   page: Page,
@@ -38,4 +39,36 @@ export const registerUserOk = async (
   await waitURL(page, "/notice");
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
+};
+
+export const loginUserOk = async (browser: Browser) => {
+  const payload = genRegisterPayload();
+
+  const registerCtx = await browser.newContext();
+  const registerPage = await registerCtx.newPage();
+  await registerUserOk(registerPage, payload);
+
+  const loginCtx = await browser.newContext();
+  const loginPage = await loginCtx.newPage();
+
+  const el = await preAuthLogin(loginPage);
+
+  const email = await getByID(el, "email");
+  email.fill(payload.email);
+
+  const pwd = await getByID(el, "password");
+  pwd.fill(payload.password);
+
+  await clickByID(el, "login__footer_form__submit_btn");
+
+  await waitURL(loginPage, "/");
+
+  await waitTest(loginPage);
+
+  await getByTxt(loginPage, "operation successful");
+
+  return {
+    payload,
+    loginPage,
+  };
 };

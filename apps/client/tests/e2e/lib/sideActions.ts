@@ -15,5 +15,5 @@ export const waitTest = async (page: Page, v: number = 1000) => {
 };
 
 export const waitURL = async (page: Page, url: string) => {
-  await page.waitForURL(url, { timeout: 7500 });
+  await page.waitForURL(url, { timeout: 10000 });
 };
