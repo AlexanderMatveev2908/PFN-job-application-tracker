@@ -20,6 +20,7 @@ import { headerHight } from "@/core/constants/style";
 import { useHydration } from "@/core/hooks/ui/useHydration";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { extractInitialsUser } from "@/core/lib/formatters";
+import LogoutHeader from "./components/LogoutHeader";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
@@ -78,6 +79,8 @@ const Header: FC = () => {
               />
             )
           )}
+
+          {usState.isUsOk && <LogoutHeader />}
         </DropMenuAbsolute>
 
         <button
