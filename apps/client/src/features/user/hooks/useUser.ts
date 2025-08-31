@@ -6,6 +6,7 @@ import { useGetUserState } from "./useGetUserState";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { authSliceAPI } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
+import { apiSlice } from "@/core/store/api";
 
 export const useUser = () => {
   const { wrapAPI } = useWrapAPI();
@@ -33,6 +34,7 @@ export const useUser = () => {
 
     clearStorage();
     dispatch(userSlice.actions.logout());
+    dispatch(apiSlice.util.resetApiState());
 
     nav.replace("/");
   }, [wrapAPI, mutate, dispatch, nav]);
