@@ -46,7 +46,7 @@ const Header: FC = () => {
         <SvgLogo className="svg__xl" />
       </Link>
 
-      <div ref={dropRef} className="w-fit flex items-center gap-14">
+      <div ref={dropRef} className="w-fit flex items-center gap-10">
         <DropMenuAbsolute
           {...{
             isEnabled: isHydrated,
@@ -58,8 +58,11 @@ const Header: FC = () => {
                 : null,
             },
             $SvgCls: "svg__sm",
-            $customCSS: css`
+            $cstmDropCSS: css`
               left: -200px;
+            `,
+            $cstmLabelCSS: css`
+              padding: ${usState.isUsOk ? "6px 10px" : "6px"};
             `,
           }}
         >

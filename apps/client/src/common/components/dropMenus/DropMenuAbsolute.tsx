@@ -11,7 +11,8 @@ type PropsType = {
   el: FieldTxtSvgT;
   isEnabled?: boolean;
   $SvgCls?: string;
-  $customCSS?: SerializedStyles;
+  $cstmDropCSS?: SerializedStyles;
+  $cstmLabelCSS?: SerializedStyles;
 } & ChildrenT &
   TestIDT;
 
@@ -20,7 +21,8 @@ const DropMenuAbsolute: FC<PropsType> = ({
   $SvgCls,
   isEnabled = true,
   children,
-  $customCSS,
+  $cstmDropCSS,
+  $cstmLabelCSS,
   testID,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +39,10 @@ const DropMenuAbsolute: FC<PropsType> = ({
         disabled={!isEnabled}
         data-testid={testID}
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
+        css={css`
+          ${$cstmLabelCSS}
+        `}
+        className={`btn__app w-full cursor-pointer border-2 bd__sm ${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
             : "text-neutral-300 enabled:hover:text-neutral-950"
@@ -55,7 +60,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
         data-testid={"drop_menu_absolute__content"}
         className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
-          ${$customCSS}
+          ${$cstmDropCSS}
           top: calc(100% + 10px);
           transition: transform 0.4s, opacity 0.3s;
           transform: translateY(${isOpen ? "0" : "75px"});
