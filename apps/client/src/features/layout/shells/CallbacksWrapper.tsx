@@ -8,6 +8,7 @@ import { useScroll } from "@/core/hooks/ui/useScroll";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { getStorage } from "@/core/lib/storage";
 import { noticeSlice } from "@/features/notice/slices/slice";
+import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
 import { useFetchUserProfile } from "@/features/user/hooks/useFetchUserProfile";
 import { userSlice } from "@/features/user/slices/slice";
 import { useEffect, type FC } from "react";
@@ -17,6 +18,8 @@ const CallbacksWrapper: FC<ChildrenT> = ({ children }) => {
   useScroll();
 
   useFetchUserProfile();
+
+  useEndPendingActionUser();
 
   const dispatch = useDispatch();
   const { wrapClientListener } = useWrapClientListener();

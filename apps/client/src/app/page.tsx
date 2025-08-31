@@ -5,7 +5,6 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { testSliceAPI } from "@/features/test/slices/api";
-import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
 import { type FC } from "react";
 
 const Home: FC = () => {
@@ -17,8 +16,6 @@ const Home: FC = () => {
       cbAPI: () => mutate({ msg: "Client message" }),
     });
   };
-
-  useEndPendingActionUser();
 
   return (
     <WrapCSR>

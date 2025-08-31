@@ -13,7 +13,6 @@ import {
   resetValsLogin,
 } from "@/features/auth/pages/login/paperwork";
 import { authSliceAPI, LoginUserReturnT } from "@/features/auth/slices/api";
-import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
 import { useUser } from "@/features/user/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -21,8 +20,6 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 
 const Page: FC = () => {
-  useEndPendingActionUser();
-
   const { wrapAPI } = useWrapAPI();
   const nav = useRouter();
   const [mutate, { isLoading }] = authSliceAPI.useLoginUserMutation();
