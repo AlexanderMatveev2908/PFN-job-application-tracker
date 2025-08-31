@@ -8,7 +8,6 @@ import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
 import { mapperCbs } from "@/features/notice/lib/etc";
 import { getNoticeState } from "@/features/notice/slices/slice";
-import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
 import { useEffect, type FC } from "react";
 import { useSelector } from "react-redux";
 
@@ -18,8 +17,6 @@ const Page: FC = () => {
   useEffect(() => {
     if (isStr(noticeState.keyCb)) mapperCbs[noticeState.keyCb]();
   }, [noticeState.keyCb]);
-
-  useEndPendingActionUser();
 
   return (
     <WrapCSR>

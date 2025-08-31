@@ -3,12 +3,12 @@
 
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { testSliceAPI } from "@/features/test/slices/api";
-import { useGetUsState } from "@/features/user/hooks/useGetUsState";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 
 const Page: FC = () => {
-  const canBePushed = useGetUsState().canBePushed;
+  const canPushNonLogged = useGetUserState().canPushNonLogged;
 
   const nav = useRouter();
 
@@ -16,8 +16,8 @@ const Page: FC = () => {
   useWrapQuery(res);
 
   useEffect(() => {
-    if (canBePushed) nav.replace("/auth/login");
-  }, [canBePushed, nav]);
+    if (canPushNonLogged) nav.replace("/auth/login");
+  }, [canPushNonLogged, nav]);
 
   return <div></div>;
 };

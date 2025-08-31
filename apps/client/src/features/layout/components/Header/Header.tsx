@@ -18,9 +18,12 @@ import { calcIsCurrPath } from "@/core/lib/etc";
 import { usePathname } from "next/navigation";
 import { headerHight } from "@/core/constants/style";
 import { useHydration } from "@/core/hooks/ui/useHydration";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
+import { extractInitialsUser } from "@/core/lib/formatters";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
+  const usState = useGetUserState();
   const dropRef = useRef(null);
 
   const { isHydrated } = useHydration();
@@ -49,7 +52,10 @@ const Header: FC = () => {
             isEnabled: isHydrated,
             testID: "header__toggle_drop",
             el: {
-              Svg: TbUserFilled,
+              Svg: !usState.isUsOk ? TbUserFilled : null,
+              label: usState.isUsOk
+                ? extractInitialsUser(usState!.user!)
+                : null,
             },
             $SvgCls: "svg__sm",
             $customCSS: css`
@@ -57,16 +63,18 @@ const Header: FC = () => {
             `,
           }}
         >
-          {[...linksAll, ...linksNonLogged].map((lk, i) => (
-            <HeaderLink
-              key={ids[0][i]}
-              {...{
-                isCurrPath: calcIsCurrPath(path, lk.href),
-                lk,
-                handleClick: () => null,
-              }}
-            />
-          ))}
+          {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
+            (lk, i) => (
+              <HeaderLink
+                key={ids[0][i]}
+                {...{
+                  isCurrPath: calcIsCurrPath(path, lk.href),
+                  lk,
+                  handleClick: () => null,
+                }}
+              />
+            )
+          )}
         </DropMenuAbsolute>
 
         <button

@@ -1,3 +1,5 @@
+import { UserT } from "@/features/user/types";
+
 export const formatDate = (date: Date | string | number) => {
   const param =
     date instanceof Date
@@ -26,3 +28,6 @@ export const captAll = (str?: string) =>
         .filter(Boolean)
         .map((el) => capt(el))
         .join(" ");
+
+export const extractInitialsUser = (user: UserT) =>
+  user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase();

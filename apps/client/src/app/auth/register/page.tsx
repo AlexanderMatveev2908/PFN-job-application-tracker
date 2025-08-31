@@ -16,7 +16,7 @@ import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
-import { useUs } from "@/features/user/hooks/useUs";
+import { useUser } from "@/features/user/hooks/useUser";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
@@ -36,7 +36,7 @@ const Page: FC = () => {
   const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
   const { wrapAPI } = useWrapAPI();
   const { setNotice } = useNotice();
-  const { loginUser } = useUs();
+  const { loginUser } = useUser();
   const nav = useRouter();
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];

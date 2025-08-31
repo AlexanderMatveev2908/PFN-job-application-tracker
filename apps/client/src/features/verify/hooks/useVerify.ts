@@ -1,6 +1,6 @@
 import { TokenT } from "@/common/types/tokens";
 import { verifySliceAPI, VerifyUserReturnT } from "../slices/api";
-import { useUs } from "@/features/user/hooks/useUs";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useMemo } from "react";
@@ -14,7 +14,7 @@ export type MapperVerifyT = Record<
 export const useVerify = () => {
   const hookConfEmail = verifySliceAPI.useLazyConfEmailQuery();
 
-  const { loginUser } = useUs();
+  const { loginUser } = useUser();
   const { setNotice } = useNotice();
   const { wrapAPI } = useWrapAPI();
 
