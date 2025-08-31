@@ -97,12 +97,14 @@ async def logout_ctrl(
     ),
 ) -> Response:
 
+    feedback = "almost successful"
     async with db_trx() as trx:
         if us:
             await del_token_by_t(
                 trx=trx, us_id=cast(UserDcT, us)["id"], token_t=TokenT.REFRESH
             )
+            feedback = "successful"
 
     return ResAPI(req, clear_cookies=["refresh_token"]).ok_200(
-        msg="logout successful"
+        msg=f"logout {feedback}"
     )

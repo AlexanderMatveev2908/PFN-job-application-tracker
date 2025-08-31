@@ -35,7 +35,7 @@ export const userSlice = createSlice({
     ) => {
       state.access_token = action.payload.access_token;
     },
-    setUser: (state, action: PayloadAction<UserT | undefined>) => {
+    setUser: (state, action: PayloadAction<UserT | undefined | null>) => {
       state.user = action.payload ?? null;
       state.touchedServer = true;
     },
