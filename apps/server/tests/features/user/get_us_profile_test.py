@@ -37,12 +37,17 @@ async def ok_t(api: AsyncClient) -> None:
 async def bad_cases_t(
     api: AsyncClient, case: str, expected_code: int, expected_msg: str
 ) -> None:
-    res_tokens = await get_tokens_lib(api, expired=case.split("_expired"))
+    access_token = ""
+
+    if case != "ignored":
+        access_token = (
+            await get_tokens_lib(api, expired=case.split("_expired"))
+        )["access_token"]
 
     res_profile = await wrap_httpx(
         api,
         url="/user/profile",
-        access_token=res_tokens["access_token"] if case != "ignored" else "",
+        access_token=access_token,
         expected_code=expected_code,
         method="GET",
     )
