@@ -1,5 +1,6 @@
 "use client";
 
+import { useFocus } from "@/core/hooks/ui/useFocus";
 import { __cg } from "@/core/lib/log";
 import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
 import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
@@ -23,7 +24,7 @@ const Page: FC = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: resetValsLogin,
   });
-  const { handleSubmit } = formCtx;
+  const { handleSubmit, setFocus } = formCtx;
 
   const handleSave = handleSubmit(
     async (data) => {
@@ -34,6 +35,8 @@ const Page: FC = () => {
       return errs;
     }
   );
+
+  useFocus("email", { setFocus });
 
   return (
     <AuthPageWrap>
