@@ -2,6 +2,7 @@
 import { ResApiT } from "@/common/types/api";
 import { isStr, serialize } from "@/core/lib/dataStructure";
 import { __cg } from "@/core/lib/log";
+import { apiSlice } from "@/core/store/api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -32,6 +33,7 @@ export const useErrAPI = () => {
           })
         );
 
+        dispatch(apiSlice.util.resetApiState());
         nav.replace("/auth/login");
       } else {
         if (!hideErr)
