@@ -19,7 +19,7 @@ const AuthFormWrap = <T extends FieldValues>({
   return (
     <FormProvider {...formCtx}>
       <form
-        data-testid={formTestID}
+        data-testid={formTestID + "__form"}
         className="w-full grid grid-cols-1"
         onSubmit={handleSave}
       >

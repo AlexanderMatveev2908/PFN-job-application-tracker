@@ -81,7 +81,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
             $sizeTrg: 30,
           }}
         >
-          <span className="txt__md py-2 px-4 inline-block max-w-[250px] sm:max-w-[400px] md:max-w-[450px] break-all">
+          <span className="txt__md py-2 px-4 inline-block max-w-[200px] sm:max-w-[300px] break-all">
             {confPortal!.txt}
           </span>
         </PortalTooltip>

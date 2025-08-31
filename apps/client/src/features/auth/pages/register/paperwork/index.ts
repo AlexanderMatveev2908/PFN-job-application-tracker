@@ -1,6 +1,11 @@
 import { REG_NAME } from "@/core/constants/regex";
 import { emailSchema, pwdSchema } from "@/core/paperwork";
 import { z } from "zod";
+import {
+  myMail,
+  myPwd,
+  wrapGetValsFormManualTest,
+} from "@/features/auth/lib/etc";
 
 export const registerSchema = emailSchema
   .extend({
@@ -30,3 +35,22 @@ export const registerSchema = emailSchema
   });
 
 export type RegisterFormT = z.infer<typeof registerSchema>;
+
+export const resetValsRegister: RegisterFormT = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: "",
+  confirm_password: "",
+  terms: false,
+};
+
+export const getDefValsRegister = (): RegisterFormT =>
+  wrapGetValsFormManualTest(resetValsRegister, {
+    first_name: "Alex",
+    last_name: "Matveev",
+    email: myMail,
+    password: myPwd,
+    confirm_password: myPwd,
+    terms: true,
+  });

@@ -10,13 +10,17 @@ import {
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import BtnShadow from "../buttons/BtnShadow";
 
-type PropsType = {
+export type PropsTypeBtnsSwapper = {
   totSwaps: number;
   swapState: SwapStateT;
   startSwap: (v: PayloadStartSwapT) => void;
 };
 
-const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
+const BtnsSwapper: FC<PropsTypeBtnsSwapper> = ({
+  swapState,
+  startSwap,
+  totSwaps,
+}) => {
   const { ids } = useGenIDs({ lengths: [2] });
 
   const { currSwap } = swapState;

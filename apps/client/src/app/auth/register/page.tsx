@@ -10,13 +10,13 @@ import BodyForm from "@/features/auth/pages/register/components/BodyForm";
 import {
   RegisterFormT,
   registerSchema,
+  resetValsRegister,
 } from "@/features/auth/pages/register/paperwork";
 import { swapOnErr } from "@/core/lib/forms";
 import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUs } from "@/features/user/hooks/useUs";
-import { resetValsRegister } from "@/features/auth/pages/register/lib/defVals";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
@@ -101,7 +101,7 @@ const Page: FC = () => {
         {...{
           handleSave,
           formCtx,
-          formTestID: "register_form",
+          formTestID: "register",
         }}
       >
         <BodyForm
@@ -118,7 +118,7 @@ const Page: FC = () => {
               totSwaps: 2,
             },
             isLoading,
-            submitBtnTestID: "register__footer_form__submit_btn",
+            submitBtnTestID: "register",
           }}
         />
       </AuthFormWrap>
