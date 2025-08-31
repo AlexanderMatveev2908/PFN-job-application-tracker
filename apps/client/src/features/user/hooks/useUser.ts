@@ -13,7 +13,7 @@ export const useUser = () => {
   const nav = useRouter();
 
   const dispatch = useDispatch();
-  const [mutate, { isLoading: isLoadingLoggingOut }] =
+  const [mutate, { isLoading: isLoggingOut }] =
     authSliceAPI.useLogoutUserMutation();
 
   const loginUser = useCallback(
@@ -41,6 +41,6 @@ export const useUser = () => {
     userState: useGetUserState(),
     loginUser,
     logoutUser,
-    isLoadingLoggingOut,
+    isLoggingOut,
   };
 };

@@ -10,8 +10,9 @@ import { calcIsCurrPath } from "@/core/lib/etc";
 import DropMenuStatic from "@/common/components/dropMenus/DropMenuStatic";
 import { useDispatch } from "react-redux";
 import { sideSlice } from "../../slice";
-import { linkLogout, linksAll, linksNonLogged } from "@/core/uiFactory/links";
+import { linksAll, linksNonLogged } from "@/core/uiFactory/links";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
+import SideLogout from "./components/SideLogout";
 
 const SideContent: FC = () => {
   const { ids } = useGenIDs({
@@ -54,9 +55,7 @@ const SideContent: FC = () => {
         </DropMenuStatic>
       )}
 
-      {isUsOk && (
-        <SideLink {...{ lk: linkLogout, isCurrPath: false, handleClick }} />
-      )}
+      {isUsOk && <SideLogout {...{ handleClick }} />}
     </div>
   );
 };
