@@ -32,5 +32,12 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [TagAPI.USER],
     }),
+
+    logoutUser: builder.mutation<ResApiT<void>, void>({
+      query: () => ({
+        url: `${BASE}/logout`,
+        method: "POST",
+      }),
+    }),
   }),
 });

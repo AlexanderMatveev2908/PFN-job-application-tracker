@@ -1,26 +1,39 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, useState, type FC } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useRef,
+  useState,
+  type FC,
+} from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
 type PropsType = {
   el: FieldTxtSvgT;
+  children: ({
+    setIsOpen,
+  }: {
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+  }) => ReactNode;
   isEnabled?: boolean;
   $SvgCls?: string;
-  $customCSS?: SerializedStyles;
-} & ChildrenT &
-  TestIDT;
+  $cstmDropCSS?: SerializedStyles;
+  $cstmLabelCSS?: SerializedStyles;
+} & TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
   $SvgCls,
   isEnabled = true,
   children,
-  $customCSS,
+  $cstmDropCSS,
+  $cstmLabelCSS,
   testID,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +50,10 @@ const DropMenuAbsolute: FC<PropsType> = ({
         disabled={!isEnabled}
         data-testid={testID}
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
+        css={css`
+          ${$cstmLabelCSS}
+        `}
+        className={`btn__app w-full cursor-pointer border-2 bd__sm ${
           isOpen
             ? "text-neutral-950 bg-neutral-200"
             : "text-neutral-300 enabled:hover:text-neutral-950"
@@ -55,7 +71,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
         data-testid={"drop_menu_absolute__content"}
         className="absolute w-full min-w-[300px] max-w-[350px] h-fit overflow-y-auto scroll__app bg-neutral-950 z-60 border-3 border-neutral-200 rounded-xl"
         css={css`
-          ${$customCSS}
+          ${$cstmDropCSS}
           top: calc(100% + 10px);
           transition: transform 0.4s, opacity 0.3s;
           transform: translateY(${isOpen ? "0" : "75px"});
@@ -63,11 +79,10 @@ const DropMenuAbsolute: FC<PropsType> = ({
           pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
-        <div
-          onClick={() => setIsOpen(false)}
-          className="w-full flex flex-col max-h-[200px] scroll__app overflow-y-auto"
-        >
-          {children}
+        <div className="w-full flex flex-col max-h-[200px] scroll__app overflow-y-auto">
+          {children({
+            setIsOpen,
+          })}
         </div>
       </div>
     </div>

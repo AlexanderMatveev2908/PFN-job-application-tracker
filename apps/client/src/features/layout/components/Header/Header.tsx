@@ -20,6 +20,7 @@ import { headerHight } from "@/core/constants/style";
 import { useHydration } from "@/core/hooks/ui/useHydration";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { extractInitialsUser } from "@/core/lib/formatters";
+import HeaderLogout from "./components/HeaderLogout";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
@@ -46,7 +47,7 @@ const Header: FC = () => {
         <SvgLogo className="svg__xl" />
       </Link>
 
-      <div ref={dropRef} className="w-fit flex items-center gap-14">
+      <div ref={dropRef} className="w-fit flex items-center gap-10">
         <DropMenuAbsolute
           {...{
             isEnabled: isHydrated,
@@ -58,22 +59,37 @@ const Header: FC = () => {
                 : null,
             },
             $SvgCls: "svg__sm",
-            $customCSS: css`
+            $cstmDropCSS: css`
               left: -200px;
+            `,
+            $cstmLabelCSS: css`
+              padding: ${usState.isUsOk ? "6px 10px" : "6px"};
             `,
           }}
         >
-          {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
-            (lk, i) => (
-              <HeaderLink
-                key={ids[0][i]}
-                {...{
-                  isCurrPath: calcIsCurrPath(path, lk.href),
-                  lk,
-                  handleClick: () => null,
-                }}
-              />
-            )
+          {({ setIsOpen }) => (
+            <>
+              {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
+                (lk, i) => (
+                  <HeaderLink
+                    key={ids[0][i]}
+                    {...{
+                      isCurrPath: calcIsCurrPath(path, lk.href),
+                      lk,
+                      handleClick: () => setIsOpen(false),
+                    }}
+                  />
+                )
+              )}
+
+              {usState.isUsOk && (
+                <HeaderLogout
+                  {...{
+                    handleClick: () => setIsOpen(false),
+                  }}
+                />
+              )}
+            </>
           )}
         </DropMenuAbsolute>
 

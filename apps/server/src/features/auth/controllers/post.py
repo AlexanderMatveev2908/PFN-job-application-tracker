@@ -1,3 +1,4 @@
+from typing import cast
 from fastapi import Depends, Request
 from fastapi.responses import Response
 from src.conf.db import db_trx
@@ -11,6 +12,7 @@ from src.features.auth.services.register import (
     register_user_svc,
 )
 from src.lib.cookies import gen_refresh_cookie
+from src.lib.db.idx import del_token_by_t
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.validators.idx import TFAFormT
@@ -18,7 +20,9 @@ from src.middleware.combo.idx import (
     ComboCheckJwtCbcBodyReturnT,
     combo_check_jwt_cbc_hmac_body_mdw,
 )
+from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.token import TokenT
+from src.models.user import User, UserDcT
 
 
 async def register_ctrl(
@@ -83,4 +87,22 @@ async def login_2FA_ctrl(
     ).ok_200(
         access_token=res_check["access_token"],
         backup_codes_left=res_check["backup_codes_left"],
+    )
+
+
+async def logout_ctrl(
+    req: Request,
+    us: User | UserDcT | None = Depends(
+        check_jwt_search_us_mdw(optional=True)
+    ),
+) -> Response:
+
+    async with db_trx() as trx:
+        if us:
+            await del_token_by_t(
+                trx=trx, us_id=cast(UserDcT, us)["id"], token_t=TokenT.REFRESH
+            )
+
+    return ResAPI(req, clear_cookies=["refresh_token"]).ok_200(
+        msg="logout successful"
     )

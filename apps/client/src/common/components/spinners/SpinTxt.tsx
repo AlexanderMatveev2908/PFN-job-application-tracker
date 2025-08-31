@@ -9,10 +9,13 @@ import { AppEventT } from "@/common/types/api";
 
 type PropsType = {
   act?: AppEventT;
+  isHover?: boolean;
 };
 
-const SpinTxt: FC<PropsType> = ({ act = "NONE" }) => {
-  const $clr = $argClr[act];
+const SpinTxt: FC<PropsType> = ({ act = "NONE", isHover }) => {
+  let $clr = $argClr[act];
+
+  if (isHover && act === "NONE") $clr = "var(--neutral__950)";
 
   return (
     <motion.div
