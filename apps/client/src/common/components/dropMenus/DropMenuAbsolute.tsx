@@ -1,20 +1,31 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, useState, type FC } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useRef,
+  useState,
+  type FC,
+} from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
 type PropsType = {
   el: FieldTxtSvgT;
+  children: ({
+    setIsOpen,
+  }: {
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+  }) => ReactNode;
   isEnabled?: boolean;
   $SvgCls?: string;
   $cstmDropCSS?: SerializedStyles;
   $cstmLabelCSS?: SerializedStyles;
-} & ChildrenT &
-  TestIDT;
+} & TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
@@ -68,11 +79,10 @@ const DropMenuAbsolute: FC<PropsType> = ({
           pointer-events: ${isOpen ? "auto" : "none"};
         `}
       >
-        <div
-          onClick={() => setIsOpen(false)}
-          className="w-full flex flex-col max-h-[200px] scroll__app overflow-y-auto"
-        >
-          {children}
+        <div className="w-full flex flex-col max-h-[200px] scroll__app overflow-y-auto">
+          {children({
+            setIsOpen,
+          })}
         </div>
       </div>
     </div>

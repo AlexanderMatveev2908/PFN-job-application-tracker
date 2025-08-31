@@ -67,20 +67,30 @@ const Header: FC = () => {
             `,
           }}
         >
-          {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
-            (lk, i) => (
-              <HeaderLink
-                key={ids[0][i]}
-                {...{
-                  isCurrPath: calcIsCurrPath(path, lk.href),
-                  lk,
-                  handleClick: () => null,
-                }}
-              />
-            )
-          )}
+          {({ setIsOpen }) => (
+            <>
+              {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
+                (lk, i) => (
+                  <HeaderLink
+                    key={ids[0][i]}
+                    {...{
+                      isCurrPath: calcIsCurrPath(path, lk.href),
+                      lk,
+                      handleClick: () => setIsOpen(false),
+                    }}
+                  />
+                )
+              )}
 
-          {usState.isUsOk && <LogoutHeader />}
+              {usState.isUsOk && (
+                <LogoutHeader
+                  {...{
+                    handleClick: () => setIsOpen(false),
+                  }}
+                />
+              )}
+            </>
+          )}
         </DropMenuAbsolute>
 
         <button
