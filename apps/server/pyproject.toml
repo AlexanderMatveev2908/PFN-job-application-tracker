@@ -64,6 +64,9 @@ pytest-xdist = "^3.8.0"
 include = "src"
 from = "."
 
+
+[[tool.poetry.include]]
+path = "src/lib/emails/*.html"
 [tool.black]
 line-length = 79
 target-version = ["py312"]
@@ -77,6 +80,7 @@ line-length = 79
 
 [tool.ruff.lint]
 ignore = ["E203", "E741"]
+
 [tool.mypy]
 python_version = "3.12"
 mypy_path = ["src"]
