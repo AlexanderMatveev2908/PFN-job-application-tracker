@@ -82,7 +82,7 @@ const BodyForm: FC<PropsType> = ({ swapState }) => {
 
         <FormFieldCheck
           {...{
-            t_id: "body__form_terms",
+            testID: "body__form_terms",
             el: termsField,
             errors,
             isChecked: isChecked as boolean,

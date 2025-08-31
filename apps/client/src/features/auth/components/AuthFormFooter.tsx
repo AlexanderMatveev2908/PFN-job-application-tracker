@@ -42,7 +42,7 @@ const AuthFormFooter: FC<PropsType> = ({
             {...{
               type: "submit",
               label: "Submit",
-              t_id: submitBtnTestID,
+              testID: submitBtnTestID,
               isLoading,
             }}
           />

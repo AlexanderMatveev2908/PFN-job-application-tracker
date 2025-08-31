@@ -2,7 +2,7 @@
 "use client";
 
 import { AppEventT } from "@/common/types/api";
-import { PortalConfT, TestIdT } from "@/common/types/ui";
+import { PortalConfT, TestIDT } from "@/common/types/ui";
 import { CSSProperties, useMemo, useState, type FC } from "react";
 import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
@@ -29,7 +29,7 @@ type PropsType = {
     handleClick: () => void;
   };
 } & WrapSvgTltPropsT &
-  TestIdT;
+  TestIDT;
 
 const WrapElWithSvgTooltip: FC<PropsType> = ({
   Svg,
@@ -38,7 +38,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
   wrapper,
   propsLink,
   propsBtn,
-  t_id,
+  testID,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const $clr = $argClr[act];
@@ -47,7 +47,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
 
   const objProps = useMemo(
     () => ({
-      "data-testid": t_id,
+      "data-testid": testID,
       onMouseEnter: () => setIsHover(true),
       onMouseLeave: () => setIsHover(false),
       ref: parentRef,
@@ -61,7 +61,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
         "--scale__up": 1.3,
       } as CSSProperties,
     }),
-    [$clr, parentRef, wrapper, t_id]
+    [$clr, parentRef, wrapper, testID]
   );
 
   const content = (

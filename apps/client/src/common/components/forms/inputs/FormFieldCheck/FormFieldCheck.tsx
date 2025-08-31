@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FormFieldCheckT, TestIdT } from "@/common/types/ui";
+import { FormFieldCheckT, TestIDT } from "@/common/types/ui";
 import {
   FieldErrors,
   FieldValues,
@@ -19,7 +19,7 @@ type PropsType<T extends FieldValues> = {
   setValue: UseFormSetValue<T>;
   manualErr?: string;
   optTxt?: string;
-} & TestIdT;
+} & TestIDT;
 
 const FormFieldCheck = <T extends FieldValues>({
   el,
@@ -29,7 +29,7 @@ const FormFieldCheck = <T extends FieldValues>({
   optTxt,
   errors,
   manualErr,
-  t_id,
+  testID,
 }: PropsType<T>) => {
   const handleChange = () => {
     setValue(el.name, !isChecked as T[Path<T>], {
@@ -45,7 +45,7 @@ const FormFieldCheck = <T extends FieldValues>({
 
       <div className="w-fit flex items-center gap-6 relative">
         <label
-          data-testid={t_id}
+          data-testid={testID}
           className="w-[40px] h-[40px] relative cursor-pointer"
           onClick={handleChange}
         >

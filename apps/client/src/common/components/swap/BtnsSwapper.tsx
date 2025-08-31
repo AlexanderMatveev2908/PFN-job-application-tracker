@@ -32,7 +32,7 @@ const BtnsSwapper: FC<PropsType> = ({ swapState, startSwap, totSwaps }) => {
         >
           <BtnShadow
             {...{
-              t_id: !i ? "btns_swapper_prev_swap" : "btns_swapper_next_swap",
+              testID: !i ? "btns_swapper_prev_swap" : "btns_swapper_next_swap",
               act: "NONE",
               el: { Svg: !i ? ChevronLeft : ChevronRight },
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,

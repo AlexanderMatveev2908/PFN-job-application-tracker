@@ -7,7 +7,7 @@ import { CSSProperties, useMemo, type FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import Link from "next/link";
 import WrapBtnAPI from "../buttonWrappers/WrapBtnAPI";
-import { FieldTxtSvgT, TestIdT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 
 type PropsType = {
   wrapper: "next_link" | "html_button";
@@ -18,7 +18,7 @@ type PropsType = {
   isLoading?: boolean;
   el: FieldTxtSvgT;
   act: AppEventT;
-} & TestIdT;
+} & TestIDT;
 
 const WrapElWithShadow: FC<PropsType> = ({
   wrapper,
@@ -29,13 +29,13 @@ const WrapElWithShadow: FC<PropsType> = ({
   isEnabled = true,
   isLoading,
   el,
-  t_id,
+  testID,
 }) => {
   const $clr = $argClr[act];
 
   const objProps = useMemo(
     () => ({
-      "data-testid": t_id,
+      "data-testid": testID,
       className: `${
         wrapper === "next_link" ? "el__app" : "btn__app"
       } w-full flex justify-center items-center gap-6 py-2 px-4 rounded-xl`,
@@ -55,7 +55,7 @@ const WrapElWithShadow: FC<PropsType> = ({
         }
       `,
     }),
-    [$clr, wrapper, t_id]
+    [$clr, wrapper, testID]
   );
 
   const content = (

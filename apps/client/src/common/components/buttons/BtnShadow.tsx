@@ -4,7 +4,7 @@
 import type { FC } from "react";
 import WrapElWithShadow from "../HOC/shapes/WrapElWithShadow";
 import { SerializedStyles } from "@emotion/react";
-import { FieldTxtSvgT, TestIdT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
 
 type PropsType = {
@@ -14,7 +14,7 @@ type PropsType = {
   isLoading?: boolean;
   el: FieldTxtSvgT;
   act: AppEventT;
-} & TestIdT;
+} & TestIDT;
 
 const BtnShadow: FC<PropsType> = (arg: PropsType) => {
   return (

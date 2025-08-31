@@ -3,7 +3,7 @@
 
 import { useRef, useState, type FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { ChildrenT, FieldTxtSvgT, TestIdT } from "@/common/types/ui";
+import { ChildrenT, FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import PairTxtSvg from "../elements/PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
 
@@ -13,7 +13,7 @@ type PropsType = {
   $SvgCls?: string;
   $customCSS?: SerializedStyles;
 } & ChildrenT &
-  TestIdT;
+  TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
@@ -21,7 +21,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
   isEnabled = true,
   children,
   $customCSS,
-  t_id,
+  testID,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropRef = useRef(null);
@@ -35,7 +35,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
     <div ref={dropRef} className="w-full relative">
       <button
         disabled={!isEnabled}
-        data-testid={t_id}
+        data-testid={testID}
         onClick={() => setIsOpen((prev) => !prev)}
         className={`btn__app w-full cursor-pointer p-[6px] border-2 bd__sm ${
           isOpen
