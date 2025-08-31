@@ -101,7 +101,7 @@ const Page: FC = () => {
         {...{
           handleSave,
           formCtx,
-          testID: "register_form",
+          formTestID: "register_form",
         }}
       >
         <BodyForm

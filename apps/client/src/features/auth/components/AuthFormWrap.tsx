@@ -7,19 +7,19 @@ import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 type PropsType<T extends FieldValues> = {
   formCtx: UseFormReturn<T>;
   handleSave: () => void;
-  testID: string;
+  formTestID: string;
 } & ChildrenT;
 
 const AuthFormWrap = <T extends FieldValues>({
   formCtx,
   handleSave,
-  testID,
+  formTestID,
   children,
 }: PropsType<T>) => {
   return (
     <FormProvider {...formCtx}>
       <form
-        data-testid={testID}
+        data-testid={formTestID}
         className="w-full grid grid-cols-1"
         onSubmit={handleSave}
       >
