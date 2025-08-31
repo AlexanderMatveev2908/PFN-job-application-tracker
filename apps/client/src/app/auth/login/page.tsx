@@ -4,6 +4,7 @@ import { __cg } from "@/core/lib/log";
 import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
 import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
 import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
+import BodyFormLogin from "@/features/auth/pages/login/components/BodyFormLogin";
 import {
   LoginFormT,
   loginSchema,
@@ -18,7 +19,7 @@ const Page: FC = () => {
   useEndPendingActionUser();
 
   const formCtx = useForm<LoginFormT>({
-    mode: "onBlur",
+    mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: resetValsLogin,
   });
@@ -43,6 +44,8 @@ const Page: FC = () => {
           formTestID: "login",
         }}
       >
+        <BodyFormLogin />
+
         <AuthFormFooter
           {...{
             isLoading: false,

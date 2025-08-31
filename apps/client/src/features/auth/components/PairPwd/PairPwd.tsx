@@ -9,6 +9,7 @@ import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
 import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
 import { SwapModeT } from "@/app/auth/register/page";
 import PwdGenerator from "./components/PwdGenerator/PwdGenerator";
+import { useTogglePwd } from "@/core/hooks/etc/useTogglePwd";
 
 type PropsType = {
   isCurrSwap?: boolean;
@@ -25,18 +26,8 @@ const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
     name: "password",
   });
 
-  const [isPwdShw, setIsPwdShw] = useState(false);
-  const [isConfPwdShw, setIsConfPwdShw] = useState(false);
-
-  const handlePwdClick = () => {
-    if (isConfPwdShw) setIsConfPwdShw(false);
-    setIsPwdShw(!isPwdShw);
-  };
-
-  const handleConfPwd = () => {
-    if (isPwdShw) setIsPwdShw(false);
-    setIsConfPwdShw(!isConfPwdShw);
-  };
+  const { handleConfPwd, handlePwdClick, isConfPwdShw, isPwdShw } =
+    useTogglePwd();
 
   const { coords, parentRef } = useSyncPortal([swapMode]);
 
