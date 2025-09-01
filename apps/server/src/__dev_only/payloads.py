@@ -7,7 +7,7 @@ from src.lib.pwd_gen import gen_pwd
 faker = Faker()
 
 
-class PayloadRegisterPartT(TypedDict):
+class RegisterPartPayloadT(TypedDict):
     first_name: str
     last_name: str
     email: str
@@ -15,7 +15,7 @@ class PayloadRegisterPartT(TypedDict):
     terms: bool
 
 
-class RegisterPayloadT(PayloadRegisterPartT):
+class RegisterPayloadT(RegisterPartPayloadT):
     confirm_password: str
 
 

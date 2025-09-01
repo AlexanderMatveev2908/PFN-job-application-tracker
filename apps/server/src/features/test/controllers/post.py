@@ -69,7 +69,10 @@ async def tokens_health_ctrl(
     return ResAPI(
         req, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
     ).ok_200(
-        **pick(res, keys_off=["refresh_token"]),
+        **pick(
+            res,
+            keys_off=["refresh_token"],
+        ),
     )
 
 

@@ -39,7 +39,7 @@ export const registerUserOk = async (
 
   await clickByID(el, "body__form_terms");
 
-  await clickByID(el, "register__footer_form__submit_btn");
+  await clickByID(el, "register__form__submit");
 
   await waitURL(page, "/notice");
 
@@ -68,7 +68,7 @@ export const loginUserOk = async (browser: Browser) => {
   const pwd = await getByID(el, "password");
   pwd.fill(payload.password);
 
-  await clickByID(el, "login__footer_form__submit_btn");
+  await clickByID(el, "login__form__submit");
 
   await waitURL(loginPage, "/");
 
@@ -86,7 +86,7 @@ export interface GetTokensReturnT {
   access_token: string;
   user: UserT;
   cbc_hmac_token: string;
-  payload: PayloadRegisterT;
+  payload: Omit<PayloadRegisterT, "confirm_password">;
 }
 
 export const getTokensLib = async (

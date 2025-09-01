@@ -24,7 +24,7 @@ test("validation", async ({ page }) => {
 
   await getByTxt(page, "invalid password");
 
-  await clickByID(el, "login__footer_form__submit_btn");
+  await clickByID(el, "login__form__submit");
 
   await waitTest(page);
 

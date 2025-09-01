@@ -1,7 +1,7 @@
 from typing import cast
 from fastapi import Request
 from src.__dev_only.payloads import (
-    PayloadRegisterPartT,
+    RegisterPartPayloadT,
     RegisterPayloadT,
     get_payload_register,
 )
@@ -25,7 +25,7 @@ def get_query_token_t(req: Request) -> TokenT:
         raise ErrAPI(msg="invalid token type", status=400)
 
 
-async def get_optional_payload(req: Request) -> PayloadRegisterPartT:
+async def get_optional_payload(req: Request) -> RegisterPartPayloadT:
     body: RegisterPayloadT | None = None
     try:
         body = await req.json()
@@ -41,4 +41,4 @@ async def get_optional_payload(req: Request) -> PayloadRegisterPartT:
     payload = body or get_payload_register()
     filtered = pick(payload, keys_off=["confirm_password"])
 
-    return cast(PayloadRegisterPartT, filtered)
+    return cast(RegisterPartPayloadT, filtered)
