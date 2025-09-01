@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import ProgressSwap from "@/common/components/elements/ProgressSwap";
+import ProgressSwap from "@/common/components/swap/ProgressSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
@@ -13,7 +13,7 @@ type PropsType = {
   };
 } & ChildrenT;
 
-const AuthPageWrap: FC<PropsType> = ({ propsProgressSwap, children }) => {
+const WrapFormPage: FC<PropsType> = ({ propsProgressSwap, children }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
       {isObjOk(propsProgressSwap) && (
@@ -32,4 +32,4 @@ const AuthPageWrap: FC<PropsType> = ({ propsProgressSwap, children }) => {
   );
 };
 
-export default AuthPageWrap;
+export default WrapFormPage;

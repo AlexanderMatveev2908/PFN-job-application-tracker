@@ -1,4 +1,4 @@
-import { genPwd } from "@/core/lib/etc";
+import { genPwd } from "@/core/lib/pwd";
 import { faker } from "@faker-js/faker";
 
 export interface PayloadRegisterT {

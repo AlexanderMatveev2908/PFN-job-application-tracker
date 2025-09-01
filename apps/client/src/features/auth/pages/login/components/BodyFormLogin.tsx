@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import AuthWrapBodyForm from "@/features/auth/components/AuthWrapBodyForm";
+import WrapBodyForm from "@/common/components/forms/shapes/WrapBodyForm";
 import type { FC } from "react";
 import { mailField, pwdField } from "../uiFactory";
 import { useFormContext } from "react-hook-form";
@@ -16,7 +16,7 @@ const BodyFormLogin: FC = () => {
   const { handlePwdClick, isPwdShw } = useTogglePwd();
 
   return (
-    <AuthWrapBodyForm>
+    <WrapBodyForm>
       <FormFieldTxt
         {...{
           el: mailField,
@@ -32,7 +32,7 @@ const BodyFormLogin: FC = () => {
           handleSvgClick: handlePwdClick,
         }}
       />
-    </AuthWrapBodyForm>
+    </WrapBodyForm>
   );
 };
 

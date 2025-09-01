@@ -19,9 +19,9 @@ import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUser } from "@/features/user/hooks/useUser";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
-import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
-import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
-import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
+import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
+import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
+import WrapForm from "@/common/components/forms/shapes/WrapForm";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -89,7 +89,7 @@ const Page: FC = () => {
   );
 
   return (
-    <AuthPageWrap
+    <WrapFormPage
       {...{
         propsProgressSwap: {
           currSwap: swapState.currSwap,
@@ -97,7 +97,7 @@ const Page: FC = () => {
         },
       }}
     >
-      <AuthFormWrap
+      <WrapForm
         {...{
           handleSave,
           formCtx,
@@ -110,7 +110,7 @@ const Page: FC = () => {
           }}
         />
 
-        <AuthFormFooter
+        <WrapFormFooter
           {...{
             propsBtnsSwapper: {
               swapState,
@@ -121,8 +121,8 @@ const Page: FC = () => {
             submitBtnTestID: "register",
           }}
         />
-      </AuthFormWrap>
-    </AuthPageWrap>
+      </WrapForm>
+    </WrapFormPage>
   );
 };
 

@@ -1,4 +1,4 @@
-import { ResApiT } from "@/common/types/api";
+import { ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 
 const BASE_URL = "/verify";
@@ -15,6 +15,13 @@ export const verifySliceAPI = apiSlice.injectEndpoints({
         url: `${BASE_URL}/confirm-email?cbc_hmac_token=${cbc_hmac_token}`,
         method: "GET",
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(apiSlice.util.invalidateTags([TagAPI.USER]));
+        } catch {}
+      },
     }),
   }),
 });

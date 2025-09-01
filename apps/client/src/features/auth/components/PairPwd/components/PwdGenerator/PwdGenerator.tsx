@@ -6,10 +6,10 @@ import { useState, type FC } from "react";
 import BtnSvg from "@/common/components/buttons/BtnSvg";
 import { SwapModeT } from "@/app/auth/register/page";
 import CpyPaste from "@/common/components/elements/tooltips/CpyPaste/CpyPaste";
-import { genPwd } from "@/core/lib/etc";
 import { isStr } from "@/core/lib/dataStructure";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
+import { genPwd } from "@/core/lib/pwd";
 
 type PropsType = {
   swapMode?: SwapModeT;
@@ -39,7 +39,7 @@ const PwdGenerator: FC<PropsType> = ({
           {...{
             testID: "pwd_generator__btn",
             Svg: SvgPasswordCursor,
-            handleClick: () => setPwd(genPwd),
+            handleClick: () => setPwd(genPwd()),
             confPortal: {
               optDep: [swapMode],
               showPortal: swapMode === "swapped" && isCurrSwap,

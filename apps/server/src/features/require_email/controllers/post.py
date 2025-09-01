@@ -41,4 +41,6 @@ async def confirm_email_ctrl(
             TokenT.CONF_EMAIL,
         )
 
-        return ResAPI(req).ok_201(msg="📮 email sent", user=us_d)
+        return ResAPI(req).ok_201(
+            msg="📮 email sent",
+        )
