@@ -1,14 +1,11 @@
 import asyncio
 import json
-from typing import cast
-from fastapi import Depends, Request
+from fastapi import Request
 from fastapi.responses import Response
-from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.features.auth.middleware.register import RegisterFormT, register_mdw
-from src.features.test.lib.idx import get_query_token_t
+from src.features.test.lib.idx import get_optional_payload, get_query_token_t
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
@@ -60,17 +57,22 @@ async def post_msg_ctrl(req: Request) -> Response:
 
 
 async def tokens_health_ctrl(
-    req: Request, user_data: RegisterFormT = Depends(register_mdw)
+    req: Request,
 ) -> Response:
 
+    payload = await get_optional_payload(req)
+
     res = await tokens_health_svc(
-        user_data, token_t=get_query_token_t(req), parsed_q=req.state.parsed_q
+        payload, token_t=get_query_token_t(req), parsed_q=req.state.parsed_q
     )
 
     return ResAPI(
         req, cookies=[gen_refresh_cookie(refresh_token=res["refresh_token"])]
     ).ok_200(
-        **pick(res, keys_off=["refresh_token"]),
+        **pick(
+            res,
+            keys_off=["refresh_token"],
+        ),
     )
 
 
@@ -106,20 +108,7 @@ async def get_us_2FA_ctrl(
     req: Request,
 ) -> Response:
 
-    body: RegisterPayloadT | None = None
-    try:
-        body = await req.json()
-    except Exception:
-        ...
-
-    if body:
-        try:
-            RegisterFormT(**cast(RegisterFormT, body))
-        except Exception:
-            raise ErrAPI(msg="invalid payload 😡", status=400)
-
-    payload = body or get_payload_register()
-    filtered = pick(payload, keys_off=["confirm_password"])
+    filtered = await get_optional_payload(req)
 
     q = req.state.parsed_q
     empty_codes = q.get("empty_codes")
@@ -137,7 +126,7 @@ async def get_us_2FA_ctrl(
     async with db_trx() as trx:
 
         us = User(**filtered, is_verified=True)
-        await us.set_pwd(payload["password"])
+        await us.set_pwd(filtered["password"])
 
         trx.add(us)
         await trx.flush([us])
@@ -181,7 +170,7 @@ async def get_us_2FA_ctrl(
                 )
             ],
         ).ok_200(
-            payload=payload,
+            payload=filtered,
             user=us,
             totp_secret=secret_result["secret"],
             backup_codes=backup_codes,

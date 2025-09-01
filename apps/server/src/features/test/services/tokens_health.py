@@ -15,7 +15,7 @@ from src.models.user import User
 
 
 async def tokens_health_svc(
-    user_data: RegisterFormT,
+    payload: RegisterFormT,
     token_t: TokenT,
     parsed_q: dict[str, Any],
 ) -> Any:
@@ -29,12 +29,12 @@ async def tokens_health_svc(
         elif isinstance(expired, str):
             expired = [expired]
 
-        us = await get_us_by_email(trx, user_data["email"], must_exists=False)
+        us = await get_us_by_email(trx, payload["email"], must_exists=False)
 
         if not us:
-            data = pick(obj=cast(dict, user_data), keys_off=["password"])
+            data = pick(obj=cast(dict, payload), keys_off=["password"])
             user_id = parse_id(uuid.uuid4())
-            plain_pwd = user_data["password"]
+            plain_pwd = payload["password"]
 
             us = User(**data, id=user_id, is_verified=verify_user)
             await us.set_pwd(plain_pwd)
@@ -60,4 +60,5 @@ async def tokens_health_svc(
             "access_token": result_tokens["access_token"],
             "refresh_token": result_tokens["result_jwe"]["client_token"],
             "cbc_hmac_token": result_cbc_hmac["client_token"],
+            "payload": payload,
         }

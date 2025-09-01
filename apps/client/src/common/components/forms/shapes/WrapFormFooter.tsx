@@ -36,7 +36,7 @@ const WrapFormFooter: FC<PropsType> = ({
             {...{
               type: "submit",
               label: "Submit",
-              testID: submitBtnTestID + "__footer_form__submit_btn",
+              testID: submitBtnTestID + "__form__submit",
               isLoading,
             }}
           />

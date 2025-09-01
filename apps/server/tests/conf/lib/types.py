@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from src.__dev_only.payloads import RegisterPayloadT
+from src.__dev_only.payloads import RegisterPartPayloadT
 from src.models.user import UserDcT
 
 
@@ -10,7 +10,7 @@ class LoginOkReturnT(TypedDict):
 
 
 class RegisterOkLibReturnT(LoginOkReturnT):
-    payload: RegisterPayloadT
+    payload: RegisterPartPayloadT
 
 
 class SuccessReqTokensReturnT(RegisterOkLibReturnT):

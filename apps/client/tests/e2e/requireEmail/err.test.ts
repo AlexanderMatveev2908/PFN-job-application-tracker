@@ -19,7 +19,7 @@ test("non existent", async ({ browser }) => {
 
   await (await getByID(form, "email")).fill(payload.email);
 
-  await clickByID(form, "conf_email__footer_form__submit_btn");
+  await clickByID(form, "conf_email__form__submit");
 
   await waitTest(page);
 

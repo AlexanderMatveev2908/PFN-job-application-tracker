@@ -19,7 +19,7 @@ test("swap err mgmt", async ({ page }) => {
   const pwd = await getByID(el, "password");
   await checkIsFocused(pwd);
 
-  await clickByID(el, "register__footer_form__submit_btn");
+  await clickByID(el, "register__form__submit");
 
   await waitTest(page);
   const lastName = await getByID(el, "last_name");

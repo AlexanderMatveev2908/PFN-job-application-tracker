@@ -11,6 +11,7 @@ import { TokenT } from "@/common/types/tokens";
 import { useRunOnHydrate } from "@/core/hooks/etc/useRunOnHydrate";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { authSliceAPI } from "@/features/auth/slices/api";
+import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
 
 const Page: FC = () => {
   const { formCtx } = usePwdsForm();
@@ -19,6 +20,7 @@ const Page: FC = () => {
   const { userState, loginUser } = useUser();
   const { checkCbcHmac } = useCheckCbcHmac();
   const { nav, wrapAPI } = useKitHooks();
+  const { delCbcHmac } = useManageCbcHmac();
 
   const [mutate, { isLoading }] = authSliceAPI.useRecoverPwdAuthMutation();
 
@@ -32,6 +34,7 @@ const Page: FC = () => {
 
     if (res.access_token) {
       loginUser(res.access_token);
+      delCbcHmac();
 
       nav.replace("/");
     }
