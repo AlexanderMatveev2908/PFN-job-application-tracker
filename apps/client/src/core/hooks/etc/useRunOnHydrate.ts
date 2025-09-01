@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useWrapClientListener } from "./useWrapClientListener";
 
 type Params = {
-  cb: () => Promise<void>;
+  cb: (() => Promise<void>) | (() => void);
 };
 
 export const useRunOnHydrate = ({ cb }: Params) => {

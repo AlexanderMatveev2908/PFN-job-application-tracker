@@ -70,6 +70,8 @@ export const useVerify = () => {
             cbAPI: () => triggerRTK(cbc_hmac_token),
           })
         );
+
+        if (!res?.isErr) nav.replace("/auth/recover-password");
       },
     }),
     [wrapAPI, hookConfEmail, wrapHandleErr, hookRecoverPwd, loginUser, nav]
