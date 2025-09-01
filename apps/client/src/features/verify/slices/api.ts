@@ -1,6 +1,5 @@
 import { ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
-import { userSlice } from "@/features/user/slices/slice";
 
 const BASE_URL = "/verify";
 
@@ -33,13 +32,6 @@ export const verifySliceAPI = apiSlice.injectEndpoints({
         url: `${BASE_URL}/recover-pwd?cbc_hmac_token=${cbc_hmac_token}`,
         method: "GET",
       }),
-
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-          dispatch(userSlice.actions.setCbcHmac(arg));
-        } catch {}
-      },
     }),
   }),
 });

@@ -2,7 +2,7 @@
 "use client";
 
 import { ChildrenT } from "@/common/types/ui";
-import { REG_JWT } from "@/core/constants/regex";
+import { REG_CBC_HMAC, REG_JWT } from "@/core/constants/regex";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
 import { useScroll } from "@/core/hooks/ui/useScroll";
@@ -35,9 +35,12 @@ const CallbacksWrapper: FC<ChildrenT> = ({ children }) => {
     const cb = () => {
       const access_token = (getStorage("access_token") ?? "") as string;
       const notice = getStorage("notice");
+      const cbc_hmac_token = (getStorage("cbc_hmac_token") ?? "") as string;
 
       if (REG_JWT.test(access_token))
         dispatch(userSlice.actions.setAccessToken({ access_token }));
+      if (REG_CBC_HMAC.test(cbc_hmac_token))
+        dispatch(userSlice.actions.setCbcHmac(cbc_hmac_token));
       if (isObjOk(notice)) dispatch(noticeSlice.actions.setNotice(notice!));
     };
 
