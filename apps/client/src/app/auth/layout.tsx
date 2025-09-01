@@ -2,14 +2,13 @@
 
 import BaseLayoutPage from "@/common/components/HOC/pageWrappers/BaseLayoutPage";
 import { ChildrenT } from "@/common/types/ui";
-import { captAll } from "@/core/lib/formatters";
+import { extractNamePagePath } from "@/core/lib/path";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 
 const Layout: FC<ChildrenT> = ({ children }) => {
   const p = usePathname();
-  const last = p.split("/").pop();
 
   const nav = useRouter();
   const usState = useGetUserState();
@@ -21,7 +20,7 @@ const Layout: FC<ChildrenT> = ({ children }) => {
   return (
     <BaseLayoutPage
       {...{
-        title: captAll(last?.replace("-", " ")),
+        title: extractNamePagePath(p, { usFriendly: true }),
       }}
     >
       {children}

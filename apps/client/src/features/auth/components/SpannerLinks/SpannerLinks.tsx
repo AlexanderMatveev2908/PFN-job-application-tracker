@@ -7,12 +7,15 @@ import { spannerLinks, SpannerLinksAuthT } from "./uiFactory/idx";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { LinkAppSvgT } from "@/common/types/ui";
 import LinkSvg from "@/common/components/links/LinkSvg";
+import { extractNamePagePath } from "@/core/lib/path";
 
 const SpannerLinks: FC = () => {
   const p = usePathname();
-  const last = p.split("/").pop();
 
-  const links = spannerLinks[last as SpannerLinksAuthT];
+  const links =
+    spannerLinks[
+      extractNamePagePath(p, { usFriendly: false }) as SpannerLinksAuthT
+    ];
   const { ids } = useGenIDs({ lengths: [links.length] });
 
   return (

@@ -10,7 +10,7 @@ export type SpannerLinksAuthT =
   | "register"
   | "login"
   | "confirm-email"
-  | "recover-account";
+  | "recover-password";
 
 export type SpannerLinksObjT = Record<"msg" | "link", string | LinkAppSvgT>;
 
@@ -47,7 +47,7 @@ export const spannerLinks: SpannerAuthT = {
       link: linkRecoverPwd,
     },
   ],
-  "recover-account": [
+  "recover-password": [
     {
       msg: "Don't have an'account? Register",
       link: linkRegister,

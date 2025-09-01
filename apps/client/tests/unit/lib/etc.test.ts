@@ -1,4 +1,4 @@
-import { calcIsCurrPath } from "@/core/lib/etc";
+import { calcIsCurrPath } from "@/core/lib/path";
 import { describe } from "node:test";
 import { expect, it } from "vitest";
 
