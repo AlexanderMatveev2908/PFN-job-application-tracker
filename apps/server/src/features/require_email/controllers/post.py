@@ -1,10 +1,12 @@
 from fastapi import Depends, Request
 from fastapi.responses import Response
 from src.conf.db import db_trx
-from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.require_email.middleware.require_email import (
     require_email_mdw,
+)
+from src.features.require_email.middleware.require_email_logged import (
+    require_email_logged_mdw,
 )
 from src.lib.combo.token_mail import gen_token_send_email_svc
 from src.models.token import TokenT
@@ -31,13 +33,27 @@ async def confirm_email_ctrl(
     us_d: UserDcT = Depends(require_email_mdw),
 ) -> Response:
 
-    if us_d["is_verified"]:
-        raise ErrAPI(msg="user already verified", status=409)
     async with db_trx() as trx:
 
         await gen_token_send_email_svc(
             trx,
             us_d,
+            TokenT.CONF_EMAIL,
+        )
+
+        return ResAPI(req).ok_201(
+            msg="📮 email sent",
+        )
+
+
+async def confirm_email_logged_ctrl(
+    req: Request, us: UserDcT = Depends(require_email_logged_mdw)
+) -> Response:
+    async with db_trx() as trx:
+
+        await gen_token_send_email_svc(
+            trx,
+            us,
             TokenT.CONF_EMAIL,
         )
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.features.require_email.controllers.post import (
     confirm_email_ctrl,
+    confirm_email_logged_ctrl,
     require_email_forgot_pwd_ctrl,
 )
 from src.middleware.security.rate_limiter import rate_limit_mdw
@@ -18,6 +19,13 @@ require_email_router.add_api_route(
 require_email_router.add_api_route(
     "/confirm-email",
     confirm_email_ctrl,
+    methods=["POST"],
+    dependencies=[Depends(rate_limit_mdw(limit=5))],
+)
+
+require_email_router.add_api_route(
+    "/confirm-email-logged",
+    confirm_email_logged_ctrl,
     methods=["POST"],
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )

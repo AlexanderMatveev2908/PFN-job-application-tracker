@@ -4,7 +4,10 @@ import { EmailFormT } from "../../../core/forms/RequireEmailForm/paperwork";
 
 const BASE = "/require-email";
 
-export type RequireEmailEndpointT = "confirm-email" | "recover-pwd";
+export type RequireEmailEndpointT =
+  | "confirm-email"
+  | "recover-pwd"
+  | "confirm-email-logged";
 
 export const requireEmailSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
