@@ -8,7 +8,7 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { emailField } from "./uiFactory";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import WrapForm from "@/common/components/forms/shapes/WrapForm";
-import WrapBodyForm from "@/common/components/forms/shapes/WrapBodyForm";
+import WrapFormBody from "@/common/components/forms/shapes/WrapFormBody";
 import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
 
 type PropsType = {
@@ -33,14 +33,14 @@ const RequireEmailForm: FC<PropsType> = ({
           formTestID: testID,
         }}
       >
-        <WrapBodyForm>
+        <WrapFormBody>
           <FormFieldTxt
             {...{
               el: emailField,
               control: formCtx.control,
             }}
           />
-        </WrapBodyForm>
+        </WrapFormBody>
 
         <WrapFormFooter
           {...{

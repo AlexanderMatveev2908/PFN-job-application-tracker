@@ -39,6 +39,10 @@ export const registerUserOk = async (
   await waitURL(page, "/notice");
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
+
+  return {
+    payload,
+  };
 };
 
 export const loginUserOk = async (browser: Browser) => {

@@ -507,6 +507,71 @@ A ready-to-use **Postman setup** is available at the root of the repo in the **p
 
 ---
 
+## 🐘 PostgreSQL Tables Shape
+
+```mermaid
+erDiagram
+  users ||--o{ tokens : has
+  users ||--o{ backup_codes : has
+  tokens }o--|| token_type : uses
+  tokens }o--|| alg_type : uses
+  root_table ||--|| users : extends
+  root_table ||--|| tokens : extends
+  root_table ||--|| backup_codes : extends
+
+  root_table {
+    uuid id
+    bigint created_at
+    bigint updated_at
+    bigint deleted_at
+  }
+
+  users {
+    string first_name
+    string last_name
+    string email
+    string tmp_email
+    string password
+    bytes totp_secret
+    boolean terms
+    boolean is_verified
+  }
+
+  backup_codes {
+    uuid user_id
+    string code
+  }
+
+  tokens {
+    uuid user_id
+    token_type token_t
+    string alg
+    bytes hashed
+    bigint exp
+  }
+
+  token_type {
+    string REFRESH
+    string CONF_EMAIL
+    string RECOVER_PWD
+    string RECOVER_PWD_2FA
+    string CHANGE_EMAIL
+    string CHANGE_EMAIL_2FA
+    string CHANGE_PWD
+    string MANAGE_ACC
+    string LOGIN_2FA
+    string MANAGE_ACC_2FA
+  }
+
+  alg_type {
+    string AES_CBC_HMAC_SHA256
+    string RSA_OAEP_256_A256GCM
+    string HMAC_SHA256
+  }
+```
+
+---
+
 ## 🛠️ CI/CD
 
 The pipeline is defined in [`GitHub Workflows`](.github/workflows/check_deploy.yml) and runs automatically on every push to the **main** branch.
