@@ -18,7 +18,7 @@ class EnvVar(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=[ROOT_ENV, ".env"],
-        extra="forbid",
+        extra="ignore",
     )
 
     # ? calculated during custom custom zsh scripts getting cwd lowercase
