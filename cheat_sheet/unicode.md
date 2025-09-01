@@ -1,4 +1,4 @@
-# Chars
+# Unicode Chars
 
 - `u2014` **—**
 - `u2192` **→**
