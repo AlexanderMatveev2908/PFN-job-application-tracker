@@ -11,7 +11,7 @@ from src.features.auth.services.register import (
     RegisterSvcReturnT,
     register_user_svc,
 )
-from src.lib.cookies import gen_refresh_cookie
+from src.lib.cookies import gen_clear_refresh_token, gen_refresh_cookie
 from src.lib.db.idx import del_token_by_t
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.tokens.combo import gen_tokens_session
@@ -105,6 +105,6 @@ async def logout_ctrl(
             )
             feedback = "successful"
 
-    return ResAPI(req, clear_cookies=["refresh_token"]).ok_200(
+    return ResAPI(req, clear_cookies=[gen_clear_refresh_token()]).ok_200(
         msg=f"logout {feedback}"
     )

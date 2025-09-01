@@ -3,6 +3,7 @@ from fastapi import Request, Response
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
+from src.lib.cookies import gen_clear_refresh_token
 from src.lib.tokens.jwe import check_jwe_with_us
 from src.lib.tokens.jwt import gen_jwt
 from src.models.token import CheckTokenWithUsReturnT
@@ -25,6 +26,8 @@ async def refresh_token_ctrl(req: Request) -> Response:
         except Exception as err:
             msg = err.msg if isinstance(err, ErrAPI) else str(err)
 
-            return ResAPI(req, clear_cookies=["refresh_token"]).err_401(
+            return ResAPI(
+                req, clear_cookies=[gen_clear_refresh_token()]
+            ).err_401(
                 msg=msg,
             )

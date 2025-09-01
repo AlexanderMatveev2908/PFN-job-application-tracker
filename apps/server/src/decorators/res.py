@@ -1,29 +1,30 @@
-from typing import Any, Literal, TypedDict, cast
+from typing import Any, Literal, TypedDict
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from src.lib.serialize_data import serialize
 
 
-class CookieD(TypedDict, total=False):
+class ClearCookieT(TypedDict):
     key: str
+    path: str
+
+
+class CookieT(
+    ClearCookieT,
+):
     value: str
     httponly: bool
     secure: bool
     samesite: Literal["lax", "strict", "none"]
     max_age: int
-    path: str
-
-
-CookieT = list[CookieD] | None
-ClearCookieT = list[str | dict[str, CookieD]] | None
 
 
 class ResAPI:
     def __init__(
         self,
         req: Request,
-        cookies: CookieT = None,
-        clear_cookies: ClearCookieT = None,
+        cookies: list[CookieT] | None = None,
+        clear_cookies: list[ClearCookieT] | None = None,
     ) -> None:
         self.req = req
         self.cookies = cookies or []
@@ -33,9 +34,7 @@ class ResAPI:
         for c in self.cookies:
             res.set_cookie(**c)
         for cc in self.clear_cookies:
-            res.delete_cookie(
-                cast(str, cc if isinstance(cc, str) else cc["key"])
-            )
+            res.delete_cookie(**cc)
 
     def _make(
         self,
