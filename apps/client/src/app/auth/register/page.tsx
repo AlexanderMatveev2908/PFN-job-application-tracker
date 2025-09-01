@@ -33,7 +33,7 @@ const Page: FC = () => {
   });
   const { setFocus, handleSubmit, reset } = formCtx;
 
-  const [mutate, { isLoading }] = authSliceAPI.useRegisterUserMutation();
+  const [mutate, { isLoading }] = authSliceAPI.useRegisterAuthMutation();
   const { wrapAPI } = useWrapAPI();
   const { setNotice } = useNotice();
   const { loginUser } = useUser();

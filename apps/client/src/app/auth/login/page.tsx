@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 const Page: FC = () => {
   const { wrapAPI } = useWrapAPI();
   const nav = useRouter();
-  const [mutate, { isLoading }] = authSliceAPI.useLoginUserMutation();
+  const [mutate, { isLoading }] = authSliceAPI.useLoginAuthMutation();
   const { loginUser } = useUser();
 
   const formCtx = useForm<LoginFormT>({

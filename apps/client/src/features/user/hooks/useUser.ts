@@ -15,7 +15,7 @@ export const useUser = () => {
 
   const dispatch = useDispatch();
   const [mutate, { isLoading: isLoggingOut }] =
-    authSliceAPI.useLogoutUserMutation();
+    authSliceAPI.useLogoutAuthMutation();
 
   const loginUser = useCallback(
     (access_token: string) => {

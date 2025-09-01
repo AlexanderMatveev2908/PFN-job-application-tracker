@@ -31,6 +31,7 @@ export const useDelCbcHmacByPathAndType = () => {
         await wrapAPI({
           cbAPI: () => mutate(userState.cbc_hmac_token),
           showToast: false,
+          hideErr: true,
         });
       }
     };
