@@ -1,29 +1,24 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { logFormErrs } from "@/core/lib/etc";
-import { __cg } from "@/core/lib/log";
 import RequireEmailForm from "@/features/requireEmail/components/RequireEmailForm/AuthEmailForm";
 import { useEmailForm } from "@/features/requireEmail/components/RequireEmailForm/hooks/useEmailForm";
 import type { FC } from "react";
 
 const Page: FC = () => {
-  const { formCtx } = useEmailForm();
-  const { handleSubmit, reset } = formCtx;
+  const { formCtx, handleSaveMaker, isLoading } = useEmailForm();
 
-  const { wrapAPI, setNotice, nav } = useKitHooks();
-
-  const handleSave = handleSubmit(async (data) => {
-    __cg(data);
-  }, logFormErrs);
+  const handleSave = handleSaveMaker({
+    endpointT: "recover-pwd",
+    msgNotice: "to recover the password",
+  });
 
   return (
     <RequireEmailForm
       {...{
         formCtx,
         testID: "conf_email",
-        isLoading: false,
+        isLoading,
         handleSave,
       }}
     />
