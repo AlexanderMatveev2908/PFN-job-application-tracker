@@ -7,7 +7,6 @@ from src.lib.serialize_data import serialize
 class ClearCookieT(TypedDict):
     key: str
     path: str
-    domain: str | None
     httponly: bool
     secure: bool
     samesite: Literal["lax", "strict", "none"]

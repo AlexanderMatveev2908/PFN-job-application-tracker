@@ -1,4 +1,4 @@
-from src.conf.env import get_client_url, get_env
+from src.conf.env import get_env
 from src.decorators.res import ClearCookieT, CookieT
 
 
@@ -12,7 +12,6 @@ def gen_clear_refresh_token() -> ClearCookieT:
         "secure": mode != "test",
         "samesite": "lax" if mode == "test" else "none",
         "path": "/",
-        "domain": get_client_url(),
     }
 
 
