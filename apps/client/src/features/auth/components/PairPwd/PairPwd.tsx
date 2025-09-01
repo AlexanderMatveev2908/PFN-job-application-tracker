@@ -16,7 +16,10 @@ type PropsType = {
   swapMode?: SwapModeT;
 };
 
-const PairPwd: FC<PropsType> = ({ isCurrSwap = true, swapMode }) => {
+const PairPwd: FC<PropsType> = ({
+  isCurrSwap = true,
+  swapMode = "swapped",
+}) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const formCtx = useFormContext();

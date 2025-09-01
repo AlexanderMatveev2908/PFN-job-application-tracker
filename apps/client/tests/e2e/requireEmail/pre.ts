@@ -17,7 +17,7 @@ export const preRequireEmail = async (
 
   const pageRequire = await (await browser.newContext()).newPage();
 
-  await preTest(pageRequire, "/auth/confirm-email");
+  await preTest(pageRequire, "/auth/require-email/confirm-email");
 
   const form = await getByID(pageRequire, "conf_email__form");
 
