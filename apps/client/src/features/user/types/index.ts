@@ -6,6 +6,7 @@ export interface UserT extends SqlTableRoot {
   email: string;
   terms: boolean;
   use_2FA: boolean;
+  is_verified: boolean;
 
   password?: string;
   totp_secret?: boolean;

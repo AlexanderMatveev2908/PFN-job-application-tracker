@@ -36,12 +36,20 @@ export const linkRecoverPwd: LinkAppSvgT = {
   fill: "var(--white__0)",
 };
 
-export const linksNonLogged: LinkAppSvgT[] = [
+export const linksNonLoggedAccount: LinkAppSvgT[] = [
   linkRegister,
   linkLogin,
   linkRecoverPwd,
   linkConfirmEmail,
 ];
+
+export const linkConfEmailLogged = {
+  label: "Confirm Email",
+  href: "/user/require-email/confirm-email",
+  Svg: SvgConfirmEmail,
+};
+
+export const linksLoggedAccount = [linkConfEmailLogged];
 
 export const linkLogout: LinkAppSvgT = {
   label: "Logout",

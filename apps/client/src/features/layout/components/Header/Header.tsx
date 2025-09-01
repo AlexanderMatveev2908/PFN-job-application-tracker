@@ -11,7 +11,7 @@ import { getSideState, sideSlice } from "../Sidebar/slice";
 import SvgClose from "@/common/components/SVGs/Close";
 import { TbUserFilled } from "react-icons/tb";
 import DropMenuAbsolute from "@/common/components/dropMenus/DropMenuAbsolute";
-import { linksAll, linksNonLogged } from "@/core/uiFactory/links";
+import { linksAll, linksNonLoggedAccount } from "@/core/uiFactory/links";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import HeaderLink from "./components/HeaderLink";
 import { usePathname } from "next/navigation";
@@ -21,6 +21,7 @@ import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { extractInitialsUser } from "@/core/lib/formatters";
 import HeaderLogout from "./components/HeaderLogout";
 import { calcIsCurrPath } from "@/core/lib/path";
+import { useLinksLogged } from "@/core/hooks/etc/useLinksLogged";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);
@@ -33,9 +34,10 @@ const Header: FC = () => {
   const dispatch = useDispatch();
 
   const { ids } = useGenIDs({
-    lengths: [linksAll.length + linksNonLogged.length],
+    lengths: [linksAll.length + linksNonLoggedAccount.length],
   });
 
+  const { linksLoggedFiltered } = useLinksLogged();
   return (
     <div
       className="z__header w-full sticky top-0 left-0 border-b-3 bg-neutral-950 border-w__0 flex items-center justify-between px-3"
@@ -69,18 +71,20 @@ const Header: FC = () => {
         >
           {({ setIsOpen }) => (
             <>
-              {[...linksAll, ...(!usState.isUsOk ? linksNonLogged : [])].map(
-                (lk, i) => (
-                  <HeaderLink
-                    key={ids[0][i]}
-                    {...{
-                      isCurrPath: calcIsCurrPath(path, lk.href),
-                      lk,
-                      handleClick: () => setIsOpen(false),
-                    }}
-                  />
-                )
-              )}
+              {[
+                ...(!usState.isUsOk
+                  ? linksNonLoggedAccount
+                  : linksLoggedFiltered),
+              ].map((lk, i) => (
+                <HeaderLink
+                  key={ids[0][i]}
+                  {...{
+                    isCurrPath: calcIsCurrPath(path, lk.href),
+                    lk,
+                    handleClick: () => setIsOpen(false),
+                  }}
+                />
+              ))}
 
               {usState.isUsOk && (
                 <HeaderLogout

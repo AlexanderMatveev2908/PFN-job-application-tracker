@@ -9,14 +9,19 @@ import { usePathname } from "next/navigation";
 import DropMenuStatic from "@/common/components/dropMenus/DropMenuStatic";
 import { useDispatch } from "react-redux";
 import { sideSlice } from "../../slice";
-import { linksAll, linksNonLogged } from "@/core/uiFactory/links";
+import { linksAll, linksNonLoggedAccount } from "@/core/uiFactory/links";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import SideLogout from "./components/SideLogout";
 import { calcIsCurrPath } from "@/core/lib/path";
+import { useLinksLogged } from "@/core/hooks/etc/useLinksLogged";
 
 const SideContent: FC = () => {
   const { ids } = useGenIDs({
-    lengths: [linksAll.length, sideLinksLogged.length, linksNonLogged.length],
+    lengths: [
+      linksAll.length,
+      sideLinksLogged.length,
+      linksNonLoggedAccount.length,
+    ],
   });
 
   const isUsOk = useGetUserState().isUsOk;
@@ -24,6 +29,8 @@ const SideContent: FC = () => {
   const path = usePathname();
 
   const handleClick = () => dispatch(sideSlice.actions.closeSide());
+
+  const { linksLoggedFiltered } = useLinksLogged();
 
   return (
     <div className="w-full flex flex-col gap-8 items-start">
@@ -40,20 +47,18 @@ const SideContent: FC = () => {
         />
       ))}
 
-      {!isUsOk && (
-        <DropMenuStatic {...{ el: sideDropAccount }}>
-          {linksNonLogged.map((lk, i) => (
-            <SideLink
-              key={ids[2][i]}
-              {...{
-                lk,
-                isCurrPath: calcIsCurrPath(path, lk.href),
-                handleClick,
-              }}
-            />
-          ))}
-        </DropMenuStatic>
-      )}
+      <DropMenuStatic {...{ el: sideDropAccount }}>
+        {(isUsOk ? linksLoggedFiltered : linksNonLoggedAccount).map((lk, i) => (
+          <SideLink
+            key={ids[2][i]}
+            {...{
+              lk,
+              isCurrPath: calcIsCurrPath(path, lk.href),
+              handleClick,
+            }}
+          />
+        ))}
+      </DropMenuStatic>
 
       {isUsOk && <SideLogout {...{ handleClick }} />}
     </div>
