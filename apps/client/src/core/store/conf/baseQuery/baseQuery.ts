@@ -63,7 +63,7 @@ export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
       !["jwt_expired", "jwt_invalid", "jwt_not_provided"].some((txt) =>
         (errData?.msg ?? "")?.includes(txt)
       ) ||
-      response?.config?.url === "/auth/refresh"
+      response?.config?.url?.includes("/auth/refresh")
     )
       return {
         error: {
