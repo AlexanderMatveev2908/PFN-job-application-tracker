@@ -36,7 +36,7 @@ export const useEmailForm = () => {
         cbAPI: () => mutate({ ...data, endpoint: args.endpointT }),
       });
 
-      if (res.isErr) return;
+      if (res?.isErr) return;
 
       reset(resetValsEmailForm);
 

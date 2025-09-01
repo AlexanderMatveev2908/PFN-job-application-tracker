@@ -67,7 +67,6 @@ user_router.add_api_route(
     dependencies=[Depends(rate_limit_mdw(limit=5))],
 )
 
-
 user_router.add_api_route(
     "/new-backup-codes",
     new_backup_codes_ctrl,

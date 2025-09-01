@@ -30,7 +30,7 @@ export const useUser = () => {
       cbAPI: () => mutate(),
     });
 
-    if (res.isErr) return;
+    if (res?.isErr) return;
 
     clearStorage();
     dispatch(userSlice.actions.logout());

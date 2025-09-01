@@ -22,7 +22,7 @@ export const useErrAPI = () => {
       err: ResApiT<T>["data"];
       hideErr?: boolean;
       throwErr?: boolean;
-    }): ResApiT<T>["data"] => {
+    }): ResApiT<T>["data"] | undefined => {
       __cg("wrapper err api", err);
 
       if (err?.refreshFailed) {
@@ -35,6 +35,8 @@ export const useErrAPI = () => {
 
         dispatch(apiSlice.util.resetApiState());
         nav.replace("/auth/login");
+
+        return;
       } else {
         if (!hideErr)
           dispatch(

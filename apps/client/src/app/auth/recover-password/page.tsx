@@ -30,9 +30,9 @@ const Page: FC = () => {
         mutate({ ...data, cbc_hmac_token: userState.cbc_hmac_token }),
     });
 
-    if (res.isErr) return;
+    if (res?.isErr) return;
 
-    if (res.access_token) {
+    if (res?.access_token) {
       loginUser(res.access_token);
       delCbcHmac();
 
