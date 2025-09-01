@@ -46,6 +46,9 @@ export const userSlice = createSlice({
     setCbcHmac: (state, action: PayloadAction<string>) => {
       state.cbc_hmac_token = action.payload;
     },
+    clearCbcHmac: (state) => {
+      state.cbc_hmac_token = "";
+    },
   },
 });
 

@@ -10,7 +10,7 @@ import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useCallback, useMemo } from "react";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { UnwrappedResT } from "@/common/types/api";
-import { useSaveCbcHmac } from "@/features/user/hooks/useSaveCbcHmac";
+import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
 
 export type MapperVerifyT = Record<
   TokenT,
@@ -23,7 +23,7 @@ export const useVerify = () => {
 
   const { loginUser } = useUser();
   const { setNotice } = useNotice();
-  const { saveCbcHmac } = useSaveCbcHmac();
+  const { saveCbcHmac } = useManageCbcHmac();
   const { wrapAPI } = useWrapAPI();
 
   const nav = useRouter();

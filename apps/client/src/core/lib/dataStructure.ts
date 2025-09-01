@@ -1,3 +1,6 @@
+import { AadCbcHmacT } from "@/common/types/tokens";
+import { REG_CBC_HMAC } from "../constants/regex";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isStr = (str: unknown): boolean =>
   typeof str === "string" && !!str.trim().length;
@@ -119,3 +122,15 @@ export const hexToBytes = (hex: string) => {
 
 export const hexToDict = (hex: string) =>
   JSON.parse(new TextDecoder().decode(hexToBytes(hex)));
+
+export const extractAadFromCbcHmac = (cbc_hmac_token?: string | null) => {
+  let aad: AadCbcHmacT | null = null;
+  try {
+    if (cbc_hmac_token && REG_CBC_HMAC.test(cbc_hmac_token))
+      aad = hexToDict(cbc_hmac_token!.split(".")[0]!);
+  } catch {
+    aad = null;
+  }
+
+  return aad;
+};

@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { userSlice } from "../slices/slice";
-import { saveStorage } from "@/core/lib/storage";
+import { delStorageItm, saveStorage } from "@/core/lib/storage";
 
-export const useSaveCbcHmac = () => {
+export const useManageCbcHmac = () => {
   const dispatch = useDispatch();
 
   const saveCbcHmac = useCallback(
@@ -14,7 +14,13 @@ export const useSaveCbcHmac = () => {
     [dispatch]
   );
 
+  const delCbcHmac = useCallback(() => {
+    delStorageItm("cbc_hmac_token");
+    dispatch(userSlice.actions.clearCbcHmac());
+  }, [dispatch]);
+
   return {
     saveCbcHmac,
+    delCbcHmac,
   };
 };
