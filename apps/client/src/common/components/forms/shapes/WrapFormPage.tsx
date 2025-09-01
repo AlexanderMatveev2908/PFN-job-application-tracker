@@ -13,7 +13,7 @@ type PropsType = {
   };
 } & ChildrenT;
 
-const AuthPageWrap: FC<PropsType> = ({ propsProgressSwap, children }) => {
+const WrapFormPage: FC<PropsType> = ({ propsProgressSwap, children }) => {
   return (
     <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
       {isObjOk(propsProgressSwap) && (
@@ -32,4 +32,4 @@ const AuthPageWrap: FC<PropsType> = ({ propsProgressSwap, children }) => {
   );
 };
 
-export default AuthPageWrap;
+export default WrapFormPage;

@@ -10,7 +10,7 @@ type PropsType<T extends FieldValues> = {
   formTestID: string;
 } & ChildrenT;
 
-const AuthFormWrap = <T extends FieldValues>({
+const WrapForm = <T extends FieldValues>({
   formCtx,
   handleSave,
   formTestID,
@@ -29,4 +29,4 @@ const AuthFormWrap = <T extends FieldValues>({
   );
 };
 
-export default AuthFormWrap;
+export default WrapForm;

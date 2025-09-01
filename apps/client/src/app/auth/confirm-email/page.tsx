@@ -2,8 +2,8 @@
 
 import { logFormErrs } from "@/core/lib/etc";
 import { __cg } from "@/core/lib/log";
-import AuthEmailForm from "@/features/auth/components/AuthEmailForm/AuthEmailForm";
-import { useEmailForm } from "@/features/auth/components/AuthEmailForm/hooks/useEmailForm";
+import RequireEmailForm from "@/features/requireEmail/components/RequireEmailForm/AuthEmailForm";
+import { useEmailForm } from "@/features/requireEmail/components/RequireEmailForm/hooks/useEmailForm";
 import type { FC } from "react";
 
 const Page: FC = () => {
@@ -15,7 +15,7 @@ const Page: FC = () => {
   }, logFormErrs);
 
   return (
-    <AuthEmailForm
+    <RequireEmailForm
       {...{
         formCtx,
         testID: "conf_email",

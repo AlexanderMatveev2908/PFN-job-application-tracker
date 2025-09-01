@@ -2,14 +2,14 @@
 "use client";
 
 import type { FC } from "react";
-import AuthPageWrap from "../AuthPageWrap";
-import AuthFormWrap from "../AuthFormWrap";
 import { UseFormReturn } from "react-hook-form";
 import { EmailFormT } from "./paperwork";
-import AuthFormFooter from "../AuthFormFooter";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { emailField } from "./uiFactory";
-import AuthWrapBodyForm from "../AuthWrapBodyForm";
+import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
+import WrapForm from "@/common/components/forms/shapes/WrapForm";
+import WrapBodyForm from "@/common/components/forms/shapes/WrapBodyForm";
+import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
 
 type PropsType = {
   formCtx: UseFormReturn<EmailFormT>;
@@ -18,39 +18,39 @@ type PropsType = {
   testID: string;
 };
 
-const AuthEmailForm: FC<PropsType> = ({
+const RequireEmailForm: FC<PropsType> = ({
   formCtx,
   handleSave,
   isLoading,
   testID,
 }) => {
   return (
-    <AuthPageWrap>
-      <AuthFormWrap
+    <WrapFormPage>
+      <WrapForm
         {...{
           formCtx,
           handleSave,
           formTestID: testID,
         }}
       >
-        <AuthWrapBodyForm>
+        <WrapBodyForm>
           <FormFieldTxt
             {...{
               el: emailField,
               control: formCtx.control,
             }}
           />
-        </AuthWrapBodyForm>
+        </WrapBodyForm>
 
-        <AuthFormFooter
+        <WrapFormFooter
           {...{
             isLoading,
             submitBtnTestID: testID,
           }}
         />
-      </AuthFormWrap>
-    </AuthPageWrap>
+      </WrapForm>
+    </WrapFormPage>
   );
 };
 
-export default AuthEmailForm;
+export default RequireEmailForm;

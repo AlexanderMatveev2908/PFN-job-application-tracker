@@ -7,7 +7,7 @@ import BtnsSwapper, {
 } from "@/common/components/swap/BtnsSwapper";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
-import SpannerLinks from "./SpannerLinks/SpannerLinks";
+import SpannerLinks from "../../../../features/auth/components/SpannerLinks/SpannerLinks";
 
 type PropsType = {
   propsBtnsSwapper?: PropsTypeBtnsSwapper;
@@ -15,7 +15,7 @@ type PropsType = {
   submitBtnTestID: string;
 };
 
-const AuthFormFooter: FC<PropsType> = ({
+const WrapFormFooter: FC<PropsType> = ({
   propsBtnsSwapper,
   isLoading,
   submitBtnTestID,
@@ -47,4 +47,4 @@ const AuthFormFooter: FC<PropsType> = ({
   );
 };
 
-export default AuthFormFooter;
+export default WrapFormFooter;

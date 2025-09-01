@@ -3,9 +3,9 @@
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
-import AuthFormFooter from "@/features/auth/components/AuthFormFooter";
-import AuthFormWrap from "@/features/auth/components/AuthFormWrap";
-import AuthPageWrap from "@/features/auth/components/AuthPageWrap";
+import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
+import WrapForm from "@/common/components/forms/shapes/WrapForm";
+import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import BodyFormLogin from "@/features/auth/pages/login/components/BodyFormLogin";
 import {
   LoginFormT,
@@ -49,8 +49,8 @@ const Page: FC = () => {
   useFocus("email", { setFocus });
 
   return (
-    <AuthPageWrap>
-      <AuthFormWrap
+    <WrapFormPage>
+      <WrapForm
         {...{
           formCtx,
           handleSave,
@@ -59,14 +59,14 @@ const Page: FC = () => {
       >
         <BodyFormLogin />
 
-        <AuthFormFooter
+        <WrapFormFooter
           {...{
             isLoading,
             submitBtnTestID: "login",
           }}
         />
-      </AuthFormWrap>
-    </AuthPageWrap>
+      </WrapForm>
+    </WrapFormPage>
   );
 };
 
