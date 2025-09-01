@@ -551,22 +551,22 @@ erDiagram
   }
 
   token_type {
-    string REFRESH
-    string CONF_EMAIL
-    string RECOVER_PWD
-    string RECOVER_PWD_2FA
-    string CHANGE_EMAIL
-    string CHANGE_EMAIL_2FA
-    string CHANGE_PWD
-    string MANAGE_ACC
-    string LOGIN_2FA
-    string MANAGE_ACC_2FA
+    enum REFRESH
+    enum CONF_EMAIL
+    enum RECOVER_PWD
+    enum RECOVER_PWD_2FA
+    enum CHANGE_EMAIL
+    enum CHANGE_EMAIL_2FA
+    enum CHANGE_PWD
+    enum MANAGE_ACC
+    enum LOGIN_2FA
+    enum MANAGE_ACC_2FA
   }
 
   alg_type {
-    string AES_CBC_HMAC_SHA256
-    string RSA_OAEP_256_A256GCM
-    string HMAC_SHA256
+    enum AES_CBC_HMAC_SHA256
+    enum RSA_OAEP_256_A256GCM
+    enum HMAC_SHA256
   }
 ```
 
