@@ -5,9 +5,9 @@ import type { FC } from "react";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import WrapForm from "@/common/components/forms/shapes/WrapForm";
 import { UseFormReturn } from "react-hook-form";
-import { PwdsFormT } from "../../paperwork";
+import { PwdsFormT } from "../../../features/auth/paperwork";
 import WrapFormBody from "@/common/components/forms/shapes/WrapFormBody";
-import PairPwd from "../PairPwd/PairPwd";
+import PairPwd from "../../../common/components/HOC/PairPwd/PairPwd";
 import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
 
 type PropsType = {

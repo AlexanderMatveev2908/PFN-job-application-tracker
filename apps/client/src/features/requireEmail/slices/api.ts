@@ -1,6 +1,6 @@
 import { ResApiT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
-import { EmailFormT } from "../components/RequireEmailForm/paperwork";
+import { EmailFormT } from "../../../core/forms/RequireEmailForm/paperwork";
 
 const BASE = "/require-email";
 

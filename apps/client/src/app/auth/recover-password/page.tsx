@@ -3,8 +3,8 @@
 
 import { logFormErrs } from "@/core/lib/etc";
 import { __cg } from "@/core/lib/log";
-import FormResetPwd from "@/features/auth/components/FormResetPwd/FormResetPwd";
-import { usePwdsForm } from "@/features/auth/components/FormResetPwd/hooks/usePwdsForm";
+import FormResetPwd from "@/core/forms/FormResetPwd/FormResetPwd";
+import { usePwdsForm } from "@/core/forms/FormResetPwd/hooks/usePwdsForm";
 import type { FC } from "react";
 
 const Page: FC = () => {

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, type FC } from "react";
-import { pwdFields } from "../../uiFactory/idx";
+import { pwdFields } from "../../../../features/auth/uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
