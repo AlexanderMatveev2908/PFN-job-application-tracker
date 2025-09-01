@@ -37,13 +37,15 @@ const Page: FC = () => {
       cbAPI: () => mutate(data),
     });
 
-    if (res.isErr) return;
+    if (res?.isErr) return;
 
-    if (res.access_token) loginUser(res.access_token);
+    if (res?.access_token) {
+      loginUser(res.access_token);
 
-    reset(resetValsLogin);
+      reset(resetValsLogin);
 
-    nav.replace("/");
+      nav.replace("/");
+    }
   }, logFormErrs);
 
   useFocus("email", { setFocus });

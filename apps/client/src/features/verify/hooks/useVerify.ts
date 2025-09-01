@@ -29,10 +29,10 @@ export const useVerify = () => {
   const nav = useRouter();
 
   const wrapHandleErr = useCallback(
-    async <T>(cb: () => Promise<UnwrappedResT<T>>) => {
+    async <T>(cb: () => Promise<UnwrappedResT<T> | undefined>) => {
       const res = await cb();
 
-      if (res.isErr) {
+      if (res?.isErr) {
         setNotice({
           msg: res?.msg ?? "👻",
           type: "ERR",
