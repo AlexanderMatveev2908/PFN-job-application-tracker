@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import ProgressSwap from "@/common/components/elements/ProgressSwap";
+import ProgressSwap from "@/common/components/swap/ProgressSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
