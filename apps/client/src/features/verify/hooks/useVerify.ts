@@ -58,6 +58,8 @@ export const useVerify = () => {
           })
         );
 
+        if (!res) return;
+
         if (res?.access_token) {
           loginUser(res.access_token);
 
@@ -73,10 +75,10 @@ export const useVerify = () => {
           })
         );
 
-        if (!res?.isErr) {
-          saveCbcHmac(cbc_hmac_token);
-          nav.replace("/auth/recover-password");
-        }
+        if (!res) return;
+
+        saveCbcHmac(cbc_hmac_token);
+        nav.replace("/auth/recover-password");
       },
     }),
     [
