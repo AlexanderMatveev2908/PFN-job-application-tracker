@@ -23,4 +23,6 @@ test("ok", async ({ browser }) => {
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
 
   await getByTxt(page, "email sent");
+
+  // ? ... tested manually verify part including part of opening gmail using btn helper that search by my domain that use no-reply as subdomain
 });
