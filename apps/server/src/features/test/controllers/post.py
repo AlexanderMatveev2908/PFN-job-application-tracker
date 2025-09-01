@@ -2,6 +2,7 @@ import asyncio
 import json
 from fastapi import Request
 from fastapi.responses import Response
+from src.__dev_only.payloads import RegisterPartPayloadT
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
@@ -108,7 +109,7 @@ async def get_us_2FA_ctrl(
     req: Request,
 ) -> Response:
 
-    filtered = await get_optional_payload(req)
+    filtered: RegisterPartPayloadT = await get_optional_payload(req)
 
     q = req.state.parsed_q
     empty_codes = q.get("empty_codes")
@@ -170,7 +171,7 @@ async def get_us_2FA_ctrl(
                 )
             ],
         ).ok_200(
-            payload=filtered,
+            payload={**filtered, "confirm_password": filtered["password"]},
             user=us,
             totp_secret=secret_result["secret"],
             backup_codes=backup_codes,

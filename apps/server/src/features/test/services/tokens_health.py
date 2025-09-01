@@ -1,9 +1,9 @@
-from typing import Any, cast
+from typing import Any, TypedDict, cast
 import uuid
 
 from sqlalchemy import delete
+from src.__dev_only.payloads import RegisterPartPayloadT, RegisterPayloadT
 from src.conf.db import db_trx
-from src.features.auth.middleware.register import RegisterFormT
 from src.lib.data_structure import parse_id, pick
 from src.lib.db.idx import get_us_by_email
 from src.lib.tokens.cbc_hmac import (
@@ -14,11 +14,19 @@ from src.models.token import GenTokenReturnT, Token, TokenT
 from src.models.user import User
 
 
+class TokensHealthSvcReturnT(TypedDict):
+    payload: RegisterPayloadT
+    user: User
+    access_token: str
+    refresh_token: str
+    cbc_hmac_token: str
+
+
 async def tokens_health_svc(
-    payload: RegisterFormT,
+    payload: RegisterPartPayloadT,
     token_t: TokenT,
     parsed_q: dict[str, Any],
-) -> Any:
+) -> TokensHealthSvcReturnT:
     async with db_trx() as trx:
 
         expired: str | list[str] | None = parsed_q.get("expired")
@@ -60,5 +68,5 @@ async def tokens_health_svc(
             "access_token": result_tokens["access_token"],
             "refresh_token": result_tokens["result_jwe"]["client_token"],
             "cbc_hmac_token": result_cbc_hmac["client_token"],
-            "payload": payload,
+            "payload": {**payload, "confirm_password": payload["password"]},
         }

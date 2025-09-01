@@ -1,7 +1,10 @@
 from typing import Literal
 from urllib.parse import urlencode
 from httpx import AsyncClient
-from src.__dev_only.payloads import RegisterPayloadT, get_payload_register
+from src.__dev_only.payloads import (
+    RegisterPayloadT,
+    get_payload_register,
+)
 from src.constants.reg import (
     REG_CBC_HMAC,
     REG_ID,

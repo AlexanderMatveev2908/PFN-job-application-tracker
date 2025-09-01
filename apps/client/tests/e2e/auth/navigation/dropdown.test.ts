@@ -13,7 +13,6 @@ test("with dropdown", async ({ page }) => {
   const el = await getByID(page, "drop_menu_absolute__content");
 
   await checkLinksList(el, [
-    "Home",
     "Register",
     "Login",
     "Recover Password",

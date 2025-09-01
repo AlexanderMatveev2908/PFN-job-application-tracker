@@ -86,7 +86,7 @@ export interface GetTokensReturnT {
   access_token: string;
   user: UserT;
   cbc_hmac_token: string;
-  payload: Omit<PayloadRegisterT, "confirm_password">;
+  payload: PayloadRegisterT;
 }
 
 export const getTokensLib = async (
