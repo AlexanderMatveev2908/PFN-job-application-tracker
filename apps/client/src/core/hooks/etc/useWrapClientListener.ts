@@ -5,9 +5,10 @@ export const useWrapClientListener = () => {
   const { isHydrated } = useHydration();
 
   const wrapClientListener = useCallback(
-    (cb: () => void) => {
+    async (cb: (() => void) | (() => Promise<void>)) => {
       if (!isHydrated) return;
-      cb();
+
+      await cb();
     },
     [isHydrated]
   );

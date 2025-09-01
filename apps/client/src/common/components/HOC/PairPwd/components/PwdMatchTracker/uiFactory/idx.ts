@@ -11,7 +11,7 @@ export const rulesPwd = [
   { Svg: SvgSymbols, reg: /[\W_]/ },
 ];
 
-export const lengthPwd = { Svg: SvgRuler, reg: /^.{8,}$/ };
+export const lengthPwd = { Svg: SvgRuler, reg: /^\S{8,}$/ };
 
 export const extractClr = (reg: RegExp, pwd: string) =>
   reg.test(pwd) ? "text-green-600" : "text-red-600";

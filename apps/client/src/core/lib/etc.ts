@@ -1,5 +1,4 @@
 import { RefObject } from "react";
-import { ErrApp } from "./err";
 import { __cg } from "./log";
 
 export const clearTmr = (timerID: RefObject<NodeJS.Timeout | null>) => {
@@ -16,29 +15,8 @@ export const genLorem = (n?: number) =>
     n ?? 1
   );
 
-export const calcIsCurrPath = (path: string, href: string) => {
-  const noQuery = path.split(/[?#]/).shift();
-  const base = noQuery!.replace(/\/+$/, "");
-
-  const escaped = base.replace(/[.*+?^${}()|\\[\]]/g, "\\$&");
-
-  const reg = new RegExp(`^${escaped}(?:/+)?(?:\\?.*)?$`);
-
-  return reg.test(href);
-};
-
 export const genMinMax = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
-
-export const extractTestIdPath = (p: string) => {
-  const act = p.split("/").pop();
-
-  if (!act) throw new ErrApp("invalid working path call");
-
-  const parsed = act.replace(/-/g, "_").toLowerCase();
-
-  return parsed;
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const logFormErrs = (errs: any) => {

@@ -16,7 +16,7 @@ export const linksAll: LinkAppSvgT[] = [
 
 export const linkConfirmEmail: LinkAppSvgT = {
   label: "Confirm Email",
-  href: "/auth/confirm-email",
+  href: "/auth/require-email/confirm-email",
   Svg: SvgConfirmEmail,
 };
 export const linkRegister: LinkAppSvgT = {
@@ -31,7 +31,7 @@ export const linkLogin: LinkAppSvgT = {
 };
 export const linkRecoverPwd: LinkAppSvgT = {
   label: "Recover Password",
-  href: "/auth/recover-account",
+  href: "/auth/require-email/recover-password",
   Svg: FaKey,
   fill: "var(--white__0)",
 };

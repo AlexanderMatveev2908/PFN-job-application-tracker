@@ -68,7 +68,7 @@ const PwdMatchTracker: FC<PropsType> = ({
           >
             <lengthPwd.Svg className="svg__sm" />
 
-            <span className="txt__lg">{pwd?.length ?? 0}/8</span>
+            <span className="txt__lg">{pwd?.trim()?.length ?? 0}/8</span>
           </div>
         </div>
       </div>

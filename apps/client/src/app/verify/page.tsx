@@ -2,51 +2,26 @@
 "use client";
 
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import { AadCbcHmacT } from "@/common/types/tokens";
-import { REG_CBC_HMAC } from "@/core/constants/regex";
-import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
-import { hexToDict } from "@/core/lib/dataStructure";
-import { useNotice } from "@/features/notice/hooks/useNotice";
+import { useCheckCbcHmac } from "@/core/hooks/etc/useCheckCbcHmac";
+import { useRunOnHydrate } from "@/core/hooks/etc/useRunOnHydrate";
 import { useVerify } from "@/features/verify/hooks/useVerify";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, type FC } from "react";
+import { useSearchParams } from "next/navigation";
+import { useCallback, type FC } from "react";
 
 const Page: FC = () => {
-  const hasRun = useRef<boolean>(false);
-
   const cbcHmacToken = useSearchParams().get("cbc_hmac_token");
-  const nav = useRouter();
 
-  const { setNotice } = useNotice();
   const { mapperVerify } = useVerify();
-  const { wrapClientListener } = useWrapClientListener();
 
-  useEffect(() => {
-    const cb = async () => {
-      if (hasRun.current) return;
-      hasRun.current = true;
+  const { checkCbcHmac } = useCheckCbcHmac();
 
-      let aad: AadCbcHmacT | null = null;
-      try {
-        if (cbcHmacToken && REG_CBC_HMAC.test(cbcHmacToken))
-          aad = hexToDict(cbcHmacToken!.split(".")[0]!);
-      } catch {
-        aad = null;
-      }
+  const cb = useCallback(async () => {
+    const aad = checkCbcHmac(cbcHmacToken);
 
-      if (!aad || !(aad.token_t in mapperVerify)) {
-        setNotice({
-          msg: "Invalid Token Format",
-          type: "ERR",
-        });
-        nav.replace("/notice");
-      }
+    if (aad) await mapperVerify[aad.token_t](cbcHmacToken!);
+  }, [cbcHmacToken, checkCbcHmac, mapperVerify]);
 
-      await mapperVerify[aad!.token_t](cbcHmacToken!);
-    };
-
-    wrapClientListener(cb);
-  }, [cbcHmacToken, setNotice, nav, mapperVerify, wrapClientListener]);
+  useRunOnHydrate({ cb });
 
   return (
     <WrapCSR

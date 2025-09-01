@@ -14,13 +14,13 @@ import DropMenuAbsolute from "@/common/components/dropMenus/DropMenuAbsolute";
 import { linksAll, linksNonLogged } from "@/core/uiFactory/links";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import HeaderLink from "./components/HeaderLink";
-import { calcIsCurrPath } from "@/core/lib/etc";
 import { usePathname } from "next/navigation";
 import { headerHight } from "@/core/constants/style";
 import { useHydration } from "@/core/hooks/ui/useHydration";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { extractInitialsUser } from "@/core/lib/formatters";
 import HeaderLogout from "./components/HeaderLogout";
+import { calcIsCurrPath } from "@/core/lib/path";
 
 const Header: FC = () => {
   const sideState = useSelector(getSideState);

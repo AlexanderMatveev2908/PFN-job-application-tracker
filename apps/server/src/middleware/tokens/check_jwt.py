@@ -55,9 +55,14 @@ def check_jwt_search_us_mdw(
         # ? if is not optional decoding it will raise ErrAPI so i will not get a key Error trying to access from None a property # noqa: E501
 
         async with db_trx() as trx:
-            us = await get_us_by_id(
-                trx=trx, us_id=cast(PayloadT, decoded)["user_id"]
-            )
+            us: User | None = None
+
+            try:
+                us = await get_us_by_id(
+                    trx=trx, us_id=cast(PayloadT, decoded)["user_id"]
+                )
+            except Exception:
+                raise ErrAPI(msg="jwt_invalid", status=401)
 
             if inst:
                 return us

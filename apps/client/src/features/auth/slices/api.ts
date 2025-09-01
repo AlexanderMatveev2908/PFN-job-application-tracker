@@ -13,7 +13,7 @@ export type LoginUserReturnT = {
 };
 export const authSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    registerUser: builder.mutation<ResApiT<RegisterUserReturnT>, RegisterFormT>(
+    registerAuth: builder.mutation<ResApiT<RegisterUserReturnT>, RegisterFormT>(
       {
         query: (data) => ({
           url: `${BASE}/register`,
@@ -24,7 +24,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       }
     ),
 
-    loginUser: builder.mutation<ResApiT<LoginUserReturnT>, LoginFormT>({
+    loginAuth: builder.mutation<ResApiT<LoginUserReturnT>, LoginFormT>({
       query: (data) => ({
         url: `${BASE}/login`,
         method: "POST",
@@ -33,11 +33,23 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    logoutUser: builder.mutation<ResApiT<void>, void>({
+    logoutAuth: builder.mutation<ResApiT<void>, void>({
       query: () => ({
         url: `${BASE}/logout`,
         method: "POST",
       }),
+    }),
+
+    recoverPwdAuth: builder.mutation<
+      ResApiT<LoginUserReturnT>,
+      { cbc_hmac_token: string; password: string }
+    >({
+      query: (data) => ({
+        url: `${BASE}/recover-pwd`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: [TagAPI.USER],
     }),
   }),
 });

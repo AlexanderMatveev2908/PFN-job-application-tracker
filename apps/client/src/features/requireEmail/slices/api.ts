@@ -1,16 +1,23 @@
 import { ResApiT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
-import { EmailFormT } from "../components/RequireEmailForm/paperwork";
+import { EmailFormT } from "../../../core/forms/RequireEmailForm/paperwork";
 
 const BASE = "/require-email";
 
+export type RequireEmailEndpointT = "confirm-email" | "recover-pwd";
+
 export const requireEmailSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    requireConfEmail: builder.mutation<ResApiT<void>, EmailFormT>({
+    requireEmail: builder.mutation<
+      ResApiT<void>,
+      EmailFormT & { endpoint: RequireEmailEndpointT }
+    >({
       query: (data) => ({
-        url: `${BASE}/confirm-email`,
+        url: `${BASE}/${data.endpoint}`,
         method: "POST",
-        data,
+        data: {
+          email: data.email,
+        },
       }),
     }),
   }),
