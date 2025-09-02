@@ -102,6 +102,10 @@ export const getTokensLib = async (
   );
   const data = await res.json();
 
+  await page.evaluate((token: string) => {
+    sessionStorage.setItem("access_token", token);
+  }, data.access_token);
+
   expect(REG_CBC_HMAC.test(data.cbc_hmac_token));
 
   return { ...data, page: page };
