@@ -10,6 +10,7 @@ import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import { genLorem } from "@/core/lib/etc";
 import type { FC } from "react";
+import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
@@ -18,7 +19,7 @@ const Page: FC = () => {
   });
 
   const { startSwap, swapState } = useSwap();
-  const { currSwap, swapMode } = swapState;
+  const { currSwap } = swapState;
   const { contentRef, contentH } = useListenHeight({
     opdDep: [currSwap],
   });
@@ -38,14 +39,13 @@ const Page: FC = () => {
           totSwaps: 2,
         }}
       >
-        <WrapSwap
+        <ChangeEmailForm
           {...{
             contentRef,
-            isCurr: !currSwap,
+            isCurr: currSwap === 0,
+            swapState,
           }}
-        >
-          <div className="">{genLorem(5)}</div>
-        </WrapSwap>
+        />
 
         <WrapSwap
           {...{

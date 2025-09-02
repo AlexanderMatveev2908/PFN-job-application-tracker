@@ -4,12 +4,12 @@
 import { ChildrenT } from "@/common/types/ui";
 import type { FC, RefObject } from "react";
 
-type PropsType = {
+export type PropsTypeWrapSwap = {
   isCurr: boolean;
   contentRef: RefObject<HTMLDivElement | null>;
 } & ChildrenT;
 
-const WrapSwap: FC<PropsType> = ({ children, isCurr, contentRef }) => {
+const WrapSwap: FC<PropsTypeWrapSwap> = ({ children, isCurr, contentRef }) => {
   return (
     <div
       ref={isCurr ? contentRef : null}

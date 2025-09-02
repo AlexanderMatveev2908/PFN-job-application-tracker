@@ -323,11 +323,7 @@
 }
 
 .form__shape {
-  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5;
-}
-
-.form__footer {
-  @apply w-full grid grid-cols-1 gap-8 p-5;
+  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 pb-5;
 }
 
 @keyframes skeleton {
