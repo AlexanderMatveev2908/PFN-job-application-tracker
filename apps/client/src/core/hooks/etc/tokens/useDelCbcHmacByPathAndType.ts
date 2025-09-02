@@ -1,10 +1,10 @@
 import { TokenT } from "@/common/types/tokens";
 import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
-import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
+import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useUser } from "@/features/user/hooks/useUser";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { useWrapAPI } from "../../../core/hooks/api/useWrapAPI";
+import { useWrapAPI } from "../../api/useWrapAPI";
 import { cleanupSliceAPI } from "@/features/cleanup/slices/api";
 
 export const useDelCbcHmacByPathAndType = () => {
@@ -22,9 +22,14 @@ export const useDelCbcHmacByPathAndType = () => {
       const aad = extractAadFromCbcHmac(userState.cbc_hmac_token);
       if (!aad || p.includes("/verify")) return;
 
+      const { token_t } = aad;
       if (
-        aad.token_t === TokenT.RECOVER_PWD &&
-        !p.includes("auth/recover-password")
+        (token_t === TokenT.RECOVER_PWD &&
+          !p.includes("auth/recover-password")) ||
+        (token_t === TokenT.MANAGE_ACC &&
+          !["/user/access-manage-account", "/user/manage-account"].some(
+            (usPath) => p.includes(usPath)
+          ))
       ) {
         delCbcHmac();
 

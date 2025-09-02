@@ -1,15 +1,20 @@
-import { TagAPI, UnwrappedResT } from "@/common/types/api";
+import { ResApiT, TagAPI, UnwrappedResT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { UserT } from "../types";
 import { userSlice } from "./slice";
+import { PwdFormT } from "@/core/paperwork";
 
-const BASE_URL = "/user";
+const BASE = "/user";
+
+export type GainAccessManageAccReturnT = {
+  cbc_hmac_token: string;
+};
 
 export const userSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query<UnwrappedResT<{ user: UserT }>, void>({
       query: () => ({
-        url: `${BASE_URL}/profile`,
+        url: `${BASE}/profile`,
         method: "GET",
       }),
       providesTags: [TagAPI.USER],
@@ -23,6 +28,17 @@ export const userSliceAPI = apiSlice.injectEndpoints({
           dispatch(userSlice.actions.setUser(null));
         }
       },
+    }),
+
+    gainAccessManageAcc: builder.mutation<
+      ResApiT<GainAccessManageAccReturnT>,
+      PwdFormT
+    >({
+      query: (data) => ({
+        url: `${BASE}/manage-account`,
+        method: "POST",
+        data,
+      }),
     }),
   }),
 });

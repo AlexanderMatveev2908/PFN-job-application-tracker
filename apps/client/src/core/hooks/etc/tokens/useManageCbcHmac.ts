@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { userSlice } from "../slices/slice";
+import { userSlice } from "../../../../features/user/slices/slice";
 import { delStorageItm, saveStorage } from "@/core/lib/storage";
 
 export const useManageCbcHmac = () => {

@@ -9,7 +9,7 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { TokenT } from "@/common/types/tokens";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { authSliceAPI } from "@/features/auth/slices/api";
-import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
+import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 
 const Page: FC = () => {

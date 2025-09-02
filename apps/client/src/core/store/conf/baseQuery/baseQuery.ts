@@ -1,14 +1,18 @@
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { serialize } from "@/core/lib/dataStructure";
-import { ArgType, BaseQueryReturnT } from "./lib/types";
+import { BaseQueryArgT, BaseQueryReturnT } from "./lib/types";
 import { extractHeaders, extractMsgErr, parseErr } from "./lib/etc";
 import { handleRefreshErr, refreshToken } from "./lib/refresh";
 import { getStorage } from "@/core/lib/storage";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const baseQueryAxs: BaseQueryFn<ArgType, unknown, unknown> = async ({
+export const baseQueryAxs: BaseQueryFn<
+  BaseQueryArgT,
+  unknown,
+  unknown
+> = async ({
   url,
   method,
   data: originalDataRequest,

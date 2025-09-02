@@ -3,7 +3,6 @@ import { UserT } from "../types";
 import { StoreStateT } from "@/core/store";
 
 export interface UserStateT {
-  canManageAccount: boolean;
   // ? pending-action is specific for moments like logging in or logging out / being pushed out , where i need a reference to avoid being interrupted by existing custom route blocker that protect pages but that are generic while exists specific cases must be handled manually
   pendingAction: boolean;
   access_token: string;
@@ -13,7 +12,6 @@ export interface UserStateT {
 }
 
 const initState: UserStateT = {
-  canManageAccount: false,
   pendingAction: false,
   access_token: "",
   cbc_hmac_token: "",
@@ -40,14 +38,15 @@ export const userSlice = createSlice({
       state.touchedServer = true;
     },
     logout: () => ({ ...initState, pendingAction: true }),
-    endPendingAction: (state) => {
-      state.pendingAction = false;
-    },
     setCbcHmac: (state, action: PayloadAction<string>) => {
       state.cbc_hmac_token = action.payload;
+      state.pendingAction = true;
     },
     clearCbcHmac: (state) => {
       state.cbc_hmac_token = "";
+    },
+    endPendingAction: (state) => {
+      state.pendingAction = false;
     },
   },
 });
