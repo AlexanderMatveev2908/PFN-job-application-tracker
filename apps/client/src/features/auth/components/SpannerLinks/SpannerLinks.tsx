@@ -14,10 +14,10 @@ const SpannerLinks: FC = () => {
   const isAuthLayout = p.includes("/auth");
 
   const links =
-    spannerLinks[
+    spannerLinks?.[
       extractNamePagePath(p, { usFriendly: false }) as SpannerLinksAuthT
     ];
-  const { ids } = useGenIDs({ lengths: [links.length] });
+  const { ids } = useGenIDs({ lengths: [links?.length] });
 
   return !isAuthLayout ? null : (
     <div className="w-full grid grid-cols-2 items-center justify-items-center py-[25px]">
@@ -26,7 +26,7 @@ const SpannerLinks: FC = () => {
 
         return (
           <LinkSvg
-            key={ids[0][i]}
+            key={ids[0]?.[i]}
             {...{
               href: (el.link as LinkAppSvgT).href,
               Svg,
