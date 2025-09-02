@@ -4,21 +4,19 @@
 import { logFormErrs } from "@/core/lib/etc";
 import FormResetPwd from "@/core/forms/FormResetPwd/FormResetPwd";
 import { usePwdsForm } from "@/core/forms/FormResetPwd/hooks/usePwdsForm";
-import { useCallback, type FC } from "react";
+import { type FC } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
-import { useCheckCbcHmac } from "@/core/hooks/etc/useCheckCbcHmac";
 import { TokenT } from "@/common/types/tokens";
-import { useRunOnHydrate } from "@/core/hooks/etc/useRunOnHydrate";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { authSliceAPI } from "@/features/auth/slices/api";
 import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
+import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 
 const Page: FC = () => {
   const { formCtx } = usePwdsForm();
   const { handleSubmit } = formCtx;
 
   const { userState, loginUser } = useUser();
-  const { checkCbcHmac } = useCheckCbcHmac();
   const { nav, wrapAPI } = useKitHooks();
   const { delCbcHmac } = useManageCbcHmac();
 
@@ -40,11 +38,7 @@ const Page: FC = () => {
     }
   }, logFormErrs);
 
-  const checkCb = useCallback(() => {
-    checkCbcHmac(userState.cbc_hmac_token, TokenT.RECOVER_PWD);
-  }, [checkCbcHmac, userState.cbc_hmac_token]);
-
-  useRunOnHydrate({ cb: checkCb });
+  useCheckTypeCbcHmac({ tokenType: TokenT.RECOVER_PWD });
 
   return (
     <FormResetPwd

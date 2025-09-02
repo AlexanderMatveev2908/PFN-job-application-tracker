@@ -10,22 +10,34 @@ export const useCheckCbcHmac = () => {
   const nav = useRouter();
 
   const checkCbcHmac = useCallback(
-    (cbc_hmac_token?: string | null, token_t?: TokenT) => {
+    ({
+      cbc_hmac_token,
+      tokenType,
+      pathPush,
+    }: {
+      cbc_hmac_token?: string | null;
+      tokenType?: TokenT;
+      pathPush?: string;
+    }) => {
       const aad = extractAadFromCbcHmac(cbc_hmac_token);
 
       if (!aad || !Object.values(TokenT).includes(aad.token_t)) {
-        setNotice({
-          msg: `Invalid Token Format`,
-          type: "ERR",
-        });
-        nav.replace("/notice");
+        if (pathPush) {
+          nav.replace(pathPush);
+        } else {
+          setNotice({
+            msg: cbc_hmac_token ? `Invalid token format` : "Token not provided",
+            type: "ERR",
+          });
+          nav.replace("/notice");
+        }
 
         return;
       }
 
-      if (token_t && aad.token_t !== token_t) {
+      if (tokenType && aad.token_t !== tokenType) {
         setNotice({
-          msg: `Invalid Token Type`,
+          msg: `Invalid token type`,
           type: "ERR",
         });
         nav.replace("/notice");

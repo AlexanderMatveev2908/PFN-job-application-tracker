@@ -4,7 +4,7 @@ import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
 import { useUser } from "@/features/user/hooks/useUser";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { useWrapAPI } from "../api/useWrapAPI";
+import { useWrapAPI } from "../../../core/hooks/api/useWrapAPI";
 import { cleanupSliceAPI } from "@/features/cleanup/slices/api";
 
 export const useDelCbcHmacByPathAndType = () => {
