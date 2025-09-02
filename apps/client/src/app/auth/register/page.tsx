@@ -19,8 +19,8 @@ import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUser } from "@/features/user/hooks/useUser";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
-import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import { useFocusSwap } from "@/core/hooks/etc/focus/useFocusSwap";
+import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -92,7 +92,7 @@ const Page: FC = () => {
   );
 
   return (
-    <WrapFormPage
+    <WrapAuthFormPage
       {...{
         propsProgressSwap: {
           currSwap: swapState.currSwap,
@@ -107,7 +107,6 @@ const Page: FC = () => {
         },
         isLoading,
         formTestID: "register",
-        appendAuthSpanner: true,
       }}
     >
       <BodyFormRegister
@@ -115,7 +114,7 @@ const Page: FC = () => {
           swapState,
         }}
       />
-    </WrapFormPage>
+    </WrapAuthFormPage>
   );
 };
 

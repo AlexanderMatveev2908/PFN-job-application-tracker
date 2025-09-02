@@ -8,9 +8,9 @@ import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { PropsTypeBtnsSwapper } from "../../swap/subComponents/BtnsSwapper";
 import WrapPage from "../../HOC/pageWrappers/WrapPage";
-import AuthSpannerLinks from "@/features/auth/components/AuthSpannerLinks/AuthSpannerLinks";
+import { ReactNode } from "react";
 
-type PropsType<T extends FieldValues> = {
+export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {
     currSwap: number;
     totSwaps: number;
@@ -21,6 +21,7 @@ type PropsType<T extends FieldValues> = {
   formTestID: string;
   isLoading: boolean;
   appendAuthSpanner?: boolean;
+  AdditionalFooterNode?: () => ReactNode;
 } & ChildrenT;
 
 const WrapFormPage = <T extends FieldValues>({
@@ -31,8 +32,8 @@ const WrapFormPage = <T extends FieldValues>({
   formTestID,
   isLoading,
   propsBtnsSwapper,
-  appendAuthSpanner,
-}: PropsType<T>) => {
+  AdditionalFooterNode,
+}: WrapFormPagePropsType<T>) => {
   return (
     <WrapPage>
       {isObjOk(propsProgressSwap) && (
@@ -40,7 +41,9 @@ const WrapFormPage = <T extends FieldValues>({
           {...({
             maxW: 800,
             ...propsProgressSwap,
-          } as PropsType<T>["propsProgressSwap"] & { maxW: number })}
+          } as WrapFormPagePropsType<T>["propsProgressSwap"] & {
+            maxW: number;
+          })}
         />
       )}
       <FormProvider {...formCtx}>
@@ -60,7 +63,8 @@ const WrapFormPage = <T extends FieldValues>({
               }}
             />
 
-            {appendAuthSpanner && <AuthSpannerLinks />}
+            {typeof AdditionalFooterNode === "function" &&
+              AdditionalFooterNode()}
           </div>
         </form>
       </FormProvider>
