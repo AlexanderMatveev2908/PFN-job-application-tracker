@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { checkTxtList } from "../../../lib/check";
-import { checkTxtListOpc } from "../../../lib/style";
-import { waitTmr } from "../../../lib/sideActions";
+import { checkTxtList } from "../../../lib/shortcuts/check";
+import { checkTxtListOpc } from "../../../lib/shortcuts/style";
+import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap 0", async ({ page }) => {

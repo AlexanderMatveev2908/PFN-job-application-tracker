@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
-import { clickByID } from "./click";
-import { getByID } from "./get";
+import { clickByID } from "../shortcuts/click";
+import { getByID } from "../shortcuts/get";
 
 export const closeToast = async (page: Page): Promise<undefined> => {
   try {

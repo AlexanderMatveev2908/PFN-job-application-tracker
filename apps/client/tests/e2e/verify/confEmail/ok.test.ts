@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
-import { getTokensLib } from "../../lib/fullActions";
+import { getTokensLib } from "../../lib/actions/fullActions";
 import { TokenT } from "@/common/types/tokens";
-import { waitURL } from "../../lib/sideActions";
+import { waitURL } from "../../lib/actions/sideActions";
 import { REG_JWE, REG_JWT } from "@/core/constants/regex";
 
 test("ok", async ({ browser }) => {

@@ -1,10 +1,8 @@
 import test, { expect } from "@playwright/test";
-import { waitURL } from "../../lib/sideActions";
-import { getByID } from "../../lib/get";
 import { genPwd } from "@/core/lib/pwd";
-import { clickByID } from "../../lib/click";
 import { REG_JWT } from "@/core/constants/regex";
 import { preAuthRecoverPwd } from "./pre";
+import { clickByID, getByID, waitURL } from "../../lib/idx";
 
 test("ok", async ({ browser }) => {
   const { form, page } = await preAuthRecoverPwd(browser);

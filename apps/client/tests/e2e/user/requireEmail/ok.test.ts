@@ -1,8 +1,8 @@
 import test from "@playwright/test";
-import { getTokensLib } from "../../lib/fullActions";
-import { getByID, getByTxt } from "../../lib/get";
-import { closeToast, waitTmr, waitURL } from "../../lib/sideActions";
-import { clickByID } from "../../lib/click";
+import { getTokensLib } from "../../lib/actions/fullActions";
+import { getByID, getByTxt } from "../../lib/shortcuts/get";
+import { closeToast, waitTmr, waitURL } from "../../lib/actions/sideActions";
+import { clickByID } from "../../lib/shortcuts/click";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 
 test("ok", async ({ browser }) => {

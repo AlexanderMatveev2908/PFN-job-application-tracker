@@ -1,9 +1,9 @@
 import test from "@playwright/test";
 import { preRequireEmail } from "./pre";
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import { getByID, getByTxt } from "../../lib/get";
-import { clickByID } from "../../lib/click";
-import { waitTmr, waitURL } from "../../lib/sideActions";
+import { getByID, getByTxt } from "../../lib/shortcuts/get";
+import { clickByID } from "../../lib/shortcuts/click";
+import { waitTmr, waitURL } from "../../lib/actions/sideActions";
 
 test("ok", async ({ browser }) => {
   const {

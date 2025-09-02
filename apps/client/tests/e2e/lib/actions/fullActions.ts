@@ -1,16 +1,16 @@
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import { preAuthRegister } from "../auth/register/pre";
-import { clickByID } from "./click";
-import { getByID, getByTxt } from "./get";
+import { preAuthRegister } from "../../auth/register/pre";
+import { clickByID } from "../shortcuts/click";
+import { getByID, getByTxt } from "../shortcuts/get";
 import { waitTmr, waitURL } from "./sideActions";
 import { Browser, expect, Page } from "@playwright/test";
-import { genRegisterPayload, PayloadRegisterT } from "./payloads";
-import { preAuthLogin } from "../auth/login/pre";
-import { preTest } from "./pre";
+import { genRegisterPayload, PayloadRegisterT } from "../conf/payloads";
+import { preAuthLogin } from "../../auth/login/pre";
+import { preTest } from "../conf/pre";
 import { REG_CBC_HMAC } from "@/core/constants/regex";
 import { TokenT } from "@/common/types/tokens";
 import { UserT } from "@/features/user/types";
-import { BASE_URL } from "./constants";
+import { BASE_URL } from "../conf/constants";
 
 export const registerUserOk = async (
   page: Page,

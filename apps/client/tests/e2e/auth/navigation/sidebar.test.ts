@@ -1,9 +1,12 @@
 import test from "@playwright/test";
-import { clickByID, clickByTxt } from "../../lib/click";
-import { getByID } from "../../lib/get";
-import { checkLinksList } from "../../lib/check";
 import { preAuthNavigation } from "./pre";
-import { waitURL } from "../../lib/sideActions";
+import {
+  checkLinksList,
+  clickByID,
+  clickByTxt,
+  getByID,
+  waitURL,
+} from "../../lib/idx";
 
 test("with sidebar", async ({ page }) => {
   await preAuthNavigation(page);

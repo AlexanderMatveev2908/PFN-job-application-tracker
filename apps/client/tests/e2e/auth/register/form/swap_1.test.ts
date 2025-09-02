@@ -1,9 +1,9 @@
 import test, { expect } from "@playwright/test";
-import { getByID, getByTxt } from "../../../lib/get";
-import { checkTxtList } from "../../../lib/check";
-import { clickByID } from "../../../lib/click";
-import { checkTxtOpc } from "../../../lib/style";
-import { waitTmr } from "../../../lib/sideActions";
+import { getByID, getByTxt } from "../../../lib/shortcuts/get";
+import { checkTxtList } from "../../../lib/shortcuts/check";
+import { clickByID } from "../../../lib/shortcuts/click";
+import { checkTxtOpc } from "../../../lib/shortcuts/style";
+import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap 1", async ({ page }) => {

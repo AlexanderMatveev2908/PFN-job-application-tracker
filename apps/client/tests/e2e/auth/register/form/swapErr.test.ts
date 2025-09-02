@@ -1,8 +1,8 @@
 import test from "@playwright/test";
-import { getByID } from "../../../lib/get";
-import { clickByID } from "../../../lib/click";
-import { checkIsFocused } from "../../../lib/check";
-import { waitTmr } from "../../../lib/sideActions";
+import { getByID } from "../../../lib/shortcuts/get";
+import { clickByID } from "../../../lib/shortcuts/click";
+import { checkIsFocused } from "../../../lib/shortcuts/check";
+import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap err mgmt", async ({ page }) => {

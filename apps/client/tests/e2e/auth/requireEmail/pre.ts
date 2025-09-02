@@ -1,8 +1,8 @@
 import { Browser } from "@playwright/test";
-import { registerUserOk } from "../../lib/fullActions";
-import { genRegisterPayload, PayloadRegisterT } from "../../lib/payloads";
-import { preTest } from "../../lib/pre";
-import { getByID } from "../../lib/get";
+import { registerUserOk } from "../../lib/actions/fullActions";
+import { genRegisterPayload, PayloadRegisterT } from "../../lib/conf/payloads";
+import { preTest } from "../../lib/conf/pre";
+import { getByID } from "../../lib/shortcuts/get";
 
 export const preRequireEmail = async (
   browser: Browser,
