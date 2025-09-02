@@ -1,9 +1,7 @@
 import test from "@playwright/test";
-import { getByID, getByTxt } from "../../lib/get";
 import { extractInitialsUser } from "@/core/lib/formatters";
-import { waitTest, waitURL } from "../../lib/sideActions";
 import { preAuthLogout } from "./pre";
-import { clickByID } from "../../lib/click";
+import { clickByID, getByID, getByTxt, waitTmr, waitURL } from "../../lib/idx";
 
 test("logout header ok", async ({ browser }) => {
   const { payload, page } = await preAuthLogout(browser);
@@ -15,13 +13,13 @@ test("logout header ok", async ({ browser }) => {
 
   await drop.click();
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await clickByID(page, "header_link__logout");
 
   await waitURL(page, "/");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "logout successful");
 });

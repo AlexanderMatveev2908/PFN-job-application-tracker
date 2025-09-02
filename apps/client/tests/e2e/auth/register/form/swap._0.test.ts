@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { checkTxtList } from "../../../lib/check";
-import { checkTxtListOpc } from "../../../lib/style";
-import { waitTest } from "../../../lib/sideActions";
+import { checkTxtList } from "../../../lib/shortcuts/check";
+import { checkTxtListOpc } from "../../../lib/shortcuts/style";
+import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap 0", async ({ page }) => {
@@ -18,7 +18,7 @@ test("swap 0", async ({ page }) => {
 
   const msgs = ["invalid characters", "last name is required", "invalid email"];
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkTxtList(page, msgs);
 
@@ -26,7 +26,7 @@ test("swap 0", async ({ page }) => {
   await lastName.fill("Doe");
   await email.fill("john@gmail.com");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkTxtListOpc(page, msgs);
 });

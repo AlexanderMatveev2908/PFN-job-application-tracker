@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
-import { clickByID } from "./click";
-import { getByID } from "./get";
+import { clickByID } from "../shortcuts/click";
+import { getByID } from "../shortcuts/get";
 
 export const closeToast = async (page: Page): Promise<undefined> => {
   try {
@@ -10,7 +10,7 @@ export const closeToast = async (page: Page): Promise<undefined> => {
   } catch {}
 };
 
-export const waitTest = async (page: Page, v: number = 1000) => {
+export const waitTmr = async (page: Page, v: number = 1000) => {
   await page.waitForTimeout(v);
 };
 

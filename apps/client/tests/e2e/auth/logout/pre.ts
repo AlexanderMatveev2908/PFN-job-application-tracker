@@ -1,6 +1,6 @@
 import { Browser } from "@playwright/test";
-import { loginUserOk } from "../../lib/fullActions";
-import { preTest } from "../../lib/pre";
+import { loginUserOk } from "../../lib/actions/fullActions";
+import { preTest } from "../../lib/conf/pre";
 
 export const preAuthLogout = async (browser: Browser) => {
   const { payload, loginPage: page } = await loginUserOk(browser);

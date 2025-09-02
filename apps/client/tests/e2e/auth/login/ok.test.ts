@@ -1,6 +1,6 @@
 import test from "@playwright/test";
-import { genRegisterPayload } from "../../lib/gen";
-import { loginUserOk, registerUserOk } from "../../lib/fullActions";
+import { loginUserOk, registerUserOk } from "../../lib/actions/fullActions";
+import { genRegisterPayload } from "../../lib/idx";
 
 const payload = genRegisterPayload();
 

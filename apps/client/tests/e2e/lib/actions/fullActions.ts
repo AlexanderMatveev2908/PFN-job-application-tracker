@@ -1,16 +1,16 @@
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import { preAuthRegister } from "../auth/register/pre";
-import { clickByID } from "./click";
-import { getByID, getByTxt } from "./get";
-import { waitTest, waitURL } from "./sideActions";
+import { preAuthRegister } from "../../auth/register/pre";
+import { clickByID } from "../shortcuts/click";
+import { getByID, getByTxt } from "../shortcuts/get";
+import { waitTmr, waitURL } from "./sideActions";
 import { Browser, expect, Page } from "@playwright/test";
-import { genRegisterPayload, PayloadRegisterT } from "./gen";
-import { preAuthLogin } from "../auth/login/pre";
-import { preTest } from "./pre";
-import { instanceAxs } from "@/core/store/conf/baseQuery/axiosInstance";
+import { genRegisterPayload, PayloadRegisterT } from "../conf/payloads";
+import { preAuthLogin } from "../../auth/login/pre";
+import { preTest } from "../conf/pre";
 import { REG_CBC_HMAC } from "@/core/constants/regex";
 import { TokenT } from "@/common/types/tokens";
 import { UserT } from "@/features/user/types";
+import { BASE_URL } from "../conf/constants";
 
 export const registerUserOk = async (
   page: Page,
@@ -29,7 +29,7 @@ export const registerUserOk = async (
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   const pwd = await getByID(el, "password");
   await pwd.fill(payload.password);
@@ -72,7 +72,7 @@ export const loginUserOk = async (browser: Browser) => {
 
   await waitURL(loginPage, "/");
 
-  await waitTest(loginPage);
+  await waitTmr(loginPage);
 
   await getByTxt(loginPage, "operation successful");
 
@@ -87,6 +87,7 @@ export interface GetTokensReturnT {
   user: UserT;
   cbc_hmac_token: string;
   payload: PayloadRegisterT;
+  page: Page;
 }
 
 export const getTokensLib = async (
@@ -102,12 +103,13 @@ export const getTokensLib = async (
 
   const payload = genRegisterPayload();
 
-  const { data } = await instanceAxs.post(
-    `/test/tokens-health?cbc_hmac_token_t=${tokenType}&verify_user=${verifyUser}`,
-    payload
+  const res = await pageTokens.request.post(
+    `${BASE_URL}/test/tokens-health?cbc_hmac_token_t=${tokenType}&verify_user=${verifyUser}`,
+    { data: payload }
   );
+  const data = await res.json();
 
   expect(REG_CBC_HMAC.test(data.cbc_hmac_token));
 
-  return data;
+  return { ...data, page: pageTokens };
 };

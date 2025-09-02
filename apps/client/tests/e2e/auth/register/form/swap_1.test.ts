@@ -1,9 +1,9 @@
 import test, { expect } from "@playwright/test";
-import { getByID, getByTxt } from "../../../lib/get";
-import { checkTxtList } from "../../../lib/check";
-import { clickByID } from "../../../lib/click";
-import { checkTxtOpc } from "../../../lib/style";
-import { waitTest } from "../../../lib/sideActions";
+import { getByID, getByTxt } from "../../../lib/shortcuts/get";
+import { checkTxtList } from "../../../lib/shortcuts/check";
+import { clickByID } from "../../../lib/shortcuts/click";
+import { checkTxtOpc } from "../../../lib/shortcuts/style";
+import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap 1", async ({ page }) => {
@@ -11,7 +11,7 @@ test("swap 1", async ({ page }) => {
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   const pwd = await getByID(el, "password");
   await expect(pwd).toBeFocused();
@@ -44,7 +44,7 @@ test("swap 1", async ({ page }) => {
 
   await btn.hover();
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "generate password");
 
@@ -63,20 +63,20 @@ test("swap 1", async ({ page }) => {
   await pwd.fill(content!);
   await confPwd.fill(content!);
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkTxtOpc(page, msgs[0]);
   await checkTxtOpc(page, "passwords do not match");
 
   await clickByID(el, "form_field_pwd__toggle_password");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await expect(pwd).toHaveAttribute("type", "text");
 
   await clickByID(el, "form_field_pwd__toggle_confirm_password");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await expect(pwd).toHaveAttribute("type", "password");
   await expect(confPwd).toHaveAttribute("type", "text");

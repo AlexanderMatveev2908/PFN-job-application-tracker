@@ -1,15 +1,15 @@
 import test from "@playwright/test";
 import { preRequireEmail } from "./pre";
-import { getByID, getByTxt } from "../lib/get";
-import { clickByID } from "../lib/click";
-import { waitTest } from "../lib/sideActions";
+import { getByID, getByTxt } from "../../lib/shortcuts/get";
+import { waitTmr } from "../../lib/actions/sideActions";
+import { clickByID } from "../../lib/shortcuts/click";
 
 test("invalid email", async ({ browser }) => {
   const { form, pageRequire: page } = await preRequireEmail(browser);
 
   await (await getByID(form, "email")).fill("<>@<>");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "invalid email");
 });
@@ -21,7 +21,7 @@ test("non existent", async ({ browser }) => {
 
   await clickByID(form, "conf_email__form__submit");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "user not found");
 });

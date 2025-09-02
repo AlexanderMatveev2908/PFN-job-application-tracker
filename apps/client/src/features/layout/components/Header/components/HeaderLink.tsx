@@ -3,6 +3,7 @@
 
 import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
 import { LinkAppSvgT } from "@/common/types/ui";
+import { parseLabelToTestID } from "@/core/lib/etc";
 import Link from "next/link";
 import type { FC } from "react";
 
@@ -15,7 +16,7 @@ type PropsType = {
 const HeaderLink: FC<PropsType> = ({ lk, isCurrPath, handleClick }) => {
   return (
     <Link
-      data-testid={`header_link__${lk.label.toLowerCase()}`}
+      data-testid={`header_link__${parseLabelToTestID(lk.label)}`}
       href={lk.href}
       onClick={handleClick}
       className={`${

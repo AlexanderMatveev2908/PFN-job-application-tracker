@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
-import { getByID } from "../../lib/get";
-import { preTest } from "../../lib/pre";
+import { getByID, preTest } from "../../lib/idx";
 
 export const preAuthLogin = async (page: Page) => {
   await preTest(page, "auth/login");
