@@ -16,7 +16,7 @@ export const useListenHeight = ({ opdDep }: Params) => {
     const el = contentRef.current;
     if (!el) return;
 
-    const cb = () => setContentH(el.offsetHeight + 50);
+    const cb = () => setContentH(el.offsetHeight);
     wrapClientListener(cb);
 
     const ro = new ResizeObserver(cb);

@@ -33,10 +33,7 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
 }) => {
   return (
     <WrapPage>
-      <div
-        data-testid={formTestID + "__form"}
-        className="w-full grid grid-cols-1"
-      >
+      <div data-testid={formTestID + "__form"} className="form__container">
         <div className="form__shape">
           <WrapSwapper
             {...{

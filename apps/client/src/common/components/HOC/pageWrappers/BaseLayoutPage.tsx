@@ -1,5 +1,6 @@
 import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
+import Title from "../../elements/txt/Title";
 
 type PropsType = {
   title: string;
@@ -8,9 +9,12 @@ type PropsType = {
 const BaseLayoutPage: FC<PropsType> = ({ title, children }) => {
   return (
     <div className="w-full h-full min-h-screen flex flex-col gap-12">
-      <div className="w-full flex justify-center">
-        <span className="txt__3xl grad__txt">{title}</span>
-      </div>
+      <Title
+        {...{
+          title,
+          $twdCls: "3xl",
+        }}
+      />
 
       {children}
     </div>

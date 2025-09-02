@@ -2,16 +2,17 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import WrapSwap, {
-  PropsTypeWrapSwap,
-} from "@/common/components/swap/subComponents/WrapSwap";
+import { PropsTypeWrapSwap } from "@/common/components/swap/subComponents/WrapSwap";
 import {
   EmailFormT,
   resetValsEmailForm,
 } from "@/core/forms/RequireEmailForm/paperwork";
 import { emailField } from "@/core/forms/RequireEmailForm/uiFactory";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import { logFormErrs } from "@/core/lib/etc";
+import { __cg } from "@/core/lib/log";
 import { emailSchema } from "@/core/paperwork";
+import WrapFormManageAcc from "@/features/user/components/WrapFormManageAcc";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
@@ -35,14 +36,22 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
     resolver: zodResolver(schemaX),
     defaultValues: resetValsEmailForm,
   });
+  const { handleSubmit } = formCtx;
+
+  const handleSave = handleSubmit(async (data) => {
+    __cg(data);
+  }, logFormErrs);
 
   const { control } = formCtx;
 
   return (
-    <WrapSwap
+    <WrapFormManageAcc
       {...{
         contentRef,
         isCurr,
+        title: "Change Email",
+        handleSave,
+        formCtx,
       }}
     >
       <FormFieldTxt
@@ -55,7 +64,7 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
           },
         }}
       />
-    </WrapSwap>
+    </WrapFormManageAcc>
   );
 };
 
