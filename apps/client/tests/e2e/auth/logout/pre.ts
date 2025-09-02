@@ -1,11 +1,12 @@
 import { Browser } from "@playwright/test";
 import { loginUserOk } from "../../lib/actions/fullActions";
-import { preTest } from "../../lib/conf/pre";
+import { waitTmr } from "../../lib/shortcuts/wait";
 
 export const preAuthLogout = async (browser: Browser) => {
-  const { payload, loginPage: page } = await loginUserOk(browser);
+  const { payload, page } = await loginUserOk(browser);
 
-  await preTest(page, "/protected");
+  await page.goto("/protected");
+  await waitTmr(page, 2000);
 
   return {
     payload,

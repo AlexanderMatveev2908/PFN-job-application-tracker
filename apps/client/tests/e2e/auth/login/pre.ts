@@ -1,8 +1,8 @@
-import { Page } from "@playwright/test";
+import { Browser } from "@playwright/test";
 import { getByID, preTest } from "../../lib/idx";
 
-export const preAuthLogin = async (page: Page) => {
-  await preTest(page, "auth/login");
+export const preAuthLogin = async (browser: Browser) => {
+  const page = await preTest(browser, "auth/login");
 
-  return await getByID(page, "login__form");
+  return { page, form: await getByID(page, "login__form") };
 };

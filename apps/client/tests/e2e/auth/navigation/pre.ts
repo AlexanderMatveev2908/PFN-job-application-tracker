@@ -1,10 +1,14 @@
-import { Page } from "@playwright/test";
+import { Browser } from "@playwright/test";
 import { closeToast, getByTxt, preTest } from "../../lib/idx";
 
-export const preAuthNavigation = async (page: Page) => {
-  await preTest(page, "/");
+export const preAuthNavigation = async (browser: Browser) => {
+  const page = await preTest(browser, "/");
 
   await closeToast(page);
 
   await getByTxt(page, "Script worked ✌🏽");
+
+  return {
+    page,
+  };
 };

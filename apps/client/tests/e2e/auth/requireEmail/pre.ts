@@ -8,22 +8,17 @@ export const preRequireEmail = async (
   browser: Browser,
   mustExists?: boolean
 ) => {
-  const ctxRegister = await browser.newContext();
-  const pageRegister = await ctxRegister.newPage();
-
   let payload: PayloadRegisterT;
-  if (mustExists) payload = (await registerUserOk(pageRegister)).payload;
+  if (mustExists) payload = (await registerUserOk(browser)).payload;
   else payload = genRegisterPayload();
 
-  const pageRequire = await (await browser.newContext()).newPage();
+  const page = await preTest(browser, "/auth/require-email/confirm-email");
 
-  await preTest(pageRequire, "/auth/require-email/confirm-email");
-
-  const form = await getByID(pageRequire, "conf_email__form");
+  const form = await getByID(page, "conf_email__form");
 
   return {
     payload,
-    pageRequire,
+    page,
     form,
   };
 };

@@ -4,12 +4,12 @@ import { checkTxtListOpc } from "../../../lib/shortcuts/style";
 import { preAuthRegister } from "../pre";
 import { waitTmr } from "../../../lib/shortcuts/wait";
 
-test("swap 0", async ({ page }) => {
-  const el = await preAuthRegister(page);
+test("swap 0", async ({ browser }) => {
+  const { form, page } = await preAuthRegister(browser);
 
-  const firstName = el.getByTestId("first_name");
-  const lastName = el.getByTestId("last_name");
-  const email = el.getByTestId("email");
+  const firstName = form.getByTestId("first_name");
+  const lastName = form.getByTestId("last_name");
+  const email = form.getByTestId("email");
 
   await firstName.fill("<>!");
   await lastName.fill("...");

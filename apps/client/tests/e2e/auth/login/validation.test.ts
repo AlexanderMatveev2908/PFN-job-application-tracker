@@ -5,10 +5,10 @@ import { clickByID } from "../../lib/shortcuts/click";
 import { checkIsFocused } from "../../lib/shortcuts/check";
 import { waitTmr } from "../../lib/shortcuts/wait";
 
-test("validation", async ({ page }) => {
-  const el = await preAuthLogin(page);
+test("validation", async ({ browser }) => {
+  const { form, page } = await preAuthLogin(browser);
 
-  const email = await getByID(el, "email");
+  const email = await getByID(form, "email");
 
   await email.fill("<>@<>");
 
@@ -16,7 +16,7 @@ test("validation", async ({ page }) => {
 
   await getByTxt(page, "invalid email");
 
-  const pwd = await getByID(el, "password");
+  const pwd = await getByID(form, "password");
 
   await pwd.fill("12345");
 
@@ -24,7 +24,7 @@ test("validation", async ({ page }) => {
 
   await getByTxt(page, "invalid password");
 
-  await clickByID(el, "login__form__submit");
+  await clickByID(form, "login__form__submit");
 
   await waitTmr(page);
 

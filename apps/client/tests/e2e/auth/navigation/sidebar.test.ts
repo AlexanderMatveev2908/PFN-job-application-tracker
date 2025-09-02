@@ -3,8 +3,8 @@ import { preAuthNavigation } from "./pre";
 import { checkLinksList, clickByID, clickByTxt, getByID } from "../../lib/idx";
 import { waitURL } from "../../lib/shortcuts/wait";
 
-test("with sidebar", async ({ page }) => {
-  await preAuthNavigation(page);
+test("with sidebar", async ({ browser }) => {
+  const { page } = await preAuthNavigation(browser);
 
   await clickByID(page, "header__toggle_sidebar");
 

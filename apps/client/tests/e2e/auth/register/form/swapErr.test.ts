@@ -5,33 +5,33 @@ import { checkIsFocused } from "../../../lib/shortcuts/check";
 import { preAuthRegister } from "../pre";
 import { waitTmr } from "../../../lib/shortcuts/wait";
 
-test("swap err mgmt", async ({ page }) => {
-  const el = await preAuthRegister(page);
+test("swap err mgmt", async ({ browser }) => {
+  const { form, page } = await preAuthRegister(browser);
 
-  const firstName = await getByID(el, "first_name");
+  const firstName = await getByID(form, "first_name");
 
   await firstName.fill("validFirstName");
 
-  await clickByID(el, "btns_swapper_next_swap");
+  await clickByID(form, "btns_swapper_next_swap");
 
   await waitTmr(page);
 
-  const pwd = await getByID(el, "password");
+  const pwd = await getByID(form, "password");
   await checkIsFocused(pwd);
 
-  await clickByID(el, "register__form__submit");
+  await clickByID(form, "register__form__submit");
 
   await waitTmr(page);
-  const lastName = await getByID(el, "last_name");
+  const lastName = await getByID(form, "last_name");
   await checkIsFocused(lastName);
 
-  await clickByID(el, "btns_swapper_next_swap");
+  await clickByID(form, "btns_swapper_next_swap");
 
   await waitTmr(page);
 
   await checkIsFocused(pwd);
 
-  await clickByID(el, "btns_swapper_prev_swap");
+  await clickByID(form, "btns_swapper_prev_swap");
 
   await waitTmr(page);
 

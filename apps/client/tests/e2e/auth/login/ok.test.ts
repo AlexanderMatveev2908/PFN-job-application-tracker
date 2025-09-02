@@ -1,12 +1,5 @@
 import test from "@playwright/test";
-import { loginUserOk, registerUserOk } from "../../lib/actions/fullActions";
-import { genRegisterPayload } from "../../lib/idx";
-
-const payload = genRegisterPayload();
-
-test.beforeEach(async ({ page }) => {
-  await registerUserOk(page, payload);
-});
+import { loginUserOk } from "../../lib/actions/fullActions";
 
 test("login ok", async ({ browser }) => {
   await loginUserOk(browser);

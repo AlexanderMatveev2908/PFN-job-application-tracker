@@ -5,7 +5,7 @@ import { clickByID } from "../../lib/shortcuts/click";
 import { waitTmr } from "../../lib/shortcuts/wait";
 
 test("invalid email", async ({ browser }) => {
-  const { form, pageRequire: page } = await preRequireEmail(browser);
+  const { form, page } = await preRequireEmail(browser);
 
   await (await getByID(form, "email")).fill("<>@<>");
 
@@ -15,7 +15,7 @@ test("invalid email", async ({ browser }) => {
 });
 
 test("non existent", async ({ browser }) => {
-  const { form, pageRequire: page, payload } = await preRequireEmail(browser);
+  const { form, page, payload } = await preRequireEmail(browser);
 
   await (await getByID(form, "email")).fill(payload.email);
 

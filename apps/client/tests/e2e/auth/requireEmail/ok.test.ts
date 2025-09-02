@@ -6,11 +6,7 @@ import { clickByID } from "../../lib/shortcuts/click";
 import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
 test("ok", async ({ browser }) => {
-  const {
-    form,
-    pageRequire: page,
-    payload,
-  } = await preRequireEmail(browser, true);
+  const { form, page, payload } = await preRequireEmail(browser, true);
 
   await (await getByID(form, "email")).fill(payload.email);
 
