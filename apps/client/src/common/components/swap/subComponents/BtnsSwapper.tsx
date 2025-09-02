@@ -8,7 +8,7 @@ import {
   PayloadStartSwapT,
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
-import BtnShadow from "../buttons/BtnShadow";
+import BtnShadow from "../../buttons/BtnShadow";
 
 export type PropsTypeBtnsSwapper = {
   totSwaps: number;

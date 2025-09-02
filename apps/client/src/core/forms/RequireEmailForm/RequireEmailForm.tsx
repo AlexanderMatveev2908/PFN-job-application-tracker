@@ -14,6 +14,7 @@ type PropsType = {
   handleSave: () => void;
   isLoading: boolean;
   testID: string;
+  appendAuthSpanner?: boolean;
 };
 
 const RequireEmailForm: FC<PropsType> = ({
@@ -21,6 +22,7 @@ const RequireEmailForm: FC<PropsType> = ({
   handleSave,
   isLoading,
   testID,
+  appendAuthSpanner,
 }) => {
   return (
     <WrapFormPage
@@ -29,6 +31,7 @@ const RequireEmailForm: FC<PropsType> = ({
         handleSave,
         formTestID: testID,
         isLoading,
+        appendAuthSpanner,
       }}
     >
       <WrapFormBody>

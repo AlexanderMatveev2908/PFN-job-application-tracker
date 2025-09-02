@@ -2,7 +2,7 @@
 "use client";
 
 import { type FC } from "react";
-import WrapSwap from "../../../../../common/components/swap/WrapSwap";
+import WrapSwap from "../../../../../common/components/swap/subComponents/WrapSwap";
 import { registerSwap_0, termsField } from "../uiFactory/register";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";

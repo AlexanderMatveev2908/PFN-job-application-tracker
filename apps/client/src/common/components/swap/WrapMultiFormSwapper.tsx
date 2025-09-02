@@ -2,16 +2,17 @@
 "use client";
 
 import type { FC } from "react";
-import WrapPage from "../../HOC/pageWrappers/WrapPage";
+import WrapPage from "../HOC/pageWrappers/WrapPage";
 import { ChildrenT } from "@/common/types/ui";
-import BtnsSwapper, { PropsTypeBtnsSwapper } from "../../swap/BtnsSwapper";
+import WrapFormFooter from "../forms/shapes/subComponents/WrapFormFooter";
+import { PropsTypeBtnsSwapper } from "./subComponents/BtnsSwapper";
 
 type PropsType = {
   formTestID: string;
   propsBtnsSwapper: PropsTypeBtnsSwapper;
 } & ChildrenT;
 
-const WrapMultiForm: FC<PropsType> = ({
+const WrapMultiFormSwapper: FC<PropsType> = ({
   children,
   formTestID,
   propsBtnsSwapper,
@@ -25,17 +26,15 @@ const WrapMultiForm: FC<PropsType> = ({
         <div className="form__shape">
           {children}
 
-          <div className="form__footer">
-            <BtnsSwapper
-              {...{
-                ...propsBtnsSwapper,
-              }}
-            />
-          </div>
+          <WrapFormFooter
+            {...{
+              propsBtnsSwapper,
+            }}
+          />
         </div>
       </div>
     </WrapPage>
   );
 };
 
-export default WrapMultiForm;
+export default WrapMultiFormSwapper;

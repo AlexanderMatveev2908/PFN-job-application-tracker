@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import ProgressSwap from "@/common/components/swap/ProgressSwap";
+import ProgressSwap from "@/common/components/swap/subComponents/ProgressSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
-import { PropsTypeBtnsSwapper } from "../../swap/BtnsSwapper";
+import { PropsTypeBtnsSwapper } from "../../swap/subComponents/BtnsSwapper";
 import WrapPage from "../../HOC/pageWrappers/WrapPage";
+import AuthSpannerLinks from "@/features/auth/components/AuthSpannerLinks/AuthSpannerLinks";
 
 type PropsType<T extends FieldValues> = {
   propsProgressSwap?: {
@@ -19,6 +20,7 @@ type PropsType<T extends FieldValues> = {
   handleSave: () => void;
   formTestID: string;
   isLoading: boolean;
+  appendAuthSpanner?: boolean;
 } & ChildrenT;
 
 const WrapFormPage = <T extends FieldValues>({
@@ -29,6 +31,7 @@ const WrapFormPage = <T extends FieldValues>({
   formTestID,
   isLoading,
   propsBtnsSwapper,
+  appendAuthSpanner,
 }: PropsType<T>) => {
   return (
     <WrapPage>
@@ -56,6 +59,8 @@ const WrapFormPage = <T extends FieldValues>({
                 submitBtnTestID: formTestID,
               }}
             />
+
+            {appendAuthSpanner && <AuthSpannerLinks />}
           </div>
         </form>
       </FormProvider>

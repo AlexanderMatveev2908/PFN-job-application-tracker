@@ -20,6 +20,7 @@ const Page: FC = () => {
         testID: "conf_email",
         isLoading,
         handleSave,
+        appendAuthSpanner: true,
       }}
     />
   );

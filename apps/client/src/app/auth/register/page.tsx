@@ -107,6 +107,7 @@ const Page: FC = () => {
         },
         isLoading,
         formTestID: "register",
+        appendAuthSpanner: true,
       }}
     >
       <BodyFormRegister

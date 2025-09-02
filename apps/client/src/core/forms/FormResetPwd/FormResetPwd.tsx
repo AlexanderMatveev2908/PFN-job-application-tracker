@@ -28,6 +28,7 @@ const FormResetPwd: FC<PropsType> = ({
         handleSave,
         formTestID: testID,
         isLoading,
+        appendAuthSpanner: true,
       }}
     >
       <WrapFormBody>

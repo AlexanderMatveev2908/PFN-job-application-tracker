@@ -4,15 +4,14 @@
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import BtnsSwapper, {
   PropsTypeBtnsSwapper,
-} from "@/common/components/swap/BtnsSwapper";
+} from "@/common/components/swap/subComponents/BtnsSwapper";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
-import SpannerLinks from "../../../../../features/auth/components/SpannerLinks/SpannerLinks";
 
 type PropsType = {
   propsBtnsSwapper?: PropsTypeBtnsSwapper;
-  isLoading: boolean;
-  submitBtnTestID: string;
+  submitBtnTestID?: string;
+  isLoading?: boolean;
 };
 
 const WrapFormFooter: FC<PropsType> = ({
@@ -21,16 +20,16 @@ const WrapFormFooter: FC<PropsType> = ({
   submitBtnTestID,
 }) => {
   return (
-    <>
-      <div className="form__footer">
-        {isObjOk(propsBtnsSwapper) && (
-          <BtnsSwapper
-            {...({
-              ...propsBtnsSwapper,
-            } as PropsTypeBtnsSwapper)}
-          />
-        )}
+    <div className="form__footer">
+      {isObjOk(propsBtnsSwapper) && (
+        <BtnsSwapper
+          {...({
+            ...propsBtnsSwapper,
+          } as PropsTypeBtnsSwapper)}
+        />
+      )}
 
+      {submitBtnTestID && (
         <div className="w-[250px] justify-self-center">
           <BtnShim
             {...{
@@ -41,9 +40,8 @@ const WrapFormFooter: FC<PropsType> = ({
             }}
           />
         </div>
-      </div>
-      <SpannerLinks />
-    </>
+      )}
+    </div>
   );
 };
 

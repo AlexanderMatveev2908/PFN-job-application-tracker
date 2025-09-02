@@ -55,6 +55,7 @@ const Page: FC = () => {
         handleSave,
         formTestID: "login",
         isLoading,
+        appendAuthSpanner: true,
       }}
     >
       <BodyFormLogin />
