@@ -2,7 +2,7 @@ import test from "@playwright/test";
 import { getByID } from "../../../lib/get";
 import { clickByID } from "../../../lib/click";
 import { checkIsFocused } from "../../../lib/check";
-import { waitTest } from "../../../lib/sideActions";
+import { waitTmr } from "../../../lib/sideActions";
 import { preAuthRegister } from "../pre";
 
 test("swap err mgmt", async ({ page }) => {
@@ -14,26 +14,26 @@ test("swap err mgmt", async ({ page }) => {
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   const pwd = await getByID(el, "password");
   await checkIsFocused(pwd);
 
   await clickByID(el, "register__form__submit");
 
-  await waitTest(page);
+  await waitTmr(page);
   const lastName = await getByID(el, "last_name");
   await checkIsFocused(lastName);
 
   await clickByID(el, "btns_swapper_next_swap");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkIsFocused(pwd);
 
   await clickByID(el, "btns_swapper_prev_swap");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkIsFocused(firstName);
 });

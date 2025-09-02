@@ -1,9 +1,9 @@
 import test from "@playwright/test";
 import { preRequireEmail } from "./pre";
-import { getByID, getByTxt } from "../lib/get";
-import { clickByID } from "../lib/click";
-import { waitTest, waitURL } from "../lib/sideActions";
 import { genMailNoticeMsg } from "@/core/constants/etc";
+import { getByID, getByTxt } from "../../lib/get";
+import { clickByID } from "../../lib/click";
+import { waitTmr, waitURL } from "../../lib/sideActions";
 
 test("ok", async ({ browser }) => {
   const {
@@ -18,7 +18,7 @@ test("ok", async ({ browser }) => {
 
   await waitURL(page, "/notice");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
 

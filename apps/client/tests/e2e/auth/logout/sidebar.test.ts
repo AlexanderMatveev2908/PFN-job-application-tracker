@@ -1,7 +1,7 @@
 import test from "@playwright/test";
 import { preAuthLogout } from "./pre";
 import { clickByID } from "../../lib/click";
-import { waitTest, waitURL } from "../../lib/sideActions";
+import { waitTmr, waitURL } from "../../lib/sideActions";
 import { getByID, getByTxt } from "../../lib/get";
 
 test("logout sidebar ok", async ({ browser }) => {
@@ -9,7 +9,7 @@ test("logout sidebar ok", async ({ browser }) => {
 
   await clickByID(page, "header__toggle_sidebar");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   const span = await getByID(page, "sidebar__span_mail");
 
@@ -19,7 +19,7 @@ test("logout sidebar ok", async ({ browser }) => {
 
   await waitURL(page, "/");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "logout successful");
 });

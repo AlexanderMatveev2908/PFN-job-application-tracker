@@ -1,8 +1,8 @@
 import { Page } from "@playwright/test";
-import { waitTest } from "./sideActions";
+import { waitTmr } from "./sideActions";
 
 export const preTest = async (page: Page, url: string) => {
   await page.goto(url);
 
-  await waitTest(page, 1500);
+  await waitTmr(page, 1500);
 };

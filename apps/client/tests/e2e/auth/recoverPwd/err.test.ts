@@ -2,7 +2,7 @@ import test from "@playwright/test";
 import { preAuthRecoverPwd } from "./pre";
 import { getByID, getByTxt } from "../../lib/get";
 import { clickByID } from "../../lib/click";
-import { waitTest } from "../../lib/sideActions";
+import { waitTmr } from "../../lib/sideActions";
 
 test("same pwd", async ({ browser }) => {
   const { page, form, payload } = await preAuthRecoverPwd(browser);
@@ -12,7 +12,7 @@ test("same pwd", async ({ browser }) => {
 
   await clickByID(form, "recover_pwd__form__submit");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "new password must be different from old one");
 });

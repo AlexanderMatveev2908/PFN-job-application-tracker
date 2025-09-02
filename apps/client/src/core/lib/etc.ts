@@ -24,3 +24,6 @@ export const logFormErrs = (errs: any) => {
 
   return errs;
 };
+
+export const parseLabelToTestID = (label: string) =>
+  label.toLowerCase().replaceAll(" ", "_");

@@ -1,7 +1,7 @@
 import test from "@playwright/test";
 import { preAuthLogin } from "./pre";
 import { getByID, getByTxt } from "../../lib/get";
-import { waitTest } from "../../lib/sideActions";
+import { waitTmr } from "../../lib/sideActions";
 import { clickByID } from "../../lib/click";
 import { checkIsFocused } from "../../lib/check";
 
@@ -12,7 +12,7 @@ test("validation", async ({ page }) => {
 
   await email.fill("<>@<>");
 
-  waitTest(page);
+  waitTmr(page);
 
   await getByTxt(page, "invalid email");
 
@@ -20,13 +20,13 @@ test("validation", async ({ page }) => {
 
   await pwd.fill("12345");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await getByTxt(page, "invalid password");
 
   await clickByID(el, "login__form__submit");
 
-  await waitTest(page);
+  await waitTmr(page);
 
   await checkIsFocused(email);
 });

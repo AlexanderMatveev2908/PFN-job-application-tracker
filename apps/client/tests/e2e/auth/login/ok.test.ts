@@ -1,5 +1,5 @@
 import test from "@playwright/test";
-import { genRegisterPayload } from "../../lib/gen";
+import { genRegisterPayload } from "../../lib/payloads";
 import { loginUserOk, registerUserOk } from "../../lib/fullActions";
 
 const payload = genRegisterPayload();
