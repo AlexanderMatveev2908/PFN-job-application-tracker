@@ -8,12 +8,14 @@ import WrapSwap, {
 } from "@/common/components/swap/subComponents/WrapSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
+import { css } from "@emotion/react";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 
 type PropsType<T extends FieldValues> = {
   title: string;
   formCtx: UseFormReturn<T>;
   handleSave: () => void;
+  isLoading: boolean;
 } & ChildrenT &
   Omit<PropsTypeWrapSwap, "children">;
 
@@ -24,6 +26,7 @@ const WrapFormManageAcc = <T extends FieldValues>({
   isCurr,
   formCtx,
   handleSave,
+  isLoading,
 }: PropsType<T>) => {
   const testID = parseLabelToTestID(title);
   return (
@@ -48,13 +51,18 @@ const WrapFormManageAcc = <T extends FieldValues>({
 
           {children}
 
-          <div className="mt-[50px] w-[250px] justify-self-center">
+          <div
+            className="mt-[50px] w-[250px] justify-self-center"
+            css={css`
+              min-height: ${isLoading ? "100px" : "fit-content"};
+            `}
+          >
             <BtnShim
               {...{
                 type: "submit",
                 label: "Submit",
                 testID: testID + "__form__submit",
-                isLoading: false,
+                isLoading,
               }}
             />
           </div>

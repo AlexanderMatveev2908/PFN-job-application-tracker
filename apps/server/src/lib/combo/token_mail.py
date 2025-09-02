@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 can_send = get_env().py_env != "test"
 
 mapper_subj = {
-    TokenT.RECOVER_PWD: "RECOVER ACCOUNT 🔒",
+    TokenT.RECOVER_PWD: "RECOVER PASSWORD 🔒",
     TokenT.CHANGE_EMAIL: "CHANGE EMAIL ADDRESS 📮",
     TokenT.CONF_EMAIL: "CONFIRM EMAIL ADDRESS 🛡️",
 }
