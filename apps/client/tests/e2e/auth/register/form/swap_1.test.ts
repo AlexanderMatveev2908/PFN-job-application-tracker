@@ -3,8 +3,8 @@ import { getByID, getByTxt } from "../../../lib/shortcuts/get";
 import { checkTxtList } from "../../../lib/shortcuts/check";
 import { clickByID } from "../../../lib/shortcuts/click";
 import { checkTxtOpc } from "../../../lib/shortcuts/style";
-import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
+import { waitTmr } from "../../../lib/shortcuts/wait";
 
 test("swap 1", async ({ page }) => {
   const el = await preAuthRegister(page);
@@ -76,7 +76,7 @@ test("swap 1", async ({ page }) => {
 
   await clickByID(el, "form_field_pwd__toggle_confirm_password");
 
-  await waitTmr(page);
+  await waitTmr(page, 2000);
 
   await expect(pwd).toHaveAttribute("type", "password");
   await expect(confPwd).toHaveAttribute("type", "text");

@@ -1,8 +1,8 @@
 import test from "@playwright/test";
 import { checkTxtList } from "../../../lib/shortcuts/check";
 import { checkTxtListOpc } from "../../../lib/shortcuts/style";
-import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
+import { waitTmr } from "../../../lib/shortcuts/wait";
 
 test("swap 0", async ({ page }) => {
   const el = await preAuthRegister(page);

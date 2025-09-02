@@ -2,8 +2,8 @@ import test from "@playwright/test";
 import { getByID } from "../../../lib/shortcuts/get";
 import { clickByID } from "../../../lib/shortcuts/click";
 import { checkIsFocused } from "../../../lib/shortcuts/check";
-import { waitTmr } from "../../../lib/actions/sideActions";
 import { preAuthRegister } from "../pre";
+import { waitTmr } from "../../../lib/shortcuts/wait";
 
 test("swap err mgmt", async ({ page }) => {
   const el = await preAuthRegister(page);

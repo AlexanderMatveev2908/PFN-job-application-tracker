@@ -1,8 +1,8 @@
 import test from "@playwright/test";
 import { preRequireEmail } from "./pre";
 import { getByID, getByTxt } from "../../lib/shortcuts/get";
-import { waitTmr } from "../../lib/actions/sideActions";
 import { clickByID } from "../../lib/shortcuts/click";
+import { waitTmr } from "../../lib/shortcuts/wait";
 
 test("invalid email", async ({ browser }) => {
   const { form, pageRequire: page } = await preRequireEmail(browser);

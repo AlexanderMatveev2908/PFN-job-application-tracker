@@ -1,9 +1,9 @@
 import test from "@playwright/test";
 import { preAuthLogin } from "./pre";
 import { getByID, getByTxt } from "../../lib/shortcuts/get";
-import { waitTmr } from "../../lib/actions/sideActions";
 import { clickByID } from "../../lib/shortcuts/click";
 import { checkIsFocused } from "../../lib/shortcuts/check";
+import { waitTmr } from "../../lib/shortcuts/wait";
 
 test("validation", async ({ page }) => {
   const el = await preAuthLogin(page);

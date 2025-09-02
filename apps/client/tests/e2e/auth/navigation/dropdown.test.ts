@@ -1,12 +1,7 @@
 import test from "@playwright/test";
 import { preAuthNavigation } from "./pre";
-import {
-  checkLinksList,
-  clickByID,
-  clickByTxt,
-  getByID,
-  waitURL,
-} from "../../lib/idx";
+import { checkLinksList, clickByID, clickByTxt, getByID } from "../../lib/idx";
+import { waitURL } from "../../lib/shortcuts/wait";
 
 test("with dropdown", async ({ page }) => {
   await preAuthNavigation(page);

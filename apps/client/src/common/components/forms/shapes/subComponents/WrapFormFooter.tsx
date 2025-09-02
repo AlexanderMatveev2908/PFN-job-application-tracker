@@ -7,7 +7,7 @@ import BtnsSwapper, {
 } from "@/common/components/swap/BtnsSwapper";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
-import SpannerLinks from "../../../../features/auth/components/SpannerLinks/SpannerLinks";
+import SpannerLinks from "../../../../../features/auth/components/SpannerLinks/SpannerLinks";
 
 type PropsType = {
   propsBtnsSwapper?: PropsTypeBtnsSwapper;
