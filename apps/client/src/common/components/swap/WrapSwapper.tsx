@@ -5,13 +5,13 @@ import { ChildrenT } from "@/common/types/ui";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 
-type PropsType = {
+export type WrapSwapperPropsType = {
   contentH: number;
   currSwap: number;
   totSwaps: number;
 } & ChildrenT;
 
-const WrapSwapper: FC<PropsType> = ({
+const WrapSwapper: FC<WrapSwapperPropsType> = ({
   children,
   contentH,
   currSwap,

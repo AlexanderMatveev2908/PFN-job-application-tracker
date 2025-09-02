@@ -4,7 +4,6 @@
 import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import WrapSwap from "@/common/components/swap/subComponents/WrapSwap";
-import WrapSwapper from "@/common/components/swap/WrapSwapper";
 import { TokenT } from "@/common/types/tokens";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
@@ -31,36 +30,31 @@ const Page: FC = () => {
           formTestID: "manage_acc",
           propsBtnsSwapper: {
             startSwap,
-            swapState,
-            totSwaps: 2,
           },
+          propsWrapSwapper: {
+            contentH,
+          },
+          swapState,
+          totSwaps: 2,
         }}
       >
-        <WrapSwapper
+        <WrapSwap
           {...{
-            contentH,
-            currSwap,
-            totSwaps: 2,
+            contentRef,
+            isCurr: !currSwap,
           }}
         >
-          <WrapSwap
-            {...{
-              contentRef,
-              isCurr: !currSwap,
-            }}
-          >
-            <div className="">{genLorem(5)}</div>
-          </WrapSwap>
+          <div className="">{genLorem(5)}</div>
+        </WrapSwap>
 
-          <WrapSwap
-            {...{
-              contentRef,
-              isCurr: currSwap === 1,
-            }}
-          >
-            <div className="">{genLorem(20)}</div>
-          </WrapSwap>
-        </WrapSwapper>
+        <WrapSwap
+          {...{
+            contentRef,
+            isCurr: currSwap === 1,
+          }}
+        >
+          <div className="">{genLorem(20)}</div>
+        </WrapSwap>
       </WrapMultiFormSwapper>
     </WrapCSR>
   );

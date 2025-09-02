@@ -5,17 +5,31 @@ import type { FC } from "react";
 import WrapPage from "../HOC/pageWrappers/WrapPage";
 import { ChildrenT } from "@/common/types/ui";
 import WrapFormFooter from "../forms/shapes/subComponents/WrapFormFooter";
-import { PropsTypeBtnsSwapper } from "./subComponents/BtnsSwapper";
+import WrapSwapper from "./WrapSwapper";
+import {
+  PayloadStartSwapT,
+  SwapStateT,
+} from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
   formTestID: string;
-  propsBtnsSwapper: PropsTypeBtnsSwapper;
+  propsBtnsSwapper: {
+    startSwap: (v: PayloadStartSwapT) => void;
+  };
+  propsWrapSwapper: {
+    contentH: number;
+  };
+  totSwaps: number;
+  swapState: SwapStateT;
 } & ChildrenT;
 
 const WrapMultiFormSwapper: FC<PropsType> = ({
   children,
   formTestID,
   propsBtnsSwapper,
+  propsWrapSwapper,
+  totSwaps,
+  swapState,
 }) => {
   return (
     <WrapPage>
@@ -24,11 +38,23 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
         className="w-full grid grid-cols-1"
       >
         <div className="form__shape">
-          {children}
+          <WrapSwapper
+            {...{
+              ...propsWrapSwapper,
+              totSwaps,
+              currSwap: swapState.currSwap,
+            }}
+          >
+            {children}
+          </WrapSwapper>
 
           <WrapFormFooter
             {...{
-              propsBtnsSwapper,
+              propsBtnsSwapper: {
+                ...propsBtnsSwapper,
+                swapState,
+                totSwaps,
+              },
             }}
           />
         </div>
