@@ -1,8 +1,8 @@
 import test from "@playwright/test";
 import { preAuthLogout } from "./pre";
 import { clickByID } from "../../lib/shortcuts/click";
-import { waitTmr, waitURL } from "../../lib/actions/sideActions";
 import { getByID, getByTxt } from "../../lib/shortcuts/get";
+import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
 test("logout sidebar ok", async ({ browser }) => {
   const { payload, page } = await preAuthLogout(browser);

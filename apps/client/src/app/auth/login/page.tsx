@@ -3,8 +3,6 @@
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
-import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
-import WrapForm from "@/common/components/forms/shapes/WrapForm";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import BodyFormLogin from "@/features/auth/pages/login/components/BodyFormLogin";
 import {
@@ -51,23 +49,15 @@ const Page: FC = () => {
   useFocus("email", { setFocus });
 
   return (
-    <WrapFormPage>
-      <WrapForm
-        {...{
-          formCtx,
-          handleSave,
-          formTestID: "login",
-        }}
-      >
-        <BodyFormLogin />
-
-        <WrapFormFooter
-          {...{
-            isLoading,
-            submitBtnTestID: "login",
-          }}
-        />
-      </WrapForm>
+    <WrapFormPage
+      {...{
+        formCtx,
+        handleSave,
+        formTestID: "login",
+        isLoading,
+      }}
+    >
+      <BodyFormLogin />
     </WrapFormPage>
   );
 };

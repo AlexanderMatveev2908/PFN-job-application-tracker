@@ -1,6 +1,7 @@
 import { TokenT } from "@/common/types/tokens";
 import { Browser } from "@playwright/test";
-import { getByID, getTokensLib, waitURL } from "../../lib/idx";
+import { getByID, getTokensLib } from "../../lib/idx";
+import { waitURL } from "../../lib/shortcuts/wait";
 
 export const preAuthRecoverPwd = async (browser: Browser) => {
   const { cbc_hmac_token, payload } = await getTokensLib(browser, {

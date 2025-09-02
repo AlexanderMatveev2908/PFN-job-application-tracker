@@ -3,7 +3,7 @@ import { preRequireEmail } from "./pre";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { getByID, getByTxt } from "../../lib/shortcuts/get";
 import { clickByID } from "../../lib/shortcuts/click";
-import { waitTmr, waitURL } from "../../lib/actions/sideActions";
+import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
 test("ok", async ({ browser }) => {
   const {

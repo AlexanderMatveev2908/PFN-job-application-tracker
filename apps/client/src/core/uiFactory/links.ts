@@ -2,7 +2,7 @@ import SvgConfirmEmail from "@/common/components/SVGs/ConfirmEmail";
 import { GoHomeFill } from "react-icons/go";
 import SvgRegister from "@/common/components/SVGs/Register";
 import { LinkAppSvgT } from "@/common/types/ui";
-import { FaKey } from "react-icons/fa6";
+import { FaKey, FaUserGear } from "react-icons/fa6";
 import { FiLogIn } from "react-icons/fi";
 import { HiOutlineLogout } from "react-icons/hi";
 
@@ -49,7 +49,14 @@ export const linkConfEmailLogged = {
   Svg: SvgConfirmEmail,
 };
 
-export const linksLoggedAccount = [linkConfEmailLogged];
+export const linksLoggedAccount = [
+  linkConfEmailLogged,
+  {
+    label: "Manage Account",
+    href: "/user/manage-account",
+    Svg: FaUserGear,
+  },
+];
 
 export const linkLogout: LinkAppSvgT = {
   label: "Logout",

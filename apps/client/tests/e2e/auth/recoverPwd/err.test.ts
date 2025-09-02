@@ -1,6 +1,7 @@
 import test from "@playwright/test";
 import { preAuthRecoverPwd } from "./pre";
-import { clickByID, getByID, getByTxt, waitTmr } from "../../lib/idx";
+import { clickByID, getByID, getByTxt } from "../../lib/idx";
+import { waitTmr } from "../../lib/shortcuts/wait";
 
 test("same pwd", async ({ browser }) => {
   const { page, form, payload } = await preAuthRecoverPwd(browser);

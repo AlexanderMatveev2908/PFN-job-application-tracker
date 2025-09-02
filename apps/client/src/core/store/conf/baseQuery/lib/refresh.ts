@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConfApiT } from "@/common/types/api";
-import { ArgType, BaseQueryReturnT } from "./types";
+import { BaseQueryArgT, BaseQueryReturnT } from "./types";
 import { instanceAxs } from "../axiosInstance";
 import { isStr } from "@/core/lib/dataStructure";
 import { delStorageItm, saveStorage } from "@/core/lib/storage";
@@ -29,7 +29,7 @@ export const refreshToken = async ({
   params,
   responseType,
   conf,
-}: ArgType & { conf: Partial<ConfApiT> }) => {
+}: BaseQueryArgT & { conf: Partial<ConfApiT> }) => {
   const access_token = await getFreshAccessToken();
 
   if (!isStr(access_token)) throw new Error("refresh_failed");

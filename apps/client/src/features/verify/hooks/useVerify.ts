@@ -10,7 +10,7 @@ import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useCallback, useMemo } from "react";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { UnwrappedResT } from "@/common/types/api";
-import { useManageCbcHmac } from "@/features/user/hooks/useManageCbcHmac";
+import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 
 export type MapperVerifyT = Record<
   TokenT,

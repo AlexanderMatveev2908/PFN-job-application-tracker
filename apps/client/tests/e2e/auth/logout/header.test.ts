@@ -1,7 +1,8 @@
 import test from "@playwright/test";
 import { extractInitialsUser } from "@/core/lib/formatters";
 import { preAuthLogout } from "./pre";
-import { clickByID, getByID, getByTxt, waitTmr, waitURL } from "../../lib/idx";
+import { clickByID, getByID, getByTxt } from "../../lib/idx";
+import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
 test("logout header ok", async ({ browser }) => {
   const { payload, page } = await preAuthLogout(browser);

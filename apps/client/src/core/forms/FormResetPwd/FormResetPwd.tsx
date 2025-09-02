@@ -3,12 +3,10 @@
 
 import type { FC } from "react";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
-import WrapForm from "@/common/components/forms/shapes/WrapForm";
 import { UseFormReturn } from "react-hook-form";
 import { PwdsFormT } from "../../../features/auth/paperwork";
-import WrapFormBody from "@/common/components/forms/shapes/WrapFormBody";
+import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import PairPwd from "../../../common/components/HOC/PairPwd/PairPwd";
-import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
 
 type PropsType = {
   formCtx: UseFormReturn<PwdsFormT>;
@@ -24,25 +22,17 @@ const FormResetPwd: FC<PropsType> = ({
   isLoading,
 }) => {
   return (
-    <WrapFormPage>
-      <WrapForm
-        {...{
-          formCtx,
-          handleSave,
-          formTestID: testID,
-        }}
-      >
-        <WrapFormBody>
-          <PairPwd />
-        </WrapFormBody>
-
-        <WrapFormFooter
-          {...{
-            isLoading,
-            submitBtnTestID: testID,
-          }}
-        />
-      </WrapForm>
+    <WrapFormPage
+      {...{
+        formCtx,
+        handleSave,
+        formTestID: testID,
+        isLoading,
+      }}
+    >
+      <WrapFormBody>
+        <PairPwd />
+      </WrapFormBody>
     </WrapFormPage>
   );
 };

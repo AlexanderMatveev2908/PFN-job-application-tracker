@@ -7,9 +7,7 @@ import { EmailFormT } from "./paperwork";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { emailField } from "./uiFactory";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
-import WrapForm from "@/common/components/forms/shapes/WrapForm";
-import WrapFormBody from "@/common/components/forms/shapes/WrapFormBody";
-import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
+import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 
 type PropsType = {
   formCtx: UseFormReturn<EmailFormT>;
@@ -25,30 +23,22 @@ const RequireEmailForm: FC<PropsType> = ({
   testID,
 }) => {
   return (
-    <WrapFormPage>
-      <WrapForm
-        {...{
-          formCtx,
-          handleSave,
-          formTestID: testID,
-        }}
-      >
-        <WrapFormBody>
-          <FormFieldTxt
-            {...{
-              el: emailField,
-              control: formCtx.control,
-            }}
-          />
-        </WrapFormBody>
-
-        <WrapFormFooter
+    <WrapFormPage
+      {...{
+        formCtx,
+        handleSave,
+        formTestID: testID,
+        isLoading,
+      }}
+    >
+      <WrapFormBody>
+        <FormFieldTxt
           {...{
-            isLoading,
-            submitBtnTestID: testID,
+            el: emailField,
+            control: formCtx.control,
           }}
         />
-      </WrapForm>
+      </WrapFormBody>
     </WrapFormPage>
   );
 };

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResApiT } from "@/common/types/api";
 import { isStr, serialize } from "@/core/lib/dataStructure";
+import { ErrApp } from "@/core/lib/err";
 import { __cg } from "@/core/lib/log";
 import { apiSlice } from "@/core/store/api";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
+import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -12,6 +14,8 @@ export const useErrAPI = () => {
   const dispatch = useDispatch();
 
   const nav = useRouter();
+
+  const { setNotice } = useNotice();
 
   const handleErr = useCallback(
     <T>({
@@ -38,13 +42,30 @@ export const useErrAPI = () => {
 
         return;
       } else {
-        if (!hideErr)
+        if (throwErr && hideErr) throw new ErrApp("Logic Conflict 😡");
+
+        if (!hideErr) {
+          const sureMsgExists = isStr(err?.msg)
+            ? err.msg!
+            : "Ops something went wrong ❌";
           dispatch(
             toastSlice.actions.open({
-              msg: isStr(err?.msg) ? err.msg! : "Ops something went wrong ❌",
+              msg: sureMsgExists,
               type: "ERR",
             })
           );
+
+          if (err?.status === 429) {
+            setNotice({
+              type: "ERR",
+              msg: sureMsgExists,
+            });
+
+            nav.replace("/notice");
+
+            return;
+          }
+        }
       }
 
       if (throwErr) throw err;
@@ -54,7 +75,7 @@ export const useErrAPI = () => {
         isErr: true,
       };
     },
-    [dispatch, nav]
+    [dispatch, nav, setNotice]
   );
 
   return {

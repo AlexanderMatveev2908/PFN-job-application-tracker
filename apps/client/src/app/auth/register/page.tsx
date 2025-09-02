@@ -20,8 +20,6 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
-import WrapFormFooter from "@/common/components/forms/shapes/WrapFormFooter";
-import WrapForm from "@/common/components/forms/shapes/WrapForm";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -95,33 +93,22 @@ const Page: FC = () => {
           currSwap: swapState.currSwap,
           totSwaps: 2,
         },
+        handleSave,
+        formCtx,
+        propsBtnsSwapper: {
+          swapState,
+          startSwap,
+          totSwaps: 2,
+        },
+        isLoading,
+        formTestID: "register",
       }}
     >
-      <WrapForm
+      <BodyFormRegister
         {...{
-          handleSave,
-          formCtx,
-          formTestID: "register",
+          swapState,
         }}
-      >
-        <BodyFormRegister
-          {...{
-            swapState,
-          }}
-        />
-
-        <WrapFormFooter
-          {...{
-            propsBtnsSwapper: {
-              swapState,
-              startSwap,
-              totSwaps: 2,
-            },
-            isLoading,
-            submitBtnTestID: "register",
-          }}
-        />
-      </WrapForm>
+      />
     </WrapFormPage>
   );
 };

@@ -15,3 +15,9 @@ export const pwdSchema = z.object({
     .max(100, "Max length exceeded")
     .regex(REG_PWD, "Invalid password"),
 });
+
+export type PwdFormT = z.infer<typeof pwdSchema>;
+
+export const resetValsPwdForm: PwdFormT = {
+  password: "",
+};

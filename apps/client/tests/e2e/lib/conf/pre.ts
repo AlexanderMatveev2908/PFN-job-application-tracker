@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { waitTmr } from "../actions/sideActions";
+import { waitTmr } from "../shortcuts/wait";
 
 export const preTest = async (page: Page, url: string) => {
   await page.goto(url);
