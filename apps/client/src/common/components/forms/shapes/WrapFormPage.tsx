@@ -46,7 +46,7 @@ const WrapFormPage = <T extends FieldValues>({
           className="w-full grid grid-cols-1"
           onSubmit={handleSave}
         >
-          <div className="w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5">
+          <div className="form__shape">
             {children}
 
             <WrapFormFooter

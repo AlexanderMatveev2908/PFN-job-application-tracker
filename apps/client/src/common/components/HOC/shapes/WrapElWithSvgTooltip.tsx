@@ -6,7 +6,7 @@ import { PortalConfT, TestIDT } from "@/common/types/ui";
 import { CSSProperties, useMemo, useState, type FC } from "react";
 import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
-import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
 import PortalTooltip from "../../elements/tooltips/PortalTooltip";

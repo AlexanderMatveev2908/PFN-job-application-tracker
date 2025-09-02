@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useHydration } from "@/core/hooks/ui/useHydration";
+import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import type { FC, ReactNode } from "react";
 import SpinPage from "../../spinners/SpinPage/SpinPage";
 import WrapPage from "./WrapPage";

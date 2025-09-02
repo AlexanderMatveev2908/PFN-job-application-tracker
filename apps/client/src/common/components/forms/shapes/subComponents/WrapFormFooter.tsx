@@ -22,7 +22,7 @@ const WrapFormFooter: FC<PropsType> = ({
 }) => {
   return (
     <>
-      <div className="w-full grid grid-cols-1 gap-8 p-5">
+      <div className="form__footer">
         {isObjOk(propsBtnsSwapper) && (
           <BtnsSwapper
             {...({

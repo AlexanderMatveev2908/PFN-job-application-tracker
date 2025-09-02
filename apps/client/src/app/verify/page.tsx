@@ -3,7 +3,7 @@
 
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { useCheckCbcHmac } from "@/core/hooks/etc/tokens/useCheckCbcHmac";
-import { useRunOnHydrate } from "@/core/hooks/etc/useRunOnHydrate";
+import { useRunOnHydrate } from "@/core/hooks/etc/hydration/useRunOnHydrate";
 import { useVerify } from "@/features/verify/hooks/useVerify";
 import { useSearchParams } from "next/navigation";
 import { useCallback, type FC } from "react";

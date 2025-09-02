@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useHydration } from "@/core/hooks/ui/useHydration";
+import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { ReactNode, type FC } from "react";
 import { createPortal } from "react-dom";
 

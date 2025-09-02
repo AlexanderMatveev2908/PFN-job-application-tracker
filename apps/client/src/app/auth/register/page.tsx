@@ -20,6 +20,7 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
+import { useFocusSwap } from "@/core/hooks/etc/focus/useFocusSwap";
 
 export type SwapModeT = "swapped" | "swapping" | "none";
 
@@ -39,9 +40,13 @@ const Page: FC = () => {
 
   const kwargs: Path<RegisterFormT>[] = ["first_name", "password"];
 
-  const { startSwap, swapState } = useSwap({
-    setFocus,
+  const { startSwap, swapState, lockFocusRef } = useSwap();
+
+  useFocusSwap({
     kwargs,
+    setFocus: setFocus,
+    swapState,
+    lockFocusRef,
   });
 
   const handleSave = handleSubmit(

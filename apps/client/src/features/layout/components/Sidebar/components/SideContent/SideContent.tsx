@@ -13,7 +13,7 @@ import { linksAll, linksNonLoggedAccount } from "@/core/uiFactory/links";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import SideLogout from "./components/SideLogout";
 import { calcIsCurrPath } from "@/core/lib/path";
-import { useLinksLogged } from "@/core/hooks/etc/useLinksLogged";
+import { useLinksLogged } from "@/core/hooks/etc/navigation/useLinksLogged";
 
 const SideContent: FC = () => {
   const { ids } = useGenIDs({

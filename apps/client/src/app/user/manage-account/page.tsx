@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapPage from "@/common/components/HOC/pageWrappers/WrapPage";
+import WrapMultiForm from "@/common/components/forms/shapes/WrapMultiForm";
 import { TokenT } from "@/common/types/tokens";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
+import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import type { FC } from "react";
 
 const Page: FC = () => {
@@ -12,10 +13,21 @@ const Page: FC = () => {
     pathPush: "/user/access-manage-account",
   });
 
+  const { startSwap, swapState } = useSwap();
+
   return (
-    <WrapPage>
+    <WrapMultiForm
+      {...{
+        formTestID: "manage_acc",
+        propsBtnsSwapper: {
+          startSwap,
+          swapState,
+          totSwaps: 2,
+        },
+      }}
+    >
       <div className=""></div>
-    </WrapPage>
+    </WrapMultiForm>
   );
 };
 

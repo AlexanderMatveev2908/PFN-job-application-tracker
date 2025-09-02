@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSideState, sideSlice } from "./slice";
 import BlackBg from "@/common/components/elements/BlackBg";
 import { motion } from "framer-motion";
-import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
+import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 import { css } from "@emotion/react";
 import SideContent from "./components/SideContent/SideContent";

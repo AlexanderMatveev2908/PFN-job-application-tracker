@@ -14,7 +14,7 @@ import { __cg } from "@/core/lib/log";
 import { reducer } from "./etc/reducer";
 import { initState } from "./etc/initState";
 import { clearTmr } from "@/core/lib/etc";
-import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { PortalConfT, TestIDT } from "@/common/types/ui";
 
 type PropsType = { txt: string; portalConf?: PortalConfT } & TestIDT;

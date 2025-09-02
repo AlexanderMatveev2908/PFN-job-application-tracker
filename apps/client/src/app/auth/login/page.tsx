@@ -1,7 +1,7 @@
 "use client";
 
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
-import { useFocus } from "@/core/hooks/ui/useFocus";
+import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import BodyFormLogin from "@/features/auth/pages/login/components/BodyFormLogin";

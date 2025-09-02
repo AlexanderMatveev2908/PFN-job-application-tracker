@@ -4,7 +4,7 @@
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { useFocus } from "@/core/hooks/ui/useFocus";
+import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
 import { PwdFormT, pwdSchema, resetValsPwdForm } from "@/core/paperwork";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";

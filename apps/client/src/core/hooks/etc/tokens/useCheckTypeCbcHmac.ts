@@ -2,7 +2,7 @@ import { TokenT } from "@/common/types/tokens";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { useCallback } from "react";
 import { useCheckCbcHmac } from "./useCheckCbcHmac";
-import { useRunOnHydrate } from "../useRunOnHydrate";
+import { useRunOnHydrate } from "../hydration/useRunOnHydrate";
 
 type Params = {
   tokenType: TokenT;

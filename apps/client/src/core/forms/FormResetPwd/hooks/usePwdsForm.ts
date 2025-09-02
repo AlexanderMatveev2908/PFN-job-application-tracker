@@ -1,4 +1,4 @@
-import { useFocus } from "@/core/hooks/ui/useFocus";
+import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import {
   PwdsFormT,
   pwdsSchema,
