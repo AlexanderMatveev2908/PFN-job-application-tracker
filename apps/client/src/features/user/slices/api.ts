@@ -3,12 +3,19 @@ import { apiSlice } from "@/core/store/api";
 import { UserT } from "../types";
 import { userSlice } from "./slice";
 import { PwdFormT } from "@/core/paperwork";
+import { EmailFormT } from "@/core/forms/RequireEmailForm/paperwork";
 
 const BASE = "/user";
 
 export type GainAccessManageAccReturnT = {
   cbc_hmac_token: string;
 };
+
+export type ManageAccFormT = {
+  cbc_hmac_token: string;
+};
+
+export type ChangeEmailFormT = ManageAccFormT & EmailFormT;
 
 export const userSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -37,6 +44,14 @@ export const userSliceAPI = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${BASE}/manage-account`,
         method: "POST",
+        data,
+      }),
+    }),
+
+    changeEmail: builder.mutation<ResApiT<void>, ChangeEmailFormT>({
+      query: (data) => ({
+        url: `${BASE}/change-email`,
+        method: "PATCH",
         data,
       }),
     }),

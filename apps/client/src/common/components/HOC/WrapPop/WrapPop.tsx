@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useMouseOut } from "@/core/hooks/ui/useMouseOut";
+import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import { useRef, type FC } from "react";
 import BlackBg from "../../elements/BlackBg";
 import { motion } from "framer-motion";

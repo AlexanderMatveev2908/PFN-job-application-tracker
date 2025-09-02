@@ -14,8 +14,8 @@ const Layout: FC<ChildrenT> = ({ children }) => {
   const usState = useGetUserState();
 
   useEffect(() => {
-    if (usState.isLogged && !usState.pendingAction) nav.replace("/");
-  }, [usState.isLogged, usState.pendingAction, nav]);
+    if (usState.isLogged && !usState.pendingActionSession) nav.replace("/");
+  }, [usState.isLogged, usState.pendingActionSession, nav]);
 
   return (
     <BaseLayoutPage

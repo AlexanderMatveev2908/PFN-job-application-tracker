@@ -5,13 +5,13 @@ import { ChildrenT } from "@/common/types/ui";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 
-type PropsType = {
+export type WrapSwapperPropsType = {
   contentH: number;
   currSwap: number;
   totSwaps: number;
 } & ChildrenT;
 
-const WrapSwapper: FC<PropsType> = ({
+const WrapSwapper: FC<WrapSwapperPropsType> = ({
   children,
   contentH,
   currSwap,
@@ -19,7 +19,7 @@ const WrapSwapper: FC<PropsType> = ({
 }) => {
   return (
     <div
-      className="transition-all duration-[0.4s] p-5"
+      className="transition-all duration-[0.4s]"
       css={css`
         max-height: ${contentH ? `${contentH}px` : "fit-content"};
         height: ${contentH ? `${contentH}px` : "fit-content"};

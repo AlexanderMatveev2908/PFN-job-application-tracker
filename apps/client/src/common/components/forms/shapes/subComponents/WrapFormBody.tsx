@@ -5,11 +5,7 @@ import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
 
 const WrapFormBody: FC<ChildrenT> = ({ children }) => {
-  return (
-    <div className="grid grid-cols-1 gap-6 w-full h-fit items-start p-5">
-      {children}
-    </div>
-  );
+  return <div className="form__body">{children}</div>;
 };
 
 export default WrapFormBody;

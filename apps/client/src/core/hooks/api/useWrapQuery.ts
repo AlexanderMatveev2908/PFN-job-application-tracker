@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useErrAPI } from "./useErrAPI";
-import { useWrapClientListener } from "../etc/useWrapClientListener";
+import { useWrapClientListener } from "../etc/hydration/useWrapClientListener";
 import { __cg } from "@/core/lib/log";
 import { ResApiT } from "@/common/types/api";
 import { useMsgAPI } from "./useMsgAPI";

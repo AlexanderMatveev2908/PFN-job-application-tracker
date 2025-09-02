@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useWrapClientListener } from "../etc/useWrapClientListener";
+import { useWrapClientListener } from "../hydration/useWrapClientListener";
 import { usePathname } from "next/navigation";
 
 export const useScroll = () => {

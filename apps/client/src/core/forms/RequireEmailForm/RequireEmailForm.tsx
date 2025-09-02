@@ -4,19 +4,17 @@
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { EmailFormT } from "./paperwork";
-import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { emailField } from "./uiFactory";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
+import RequireEmailFormBody from "./RequireEmailFormBody";
 
-type PropsType = {
+export type PropsTypeRequireEmailForm = {
   formCtx: UseFormReturn<EmailFormT>;
   handleSave: () => void;
   isLoading: boolean;
   testID: string;
 };
 
-const RequireEmailForm: FC<PropsType> = ({
+const RequireEmailForm: FC<PropsTypeRequireEmailForm> = ({
   formCtx,
   handleSave,
   isLoading,
@@ -31,14 +29,11 @@ const RequireEmailForm: FC<PropsType> = ({
         isLoading,
       }}
     >
-      <WrapFormBody>
-        <FormFieldTxt
-          {...{
-            el: emailField,
-            control: formCtx.control,
-          }}
-        />
-      </WrapFormBody>
+      <RequireEmailFormBody
+        {...{
+          formCtx,
+        }}
+      />
     </WrapFormPage>
   );
 };

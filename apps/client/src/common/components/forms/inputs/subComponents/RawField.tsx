@@ -10,7 +10,7 @@ import {
   Path,
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
-import { useSyncPortal } from "@/core/hooks/ui/useSyncPortal";
+import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import Portal from "@/common/components/elements/tooltips/subComponents/Portal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";

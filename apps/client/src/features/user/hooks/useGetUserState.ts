@@ -12,8 +12,9 @@ export const useGetUserState = () => {
     [userState.access_token]
   );
   const canPushNonLogged = useMemo(
-    () => !isLogged && !userState.pendingAction && userState.touchedServer,
-    [userState.pendingAction, userState.touchedServer, isLogged]
+    () =>
+      !isLogged && !userState.pendingActionSession && userState.touchedServer,
+    [userState.pendingActionSession, userState.touchedServer, isLogged]
   );
   const isUsOk = useMemo(
     () => isLogged && isStr(userState.user?.id),

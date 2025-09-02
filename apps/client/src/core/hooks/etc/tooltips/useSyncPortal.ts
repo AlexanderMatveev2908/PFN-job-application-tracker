@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
-import { useHydration } from "./useHydration";
+import { useHydration } from "../hydration/useHydration";
 
 export type CoordsT = "top" | "left" | "right" | "bottom" | "width" | "height";
 export type CoordsTooltipT = Record<CoordsT, number>;

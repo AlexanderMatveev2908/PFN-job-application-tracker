@@ -3,7 +3,7 @@ import { ConfApiT } from "@/common/types/api";
 import { BaseQueryArgT, BaseQueryReturnT } from "./types";
 import { instanceAxs } from "../axiosInstance";
 import { isStr } from "@/core/lib/dataStructure";
-import { delStorageItm, saveStorage } from "@/core/lib/storage";
+import { clearStorage, saveStorage } from "@/core/lib/storage";
 import { extractHeaders, extractMsgErr } from "./etc";
 import { __cg } from "@/core/lib/log";
 import { AxiosError } from "axios";
@@ -97,7 +97,7 @@ export const handleRefreshErr = ({
     );
 
   if (refreshFailed) {
-    delStorageItm("access_token");
+    clearStorage();
     delete instanceAxs.defaults.headers.common.Authorization;
 
     __cg("refresh failed");

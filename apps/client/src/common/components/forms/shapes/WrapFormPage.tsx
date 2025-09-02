@@ -1,14 +1,16 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import ProgressSwap from "@/common/components/swap/ProgressSwap";
+import ProgressSwap from "@/common/components/swap/subComponents/ProgressSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
-import { PropsTypeBtnsSwapper } from "../../swap/BtnsSwapper";
+import { PropsTypeBtnsSwapper } from "../../swap/subComponents/BtnsSwapper";
+import WrapPage from "../../HOC/pageWrappers/WrapPage";
+import { ReactNode } from "react";
 
-type PropsType<T extends FieldValues> = {
+export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {
     currSwap: number;
     totSwaps: number;
@@ -18,6 +20,8 @@ type PropsType<T extends FieldValues> = {
   handleSave: () => void;
   formTestID: string;
   isLoading: boolean;
+  appendAuthSpanner?: boolean;
+  AdditionalFooterNode?: () => ReactNode;
 } & ChildrenT;
 
 const WrapFormPage = <T extends FieldValues>({
@@ -28,24 +32,27 @@ const WrapFormPage = <T extends FieldValues>({
   formTestID,
   isLoading,
   propsBtnsSwapper,
-}: PropsType<T>) => {
+  AdditionalFooterNode,
+}: WrapFormPagePropsType<T>) => {
   return (
-    <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
+    <WrapPage>
       {isObjOk(propsProgressSwap) && (
         <ProgressSwap
           {...({
             maxW: 800,
             ...propsProgressSwap,
-          } as PropsType<T>["propsProgressSwap"] & { maxW: number })}
+          } as WrapFormPagePropsType<T>["propsProgressSwap"] & {
+            maxW: number;
+          })}
         />
       )}
       <FormProvider {...formCtx}>
         <form
           data-testid={formTestID + "__form"}
-          className="w-full grid grid-cols-1"
+          className="form__container"
           onSubmit={handleSave}
         >
-          <div className="w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5">
+          <div className="form__shape">
             {children}
 
             <WrapFormFooter
@@ -55,10 +62,13 @@ const WrapFormPage = <T extends FieldValues>({
                 submitBtnTestID: formTestID,
               }}
             />
+
+            {typeof AdditionalFooterNode === "function" &&
+              AdditionalFooterNode()}
           </div>
         </form>
       </FormProvider>
-    </div>
+    </WrapPage>
   );
 };
 

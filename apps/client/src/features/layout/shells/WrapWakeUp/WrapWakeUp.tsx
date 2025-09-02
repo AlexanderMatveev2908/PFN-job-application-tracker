@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState, type FC } from "react";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
-import { useWrapClientListener } from "@/core/hooks/etc/useWrapClientListener";
+import { useWrapClientListener } from "@/core/hooks/etc/hydration/useWrapClientListener";
 import { wakeUpSliceAPI } from "./slices/api";
 import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";

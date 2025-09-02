@@ -4,7 +4,7 @@
 import { useEffect, type FC } from "react";
 import { easeInOut, motion, useAnimationControls } from "framer-motion";
 import Portal from "../../subComponents/Portal";
-import { CoordsTooltipT } from "@/core/hooks/ui/useSyncPortal";
+import { CoordsTooltipT } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
 
 type PropsType = {

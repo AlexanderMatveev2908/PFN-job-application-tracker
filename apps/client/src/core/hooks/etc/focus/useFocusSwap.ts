@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useMemo } from "react";
-import { SwapStateT } from "../etc/initState";
+import { SwapStateT } from "../useSwap/etc/initState";
 import { FieldValues, Path, UseFormSetFocus } from "react-hook-form";
-import { useFocus } from "../../../ui/useFocus";
+import { useFocus } from "./useFocus";
 
 type Params<T extends FieldValues> = {
   swapState: SwapStateT;

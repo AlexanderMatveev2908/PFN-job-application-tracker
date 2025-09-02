@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import RequireEmailForm from "@/core/forms/RequireEmailForm/RequireEmailForm";
+import RequireAuthEmailForm from "@/features/auth/components/RequireAuthEmailForm";
 import { useEmailForm } from "@/core/forms/RequireEmailForm/hooks/useEmailForm";
 import type { FC } from "react";
 
@@ -14,7 +14,7 @@ const Page: FC = () => {
   });
 
   return (
-    <RequireEmailForm
+    <RequireAuthEmailForm
       {...{
         formCtx,
         testID: "conf_email",

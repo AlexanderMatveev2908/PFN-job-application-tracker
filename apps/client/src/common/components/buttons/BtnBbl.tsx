@@ -10,7 +10,7 @@ import PairTxtSvg from "../elements/PairTxtSvg";
 import WrapBtnAPI from "../HOC/buttonWrappers/WrapBtnAPI";
 import { $argClr } from "@/core/uiFactory/style";
 import { css } from "@emotion/react";
-import { useHydration } from "@/core/hooks/ui/useHydration";
+import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 
 const makeRandomBtn = () => genMinMax(-1200, 1200);
 

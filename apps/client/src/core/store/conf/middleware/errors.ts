@@ -10,9 +10,12 @@ export const handleErrorsActions =
     const { payload } = (action ?? {}) as any;
 
     try {
-      const pendingAction = store.getState().user.pendingAction;
+      const pendingActionSession = store.getState().user.pendingActionSession;
 
-      if (pendingAction || (!payload?.refreshFailed && !payload?.refreshed))
+      if (
+        pendingActionSession ||
+        (!payload?.refreshFailed && !payload?.refreshed)
+      )
         return next(action);
 
       const isLogged = REG_JWT.test(

@@ -8,17 +8,30 @@ export const useEndPendingActionUser = () => {
   const usState = useGetUserState();
   const dispatch = useDispatch();
 
-  const timerID = useRef<NodeJS.Timeout | null>(null);
+  const actionSessionTimerID = useRef<NodeJS.Timeout | null>(null);
+  const actionCbcHmacTimerID = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (usState.pendingAction)
-      timerID.current = setTimeout(() => {
-        dispatch(userSlice.actions.endPendingAction());
-        clearTmr(timerID);
+    if (usState.pendingActionSession)
+      actionSessionTimerID.current = setTimeout(() => {
+        dispatch(userSlice.actions.endPendingActionSession());
+        clearTmr(actionSessionTimerID);
       }, 1000);
 
     return () => {
-      clearTmr(timerID);
+      clearTmr(actionSessionTimerID);
     };
-  }, [usState.pendingAction, dispatch]);
+  }, [usState.pendingActionSession, dispatch]);
+
+  useEffect(() => {
+    if (usState.pendingActionCbcHmac)
+      actionCbcHmacTimerID.current = setTimeout(() => {
+        dispatch(userSlice.actions.endPendingActionCbcHmac());
+        clearTmr(actionCbcHmacTimerID);
+      }, 1000);
+
+    return () => {
+      clearTmr(actionCbcHmacTimerID);
+    };
+  }, [usState.pendingActionCbcHmac, dispatch]);
 };
