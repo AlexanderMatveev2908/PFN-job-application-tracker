@@ -11,6 +11,7 @@ import { extractNamePagePath } from "@/core/lib/path";
 
 const SpannerLinks: FC = () => {
   const p = usePathname();
+  const isAuthLayout = p.includes("/auth");
 
   const links =
     spannerLinks[
@@ -18,7 +19,7 @@ const SpannerLinks: FC = () => {
     ];
   const { ids } = useGenIDs({ lengths: [links.length] });
 
-  return (
+  return !isAuthLayout ? null : (
     <div className="w-full grid grid-cols-2 items-center justify-items-center py-[25px]">
       {links.map((el, i) => {
         const Svg = (el.link as LinkAppSvgT).Svg;
