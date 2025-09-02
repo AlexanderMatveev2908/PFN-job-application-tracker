@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import WrapPage from "@/common/components/HOC/pageWrappers/WrapPage";
 import { TokenT } from "@/common/types/tokens";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import type { FC } from "react";
@@ -11,7 +12,11 @@ const Page: FC = () => {
     pathPush: "/user/access-manage-account",
   });
 
-  return <div></div>;
+  return (
+    <WrapPage>
+      <div className=""></div>
+    </WrapPage>
+  );
 };
 
 export default Page;

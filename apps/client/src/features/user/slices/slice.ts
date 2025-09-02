@@ -40,7 +40,6 @@ export const userSlice = createSlice({
     logout: () => ({ ...initState, pendingAction: true }),
     setCbcHmac: (state, action: PayloadAction<string>) => {
       state.cbc_hmac_token = action.payload;
-      state.pendingAction = true;
     },
     clearCbcHmac: (state) => {
       state.cbc_hmac_token = "";

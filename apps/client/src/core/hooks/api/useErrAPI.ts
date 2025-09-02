@@ -38,6 +38,7 @@ export const useErrAPI = () => {
         );
 
         dispatch(apiSlice.util.resetApiState());
+
         nav.replace("/auth/login");
 
         return;

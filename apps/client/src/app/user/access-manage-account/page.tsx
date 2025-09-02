@@ -7,14 +7,13 @@ import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useFocus } from "@/core/hooks/ui/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
 import { PwdFormT, pwdSchema, resetValsPwdForm } from "@/core/paperwork";
-import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import BodyFormAccessManageAccount from "@/features/user/pages/access-manage-account/components/BodyFormAccessManageAccount";
 import {
   GainAccessManageAccReturnT,
   userSliceAPI,
 } from "@/features/user/slices/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { useForm } from "react-hook-form";
 
 const Page: FC = () => {
@@ -45,12 +44,6 @@ const Page: FC = () => {
       nav.replace("/user/manage-account");
     }
   }, logFormErrs);
-
-  const { cbc_hmac_token, pendingAction } = useGetUserState();
-
-  useEffect(() => {
-    if (cbc_hmac_token && !pendingAction) nav.replace("/");
-  }, [cbc_hmac_token, pendingAction, nav]);
 
   return (
     <WrapFormPage
