@@ -7,6 +7,7 @@ import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { PropsTypeBtnsSwapper } from "../../swap/BtnsSwapper";
+import WrapPage from "../../HOC/pageWrappers/WrapPage";
 
 type PropsType<T extends FieldValues> = {
   propsProgressSwap?: {
@@ -30,7 +31,7 @@ const WrapFormPage = <T extends FieldValues>({
   propsBtnsSwapper,
 }: PropsType<T>) => {
   return (
-    <div className="w-full grid grid-cols-1 gap-10 mt-[20px]">
+    <WrapPage>
       {isObjOk(propsProgressSwap) && (
         <ProgressSwap
           {...({
@@ -58,7 +59,7 @@ const WrapFormPage = <T extends FieldValues>({
           </div>
         </form>
       </FormProvider>
-    </div>
+    </WrapPage>
   );
 };
 

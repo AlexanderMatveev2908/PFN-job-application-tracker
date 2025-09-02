@@ -4,6 +4,7 @@
 import { useHydration } from "@/core/hooks/ui/useHydration";
 import type { FC, ReactNode } from "react";
 import SpinPage from "../../spinners/SpinPage/SpinPage";
+import WrapPage from "./WrapPage";
 
 type PropsType = {
   isLoading?: boolean;
@@ -32,9 +33,9 @@ const WrapCSR: FC<PropsType> = ({
   return isPending ? (
     <SpinPage />
   ) : isApiOk ? (
-    <div className="w-full h-full flex flex-col gap-6 items-center">
+    <WrapPage>
       {typeof children === "function" ? children({ isHydrated }) : children}
-    </div>
+    </WrapPage>
   ) : null;
 };
 
