@@ -4,15 +4,17 @@ import { StoreStateT } from "@/core/store";
 
 export interface UserStateT {
   // ? pending-action is specific for moments like logging in or logging out / being pushed out , where i need a reference to avoid being interrupted by existing custom route blocker that protect pages but that are generic while exists specific cases must be handled manually
-  pendingAction: boolean;
+  pendingActionSession: boolean;
+  pendingActionCbcHmac: boolean;
+  touchedServer: boolean;
   access_token: string;
   cbc_hmac_token: string;
   user: UserT | null;
-  touchedServer: boolean;
 }
 
 const initState: UserStateT = {
-  pendingAction: false,
+  pendingActionSession: false,
+  pendingActionCbcHmac: false,
   access_token: "",
   cbc_hmac_token: "",
   user: null,
@@ -24,7 +26,7 @@ export const userSlice = createSlice({
   initialState: initState,
   reducers: {
     login: (state, action: PayloadAction<{ access_token: string }>) => {
-      state.pendingAction = true;
+      state.pendingActionSession = true;
       state.access_token = action.payload.access_token;
     },
     setAccessToken: (
@@ -37,15 +39,19 @@ export const userSlice = createSlice({
       state.user = action.payload ?? null;
       state.touchedServer = true;
     },
-    logout: () => ({ ...initState, pendingAction: true }),
+    logout: () => ({ ...initState, pendingActionSession: true }),
     setCbcHmac: (state, action: PayloadAction<string>) => {
       state.cbc_hmac_token = action.payload;
+      state.pendingActionCbcHmac = true;
     },
     clearCbcHmac: (state) => {
       state.cbc_hmac_token = "";
     },
-    endPendingAction: (state) => {
-      state.pendingAction = false;
+    endPendingActionSession: (state) => {
+      state.pendingActionSession = false;
+    },
+    endPendingActionCbcHmac: (state) => {
+      state.pendingActionCbcHmac = false;
     },
   },
 });
