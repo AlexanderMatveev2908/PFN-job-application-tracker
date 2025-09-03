@@ -54,7 +54,7 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
       pushNotice: true,
     });
 
-    if (!res || res?.isErr) return;
+    if (!res) return;
 
     setNotice({
       msg: genMailNoticeMsg("to change your account email"),

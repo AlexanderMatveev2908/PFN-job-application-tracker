@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResApiT } from "@/common/types/api";
-import { isStr, serialize } from "@/core/lib/dataStructure";
+import { isStr } from "@/core/lib/dataStructure";
 import { ErrApp } from "@/core/lib/err";
 import { __cg } from "@/core/lib/log";
 import { apiSlice } from "@/core/store/api";
@@ -28,7 +27,7 @@ export const useErrAPI = () => {
       hideErr?: boolean;
       throwErr?: boolean;
       pushNotice?: boolean;
-    }): ResApiT<T>["data"] | undefined => {
+    }): null => {
       __cg("wrapper err api", err);
 
       if (err?.refreshFailed) {
@@ -42,8 +41,6 @@ export const useErrAPI = () => {
         dispatch(apiSlice.util.resetApiState());
 
         nav.replace("/auth/login");
-
-        return;
       } else {
         if (throwErr && hideErr) throw new ErrApp("Logic Conflict 😡");
 
@@ -66,18 +63,13 @@ export const useErrAPI = () => {
             });
 
             nav.replace("/notice");
-
-            return;
           }
         }
       }
 
       if (throwErr) throw err;
 
-      return {
-        ...(serialize(err) as any),
-        isErr: true,
-      };
+      return null;
     },
     [dispatch, nav, setNotice]
   );
