@@ -1,10 +1,14 @@
-"use client";
-
 import type { FC } from "react";
 import { v4 } from "uuid";
 import s from "./SpinPage.module.css";
+import { AppEventT } from "@/common/types/api";
+import { $argClr } from "@/core/uiFactory/style";
 
-const SpinPage: FC = () => {
+type PropsType = {
+  act?: AppEventT;
+};
+
+const SpinPage: FC<PropsType> = ({ act = "NONE" }) => {
   const ids = Array.from({ length: 15 }, () => v4());
 
   return (
@@ -27,6 +31,7 @@ const SpinPage: FC = () => {
                   transform: "scale(0)",
                   opacity: 0,
                   "--delay_page": `${(1 / ids.length) * i}s`,
+                  "--spin__clr": $argClr[act],
                 } as React.CSSProperties
               }
             ></div>

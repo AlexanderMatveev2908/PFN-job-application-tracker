@@ -11,6 +11,8 @@ import type { FC } from "react";
 import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
 import ChangePwdForm from "@/features/user/pages/manage-account/components/ChangePwdForm";
 import DelAccountSwap from "@/features/user/pages/manage-account/components/DelAccountSwap";
+import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
@@ -20,12 +22,20 @@ const Page: FC = () => {
 
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
+  const { user, isUsOk, touchedServer } = useGetUserState();
   const { contentRef, contentH } = useListenHeight({
-    opdDep: [currSwap],
+    opdDep: [currSwap, isUsOk],
   });
 
+  const showSetup2FA = user?.is_verified && !user?.use_2FA;
+
   return (
-    <WrapCSR>
+    <WrapCSR
+      {...{
+        isApiOk: isUsOk,
+        isLoading: !touchedServer,
+      }}
+    >
       <WrapMultiFormSwapper
         {...{
           formTestID: "manage_acc",
@@ -36,7 +46,7 @@ const Page: FC = () => {
             contentH,
           },
           swapState,
-          totSwaps: 3,
+          totSwaps: showSetup2FA ? 4 : 3,
         }}
       >
         <ChangeEmailForm
@@ -55,11 +65,19 @@ const Page: FC = () => {
           }}
         />
 
+        {showSetup2FA && (
+          <SwapSetup2FA
+            {...{
+              contentRef,
+              isCurr: currSwap === 2,
+            }}
+          />
+        )}
+
         <DelAccountSwap
           {...{
             contentRef,
-            isCurr: currSwap === 2,
-            swapState,
+            isCurr: currSwap === (showSetup2FA ? 3 : 2),
           }}
         />
       </WrapMultiFormSwapper>

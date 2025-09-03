@@ -2,9 +2,10 @@
 "use client";
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import type { FC, ReactNode } from "react";
+import { useMemo, type FC, type ReactNode } from "react";
 import SpinPage from "../../spinners/SpinPage/SpinPage";
 import WrapPage from "./WrapPage";
+import { ErrApp } from "@/core/lib/err";
 
 type PropsType = {
   isLoading?: boolean;
@@ -23,12 +24,17 @@ const WrapCSR: FC<PropsType> = ({
 }) => {
   const { isHydrated } = useHydration();
 
-  const isPending = !isHydrated || isLoading;
+  const isPending = useMemo(
+    () => !isHydrated || isLoading,
+    [isHydrated, isLoading]
+  );
 
   if (!isPending && !isApiOk && throwErr)
-    throw {
-      msg: "Data structure of API response does not fit expected shape ☢️",
-    };
+    throw new ErrApp(
+      "Data structure of API response does not fit expected shape ☢️"
+    );
+
+  console.log("render");
 
   return isPending ? (
     <SpinPage />
