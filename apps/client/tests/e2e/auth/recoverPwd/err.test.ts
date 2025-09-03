@@ -3,7 +3,7 @@ import { preAuthRecoverPwd } from "./pre";
 import { clickByID, getByID, getByTxt } from "../../lib/idx";
 import { waitTmr } from "../../lib/shortcuts/wait";
 
-test("same pwd", async ({ browser }) => {
+test("recover pwd err same pwd", async ({ browser }) => {
   const { page, form, payload } = await preAuthRecoverPwd(browser);
 
   await (await getByID(form, "password")).fill(payload.password);

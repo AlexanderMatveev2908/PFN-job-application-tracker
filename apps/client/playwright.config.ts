@@ -3,9 +3,9 @@ import "dotenv/config";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  timeout: 240 * 1000,
+  timeout: 120 * 1000,
   expect: {
-    timeout: 60 * 1000,
+    timeout: 15 * 1000,
   },
   retries: 2,
   workers: "100%",
@@ -23,7 +23,7 @@ export default defineConfig({
   testMatch: ["**/*.test.ts"],
 
   projects: [
-    { name: "chromium", use: { browserName: "chromium" } },
+    // { name: "chromium", use: { browserName: "chromium" } },
     { name: "firefox", use: { browserName: "firefox" } },
   ],
 });

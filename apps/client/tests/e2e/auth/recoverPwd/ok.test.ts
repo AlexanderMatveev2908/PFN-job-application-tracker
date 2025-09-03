@@ -5,7 +5,7 @@ import { preAuthRecoverPwd } from "./pre";
 import { clickByID, getByID } from "../../lib/idx";
 import { waitURL } from "../../lib/shortcuts/wait";
 
-test("ok", async ({ browser }) => {
+test("recover pwd ok", async ({ browser }) => {
   const { form, page } = await preAuthRecoverPwd(browser);
 
   const newPwd = genPwd();

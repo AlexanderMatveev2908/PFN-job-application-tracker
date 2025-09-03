@@ -6,7 +6,7 @@ import { checkTxtOpc } from "../../../lib/shortcuts/style";
 import { preAuthRegister } from "../pre";
 import { waitTmr } from "../../../lib/shortcuts/wait";
 
-test("swap 1", async ({ browser }) => {
+test("register form swap 1", async ({ browser }) => {
   const { form, page } = await preAuthRegister(browser);
 
   await clickByID(form, "btns_swapper_next_swap");

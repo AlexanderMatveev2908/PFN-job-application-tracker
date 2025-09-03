@@ -5,5 +5,5 @@ export const waitTmr = async (page: Page, v: number = 1500) => {
 };
 
 export const waitURL = async (page: Page, url: string) => {
-  await page.waitForURL(url, { timeout: 1000 * 100 });
+  await page.waitForURL(url, { timeout: 1000 * 30 });
 };

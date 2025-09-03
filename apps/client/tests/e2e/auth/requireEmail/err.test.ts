@@ -4,7 +4,7 @@ import { getByID, getByTxt } from "../../lib/shortcuts/get";
 import { clickByID } from "../../lib/shortcuts/click";
 import { waitTmr } from "../../lib/shortcuts/wait";
 
-test("invalid email", async ({ browser }) => {
+test("require email auth invalid email", async ({ browser }) => {
   const { form, page } = await preRequireEmail(browser);
 
   await (await getByID(form, "email")).fill("<>@<>");
@@ -14,7 +14,7 @@ test("invalid email", async ({ browser }) => {
   await getByTxt(page, "invalid email");
 });
 
-test("non existent", async ({ browser }) => {
+test("require email auth non existent email", async ({ browser }) => {
   const { form, page, payload } = await preRequireEmail(browser);
 
   await (await getByID(form, "email")).fill(payload.email);

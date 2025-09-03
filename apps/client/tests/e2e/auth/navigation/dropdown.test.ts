@@ -3,7 +3,7 @@ import { preAuthNavigation } from "./pre";
 import { checkLinksList, clickByID, clickByTxt, getByID } from "../../lib/idx";
 import { waitURL } from "../../lib/shortcuts/wait";
 
-test("with dropdown", async ({ browser }) => {
+test("navigation to register page with dropdown", async ({ browser }) => {
   const { page } = await preAuthNavigation(browser);
 
   await clickByID(page, "header__toggle_drop");
