@@ -53,6 +53,5 @@ export const changeEmailOk = async (browser: Browser) => {
 
   return {
     payload,
-    newEmail,
   };
 };
