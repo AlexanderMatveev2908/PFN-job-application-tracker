@@ -34,8 +34,6 @@ const WrapCSR: FC<PropsType> = ({
       "Data structure of API response does not fit expected shape ☢️"
     );
 
-  console.log("render");
-
   return isPending ? (
     <SpinPage />
   ) : isApiOk ? (

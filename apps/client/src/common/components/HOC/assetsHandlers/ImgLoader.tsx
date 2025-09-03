@@ -18,6 +18,7 @@ const ImgLoader: FC<PropsType> = ({ src, alt }) => {
   return !src ? null : (
     <div className="relative h-full min-h-full min-w-full rounded-xl overflow-hidden">
       <AssetHandler {...{ loaded, isError }} />
+
       <Image
         src={src ?? ""}
         alt={alt ?? ""}
@@ -27,7 +28,9 @@ const ImgLoader: FC<PropsType> = ({ src, alt }) => {
         fill
         onLoad={() => setIsLoaded(true)}
         onError={() => {
-          setIsError(true);
+          try {
+            setIsError(true);
+          } catch {}
         }}
       />
     </div>

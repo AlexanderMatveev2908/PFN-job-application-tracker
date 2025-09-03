@@ -22,12 +22,10 @@ const Page: FC = () => {
 
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
-  const { user, isUsOk, touchedServer } = useGetUserState();
+  const { isUsOk, touchedServer } = useGetUserState();
   const { contentRef, contentH } = useListenHeight({
     opdDep: [currSwap, isUsOk],
   });
-
-  const showSetup2FA = user?.is_verified && !user?.use_2FA;
 
   return (
     <WrapCSR
@@ -46,7 +44,7 @@ const Page: FC = () => {
             contentH,
           },
           swapState,
-          totSwaps: showSetup2FA ? 4 : 3,
+          totSwaps: 4,
         }}
       >
         <ChangeEmailForm
@@ -65,19 +63,18 @@ const Page: FC = () => {
           }}
         />
 
-        {showSetup2FA && (
-          <SwapSetup2FA
-            {...{
-              contentRef,
-              isCurr: currSwap === 2,
-            }}
-          />
-        )}
+        <SwapSetup2FA
+          {...{
+            contentRef,
+            isCurr: currSwap === 2,
+            swapState,
+          }}
+        />
 
         <DelAccountSwap
           {...{
             contentRef,
-            isCurr: currSwap === (showSetup2FA ? 3 : 2),
+            isCurr: currSwap === 3,
           }}
         />
       </WrapMultiFormSwapper>

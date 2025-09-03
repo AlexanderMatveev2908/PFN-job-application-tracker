@@ -50,7 +50,7 @@ const PwdGenerator: FC<PropsType> = ({
       </div>
 
       {isStr(pwd) && (
-        <div className="w-fit">
+        <div className="w-[250px]">
           <CpyPaste
             {...{
               testID: "pwd_generator__result",

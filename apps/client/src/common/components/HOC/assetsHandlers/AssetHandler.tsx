@@ -53,7 +53,7 @@ const AssetHandler: FC<PropsType> = ({ loaded, isError }) => {
                 color: var(--red__600);
               `}
             >
-              Error loading data
+              Error loading asset
             </span>
           </div>
 

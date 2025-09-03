@@ -17,9 +17,13 @@ import { clearTmr } from "@/core/lib/etc";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { PortalConfT, TestIDT } from "@/common/types/ui";
 
-type PropsType = { txt: string; portalConf?: PortalConfT } & TestIDT;
+type PropsType = {
+  txt: string;
+  portalConf?: PortalConfT;
+  label?: string;
+} & TestIDT;
 
-const CpyPaste: FC<PropsType> = ({ txt, portalConf, testID }) => {
+const CpyPaste: FC<PropsType> = ({ txt, portalConf, testID, label }) => {
   const [state, dispatch] = useReducer(reducer, initState);
   const timerID = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -51,14 +55,14 @@ const CpyPaste: FC<PropsType> = ({ txt, portalConf, testID }) => {
       ref={parentRef as RefObject<HTMLButtonElement>}
       onClick={handleClick}
       type="button"
-      className="btn__app w-fit py-2 px-4 border-2 border-w__0 rounded-xl relative"
+      className="btn__app w-full py-2 px-4 border-2 border-w__0 rounded-xl relative"
       style={{ "--scale__up": 1.15 } as CSSProperties}
     >
       {(portalConf?.showPortal ?? true) && (
         <CpyClip {...{ ...state, coords }} />
       )}
       <span data-testid="cpy_paste__result" className="txt__md">
-        {txt}
+        {label ?? txt}
       </span>
     </button>
   );
