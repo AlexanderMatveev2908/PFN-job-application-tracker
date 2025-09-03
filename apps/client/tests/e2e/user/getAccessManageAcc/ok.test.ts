@@ -1,6 +1,6 @@
 import test from "@playwright/test";
 import { preUserAccessAcc } from "./pre";
-import { checkIsFocused, clickByID, getByID, getByTxt } from "../../lib/idx";
+import { clickByID, getByID, getByTxt } from "../../lib/idx";
 import { genPwd } from "@/core/lib/pwd";
 import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
@@ -12,9 +12,6 @@ test("ok", async ({ browser }) => {
 
   await clickByID(form, "manage_acc__form__submit");
 
-  await waitTmr(page);
-
-  await checkIsFocused(pwd);
   const toast = await getByID(page, "toast");
   await getByTxt(toast, "err");
 

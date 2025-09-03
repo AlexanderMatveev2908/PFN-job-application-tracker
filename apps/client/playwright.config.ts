@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  timeout: 240 * 1000,
+  timeout: 120 * 1000,
   expect: {
     timeout: 60 * 1000,
   },

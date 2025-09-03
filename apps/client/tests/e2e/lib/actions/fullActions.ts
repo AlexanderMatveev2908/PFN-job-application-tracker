@@ -41,6 +41,8 @@ export const registerUserOk = async (
 
   await clickByID(form, "register__form__submit");
 
+  await waitTmr(page);
+
   await waitURL(page, "/notice");
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
