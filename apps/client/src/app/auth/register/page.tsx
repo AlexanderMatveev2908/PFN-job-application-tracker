@@ -55,7 +55,7 @@ const Page: FC = () => {
         cbAPI: () => mutate(data),
       });
 
-      if (res?.isErr) return;
+      if (!res) return;
 
       reset(resetValsRegister);
 

@@ -117,6 +117,7 @@ async def confirm_new_email_ctrl(
             )
 
         us.toggle_mails()
+        us.is_verified = True
 
         result_tokens = await gen_tokens_session(
             trx=trx,

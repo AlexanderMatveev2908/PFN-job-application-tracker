@@ -16,12 +16,14 @@ export const useWrapAPI = () => {
       showToast = true,
       hideErr,
       throwErr,
+      pushNotice,
     }: {
       cbAPI: () => { unwrap: () => Promise<ResApiT<T>> };
       showToast?: boolean;
       hideErr?: boolean;
       throwErr?: boolean;
-    }): Promise<ResApiT<T>["data"] | undefined> => {
+      pushNotice?: boolean;
+    }): Promise<ResApiT<T>["data"] | null> => {
       try {
         const data = (await cbAPI().unwrap()) as ResApiT<T>["data"];
 
@@ -31,7 +33,7 @@ export const useWrapAPI = () => {
 
         return data;
       } catch (err: any) {
-        return handleErr({ err: err, hideErr, throwErr });
+        return handleErr({ err: err, hideErr, throwErr, pushNotice });
       }
     },
     [handleErr, handleMsgSession]
