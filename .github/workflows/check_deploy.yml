@@ -140,7 +140,7 @@ jobs:
 
       - name: 🚀 deploy server
         working-directory: apps/server
-        run: flyctl deploy --remote-only --config fly.toml --build-timeout 30m
+        run: flyctl deploy --remote-only --config fly.toml
         env:
           FLY_API_TOKEN: ${{ secrets.PFN_JOB_APPLICATION_TRACKER__SERVER }}
 
@@ -150,7 +150,6 @@ jobs:
           flyctl deploy \
             --remote-only \
             --config fly.toml \
-            --build-timeout 30m \
             --build-arg NEXT_PUBLIC_ENV=${{ secrets.NEXT_PUBLIC_ENV }} \
             --build-arg NEXT_PUBLIC_FRONT_URL=${{ secrets.NEXT_PUBLIC_FRONT_URL }} \
             --build-arg NEXT_PUBLIC_BACK_URL=${{ secrets.NEXT_PUBLIC_BACK_URL }} \
