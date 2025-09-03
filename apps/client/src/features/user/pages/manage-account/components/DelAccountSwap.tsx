@@ -7,7 +7,7 @@ import WrapSwapManageAcc from "./subComponents/WrapSwapManageAcc";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { usePop } from "@/core/hooks/etc/usePop";
-import PortalEvents from "@/common/components/elements/portals/PortalEvents";
+import Portal from "@/common/components/elements/portals/Portal";
 
 const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
   const { isPop, setIsPop } = usePop();
@@ -20,7 +20,11 @@ const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
         title: "Delete Account",
       }}
     >
-      <PortalEvents>
+      <Portal
+        {...{
+          needEvents: true,
+        }}
+      >
         <WrapPop
           {...{
             isPop,
@@ -29,7 +33,7 @@ const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
         >
           <div className=""></div>
         </WrapPop>
-      </PortalEvents>
+      </Portal>
 
       <div className="w-full flex justify-center px-10">
         <span className="txt__md">
