@@ -1,5 +1,6 @@
 import { AadCbcHmacT } from "@/common/types/tokens";
 import { REG_CBC_HMAC } from "../constants/regex";
+import { ErrApp } from "./err";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isStr = (str: unknown): boolean =>
@@ -133,4 +134,23 @@ export const extractAadFromCbcHmac = (cbc_hmac_token?: string | null) => {
   }
 
   return aad;
+};
+
+export const hexToRgb = (hex: string): string => {
+  let clean = hex.replace("#", "").toLowerCase();
+
+  if (clean.length === 3)
+    clean = clean
+      .split("")
+      .map((ch) => ch + ch)
+      .join("");
+
+  const match = clean.match(/.{2}/g);
+  if (!match || match.length < 3) {
+    throw new ErrApp(`Invalid hex color: ${hex}`);
+  }
+
+  const [r, g, b] = match.map((x) => parseInt(x, 16));
+
+  return `rgb(${r}, ${g}, ${b})`;
 };

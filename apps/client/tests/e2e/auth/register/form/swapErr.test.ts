@@ -5,7 +5,7 @@ import { checkIsFocused } from "../../../lib/shortcuts/check";
 import { preAuthRegister } from "../pre";
 import { waitTmr } from "../../../lib/shortcuts/wait";
 
-test("swap err mgmt", async ({ browser }) => {
+test("register form swap err mgmt", async ({ browser }) => {
   const { form, page } = await preAuthRegister(browser);
 
   const firstName = await getByID(form, "first_name");

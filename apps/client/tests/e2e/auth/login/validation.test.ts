@@ -5,7 +5,7 @@ import { clickByID } from "../../lib/shortcuts/click";
 import { checkIsFocused } from "../../lib/shortcuts/check";
 import { waitTmr } from "../../lib/shortcuts/wait";
 
-test("validation", async ({ browser }) => {
+test("login validation", async ({ browser }) => {
   const { form, page } = await preAuthLogin(browser);
 
   const email = await getByID(form, "email");

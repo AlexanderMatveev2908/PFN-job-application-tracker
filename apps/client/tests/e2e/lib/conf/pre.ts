@@ -1,12 +1,10 @@
 import { Browser } from "@playwright/test";
-import { waitTmr } from "../shortcuts/wait";
+import { goPage } from "../shortcuts/go";
 
 export const preTest = async (browser: Browser, url: string) => {
   const page = await (await browser.newContext()).newPage();
 
-  await page.goto(url);
-
-  await waitTmr(page, 2000);
+  await goPage(page, url);
 
   return page;
 };

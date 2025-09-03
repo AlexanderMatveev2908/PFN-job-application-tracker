@@ -6,7 +6,7 @@ import { clickByID } from "../../lib/shortcuts/click";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
-test("ok", async ({ browser }) => {
+test("require email user ok", async ({ browser }) => {
   const { page, payload } = await getTokensLib(browser, {});
 
   await page.reload();

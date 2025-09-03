@@ -5,7 +5,7 @@ import { getByID, getByTxt } from "../../lib/shortcuts/get";
 import { clickByID } from "../../lib/shortcuts/click";
 import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 
-test("ok", async ({ browser }) => {
+test("require email auth ok", async ({ browser }) => {
   const { form, page, payload } = await preRequireEmail(browser, true);
 
   await (await getByID(form, "email")).fill(payload.email);

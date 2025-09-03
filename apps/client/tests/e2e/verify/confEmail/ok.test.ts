@@ -4,7 +4,7 @@ import { TokenT } from "@/common/types/tokens";
 import { REG_JWE, REG_JWT } from "@/core/constants/regex";
 import { waitURL } from "../../lib/shortcuts/wait";
 
-test("ok", async ({ browser }) => {
+test("conf email ok", async ({ browser }) => {
   const { cbc_hmac_token } = await getTokensLib(browser, {
     tokenType: TokenT.CONF_EMAIL,
   });
