@@ -15,6 +15,7 @@ export type ManageAccFormT = {
 };
 
 export type ChangeEmailFormT = ManageAccFormT & EmailFormT;
+export type ChangePwdFormT = ManageAccFormT & PwdFormT;
 
 export const userSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -50,6 +51,14 @@ export const userSliceAPI = apiSlice.injectEndpoints({
     changeEmail: builder.mutation<ResApiT<void>, ChangeEmailFormT>({
       query: (data) => ({
         url: `${BASE}/change-email`,
+        method: "PATCH",
+        data,
+      }),
+    }),
+
+    changePwdUser: builder.mutation<ResApiT<void>, ChangePwdFormT>({
+      query: (data) => ({
+        url: `${BASE}/change-pwd`,
         method: "PATCH",
         data,
       }),

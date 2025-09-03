@@ -22,7 +22,7 @@ export const useWrapAPI = () => {
       showToast?: boolean;
       hideErr?: boolean;
       throwErr?: boolean;
-      pushNotice?: boolean;
+      pushNotice?: number[] | "*";
     }): Promise<ResApiT<T>["data"] | null> => {
       try {
         const data = (await cbAPI().unwrap()) as ResApiT<T>["data"];

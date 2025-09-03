@@ -12,6 +12,11 @@ export const isObjOk = (obj: any, cb?: (v: any) => boolean): boolean =>
   !!Object.keys(obj).length &&
   Object.values(obj).some((v) => (typeof cb === "function" ? cb(v) : true));
 
+export const isArrOk = (arr: any, cb?: (v: any) => boolean) =>
+  Array.isArray(arr) &&
+  arr.length &&
+  arr.every((el) => (typeof cb === "function" ? cb(el) : true));
+
 export const isSerializable = (
   v: any,
   seen: WeakSet<any> = new WeakSet()

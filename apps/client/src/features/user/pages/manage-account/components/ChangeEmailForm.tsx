@@ -47,7 +47,7 @@ const ChangeEmailForm: FC<FormManageAccPropsType> = ({
           ...data,
           cbc_hmac_token,
         }),
-      pushNotice: true,
+      pushNotice: [401],
     });
 
     if (!res) return;

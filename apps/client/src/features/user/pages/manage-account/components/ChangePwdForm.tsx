@@ -8,21 +8,27 @@ import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import { useForm } from "react-hook-form";
 import { PwdsFormT, pwdsSchema, resetValsPwdsForm } from "@/core/paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { __cg } from "@/core/lib/log";
 import { logFormErrs } from "@/core/lib/etc";
 import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
+import { userSliceAPI } from "@/features/user/slices/api";
+import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 
 const ChangePwdForm: FC<FormManageAccPropsType> = ({
   contentRef,
   isCurr,
   swapState,
 }) => {
+  const { cbc_hmac_token } = useGetUserState();
+  const { wrapAPI } = useKitHooks();
+  const [mutate, { isLoading }] = userSliceAPI.useChangePwdUserMutation();
+
   const formCtx = useForm<PwdsFormT>({
     mode: "onChange",
     resolver: zodResolver(pwdsSchema),
     defaultValues: resetValsPwdsForm,
   });
-  const { handleSubmit, setFocus } = formCtx;
+  const { handleSubmit, setFocus, reset } = formCtx;
 
   useFocusMultiForm({
     keyField: "password",
@@ -32,7 +38,14 @@ const ChangePwdForm: FC<FormManageAccPropsType> = ({
   });
 
   const handleSave = handleSubmit(async (data) => {
-    __cg(data);
+    const res = await wrapAPI({
+      cbAPI: () => mutate({ ...data, cbc_hmac_token }),
+      pushNotice: [401],
+    });
+
+    if (!res) return;
+
+    reset(resetValsPwdsForm);
   }, logFormErrs);
 
   return (
@@ -43,7 +56,7 @@ const ChangePwdForm: FC<FormManageAccPropsType> = ({
         title: "Change Password",
         handleSave,
         formCtx,
-        isLoading: false,
+        isLoading,
       }}
     >
       <PairPwd
