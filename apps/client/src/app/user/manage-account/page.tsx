@@ -11,6 +11,7 @@ import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import { genLorem } from "@/core/lib/etc";
 import type { FC } from "react";
 import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
+import ChangePwdForm from "@/features/user/pages/manage-account/components/ChangePwdForm";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
@@ -47,14 +48,13 @@ const Page: FC = () => {
           }}
         />
 
-        <WrapSwap
+        <ChangePwdForm
           {...{
             contentRef,
             isCurr: currSwap === 1,
+            swapState,
           }}
-        >
-          <div className="">{genLorem(20)}</div>
-        </WrapSwap>
+        />
       </WrapMultiFormSwapper>
     </WrapCSR>
   );

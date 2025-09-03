@@ -2,10 +2,8 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { PropsTypeWrapSwap } from "@/common/components/swap/subComponents/WrapSwap";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import { logFormErrs } from "@/core/lib/etc";
 import { EmailFormT, emailSchema, resetValsEmailForm } from "@/core/paperwork";
 import { emailField } from "@/core/uiFactory/formFields";
@@ -13,16 +11,18 @@ import WrapFormManageAcc from "@/features/user/components/WrapFormManageAcc";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { userSliceAPI } from "@/features/user/slices/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { useForm } from "react-hook-form";
+import { FormManageAccPropsType } from "../types";
+import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
 
-type PropsType = {
-  swapState: SwapStateT;
-} & Omit<PropsTypeWrapSwap, "children">;
-
-const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
+const ChangeEmailForm: FC<FormManageAccPropsType> = ({
+  contentRef,
+  isCurr,
+  swapState,
+}) => {
   const { user } = useGetUserState();
-  const { swapMode, currSwap } = swapState;
+  const { currSwap, swapMode } = swapState;
 
   const schemaX = emailSchema.refine((data) => data.email !== user?.email, {
     message: "new email must be different from old one",
@@ -65,11 +65,12 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
 
   const { control } = formCtx;
 
-  const isFixedOnCurrForm = isCurr && swapMode !== "swapping";
-
-  useEffect(() => {
-    if (isFixedOnCurrForm) setFocus("email");
-  }, [setFocus, isFixedOnCurrForm]);
+  useFocusMultiForm({
+    keyField: "email",
+    setFocus,
+    swapState,
+    targetSwap: 0,
+  });
 
   return (
     <WrapFormManageAcc
@@ -87,7 +88,7 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
           el: emailField,
           control,
           portalConf: {
-            showPortal: isFixedOnCurrForm,
+            showPortal: isCurr && swapMode !== "swapping",
             optDep: [currSwap],
           },
         }}
