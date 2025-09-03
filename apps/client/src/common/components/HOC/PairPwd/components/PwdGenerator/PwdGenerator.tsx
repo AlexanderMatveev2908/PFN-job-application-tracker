@@ -4,12 +4,12 @@
 import SvgPasswordCursor from "@/common/components/SVGs/PasswordCursor";
 import { useState, type FC } from "react";
 import BtnSvg from "@/common/components/buttons/BtnSvg";
-import { SwapModeT } from "@/app/auth/register/page";
 import CpyPaste from "@/common/components/elements/tooltips/CpyPaste/CpyPaste";
 import { isStr } from "@/core/lib/dataStructure";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { genPwd } from "@/core/lib/pwd";
+import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
   swapMode?: SwapModeT;
@@ -50,7 +50,7 @@ const PwdGenerator: FC<PropsType> = ({
       </div>
 
       {isStr(pwd) && (
-        <div className="w-fit">
+        <div className="w-[250px]">
           <CpyPaste
             {...{
               testID: "pwd_generator__result",

@@ -22,8 +22,6 @@ import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocusSwap } from "@/core/hooks/etc/focus/useFocusSwap";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 
-export type SwapModeT = "swapped" | "swapping" | "none";
-
 const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",

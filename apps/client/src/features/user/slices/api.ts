@@ -17,6 +17,13 @@ export type ManageAccFormT = {
 export type ChangeEmailFormT = ManageAccFormT & EmailFormT;
 export type ChangePwdFormT = ManageAccFormT & PwdFormT;
 
+export type Setup2FAReturnT = {
+  totp_secret: string;
+  totp_secret_qrcode: string;
+  backup_codes: string[];
+  zip_file: string;
+};
+
 export const userSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query<UnwrappedResT<{ user: UserT }>, void>({
@@ -69,6 +76,16 @@ export const userSliceAPI = apiSlice.injectEndpoints({
         url: `${BASE}/delete-account?cbc_hmac_token=${cbc_hmac_token}`,
         method: "DELETE",
       }),
+    }),
+
+    setup2FA: builder.mutation<ResApiT<Setup2FAReturnT>, ManageAccFormT>({
+      query: (data) => ({
+        url: `${BASE}/2FA`,
+        method: "PATCH",
+        data,
+      }),
+
+      invalidatesTags: [TagAPI.USER],
     }),
   }),
 });

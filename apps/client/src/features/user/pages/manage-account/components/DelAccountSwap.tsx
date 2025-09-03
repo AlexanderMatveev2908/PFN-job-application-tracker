@@ -12,7 +12,10 @@ import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useUser } from "@/features/user/hooks/useUser";
 import { userSliceAPI } from "@/features/user/slices/api";
 
-const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
+const DelAccountSwap: FC<Omit<FormManageAccPropsType, "swapState">> = ({
+  contentRef,
+  isCurr,
+}) => {
   const { isPop, setIsPop } = usePop();
 
   const { nav, wrapAPI, setNotice } = useKitHooks();

@@ -1,3 +1,4 @@
+import base64
 from typing import cast
 from fastapi import Depends, Request
 from fastapi.responses import Response, StreamingResponse
@@ -100,12 +101,24 @@ async def TFA_ctrl(
     async with db_trx() as trx:
         result_svc = await TFA_svc(trx=trx, result_combo=result_combo)
 
+        codes: list[str] = result_svc["backup_codes_result"][
+            "backup_codes_client"
+        ]
+
+        buf = await TFA_zip_svc(
+            backup_codes=codes,
+            binary_qr_code=result_svc["qrcode_result"]["binary"],
+            totp_secret=result_svc["secret_result"]["secret"],
+        )
+        zip_b64 = base64.b64encode(buf.getvalue()).decode()
+
         return ResAPI(req).ok_200(
             totp_secret=result_svc["secret_result"]["secret"],
             backup_codes=result_svc["backup_codes_result"][
                 "backup_codes_client"
             ],
-            totp_secret_qrcode=result_svc["qrcode_result"]["base_64"],
+            totp_secret_qrcode=f'data:image/png;base64,{result_svc["qrcode_result"]["base_64"]}',  # noqa: E501
+            zip_file=f"data:application/zip;base64,{zip_b64}",
         )
 
 

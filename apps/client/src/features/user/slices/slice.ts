@@ -29,17 +29,21 @@ export const userSlice = createSlice({
       state.pendingActionSession = true;
       state.access_token = action.payload.access_token;
     },
+
     setAccessToken: (
       state,
       action: PayloadAction<{ access_token: string }>
     ) => {
       state.access_token = action.payload.access_token;
     },
+
     setUser: (state, action: PayloadAction<UserT | undefined | null>) => {
       state.user = action.payload ?? null;
       state.touchedServer = true;
     },
+
     logout: () => ({ ...initState, pendingActionSession: true }),
+
     setCbcHmac: (state, action: PayloadAction<string>) => {
       state.cbc_hmac_token = action.payload;
       state.pendingActionCbcHmac = true;
@@ -47,6 +51,7 @@ export const userSlice = createSlice({
     clearCbcHmac: (state) => {
       state.cbc_hmac_token = "";
     },
+
     endPendingActionSession: (state) => {
       state.pendingActionSession = false;
     },
