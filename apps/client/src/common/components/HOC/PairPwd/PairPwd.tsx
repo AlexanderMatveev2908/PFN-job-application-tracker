@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, type FC } from "react";
-import { pwdFields } from "../../../../features/auth/uiFactory/idx";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
@@ -10,6 +9,7 @@ import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
 import { SwapModeT } from "@/app/auth/register/page";
 import PwdGenerator from "./components/PwdGenerator/PwdGenerator";
 import { useTogglePwd } from "@/core/hooks/etc/useTogglePwd";
+import { pwdFields } from "@/core/uiFactory/formFields";
 
 type PropsType = {
   isCurrSwap?: boolean;

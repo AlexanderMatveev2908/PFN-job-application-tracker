@@ -1,12 +1,11 @@
 import { REG_NAME } from "@/core/constants/regex";
-import { emailSchema } from "@/core/paperwork";
+import { emailSchema, pwdsSchema } from "@/core/paperwork";
 import { z } from "zod";
 import {
   myMail,
   myPwd,
   wrapGetValsFormManualTest,
 } from "@/features/auth/lib/etc";
-import { pwdsSchema } from "@/features/auth/paperwork";
 
 export const registerSchema = emailSchema
   .extend({

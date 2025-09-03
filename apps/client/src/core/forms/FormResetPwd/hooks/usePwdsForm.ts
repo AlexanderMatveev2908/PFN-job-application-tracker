@@ -1,9 +1,5 @@
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
-import {
-  PwdsFormT,
-  pwdsSchema,
-  resetValsPwdsForm,
-} from "@/features/auth/paperwork";
+import { PwdsFormT, pwdsSchema, resetValsPwdsForm } from "@/core/paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

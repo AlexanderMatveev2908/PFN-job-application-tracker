@@ -3,10 +3,10 @@
 
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { PwdsFormT } from "../../../features/auth/paperwork";
 import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import PairPwd from "../../../common/components/HOC/PairPwd/PairPwd";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
+import { PwdsFormT } from "@/core/paperwork";
 
 type PropsType = {
   formCtx: UseFormReturn<PwdsFormT>;

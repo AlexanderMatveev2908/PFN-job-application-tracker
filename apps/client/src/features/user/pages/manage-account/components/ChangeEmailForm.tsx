@@ -4,15 +4,11 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { PropsTypeWrapSwap } from "@/common/components/swap/subComponents/WrapSwap";
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import {
-  EmailFormT,
-  resetValsEmailForm,
-} from "@/core/forms/RequireEmailForm/paperwork";
-import { emailField } from "@/core/forms/RequireEmailForm/uiFactory";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import { logFormErrs } from "@/core/lib/etc";
-import { emailSchema } from "@/core/paperwork";
+import { EmailFormT, emailSchema, resetValsEmailForm } from "@/core/paperwork";
+import { emailField } from "@/core/uiFactory/formFields";
 import WrapFormManageAcc from "@/features/user/components/WrapFormManageAcc";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { userSliceAPI } from "@/features/user/slices/api";

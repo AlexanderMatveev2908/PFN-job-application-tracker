@@ -2,8 +2,7 @@ import { ResApiT, TagAPI, UnwrappedResT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { UserT } from "../types";
 import { userSlice } from "./slice";
-import { PwdFormT } from "@/core/paperwork";
-import { EmailFormT } from "@/core/forms/RequireEmailForm/paperwork";
+import { EmailFormT, PwdFormT } from "@/core/paperwork";
 
 const BASE = "/user";
 

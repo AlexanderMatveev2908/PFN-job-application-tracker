@@ -4,9 +4,9 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import type { FC } from "react";
-import { emailField } from "./uiFactory";
 import { UseFormReturn } from "react-hook-form";
-import { EmailFormT } from "./paperwork";
+import { emailField } from "@/core/uiFactory/formFields";
+import { EmailFormT } from "@/core/paperwork";
 
 type PropsType = {
   formCtx: UseFormReturn<EmailFormT>;
