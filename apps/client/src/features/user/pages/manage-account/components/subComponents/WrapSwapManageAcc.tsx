@@ -10,6 +10,7 @@ import type { FC } from "react";
 
 type PropsType = {
   title: string;
+  testID: string;
 } & ChildrenT &
   Omit<PropsTypeWrapSwap, "children">;
 
@@ -18,6 +19,7 @@ const WrapSwapManageAcc: FC<PropsType> = ({
   contentRef,
   isCurr,
   title,
+  testID,
 }) => {
   return (
     <WrapSwap
@@ -26,7 +28,7 @@ const WrapSwapManageAcc: FC<PropsType> = ({
         isCurr,
       }}
     >
-      <div className="cont__grid__lg py-5">
+      <div data-testid={testID + "__swap"} className="cont__grid__lg py-5">
         <Title
           {...{
             title,

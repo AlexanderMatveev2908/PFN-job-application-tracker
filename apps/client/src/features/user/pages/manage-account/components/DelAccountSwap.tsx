@@ -43,12 +43,15 @@ const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
     nav.replace("/notice");
   };
 
+  const testID = "delete_account";
+
   return (
     <WrapSwapManageAcc
       {...{
         contentRef,
         isCurr,
         title: "Delete Account",
+        testID,
       }}
     >
       <Portal
@@ -93,7 +96,7 @@ const DelAccountSwap: FC<FormManageAccPropsType> = ({ contentRef, isCurr }) => {
             el: {
               label: "Delete",
             },
-            testID: "delete_account__btn",
+            testID: `${testID}__btn`,
             isLoading: false,
             act: "ERR",
             handleClick: () => setIsPop(true),

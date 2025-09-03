@@ -11,6 +11,7 @@ import { X } from "lucide-react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import BtnShadow from "../../buttons/BtnShadow";
 import { AppEventT } from "@/common/types/api";
+import { parseLabelToTestID } from "@/core/lib/etc";
 
 export type BtnWrapPopT = {
   msg?: string;
@@ -82,27 +83,31 @@ const WrapPop: FC<WrapPopPropsType> = ({
 
           {propsActions && (
             <div className="w-full grid grid-cols-1 mt-[100px] gap-8">
-              {ids.map((id, idx) => (
-                <div
-                  key={id}
-                  className="justify-self-center min-w-[250px] max-w-[300px]"
-                >
-                  <BtnShadow
-                    {...{
-                      el: {
-                        label:
-                          propsActions.btns[idx].msg ??
-                          (idx ? "Confirm" : "Cancel"),
-                      },
-                      isLoading: propsActions.btns[idx].isLoading,
-                      act: propsActions.btns[idx].type ?? (idx ? "ERR" : "OK"),
-                      handleClick:
-                        propsActions.btns[idx].handleClick ??
-                        (() => setIsPop(false)),
-                    }}
-                  />
-                </div>
-              ))}
+              {ids.map((id, idx) => {
+                const label =
+                  propsActions.btns[idx].msg ?? (idx ? "Confirm" : "Cancel");
+                return (
+                  <div
+                    key={id}
+                    className="justify-self-center min-w-[250px] max-w-[300px]"
+                  >
+                    <BtnShadow
+                      {...{
+                        testID: `pop__${parseLabelToTestID(label)}__btn`,
+                        el: {
+                          label,
+                        },
+                        isLoading: propsActions.btns[idx].isLoading,
+                        act:
+                          propsActions.btns[idx].type ?? (idx ? "ERR" : "OK"),
+                        handleClick:
+                          propsActions.btns[idx].handleClick ??
+                          (() => setIsPop(false)),
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
