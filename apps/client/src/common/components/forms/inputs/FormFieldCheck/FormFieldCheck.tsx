@@ -40,7 +40,7 @@ const FormFieldCheck = <T extends FieldValues>({
   const msg = manualErr ?? (errors?.[el.name]?.message as string);
 
   return (
-    <div className="w-full grid grid-cols-1 gap-4">
+    <div className="cont__grid__sm">
       {showLabel && <span className="txt__lg">{el.label}</span>}
 
       <div className="w-fit flex items-center gap-6 relative">

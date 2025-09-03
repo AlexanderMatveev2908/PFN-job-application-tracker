@@ -49,7 +49,7 @@ const WrapFormPage = <T extends FieldValues>({
       <FormProvider {...formCtx}>
         <form
           data-testid={formTestID + "__form"}
-          className="form__container"
+          className="cont__grid__md"
           onSubmit={handleSave}
         >
           <div className="form__shape">

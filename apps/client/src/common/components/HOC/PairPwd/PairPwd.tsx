@@ -40,7 +40,7 @@ const PairPwd: FC<PropsType> = ({
   };
 
   return (
-    <div className="w-full grid grid-cols-1 gap-6">
+    <div className="cont__grid__md">
       <PwdMatchTracker
         {...{
           coords,

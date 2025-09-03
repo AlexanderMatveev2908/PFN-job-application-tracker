@@ -79,7 +79,7 @@ const RawField = <T extends FieldValues>({
   );
 
   return (
-    <label className="w-full grid grid-cols-1 gap-4">
+    <label className="cont__grid__sm">
       {showLabel && <span className="txt__lg">{el.label}</span>}
 
       <div className="w-full relative">
