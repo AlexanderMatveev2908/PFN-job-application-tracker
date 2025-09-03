@@ -4,6 +4,7 @@ from sqlalchemy import delete
 
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
+from src.lib.cookies import gen_clear_refresh_token
 from src.lib.db.idx import get_us_by_id
 from src.middleware.combo.idx import (
     ComboCheckJwtCbcReturnT,
@@ -38,4 +39,6 @@ async def delete_account_ctrl(
             us,
         )
 
-    return ResAPI(req).ok_200(msg="user account deleted")
+    return ResAPI(req, clear_cookies=[gen_clear_refresh_token()]).ok_200(
+        msg="user account deleted"
+    )

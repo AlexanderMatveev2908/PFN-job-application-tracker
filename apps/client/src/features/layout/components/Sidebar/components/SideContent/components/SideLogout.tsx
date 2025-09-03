@@ -11,18 +11,18 @@ type PropsType = {
 };
 
 const SideLogout: FC<PropsType> = ({ handleClick }) => {
-  const { isLoggingOut, logoutUser } = useUser();
+  const { isVoluntaryLoggingOut, voluntaryLogoutUser } = useUser();
 
   return (
     <button
       data-testid={`side_link__logout`}
       onClick={async () => {
-        await logoutUser();
+        await voluntaryLogoutUser();
         handleClick();
       }}
       className="link__app flex items-center justify-start gap-6"
     >
-      <PairTxtSvg {...{ el: linkLogout, isLoading: isLoggingOut }} />
+      <PairTxtSvg {...{ el: linkLogout, isLoading: isVoluntaryLoggingOut }} />
     </button>
   );
 };
