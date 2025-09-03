@@ -19,11 +19,10 @@ export const getTokensLib = async (
   {
     tokenType = TokenT.CONF_EMAIL,
     verifyUser = false,
-  }: { tokenType?: TokenT; verifyUser?: boolean }
+    payload = genRegisterPayload(),
+  }: { tokenType?: TokenT; verifyUser?: boolean; payload?: PayloadRegisterT }
 ): Promise<GetTokensReturnT> => {
   const page = await preTest(browser, "/");
-
-  const payload = genRegisterPayload();
 
   const res = await page.request.post(
     `${BASE_URL}/test/tokens-health?cbc_hmac_token_t=${tokenType}&verify_user=${verifyUser}`,
