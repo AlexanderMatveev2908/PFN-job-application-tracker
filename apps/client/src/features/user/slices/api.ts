@@ -84,6 +84,8 @@ export const userSliceAPI = apiSlice.injectEndpoints({
         method: "PATCH",
         data,
       }),
+
+      invalidatesTags: [TagAPI.USER],
     }),
   }),
 });

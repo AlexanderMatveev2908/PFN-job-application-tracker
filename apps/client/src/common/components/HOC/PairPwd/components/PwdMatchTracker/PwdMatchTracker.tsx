@@ -7,8 +7,8 @@ import { css } from "@emotion/react";
 import type { FC } from "react";
 import { rulesPwd, lengthPwd, extractClr } from "./uiFactory/idx";
 import { CoordsTooltipT } from "@/core/hooks/etc/tooltips/useSyncPortal";
-import { SwapModeT } from "@/app/auth/register/page";
 import { REG_PWD } from "@/core/constants/regex";
+import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
   coords: CoordsTooltipT;

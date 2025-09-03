@@ -11,7 +11,7 @@ import type { FC } from "react";
 import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
 import ChangePwdForm from "@/features/user/pages/manage-account/components/ChangePwdForm";
 import DelAccountSwap from "@/features/user/pages/manage-account/components/DelAccountSwap";
-import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA";
+import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA/SwapSetup2FA";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 
 const Page: FC = () => {
@@ -22,7 +22,7 @@ const Page: FC = () => {
 
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
-  const { isUsOk, touchedServer } = useGetUserState();
+  const { isUsOk, touchedServer, user } = useGetUserState();
   const { contentRef, contentH } = useListenHeight({
     opdDep: [currSwap, isUsOk],
   });
@@ -68,6 +68,7 @@ const Page: FC = () => {
             contentRef,
             isCurr: currSwap === 2,
             swapState,
+            user,
           }}
         />
 

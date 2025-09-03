@@ -6,10 +6,10 @@ import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import PwdMatchTracker from "./components/PwdMatchTracker/PwdMatchTracker";
-import { SwapModeT } from "@/app/auth/register/page";
 import PwdGenerator from "./components/PwdGenerator/PwdGenerator";
 import { useTogglePwd } from "@/core/hooks/etc/useTogglePwd";
 import { pwdFields } from "@/core/uiFactory/formFields";
+import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 type PropsType = {
   isCurrSwap?: boolean;
