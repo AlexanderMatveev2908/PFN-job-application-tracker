@@ -34,25 +34,3 @@ export const getAccessManageAcc = async (browser: Browser) => {
     container,
   };
 };
-
-export const changeEmailOk = async (browser: Browser) => {
-  const { page, container, payload } = await getAccessManageAcc(browser);
-
-  const newEmail = faker.internet.email();
-
-  const form = await getByID(container, "change_email__form");
-  await (await getByID(form, "email")).fill(newEmail);
-
-  await clickByID(form, "change_email__form__submit");
-
-  await waitURL(page, "/notice");
-
-  await isToastOk(page, "email sent to new address");
-
-  await getByTxt(page, genMailNoticeMsg("to change your email address"));
-
-  return {
-    payload,
-    newEmail,
-  };
-};
