@@ -3,12 +3,10 @@
 
 import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import WrapSwap from "@/common/components/swap/subComponents/WrapSwap";
 import { TokenT } from "@/common/types/tokens";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import { genLorem } from "@/core/lib/etc";
 import type { FC } from "react";
 import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
 import ChangePwdForm from "@/features/user/pages/manage-account/components/ChangePwdForm";
