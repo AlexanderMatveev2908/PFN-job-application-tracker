@@ -1,35 +1,31 @@
-import { ResApiT, TagAPI } from "@/common/types/api";
+import { ResApiT } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 
-const BASE_URL = "/verify";
+const BASE = "/verify";
 
-export type VerifyConfEmailReturnT = {
+export type VerifyCbcHmacReturnT = {
   cbc_hmac_token?: string;
   access_token?: string;
 };
 
-export type VerifyRecoverPwdReturnT = {
-  cbc_hmac_token?: string;
+export type VerifyCbcHmacEndpointT =
+  | "confirm-email"
+  | "recover-pwd"
+  | "new-email";
+
+export type VerifyCbcHmacArgT = {
+  endpoint: VerifyCbcHmacEndpointT;
+  cbc_hmac_token: string;
 };
 
 export const verifySliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    verifyConfEmail: builder.query<ResApiT<VerifyConfEmailReturnT>, string>({
-      query: (cbc_hmac_token) => ({
-        url: `${BASE_URL}/confirm-email?cbc_hmac_token=${cbc_hmac_token}`,
-        method: "GET",
-      }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-
-          dispatch(apiSlice.util.invalidateTags([TagAPI.USER]));
-        } catch {}
-      },
-    }),
-    verifyRecoverPwd: builder.query<ResApiT<VerifyRecoverPwdReturnT>, string>({
-      query: (cbc_hmac_token) => ({
-        url: `${BASE_URL}/recover-pwd?cbc_hmac_token=${cbc_hmac_token}`,
+    verifyCbcHmac: builder.query<
+      ResApiT<VerifyCbcHmacReturnT>,
+      VerifyCbcHmacArgT
+    >({
+      query: (data) => ({
+        url: `${BASE}/${data.endpoint}?cbc_hmac_token=${data.cbc_hmac_token}`,
         method: "GET",
       }),
     }),

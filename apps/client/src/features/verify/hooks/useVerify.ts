@@ -1,16 +1,13 @@
 import { TokenT } from "@/common/types/tokens";
-import {
-  verifySliceAPI,
-  VerifyConfEmailReturnT,
-  VerifyRecoverPwdReturnT,
-} from "../slices/api";
+import { verifySliceAPI, VerifyCbcHmacArgT } from "../slices/api";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRouter } from "next/navigation";
-import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useCallback, useMemo } from "react";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
-import { UnwrappedResT } from "@/common/types/api";
+import { TagAPI } from "@/common/types/api";
 import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
+import { useDispatch } from "react-redux";
+import { apiSlice } from "@/core/store/api";
 
 export type MapperVerifyT = Record<
   TokenT,
@@ -18,78 +15,76 @@ export type MapperVerifyT = Record<
 >;
 
 export const useVerify = () => {
-  const hookConfEmail = verifySliceAPI.useLazyVerifyConfEmailQuery();
-  const hookRecoverPwd = verifySliceAPI.useLazyVerifyRecoverPwdQuery();
+  const [triggerRTK] = verifySliceAPI.useLazyVerifyCbcHmacQuery();
 
   const { loginUser } = useUser();
-  const { setNotice } = useNotice();
   const { saveCbcHmac } = useManageCbcHmac();
   const { wrapAPI } = useWrapAPI();
+  const dispatch = useDispatch();
 
   const nav = useRouter();
 
-  const wrapHandleErr = useCallback(
-    async <T>(cb: () => Promise<UnwrappedResT<T> | undefined>) => {
-      const res = await cb();
-
-      if (res?.isErr) {
-        setNotice({
-          msg: res?.msg ?? "👻",
-          type: "ERR",
-        });
-
-        nav.replace("/notice");
-        return;
-      }
+  const wrapMainCb = useCallback(
+    async (data: VerifyCbcHmacArgT) => {
+      const res = await wrapAPI({
+        cbAPI: () => triggerRTK(data),
+        pushNotice: true,
+      });
 
       return res;
     },
-    [setNotice, nav]
+    [, triggerRTK, wrapAPI]
+  );
+
+  const loginCb = useCallback(
+    (access_token: string) => {
+      loginUser(access_token);
+      dispatch(apiSlice.util.invalidateTags([TagAPI.USER]));
+      nav.replace("/");
+    },
+    [dispatch, nav, loginUser]
   );
 
   const mapperVerify: MapperVerifyT = useMemo(
     () => ({
       CONF_EMAIL: async (cbc_hmac_token: string) => {
-        const [triggerRTK] = hookConfEmail;
-
-        const res = await wrapHandleErr(() =>
-          wrapAPI<VerifyConfEmailReturnT>({
-            cbAPI: () => triggerRTK(cbc_hmac_token),
-          })
-        );
+        const res = await wrapMainCb({
+          cbc_hmac_token,
+          endpoint: "confirm-email",
+        });
 
         if (!res) return;
 
         if (res?.access_token) {
-          loginUser(res.access_token);
-
-          nav.replace("/");
+          loginCb(res.access_token);
         }
       },
       RECOVER_PWD: async (cbc_hmac_token: string) => {
-        const [triggerRTK] = hookRecoverPwd;
-
-        const res = await wrapHandleErr(() =>
-          wrapAPI<VerifyRecoverPwdReturnT>({
-            cbAPI: () => triggerRTK(cbc_hmac_token),
-          })
-        );
+        const res = await wrapMainCb({
+          cbc_hmac_token,
+          endpoint: "recover-pwd",
+        });
 
         if (!res) return;
 
         saveCbcHmac(cbc_hmac_token);
         nav.replace("/auth/recover-password");
       },
+
+      CHANGE_EMAIL: async (cbc_hmac_token: string) => {
+        const res = await wrapMainCb({
+          cbc_hmac_token,
+          endpoint: "new-email",
+        });
+
+        if (!res) return;
+
+        if (res?.access_token) {
+          loginCb(res.access_token);
+        }
+      },
     }),
-    [
-      wrapAPI,
-      hookConfEmail,
-      wrapHandleErr,
-      hookRecoverPwd,
-      loginUser,
-      nav,
-      saveCbcHmac,
-    ]
+    [wrapMainCb, loginCb, nav, saveCbcHmac]
   ) as MapperVerifyT;
 
   return {

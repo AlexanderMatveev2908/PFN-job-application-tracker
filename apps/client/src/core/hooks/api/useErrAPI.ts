@@ -22,10 +22,12 @@ export const useErrAPI = () => {
       err,
       hideErr,
       throwErr,
+      pushNotice,
     }: {
       err: ResApiT<T>["data"];
       hideErr?: boolean;
       throwErr?: boolean;
+      pushNotice?: boolean;
     }): ResApiT<T>["data"] | undefined => {
       __cg("wrapper err api", err);
 
@@ -49,6 +51,7 @@ export const useErrAPI = () => {
           const sureMsgExists = isStr(err?.msg)
             ? err.msg!
             : "Ops something went wrong ❌";
+
           dispatch(
             toastSlice.actions.open({
               msg: sureMsgExists,
@@ -56,7 +59,7 @@ export const useErrAPI = () => {
             })
           );
 
-          if (err?.status === 429) {
+          if (err?.status === 429 || pushNotice) {
             setNotice({
               type: "ERR",
               msg: sureMsgExists,

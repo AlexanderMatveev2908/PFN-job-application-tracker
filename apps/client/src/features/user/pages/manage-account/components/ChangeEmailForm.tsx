@@ -51,9 +51,10 @@ const ChangeEmailForm: FC<PropsType> = ({ contentRef, isCurr, swapState }) => {
           ...data,
           cbc_hmac_token,
         }),
+      pushNotice: true,
     });
 
-    if (res?.isErr) return;
+    if (!res || res?.isErr) return;
 
     setNotice({
       msg: genMailNoticeMsg("to change your account email"),
