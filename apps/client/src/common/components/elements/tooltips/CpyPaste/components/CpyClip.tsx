@@ -3,7 +3,7 @@
 
 import { useEffect, type FC } from "react";
 import { easeInOut, motion, useAnimationControls } from "framer-motion";
-import Portal from "../../subComponents/Portal";
+import Portal from "../../../portals/Portal";
 import { CoordsTooltipT } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
 

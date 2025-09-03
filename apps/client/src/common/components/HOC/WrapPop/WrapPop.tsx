@@ -9,7 +9,7 @@ import { varPop } from "./uiFactory";
 import BtnSvg from "../../buttons/BtnSvg";
 import { X } from "lucide-react";
 
-type PropsType = {
+export type WrapPopPropsType = {
   isPop: boolean | null;
   setIsPop:
     | ((val: boolean | null) => void)
@@ -19,7 +19,7 @@ type PropsType = {
   allowClose?: boolean;
 };
 
-const WrapPop: FC<PropsType> = ({
+const WrapPop: FC<WrapPopPropsType> = ({
   isPop,
   setIsPop,
   children,
