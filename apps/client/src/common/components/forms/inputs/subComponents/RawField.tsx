@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
-import Portal from "@/common/components/elements/tooltips/subComponents/Portal";
+import Portal from "@/common/components/elements/portals/Portal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
 
@@ -79,7 +79,7 @@ const RawField = <T extends FieldValues>({
   );
 
   return (
-    <label className="w-full grid grid-cols-1 gap-4">
+    <label className="cont__grid__sm">
       {showLabel && <span className="txt__lg">{el.label}</span>}
 
       <div className="w-full relative">

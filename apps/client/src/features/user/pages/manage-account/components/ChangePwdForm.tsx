@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormManageAcc from "@/features/user/components/WrapFormManageAcc";
+import WrapFormManageAcc from "@/features/user/pages/manage-account/components/subComponents/WrapFormManageAcc";
 import { type FC } from "react";
 import { FormManageAccPropsType } from "../types";
 import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";

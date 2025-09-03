@@ -7,6 +7,7 @@ import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { authSliceAPI } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { apiSlice } from "@/core/store/api";
+import { instanceAxs } from "@/core/store/conf/baseQuery/axiosInstance";
 
 export const useUser = () => {
   const { wrapAPI } = useWrapAPI();
@@ -14,7 +15,7 @@ export const useUser = () => {
   const nav = useRouter();
 
   const dispatch = useDispatch();
-  const [mutate, { isLoading: isLoggingOut }] =
+  const [mutate, { isLoading: isVoluntaryLoggingOut }] =
     authSliceAPI.useLogoutAuthMutation();
 
   const loginUser = useCallback(
@@ -25,24 +26,30 @@ export const useUser = () => {
     [dispatch]
   );
 
-  const logoutUser = useCallback(async () => {
+  const commonLogoutActions = useCallback(() => {
+    clearStorage();
+    delete instanceAxs.defaults.headers.common.Authorization;
+    dispatch(userSlice.actions.logout());
+    dispatch(apiSlice.util.resetApiState());
+  }, [dispatch]);
+
+  const voluntaryLogoutUser = useCallback(async () => {
     const res = await wrapAPI({
       cbAPI: () => mutate(),
     });
 
     if (!res) return;
 
-    clearStorage();
-    dispatch(userSlice.actions.logout());
-    dispatch(apiSlice.util.resetApiState());
+    commonLogoutActions();
 
     nav.replace("/");
-  }, [wrapAPI, mutate, dispatch, nav]);
+  }, [wrapAPI, mutate, commonLogoutActions, nav]);
 
   return {
     userState: useGetUserState(),
     loginUser,
-    logoutUser,
-    isLoggingOut,
+    voluntaryLogoutUser,
+    isVoluntaryLoggingOut,
+    commonLogoutActions,
   };
 };

@@ -13,7 +13,7 @@ type PropsType = {
 
 const WrapBtnAPI: FC<PropsType> = ({ isLoading, act = "NONE", children }) => {
   return isLoading ? (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center min-h-[100px] transition-all duration-200">
       <SpinBtn {...{ act }} />
     </div>
   ) : (

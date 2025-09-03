@@ -10,6 +10,7 @@ import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import type { FC } from "react";
 import ChangeEmailForm from "@/features/user/pages/manage-account/components/ChangeEmailForm";
 import ChangePwdForm from "@/features/user/pages/manage-account/components/ChangePwdForm";
+import DelAccountSwap from "@/features/user/pages/manage-account/components/DelAccountSwap";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
@@ -35,7 +36,7 @@ const Page: FC = () => {
             contentH,
           },
           swapState,
-          totSwaps: 2,
+          totSwaps: 3,
         }}
       >
         <ChangeEmailForm
@@ -50,6 +51,14 @@ const Page: FC = () => {
           {...{
             contentRef,
             isCurr: currSwap === 1,
+            swapState,
+          }}
+        />
+
+        <DelAccountSwap
+          {...{
+            contentRef,
+            isCurr: currSwap === 2,
             swapState,
           }}
         />

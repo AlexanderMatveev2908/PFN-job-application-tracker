@@ -8,7 +8,6 @@ import WrapSwap, {
 } from "@/common/components/swap/subComponents/WrapSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
-import { css } from "@emotion/react";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 
 type PropsType<T extends FieldValues> = {
@@ -29,6 +28,7 @@ const WrapFormManageAcc = <T extends FieldValues>({
   isLoading,
 }: PropsType<T>) => {
   const testID = parseLabelToTestID(title);
+
   return (
     <WrapSwap
       {...{
@@ -40,7 +40,7 @@ const WrapFormManageAcc = <T extends FieldValues>({
         <form
           onSubmit={handleSave}
           data-testid={testID + "__form"}
-          className="form__container pt-5 gap-8"
+          className="cont__grid__lg py-5"
         >
           <Title
             {...{
@@ -51,12 +51,7 @@ const WrapFormManageAcc = <T extends FieldValues>({
 
           {children}
 
-          <div
-            className="mt-[50px] w-[250px] justify-self-center"
-            css={css`
-              min-height: ${isLoading ? "100px" : "fit-content"};
-            `}
-          >
+          <div className="mt-[50px] w-[250px] justify-self-center">
             <BtnShim
               {...{
                 type: "submit",

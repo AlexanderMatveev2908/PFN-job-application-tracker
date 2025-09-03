@@ -63,5 +63,12 @@ export const userSliceAPI = apiSlice.injectEndpoints({
         data,
       }),
     }),
+
+    deleteAccount: builder.mutation<ResApiT<void>, string>({
+      query: (cbc_hmac_token) => ({
+        url: `${BASE}/delete-account?cbc_hmac_token=${cbc_hmac_token}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });

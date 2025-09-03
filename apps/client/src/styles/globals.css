@@ -322,8 +322,22 @@
   box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
 }
 
-.form__container {
+.cont__grid__sm,
+.cont__grid__md,
+.cont__grid__lg {
   @apply w-full grid grid-cols-1;
+}
+
+.cont__grid__sm {
+  @apply gap-4;
+}
+
+.cont__grid__md {
+  @apply gap-6;
+}
+
+.cont__grid__lg {
+  @apply gap-8;
 }
 
 .form__shape {
