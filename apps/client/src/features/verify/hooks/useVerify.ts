@@ -28,7 +28,7 @@ export const useVerify = () => {
     async (data: VerifyCbcHmacArgT) => {
       const res = await wrapAPI({
         cbAPI: () => triggerRTK(data),
-        pushNotice: true,
+        pushNotice: "*",
       });
 
       return res;

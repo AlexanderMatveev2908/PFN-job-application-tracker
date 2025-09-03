@@ -25,5 +25,5 @@ export const useFocusSwap = <T extends FieldValues>({
   useEffect(() => {
     if (swapState.swapMode === "swapped" && !lockFocusRef?.current)
       setFocus(saved[swapState.currSwap]);
-  }, [swapState.currSwap, swapState.swapMode, setFocus, saved, lockFocusRef]);
+  }, [swapState, setFocus, saved, lockFocusRef]);
 };

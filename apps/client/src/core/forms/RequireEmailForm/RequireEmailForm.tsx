@@ -3,9 +3,9 @@
 
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { EmailFormT } from "./paperwork";
 import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
 import RequireEmailFormBody from "./RequireEmailFormBody";
+import { EmailFormT } from "@/core/paperwork";
 
 export type PropsTypeRequireEmailForm = {
   formCtx: UseFormReturn<EmailFormT>;

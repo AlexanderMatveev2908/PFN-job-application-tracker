@@ -4,11 +4,12 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import type { FC } from "react";
-import { mailField, pwdField } from "../uiFactory";
 import { useFormContext } from "react-hook-form";
 import { LoginFormT } from "../paperwork";
 import { useTogglePwd } from "@/core/hooks/etc/useTogglePwd";
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
+import { emailField, pwdField } from "@/core/uiFactory/formFields";
+import { FormFieldTxtT } from "@/common/types/ui";
 
 const BodyFormLogin: FC = () => {
   const { control } = useFormContext<LoginFormT>();
@@ -19,14 +20,14 @@ const BodyFormLogin: FC = () => {
     <WrapFormBody>
       <FormFieldTxt
         {...{
-          el: mailField,
+          el: emailField as unknown as FormFieldTxtT<LoginFormT>,
           control,
         }}
       />
 
       <FormFieldPwd
         {...{
-          el: pwdField,
+          el: pwdField as unknown as FormFieldTxtT<LoginFormT>,
           control,
           isPwdShw: isPwdShw,
           handleSvgClick: handlePwdClick,

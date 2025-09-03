@@ -1,5 +1,5 @@
 import { ResApiT } from "@/common/types/api";
-import { isStr } from "@/core/lib/dataStructure";
+import { isArrOk, isStr } from "@/core/lib/dataStructure";
 import { ErrApp } from "@/core/lib/err";
 import { __cg } from "@/core/lib/log";
 import { apiSlice } from "@/core/store/api";
@@ -26,7 +26,7 @@ export const useErrAPI = () => {
       err: ResApiT<T>["data"];
       hideErr?: boolean;
       throwErr?: boolean;
-      pushNotice?: boolean;
+      pushNotice?: number[] | "*";
     }): null => {
       __cg("wrapper err api", err);
 
@@ -56,7 +56,17 @@ export const useErrAPI = () => {
             })
           );
 
-          if (err?.status === 429 || pushNotice) {
+          const argCheckStatus = [
+            429,
+            ...(isArrOk(pushNotice, (v) => typeof v === "number")
+              ? (pushNotice as number[])
+              : []),
+          ];
+
+          if (
+            argCheckStatus.includes(err?.status ?? 500) ||
+            pushNotice === "*"
+          ) {
             setNotice({
               type: "ERR",
               msg: sureMsgExists,

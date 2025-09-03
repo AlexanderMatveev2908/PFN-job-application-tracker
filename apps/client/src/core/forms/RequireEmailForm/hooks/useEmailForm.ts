@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { EmailFormT, resetValsEmailForm } from "../paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { emailSchema } from "@/core/paperwork";
+import { EmailFormT, emailSchema, resetValsEmailForm } from "@/core/paperwork";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import {
