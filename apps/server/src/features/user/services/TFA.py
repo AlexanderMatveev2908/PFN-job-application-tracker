@@ -30,7 +30,7 @@ async def TFA_svc(
 
     secret_result: GenTotpSecretReturnT = gen_totp_secret(user_email=us.email)
 
-    # us.totp_secret = gen_fernet(txt=secret_result["secret"])
+    us.totp_secret = gen_fernet(txt=secret_result["secret"])
 
     qrcode_result: GenQrcodeReturnT = gen_qrcode(uri=secret_result["uri"])
 

@@ -10,6 +10,7 @@ import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { Setup2FAReturnT, userSliceAPI } from "@/features/user/slices/api";
 import ImgLoader from "@/common/components/HOC/assetsHandlers/ImgLoader";
 import CpyPaste from "@/common/components/elements/tooltips/CpyPaste/CpyPaste";
+import LinkShadow from "@/common/components/links/LinkShadow";
 
 const SwapSetup2FA: FC<FormManageAccPropsType> = ({
   contentRef,
@@ -26,7 +27,7 @@ const SwapSetup2FA: FC<FormManageAccPropsType> = ({
   const { cbc_hmac_token } = useGetUserState();
 
   const handleClick = async () => {
-    const res = await wrapAPI({
+    const res = await wrapAPI<Setup2FAReturnT>({
       cbAPI: () => mutate({ cbc_hmac_token }),
       pushNotice: [401],
     });
@@ -34,9 +35,10 @@ const SwapSetup2FA: FC<FormManageAccPropsType> = ({
     if (!res) return;
 
     setRes2FA({
-      totp_secret_qrcode: `data:image/png;base64,${res.totp_secret_qrcode}`,
+      totp_secret_qrcode: res.totp_secret_qrcode,
       totp_secret: res.totp_secret,
       backup_codes: res.backup_codes,
+      zip_file: res.zip_file,
     });
   };
 
@@ -98,18 +100,32 @@ const SwapSetup2FA: FC<FormManageAccPropsType> = ({
           </div>
         </div>
       )}
+
       <div className="mt-[50px] w-[250px] justify-self-center">
-        <BtnShadow
-          {...{
-            el: {
-              label: "Submit",
-            },
-            testID: `${testID}__btn`,
-            isLoading,
-            act: "INFO",
-            handleClick,
-          }}
-        />
+        {res2FA ? (
+          <LinkShadow
+            {...{
+              el: {
+                label: "Download Zip",
+              },
+              href: res2FA.zip_file,
+              act: "INFO",
+              download: "2FA.zip",
+            }}
+          />
+        ) : (
+          <BtnShadow
+            {...{
+              el: {
+                label: "Submit",
+              },
+              testID: `${testID}__btn`,
+              isLoading,
+              act: "INFO",
+              handleClick,
+            }}
+          />
+        )}
       </div>
     </WrapSwapManageAcc>
   );

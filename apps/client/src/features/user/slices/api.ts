@@ -21,6 +21,7 @@ export type Setup2FAReturnT = {
   totp_secret: string;
   totp_secret_qrcode: string;
   backup_codes: string[];
+  zip_file: string;
 };
 
 export const userSliceAPI = apiSlice.injectEndpoints({

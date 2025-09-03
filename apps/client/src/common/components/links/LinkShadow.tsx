@@ -9,7 +9,8 @@ import { AppEventT } from "@/common/types/api";
 
 type PropsType = {
   handleClick?: () => void;
-  href?: string;
+  href: string;
+  download?: string;
   $customLabelCSS?: SerializedStyles;
   el: FieldTxtSvgT;
   act: AppEventT;

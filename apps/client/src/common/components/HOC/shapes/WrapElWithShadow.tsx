@@ -13,6 +13,7 @@ type PropsType = {
   wrapper: "next_link" | "html_button";
   handleClick?: () => void;
   href?: string;
+  download?: string;
   $customLabelCSS?: SerializedStyles;
   isEnabled?: boolean;
   isLoading?: boolean;
@@ -26,6 +27,7 @@ const WrapElWithShadow: FC<PropsType> = ({
   act = "NONE",
   handleClick,
   href,
+  download,
   isEnabled = true,
   isLoading,
   el,
@@ -78,6 +80,9 @@ const WrapElWithShadow: FC<PropsType> = ({
   return wrapper === "next_link" ? (
     <Link
       href={href!}
+      {...{
+        ...(download ? { download } : {}),
+      }}
       {...objProps}
       {...(href?.startsWith("https://")
         ? { rel: "noopener noreferrer", target: "_blank" }
