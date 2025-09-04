@@ -21,8 +21,8 @@ const WrapSwapper: FC<WrapSwapperPropsType> = ({
     <div
       className="transition-all duration-[0.4s]"
       css={css`
-        max-height: ${contentH ? `${contentH}px` : "fit-content"};
-        height: ${contentH ? `${contentH}px` : "fit-content"};
+        max-height: ${contentH ? `${contentH}px` : "0px"};
+        height: ${contentH ? `${contentH}px` : "0px"};
       `}
     >
       <div

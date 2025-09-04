@@ -89,7 +89,7 @@ const ChangeEmailForm: FC<FormManageAccPropsType> = ({
           control,
           portalConf: {
             showPortal: isCurr && swapMode !== "swapping",
-            optDep: [currSwap],
+            optDep: [currSwap, swapMode],
           },
         }}
       />

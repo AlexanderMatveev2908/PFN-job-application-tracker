@@ -47,7 +47,7 @@ const Page: FC = () => {
       <ChangeEmailForm
         {...{
           contentRef,
-          isCurr: currSwap === 0,
+          isCurr: !currSwap,
           swapState,
         }}
       />
