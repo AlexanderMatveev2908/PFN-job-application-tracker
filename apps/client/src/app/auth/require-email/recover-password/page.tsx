@@ -2,7 +2,7 @@
 "use client";
 
 import RequireAuthEmailForm from "@/features/auth/components/RequireAuthEmailForm";
-import { useEmailForm } from "@/core/forms/RequireEmailForm/hooks/useEmailForm";
+import { useEmailForm } from "@/core/hooks/etc/forms/useEmailForm";
 import type { FC } from "react";
 
 const Page: FC = () => {

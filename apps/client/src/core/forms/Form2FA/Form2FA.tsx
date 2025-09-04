@@ -4,18 +4,39 @@
 import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
-import type { FC } from "react";
+import type { FC, RefObject } from "react";
 import TotpForm from "./components/TotpForm/TotpForm";
 import BackupCodeForm from "./components/BackupCodeForm/BackupCodeForm";
+import {
+  PayloadStartSwapT,
+  SwapStateT,
+} from "@/core/hooks/etc/useSwap/etc/initState";
+import { UseFormReturn } from "react-hook-form";
+import { BackupCodeFormT, ToptFormT } from "@/core/paperwork";
 
-const Form2FA: FC = () => {
-  const { startSwap, swapState } = useSwap();
-  const { currSwap } = swapState;
+export type Form2FAPropsType = {
+  contentRef: RefObject<HTMLDivElement | null>;
+  contentH: number;
+  startSwap: (v: PayloadStartSwapT) => void;
+  swapState: SwapStateT;
+  totpProps: {
+    formCtx: UseFormReturn<BackupCodeFormT>;
+    handleSave: () => void;
+  };
+  backupCodeProps: {
+    formCtx: UseFormReturn<ToptFormT>;
+    handleSave: () => void;
+  };
+};
 
-  const { contentRef, contentH } = useListenHeight({
-    opdDep: [currSwap],
-  });
-
+const Form2FA: FC<Form2FAPropsType> = ({
+  contentH,
+  contentRef,
+  startSwap,
+  swapState,
+  backupCodeProps,
+  totpProps,
+}) => {
   return (
     <WrapMultiFormSwapper
       {...{
@@ -33,14 +54,18 @@ const Form2FA: FC = () => {
       <TotpForm
         {...{
           contentRef,
-          isCurr: !currSwap,
+          isCurr: !swapState.currSwap,
+          formCtx: backupCodeProps.formCtx,
+          handleSave: backupCodeProps.handleSave,
         }}
       />
 
       <BackupCodeForm
         {...{
           contentRef,
-          isCurr: !!currSwap,
+          isCurr: !!swapState.currSwap,
+          formCtx: totpProps.formCtx,
+          handleSave: totpProps.handleSave,
         }}
       />
     </WrapMultiFormSwapper>

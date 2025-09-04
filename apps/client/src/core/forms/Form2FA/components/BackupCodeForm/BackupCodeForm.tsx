@@ -3,32 +3,21 @@
 
 import { PropsTypeWrapSwap } from "@/common/components/swap/components/WrapSwap";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
-import { logFormErrs } from "@/core/lib/etc";
-import { __cg } from "@/core/lib/log";
-import {
-  BackupCodeFormT,
-  resetValsBackupForm,
-  schemaBackupForm,
-} from "@/core/paperwork";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { BackupCodeFormT } from "@/core/paperwork";
 import type { FC } from "react";
-import { useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 
-type PropsType = {} & Omit<PropsTypeWrapSwap, "children">;
+type PropsType = {
+  formCtx: UseFormReturn<BackupCodeFormT>;
+  handleSave: () => void;
+} & Omit<PropsTypeWrapSwap, "children">;
 
-const BackupCodeForm: FC<PropsType> = ({ contentRef, isCurr }) => {
-  const formCtx = useForm<BackupCodeFormT>({
-    mode: "onChange",
-    resolver: zodResolver(schemaBackupForm),
-    defaultValues: resetValsBackupForm,
-  });
-
-  const { handleSubmit } = formCtx;
-
-  const handleSave = handleSubmit(async (data) => {
-    __cg(data);
-  }, logFormErrs);
-
+const BackupCodeForm: FC<PropsType> = ({
+  formCtx,
+  handleSave,
+  contentRef,
+  isCurr,
+}) => {
   return (
     <WrapSwapMultiForm
       {...{
