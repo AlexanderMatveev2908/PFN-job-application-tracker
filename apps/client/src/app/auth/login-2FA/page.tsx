@@ -7,10 +7,11 @@ import { testSliceAPI } from "@/features/test/slices/api";
 import type { FC } from "react";
 
 const Page: FC = () => {
-  const [mutate, { isLoading }] = testSliceAPI.usePostHelloMutation();
+  const [mutate] = testSliceAPI.usePostHelloMutation();
 
   const props = use2FAForm({
-    mutationTrigger: mutate,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationTrigger: mutate as any,
     successCb: () => console.log("ok"),
   });
 
