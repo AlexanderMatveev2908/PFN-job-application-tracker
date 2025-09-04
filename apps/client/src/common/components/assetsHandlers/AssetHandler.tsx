@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { CircleAlert } from "lucide-react";
-import BounceIconCSR from "../bounceIcons/BounceIconCSR";
+import BounceIconCSR from "../elements/bounceIcons/BounceIconCSR";
 
 type PropsType = {
   isError: boolean;

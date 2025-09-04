@@ -6,7 +6,7 @@ import type { FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import { ChildrenT } from "@/common/types/ui";
 import { SvgsAppEvents } from "./uiFactory";
-import BounceIconSSR from "@/common/components/bounceIcons/BounceIconSSR/BounceIconSSR";
+import BounceIconSSR from "@/common/components/elements/bounceIcons/BounceIconSSR/BounceIconSSR";
 
 type PropsType = {
   act: AppEventT;

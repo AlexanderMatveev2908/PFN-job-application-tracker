@@ -9,7 +9,7 @@ import { X } from "lucide-react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { AppEventT } from "@/common/types/api";
 import { parseLabelToTestID } from "@/core/lib/etc";
-import BlackBg from "../../BlackBg";
+import BlackBg from "../../elements/BlackBg";
 import BtnSvg from "../../buttons/BtnSvg";
 import BtnShadow from "../../buttons/BtnShadow";
 

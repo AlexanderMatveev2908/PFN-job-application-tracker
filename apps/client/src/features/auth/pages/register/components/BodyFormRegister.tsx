@@ -10,7 +10,7 @@ import { RegisterFormT } from "../paperwork";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
-import PairPwd from "@/common/components/PairPwd/PairPwd";
+import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import WrapSwapper from "@/common/components/swap/WrapSwapper";
 import WrapSwap from "@/common/components/swap/subComponents/WrapSwap";
 

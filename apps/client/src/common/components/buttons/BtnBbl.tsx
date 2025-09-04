@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { AppEventT } from "@/common/types/api";
 import { genMinMax } from "@/core/lib/etc";
 import { FieldTxtSvgT } from "@/common/types/ui";
-import PairTxtSvg from "../PairTxtSvg";
+import PairTxtSvg from "../elements/PairTxtSvg";
 import { $argClr } from "@/core/uiFactory/style";
 import { css } from "@emotion/react";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";

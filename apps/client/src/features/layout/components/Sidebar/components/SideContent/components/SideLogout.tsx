@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PairTxtSvg from "@/common/components/PairTxtSvg";
+import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
 import { linkLogout } from "@/core/uiFactory/links";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { FC } from "react";

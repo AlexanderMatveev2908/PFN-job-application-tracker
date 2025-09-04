@@ -11,7 +11,7 @@ import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
 import { userSliceAPI } from "@/features/user/slices/api";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
-import PairPwd from "@/common/components/PairPwd/PairPwd";
+import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 
 const ChangePwdForm: FC<FormManageAccPropsType> = ({

@@ -6,7 +6,7 @@ import { UseFormReturn } from "react-hook-form";
 import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 import { PwdsFormT } from "@/core/paperwork";
-import PairPwd from "@/common/components/PairPwd/PairPwd";
+import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 
 type PropsType = {
   formCtx: UseFormReturn<PwdsFormT>;

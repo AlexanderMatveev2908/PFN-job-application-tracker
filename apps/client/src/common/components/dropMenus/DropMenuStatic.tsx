@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 import { css } from "@emotion/react";
 import { FaChevronDown } from "react-icons/fa6";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
-import PairTxtSvg from "../PairTxtSvg";
+import PairTxtSvg from "../elements/PairTxtSvg";
 
 type PropsType = {
   el: FieldTxtSvgT;

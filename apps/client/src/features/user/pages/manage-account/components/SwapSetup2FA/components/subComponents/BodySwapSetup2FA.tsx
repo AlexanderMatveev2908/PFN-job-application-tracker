@@ -5,7 +5,7 @@ import { Setup2FAReturnT } from "@/features/user/slices/api";
 import { useMemo, type FC } from "react";
 import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
 import ImgLoader from "@/common/components/assetsHandlers/ImgLoader";
-import CpyPaste from "@/common/components/CpyPaste/CpyPaste";
+import CpyPaste from "@/common/components/HOC/CpyPaste/CpyPaste";
 
 type PropsType = {
   res2FA: Setup2FAReturnT | null;

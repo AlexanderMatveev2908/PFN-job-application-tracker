@@ -5,7 +5,7 @@ import { useRef, type FC } from "react";
 import { headerHight } from "@/core/constants/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getSideState, sideSlice } from "./slice";
-import BlackBg from "@/common/components/BlackBg";
+import BlackBg from "@/common/components/elements/BlackBg";
 import { motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import TxtScroll from "@/common/components/elements/txt/TxtScroll";

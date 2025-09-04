@@ -9,7 +9,7 @@ import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
 import { genPwd } from "@/core/lib/pwd";
 import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
-import CpyPaste from "@/common/components/CpyPaste/CpyPaste";
+import CpyPaste from "@/common/components/HOC/CpyPaste/CpyPaste";
 
 type PropsType = {
   swapMode?: SwapModeT;
