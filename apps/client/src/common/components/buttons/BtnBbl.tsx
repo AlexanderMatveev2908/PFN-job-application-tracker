@@ -6,11 +6,11 @@ import { v4 } from "uuid";
 import { AppEventT } from "@/common/types/api";
 import { genMinMax } from "@/core/lib/etc";
 import { FieldTxtSvgT } from "@/common/types/ui";
-import PairTxtSvg from "../elements/PairTxtSvg";
-import WrapBtnAPI from "../HOC/buttonWrappers/WrapBtnAPI";
+import PairTxtSvg from "../PairTxtSvg";
 import { $argClr } from "@/core/uiFactory/style";
 import { css } from "@emotion/react";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
+import WrapBtnAPI from "../buttonWrappers/WrapBtnAPI";
 
 const makeRandomBtn = () => genMinMax(-1200, 1200);
 

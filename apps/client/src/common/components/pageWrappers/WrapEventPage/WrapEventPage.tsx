@@ -4,9 +4,9 @@
 import { AppEventT } from "@/common/types/api";
 import type { FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
-import BounceIconSSR from "../../../elements/bounceIcons/BounceIconSSR/BounceIconSSR";
 import { ChildrenT } from "@/common/types/ui";
 import { SvgsAppEvents } from "./uiFactory";
+import BounceIconSSR from "../../bounceIcons/BounceIconSSR/BounceIconSSR";
 
 type PropsType = {
   act: AppEventT;

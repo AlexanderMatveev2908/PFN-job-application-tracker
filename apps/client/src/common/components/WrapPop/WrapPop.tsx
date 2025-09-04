@@ -3,15 +3,15 @@
 
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import { useRef, type FC } from "react";
-import BlackBg from "../../elements/BlackBg";
 import { motion } from "framer-motion";
 import { varPop } from "./uiFactory";
-import BtnSvg from "../../buttons/BtnSvg";
 import { X } from "lucide-react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
-import BtnShadow from "../../buttons/BtnShadow";
 import { AppEventT } from "@/common/types/api";
 import { parseLabelToTestID } from "@/core/lib/etc";
+import BlackBg from "../BlackBg";
+import BtnSvg from "../buttons/BtnSvg";
+import BtnShadow from "../buttons/BtnShadow";
 
 export type BtnWrapPopT = {
   msg?: string;

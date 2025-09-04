@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useRef, useState, type FC } from "react";
-import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { useWrapClientListener } from "@/core/hooks/etc/hydration/useWrapClientListener";
 import { wakeUpSliceAPI } from "./slices/api";
 import { clearTmr } from "@/core/lib/etc";
@@ -10,6 +9,7 @@ import { getStorage, saveStorage } from "@/core/lib/storage";
 import SpinBtn from "@/common/components/spinners/SpinBtn";
 import { isStr } from "@/core/lib/dataStructure";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
+import WrapPop from "@/common/components/WrapPop/WrapPop";
 
 type PropsType = {
   children: React.ReactNode;

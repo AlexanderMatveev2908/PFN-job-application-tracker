@@ -11,7 +11,7 @@ import {
 } from "react";
 import { css, SerializedStyles } from "@emotion/react";
 import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
-import PairTxtSvg from "../elements/PairTxtSvg";
+import PairTxtSvg from "../PairTxtSvg";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 
 type PropsType = {

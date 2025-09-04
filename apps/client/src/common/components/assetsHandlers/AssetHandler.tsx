@@ -5,8 +5,8 @@ import type { FC } from "react";
 import { motion } from "framer-motion";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";
-import BounceIcon from "../../elements/bounceIcons/BounceIconCSR";
 import { CircleAlert } from "lucide-react";
+import BounceIconCSR from "../bounceIcons/BounceIconCSR";
 
 type PropsType = {
   isError: boolean;
@@ -57,7 +57,7 @@ const AssetHandler: FC<PropsType> = ({ loaded, isError }) => {
             </span>
           </div>
 
-          <BounceIcon
+          <BounceIconCSR
             {...{
               Svg: CircleAlert,
               $customCSS: css`

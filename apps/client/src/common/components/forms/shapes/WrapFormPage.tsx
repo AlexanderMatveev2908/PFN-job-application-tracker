@@ -5,10 +5,10 @@ import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
-import WrapPage from "../../HOC/pageWrappers/WrapPage";
 import { ReactNode } from "react";
 import ProgressSwap from "./swap/subComponents/ProgressSwap";
 import { PropsTypeBtnsSwapper } from "./swap/subComponents/BtnsSwapper";
+import WrapPage from "../../pageWrappers/WrapPage";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {

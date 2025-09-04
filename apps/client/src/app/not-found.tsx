@@ -1,8 +1,8 @@
 "use client";
 
 import type { FC } from "react";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import LinkShadow from "@/common/components/links/LinkShadow";
+import WrapEventPage from "@/common/components/pageWrappers/WrapEventPage/WrapEventPage";
 
 const NotFound: FC = () => {
   return (

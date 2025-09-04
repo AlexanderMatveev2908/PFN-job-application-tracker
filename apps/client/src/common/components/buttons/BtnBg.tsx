@@ -2,7 +2,7 @@
 "use client";
 
 import { type CSSProperties, type FC } from "react";
-import PairTxtSvg from "../elements/PairTxtSvg";
+import PairTxtSvg from "../PairTxtSvg";
 import { FieldTxtSvgT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
 import { $argClr } from "@/core/uiFactory/style";

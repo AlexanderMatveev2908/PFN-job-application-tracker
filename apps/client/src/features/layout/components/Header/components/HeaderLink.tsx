@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
+import PairTxtSvg from "@/common/components/PairTxtSvg";
 import { LinkAppSvgT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
 import Link from "next/link";

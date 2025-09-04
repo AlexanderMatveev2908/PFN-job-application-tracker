@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import CpyPaste from "@/common/components/elements/tooltips/CpyPaste/CpyPaste";
+import CpyPaste from "@/common/components/tooltips/CpyPaste/CpyPaste";
 import ImgLoader from "@/common/components/HOC/assetsHandlers/ImgLoader";
 import { Setup2FAReturnT } from "@/features/user/slices/api";
 import { useMemo, type FC } from "react";

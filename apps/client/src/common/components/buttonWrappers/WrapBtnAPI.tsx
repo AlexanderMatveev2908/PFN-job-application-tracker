@@ -2,9 +2,9 @@
 "use client";
 
 import type { FC } from "react";
-import SpinBtn from "../../spinners/SpinBtn";
 import { AppEventT } from "@/common/types/api";
 import { ChildrenT } from "@/common/types/ui";
+import SpinBtn from "../spinners/SpinBtn";
 
 type PropsType = {
   isLoading?: boolean;

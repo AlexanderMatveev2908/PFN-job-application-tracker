@@ -3,9 +3,9 @@
 "use client";
 
 import type { FC } from "react";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import { __cg } from "@/core/lib/log";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
+import WrapEventPage from "@/common/components/pageWrappers/WrapEventPage/WrapEventPage";
 
 type PropsType = {
   error: any;

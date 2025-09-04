@@ -4,7 +4,7 @@
 import SvgPasswordCursor from "@/common/components/SVGs/PasswordCursor";
 import { useState, type FC } from "react";
 import BtnSvg from "@/common/components/buttons/BtnSvg";
-import CpyPaste from "@/common/components/elements/tooltips/CpyPaste/CpyPaste";
+import CpyPaste from "@/common/components/tooltips/CpyPaste/CpyPaste";
 import { isStr } from "@/core/lib/dataStructure";
 import { css } from "@emotion/react";
 import { resp } from "@/core/lib/style";

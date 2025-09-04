@@ -9,9 +9,9 @@ import { $argClr } from "@/core/uiFactory/style";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
-import PortalTooltip from "../../elements/tooltips/PortalTooltip";
 import Link from "next/link";
 import { RefObject } from "react";
+import PortalTooltip from "../tooltips/PortalTooltip";
 
 export type WrapSvgTltPropsT = {
   Svg: IconType;

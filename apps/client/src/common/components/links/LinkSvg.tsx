@@ -4,7 +4,7 @@
 import type { FC } from "react";
 import WrapElWithSvgTooltip, {
   WrapSvgTltPropsT,
-} from "../HOC/shapes/WrapElWithSvgTooltip";
+} from "../shapes/WrapElWithSvgTooltip";
 
 type PropsType = {
   href: string;
