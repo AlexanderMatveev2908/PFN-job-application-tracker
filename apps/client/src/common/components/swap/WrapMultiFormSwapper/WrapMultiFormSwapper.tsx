@@ -21,10 +21,6 @@ type PropsType = {
   };
   totSwaps: number;
   swapState: SwapStateT;
-  propsWrapCSR?: {
-    isApiOk?: boolean;
-    isLoading?: boolean;
-  };
 } & ChildrenT;
 
 const WrapMultiFormSwapper: FC<PropsType> = ({
@@ -34,15 +30,9 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
   propsWrapSwapper,
   totSwaps,
   swapState,
-  propsWrapCSR = { isApiOk: true, isLoading: false },
 }) => {
   return (
-    <WrapCSR
-      {...{
-        isApiOk: propsWrapCSR.isApiOk,
-        isLoading: propsWrapCSR.isLoading,
-      }}
-    >
+    <WrapCSR>
       <div data-testid={formTestID + "__form"} className="form__shape">
         <WrapSwapper
           {...{

@@ -21,9 +21,9 @@ const Page: FC = () => {
 
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
-  const { isUsOk, touchedServer, user } = useGetUserState();
+  const { user } = useGetUserState();
   const { contentRef, contentH } = useListenHeight({
-    opdDep: [currSwap, isUsOk],
+    opdDep: [currSwap],
   });
 
   return (
@@ -38,10 +38,6 @@ const Page: FC = () => {
         },
         swapState,
         totSwaps: 4,
-        propsWrapCSR: {
-          isApiOk: isUsOk,
-          isLoading: !touchedServer,
-        },
       }}
     >
       <ChangeEmailForm
