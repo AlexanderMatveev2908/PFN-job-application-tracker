@@ -49,23 +49,20 @@ const WrapFormPage = <T extends FieldValues>({
       <FormProvider {...formCtx}>
         <form
           data-testid={formTestID + "__form"}
-          className="cont__grid__md"
+          className="form__shape"
           onSubmit={handleSave}
         >
-          <div className="form__shape">
-            {children}
+          {children}
 
-            <WrapFormFooter
-              {...{
-                propsBtnsSwapper,
-                isLoading,
-                submitBtnTestID: formTestID,
-              }}
-            />
+          <WrapFormFooter
+            {...{
+              propsBtnsSwapper,
+              isLoading,
+              submitBtnTestID: formTestID,
+            }}
+          />
 
-            {typeof AdditionalFooterNode === "function" &&
-              AdditionalFooterNode()}
-          </div>
+          {typeof AdditionalFooterNode === "function" && AdditionalFooterNode()}
         </form>
       </FormProvider>
     </WrapPage>

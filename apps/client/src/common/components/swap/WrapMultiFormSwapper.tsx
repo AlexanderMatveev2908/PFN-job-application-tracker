@@ -33,28 +33,26 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
 }) => {
   return (
     <WrapPage>
-      <div data-testid={formTestID + "__form"} className="cont__grid__md">
-        <div className="form__shape">
-          <WrapSwapper
-            {...{
-              ...propsWrapSwapper,
-              totSwaps,
-              currSwap: swapState.currSwap,
-            }}
-          >
-            {children}
-          </WrapSwapper>
+      <div data-testid={formTestID + "__form"} className="form__shape">
+        <WrapSwapper
+          {...{
+            ...propsWrapSwapper,
+            totSwaps,
+            currSwap: swapState.currSwap,
+          }}
+        >
+          {children}
+        </WrapSwapper>
 
-          <WrapFormFooter
-            {...{
-              propsBtnsSwapper: {
-                ...propsBtnsSwapper,
-                swapState,
-                totSwaps,
-              },
-            }}
-          />
-        </div>
+        <WrapFormFooter
+          {...{
+            propsBtnsSwapper: {
+              ...propsBtnsSwapper,
+              swapState,
+              totSwaps,
+            },
+          }}
+        />
       </div>
     </WrapPage>
   );
