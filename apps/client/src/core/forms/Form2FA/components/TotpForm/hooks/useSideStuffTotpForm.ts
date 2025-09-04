@@ -12,6 +12,7 @@ type Params = {
   setFocus: UseFormSetFocus<ToptFormT>;
   trigger: UseFormTrigger<ToptFormT>;
   totp_code: string[];
+  isCurr: boolean;
 };
 
 export const useSideStuffTotpForm = ({
@@ -19,12 +20,14 @@ export const useSideStuffTotpForm = ({
   setFocus,
   trigger,
   totp_code,
+  isCurr,
 }: Params) => {
   const [ctrlPressed, setCtrlPressed] = useState<boolean>();
   const [currFocus, setCurrFocus] = useState<number | null>(null);
 
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
+      if (!isCurr) return;
       e.preventDefault();
 
       const pasted = e.clipboardData?.getData("text") ?? "";
@@ -38,10 +41,12 @@ export const useSideStuffTotpForm = ({
     return () => {
       window.removeEventListener("paste", handlePaste);
     };
-  }, [setValue]);
+  }, [setValue, isCurr]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isCurr) return;
+
       const defVals = Array(6).fill("");
 
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
@@ -90,7 +95,7 @@ export const useSideStuffTotpForm = ({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [ctrlPressed, currFocus, totp_code, setValue, setFocus, trigger]);
+  }, [ctrlPressed, currFocus, totp_code, setValue, setFocus, trigger, isCurr]);
 
   return {
     ctrlPressed,

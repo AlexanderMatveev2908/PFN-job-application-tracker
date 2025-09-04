@@ -38,7 +38,7 @@ const WrapSwapMultiForm = <T extends FieldValues>({
         <form
           onSubmit={handleSave}
           data-testid={testID + "__form"}
-          className="cont__grid__lg py-5"
+          className="cont__grid__lg"
         >
           <Title
             {...{

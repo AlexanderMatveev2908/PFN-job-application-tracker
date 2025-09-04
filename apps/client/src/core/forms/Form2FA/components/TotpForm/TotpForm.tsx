@@ -53,6 +53,7 @@ const TotpForm: FC<PropsType> = ({
     setValue,
     totp_code: codeForm.totp_code,
     trigger,
+    isCurr,
   });
 
   const { ids } = useGenIDs({ lengths: [2, 3, 3] });

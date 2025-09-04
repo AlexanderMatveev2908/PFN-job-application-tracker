@@ -65,6 +65,7 @@ const Form2FA: FC<Form2FAPropsType> = ({
           isCurr: !!swapState.currSwap,
           formCtx: backupCodeProps.formCtx,
           handleSave: backupCodeProps.handleSave,
+          swapState,
         }}
       />
     </WrapMultiFormSwapper>
