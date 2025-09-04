@@ -18,11 +18,11 @@ export type Form2FAPropsType = {
   startSwap: (v: PayloadStartSwapT) => void;
   swapState: SwapStateT;
   totpProps: {
-    formCtx: UseFormReturn<BackupCodeFormT>;
+    formCtx: UseFormReturn<ToptFormT>;
     handleSave: () => void;
   };
   backupCodeProps: {
-    formCtx: UseFormReturn<ToptFormT>;
+    formCtx: UseFormReturn<BackupCodeFormT>;
     handleSave: () => void;
   };
 };
@@ -53,8 +53,8 @@ const Form2FA: FC<Form2FAPropsType> = ({
         {...{
           contentRef,
           isCurr: !swapState.currSwap,
-          formCtx: backupCodeProps.formCtx,
-          handleSave: backupCodeProps.handleSave,
+          formCtx: totpProps.formCtx,
+          handleSave: totpProps.handleSave,
           swapState,
         }}
       />
@@ -63,8 +63,8 @@ const Form2FA: FC<Form2FAPropsType> = ({
         {...{
           contentRef,
           isCurr: !!swapState.currSwap,
-          formCtx: totpProps.formCtx,
-          handleSave: totpProps.handleSave,
+          formCtx: backupCodeProps.formCtx,
+          handleSave: backupCodeProps.handleSave,
         }}
       />
     </WrapMultiFormSwapper>

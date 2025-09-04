@@ -66,7 +66,7 @@ const TotpForm: FC<PropsType> = ({
         isCurr,
         formCtx,
         handleSave,
-        isLoading: false,
+        isLoading: formCtx.formState.isSubmitting,
         title: "Totp Code",
       }}
     >

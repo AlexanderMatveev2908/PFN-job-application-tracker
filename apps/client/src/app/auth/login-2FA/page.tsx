@@ -3,12 +3,18 @@
 
 import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
+import { testSliceAPI } from "@/features/test/slices/api";
 import type { FC } from "react";
 
 const Page: FC = () => {
-  const props = use2FAForm({});
+  const [mutate, { isLoading }] = testSliceAPI.usePostHelloMutation();
 
-  return <Form2FA {...props} />;
+  const props = use2FAForm({
+    mutationTrigger: mutate,
+    successCb: () => console.log("ok"),
+  });
+
+  return <Form2FA {...{ ...props }} />;
 };
 
 export default Page;
