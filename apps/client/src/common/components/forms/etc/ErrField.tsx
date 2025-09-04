@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState, type FC } from "react";
-import Tooltip from "../../elements/tooltips/Tooltip/Tooltip";
+import Tooltip from "../../tooltips/Tooltip/Tooltip";
 import { isStr } from "@/core/lib/dataStructure";
 import { SerializedStyles } from "@emotion/react";
 

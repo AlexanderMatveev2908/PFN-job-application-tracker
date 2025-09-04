@@ -7,7 +7,6 @@ import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { logFormErrs } from "@/core/lib/etc";
 import { EmailFormT, emailSchema, resetValsEmailForm } from "@/core/paperwork";
 import { emailField } from "@/core/uiFactory/formFields";
-import WrapFormManageAcc from "@/features/user/pages/manage-account/components/subComponents/WrapFormManageAcc";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { userSliceAPI } from "@/features/user/slices/api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +14,7 @@ import { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { FormManageAccPropsType } from "../types";
 import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
+import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 
 const ChangeEmailForm: FC<FormManageAccPropsType> = ({
   contentRef,
@@ -73,7 +73,7 @@ const ChangeEmailForm: FC<FormManageAccPropsType> = ({
   });
 
   return (
-    <WrapFormManageAcc
+    <WrapSwapMultiForm
       {...{
         contentRef,
         isCurr,
@@ -89,11 +89,11 @@ const ChangeEmailForm: FC<FormManageAccPropsType> = ({
           control,
           portalConf: {
             showPortal: isCurr && swapMode !== "swapping",
-            optDep: [currSwap],
+            optDep: [currSwap, swapMode],
           },
         }}
       />
-    </WrapFormManageAcc>
+    </WrapSwapMultiForm>
   );
 };
 

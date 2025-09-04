@@ -3,7 +3,7 @@
 
 import { logFormErrs } from "@/core/lib/etc";
 import FormResetPwd from "@/core/forms/FormResetPwd/FormResetPwd";
-import { usePwdsForm } from "@/core/forms/FormResetPwd/hooks/usePwdsForm";
+import { usePwdsForm } from "@/core/hooks/etc/forms/usePwdsForm";
 import { type FC } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
 import { TokenT } from "@/common/types/tokens";

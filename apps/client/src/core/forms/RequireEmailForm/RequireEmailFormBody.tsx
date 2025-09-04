@@ -2,7 +2,6 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { emailField } from "@/core/uiFactory/formFields";
@@ -14,14 +13,12 @@ type PropsType = {
 
 const RequireEmailFormBody: FC<PropsType> = ({ formCtx }) => {
   return (
-    <WrapFormBody>
-      <FormFieldTxt
-        {...{
-          el: emailField,
-          control: formCtx.control,
-        }}
-      />
-    </WrapFormBody>
+    <FormFieldTxt
+      {...{
+        el: emailField,
+        control: formCtx.control,
+      }}
+    />
   );
 };
 

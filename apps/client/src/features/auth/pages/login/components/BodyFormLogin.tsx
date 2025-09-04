@@ -2,7 +2,6 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import { LoginFormT } from "../paperwork";
@@ -17,7 +16,7 @@ const BodyFormLogin: FC = () => {
   const { handlePwdClick, isPwdShw } = useTogglePwd();
 
   return (
-    <WrapFormBody>
+    <>
       <FormFieldTxt
         {...{
           el: emailField as unknown as FormFieldTxtT<LoginFormT>,
@@ -33,7 +32,7 @@ const BodyFormLogin: FC = () => {
           handleSvgClick: handlePwdClick,
         }}
       />
-    </WrapFormBody>
+    </>
   );
 };
 

@@ -2,14 +2,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type FC } from "react";
-import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { useWrapClientListener } from "@/core/hooks/etc/hydration/useWrapClientListener";
 import { wakeUpSliceAPI } from "./slices/api";
 import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";
-import SpinBtn from "@/common/components/spinners/SpinBtn";
+import SpinBtn from "@/common/components/elements/spinners/SpinBtn";
 import { isStr } from "@/core/lib/dataStructure";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
+import Popup from "@/common/components/wrappers/Popup/Popup";
 
 type PropsType = {
   children: React.ReactNode;
@@ -97,7 +97,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
 
   return (
     <div className="w-full h-full pt-[25px] pb-[200px] px-[25px] sm:px-[50px]">
-      <WrapPop
+      <Popup
         {...{
           isPop,
           setIsPop,
@@ -111,7 +111,7 @@ const WrapWakeUp: FC<PropsType> = ({ children }) => {
 
           <SpinBtn />
         </div>
-      </WrapPop>
+      </Popup>
 
       {children}
     </div>

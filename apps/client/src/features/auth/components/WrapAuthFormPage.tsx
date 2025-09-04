@@ -3,7 +3,7 @@
 
 import WrapFormPage, {
   WrapFormPagePropsType,
-} from "../../../common/components/forms/shapes/WrapFormPage";
+} from "../../../common/components/forms/wrappers/WrapFormPage";
 import { FieldValues } from "react-hook-form";
 import AuthSpannerLinks from "@/features/auth/components/AuthSpannerLinks/AuthSpannerLinks";
 

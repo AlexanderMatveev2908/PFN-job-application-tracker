@@ -3,9 +3,9 @@
 "use client";
 
 import type { FC } from "react";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import { __cg } from "@/core/lib/log";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
+import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
 
 type PropsType = {
   error: any;
@@ -16,7 +16,7 @@ const Err: FC<PropsType> = ({ error: err }: PropsType) => {
   __cg("err", err);
 
   return (
-    <WrapEventPage
+    <AppEventPage
       {...{
         act: "ERR",
         msg: err?.msg ?? err?.data?.msg ?? err?.message ?? "Unmown error...❌",
@@ -31,7 +31,7 @@ const Err: FC<PropsType> = ({ error: err }: PropsType) => {
           }}
         />
       </div>
-    </WrapEventPage>
+    </AppEventPage>
   );
 };
 

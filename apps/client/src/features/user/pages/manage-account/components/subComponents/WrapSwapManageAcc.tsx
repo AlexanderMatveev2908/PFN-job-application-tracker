@@ -4,7 +4,7 @@
 import Title from "@/common/components/elements/txt/Title";
 import WrapSwap, {
   PropsTypeWrapSwap,
-} from "@/common/components/swap/subComponents/WrapSwap";
+} from "@/common/components/swap/components/WrapSwap";
 import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
 

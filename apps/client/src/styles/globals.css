@@ -314,12 +314,22 @@
     height: 55px;
   }
 }
-.input__base {
-  @apply transition-all duration-300 w-full py-2 px-4 outline-0 border-2 border-neutral-300 rounded-xl;
+.input__base,
+.input__txt {
+  @apply transition-all duration-300 outline-0 border-2 border-neutral-300 rounded-xl;
 }
 
-.input__base:focus {
+.input__txt {
+  @apply w-full py-2 px-4;
+}
+
+.input__base:focus,
+.input__txt:focus {
   box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
+}
+
+.page__shape {
+  @apply w-full flex flex-col justify-center gap-10;
 }
 
 .cont__grid__sm,
@@ -341,11 +351,11 @@
 }
 
 .form__shape {
-  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 pb-5;
+  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5 overflow-hidden;
 }
 
 .form__body {
-  @apply grid grid-cols-1 gap-6 w-full h-fit items-start p-5;
+  @apply grid grid-cols-1 gap-6 w-full h-fit max-h-fit items-start p-5;
 }
 
 @keyframes skeleton {
@@ -578,4 +588,15 @@ input {
 
 a {
   text-decoration: none;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

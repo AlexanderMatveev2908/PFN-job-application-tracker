@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PortalTooltip from "@/common/components/elements/tooltips/PortalTooltip";
+import PortalTooltip from "@/common/components/tooltips/PortalTooltip";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { css } from "@emotion/react";
 import type { FC } from "react";

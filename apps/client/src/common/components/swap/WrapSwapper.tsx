@@ -23,7 +23,6 @@ const WrapSwapper: FC<WrapSwapperPropsType> = ({
       css={css`
         max-height: ${contentH ? `${contentH}px` : "fit-content"};
         height: ${contentH ? `${contentH}px` : "fit-content"};
-        overflow: hidden;
       `}
     >
       <div

@@ -2,10 +2,10 @@
 "use client";
 
 import type { FC } from "react";
-import WrapElWithShadow from "../HOC/shapes/WrapElWithShadow";
 import { SerializedStyles } from "@emotion/react";
 import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
+import WrapElWithShadow from "../shapes/WrapElWithShadow";
 
 type PropsType = {
   handleClick?: () => void;

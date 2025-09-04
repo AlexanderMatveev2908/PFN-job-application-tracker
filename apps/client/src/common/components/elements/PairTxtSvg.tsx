@@ -3,7 +3,7 @@
 
 import { FieldTxtSvgT } from "@/common/types/ui";
 import type { FC } from "react";
-import SpinTxt from "../spinners/SpinTxt";
+import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
 
 type PropsType = {

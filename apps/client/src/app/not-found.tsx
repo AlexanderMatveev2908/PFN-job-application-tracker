@@ -1,12 +1,12 @@
 "use client";
 
 import type { FC } from "react";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import LinkShadow from "@/common/components/links/LinkShadow";
+import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
 
 const NotFound: FC = () => {
   return (
-    <WrapEventPage
+    <AppEventPage
       {...{
         act: "INFO",
         msg: "The treasure chest is empty. Someone got here before you... 💰",
@@ -24,7 +24,7 @@ const NotFound: FC = () => {
           }}
         />
       </div>
-    </WrapEventPage>
+    </AppEventPage>
   );
 };
 

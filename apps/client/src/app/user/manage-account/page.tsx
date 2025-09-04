@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper";
-import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { TokenT } from "@/common/types/tokens";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
@@ -13,6 +11,7 @@ import ChangePwdForm from "@/features/user/pages/manage-account/components/Chang
 import DelAccountSwap from "@/features/user/pages/manage-account/components/DelAccountSwap";
 import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA/SwapSetup2FA";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
+import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
@@ -22,64 +21,57 @@ const Page: FC = () => {
 
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
-  const { isUsOk, touchedServer, user } = useGetUserState();
+  const { user } = useGetUserState();
   const { contentRef, contentH } = useListenHeight({
-    opdDep: [currSwap, isUsOk],
+    opdDep: [currSwap],
   });
 
   return (
-    <WrapCSR
+    <WrapMultiFormSwapper
       {...{
-        isApiOk: isUsOk,
-        isLoading: !touchedServer,
+        formTestID: "manage_acc",
+        propsBtnsSwapper: {
+          startSwap,
+        },
+        propsWrapSwapper: {
+          contentH,
+        },
+        swapState,
+        totSwaps: 4,
       }}
     >
-      <WrapMultiFormSwapper
+      <ChangeEmailForm
         {...{
-          formTestID: "manage_acc",
-          propsBtnsSwapper: {
-            startSwap,
-          },
-          propsWrapSwapper: {
-            contentH,
-          },
+          contentRef,
+          isCurr: !currSwap,
           swapState,
-          totSwaps: 4,
         }}
-      >
-        <ChangeEmailForm
-          {...{
-            contentRef,
-            isCurr: currSwap === 0,
-            swapState,
-          }}
-        />
+      />
 
-        <ChangePwdForm
-          {...{
-            contentRef,
-            isCurr: currSwap === 1,
-            swapState,
-          }}
-        />
+      <ChangePwdForm
+        {...{
+          contentRef,
+          isCurr: currSwap === 1,
+          swapState,
+        }}
+      />
 
-        <SwapSetup2FA
-          {...{
-            contentRef,
-            isCurr: currSwap === 2,
-            swapState,
-            user,
-          }}
-        />
+      <SwapSetup2FA
+        {...{
+          contentRef,
+          isCurr: currSwap === 2,
+          swapState,
+          user,
+        }}
+      />
 
-        <DelAccountSwap
-          {...{
-            contentRef,
-            isCurr: currSwap === 3,
-          }}
-        />
-      </WrapMultiFormSwapper>
-    </WrapCSR>
+      <DelAccountSwap
+        {...{
+          contentRef,
+          isCurr: currSwap === 3,
+        }}
+      />
+    </WrapMultiFormSwapper>
   );
 };
 

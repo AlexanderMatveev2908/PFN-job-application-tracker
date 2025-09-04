@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEmailForm } from "@/core/forms/RequireEmailForm/hooks/useEmailForm";
+import { useEmailForm } from "@/core/hooks/etc/forms/useEmailForm";
 import RequireEmailForm from "@/core/forms/RequireEmailForm/RequireEmailForm";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { useRouter } from "next/navigation";

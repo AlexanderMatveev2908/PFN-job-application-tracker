@@ -1,6 +1,6 @@
 "use client";
 
-import BaseLayoutPage from "@/common/components/HOC/pageWrappers/BaseLayoutPage";
+import BaseLayoutPage from "@/common/components/wrappers/pages/BaseLayoutPage";
 import { ChildrenT } from "@/common/types/ui";
 import { extractNamePagePath } from "@/core/lib/path";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";

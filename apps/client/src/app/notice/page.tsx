@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import LinkShadow from "@/common/components/links/LinkShadow";
+import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
+import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
 import { mapperCbs } from "@/features/notice/lib/etc";
@@ -20,7 +20,7 @@ const Page: FC = () => {
 
   return (
     <WrapCSR>
-      <WrapEventPage
+      <AppEventPage
         {...{
           act: noticeState.type,
           msg: noticeState.msg,
@@ -42,7 +42,7 @@ const Page: FC = () => {
             />
           </div>
         )}
-      </WrapEventPage>
+      </AppEventPage>
     </WrapCSR>
   );
 };

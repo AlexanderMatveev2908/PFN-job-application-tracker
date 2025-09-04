@@ -2,10 +2,10 @@
 "use client";
 
 import { type FC } from "react";
+import { TestIDT } from "@/common/types/ui";
 import WrapElWithSvgTooltip, {
   WrapSvgTltPropsT,
-} from "../HOC/shapes/WrapElWithSvgTooltip";
-import { TestIDT } from "@/common/types/ui";
+} from "../shapes/WrapElWithSvgTooltip";
 
 type PropsType = {
   handleClick: () => void;

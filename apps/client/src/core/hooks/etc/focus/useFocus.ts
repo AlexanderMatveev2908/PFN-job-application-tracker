@@ -4,11 +4,12 @@ import { useWrapClientListener } from "../hydration/useWrapClientListener";
 
 type Params<T extends FieldValues> = {
   setFocus: UseFormSetFocus<T>;
+  tmr?: number;
 };
 
 export const useFocus = <T extends FieldValues, K extends Path<T>>(
   path: K | undefined,
-  { setFocus }: Params<T>
+  { setFocus, tmr }: Params<T>
 ) => {
   const { wrapClientListener } = useWrapClientListener();
 
@@ -18,8 +19,8 @@ export const useFocus = <T extends FieldValues, K extends Path<T>>(
     const cb = () =>
       setTimeout(() => {
         setFocus(path);
-      }, 250);
+      }, tmr ?? 250);
 
     wrapClientListener(cb);
-  }, [wrapClientListener, setFocus, path]);
+  }, [wrapClientListener, setFocus, path, tmr]);
 };

@@ -3,9 +3,9 @@
 
 import { css } from "@emotion/react";
 import { useState, type FC } from "react";
-import WrapBtnAPI from "../../HOC/buttonWrappers/WrapBtnAPI";
 import InnerShadow from "./components/InnerShadow";
 import { TestIDT } from "@/common/types/ui";
+import WrapBtnAPI from "../../wrappers/buttons/WrapBtnAPI";
 
 type PropsType = {
   label: string;
