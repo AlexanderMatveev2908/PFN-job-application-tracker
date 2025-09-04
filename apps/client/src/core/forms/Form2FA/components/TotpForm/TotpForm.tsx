@@ -6,16 +6,14 @@ import ErrField from "@/common/components/forms/etc/ErrField";
 import { PropsTypeWrapSwap } from "@/common/components/swap/components/WrapSwap";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 import Portal from "@/common/components/wrappers/portals/Portal";
-import { REG_INT } from "@/core/constants/regex";
-import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
-import { isStr } from "@/core/lib/dataStructure";
 import { ToptFormT } from "@/core/paperwork";
 import { css } from "@emotion/react";
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
+import { useSideStuffTotpForm } from "./hooks/useSideStuffTotpForm";
 
 type PropsType = {
   formCtx: UseFormReturn<ToptFormT>;
@@ -30,94 +28,28 @@ const TotpForm: FC<PropsType> = ({
   handleSave,
   swapState,
 }) => {
-  const [ctrlPressed, setCtrlPressed] = useState<boolean>();
-  const [currFocus, setCurrFocus] = useState<number | null>(null);
-
   const {
     watch,
     control,
     formState: { errors },
     setFocus,
     setValue,
+    trigger,
   } = formCtx;
 
-  const code = watch();
-  const realLength = code["totp_code"].filter((ch) => isStr(ch)).length;
+  const codeForm = watch();
+  // const realLength = codeForm["totp_code"].filter((ch) => isStr(ch)).length;
+
+  const { ctrlPressed, setCtrlPressed, setCurrFocus } = useSideStuffTotpForm({
+    setFocus,
+    setValue,
+    totp_code: codeForm.totp_code,
+    trigger,
+  });
 
   const { ids } = useGenIDs({ lengths: [2, 3, 3] });
 
   const { coords, parentRef } = useSyncPortal([swapState]);
-
-  useFocus("totp_code.0", {
-    setFocus,
-    tmr: 300,
-  });
-
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      e.preventDefault();
-
-      const pasted = e.clipboardData?.getData("text") ?? "";
-      const parsed = pasted.split("").slice(0, 6);
-
-      setValue("totp_code", parsed, { shouldValidate: true });
-    };
-
-    window.addEventListener("paste", handlePaste);
-
-    return () => {
-      window.removeEventListener("paste", handlePaste);
-    };
-  }, [setValue]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const defVals = Array(6).fill("");
-
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
-        setCtrlPressed(true);
-        return;
-      }
-
-      if (ctrlPressed) {
-        const possibleVal = e.key.trim();
-
-        if (e.key === "Backspace" || !possibleVal) {
-          setValue("totp_code", defVals, { shouldValidate: true });
-        } else {
-          setValue("totp_code", [possibleVal, ...Array(5).fill("")], {
-            shouldValidate: true,
-          });
-        }
-
-        setCtrlPressed(false);
-        setFocus("totp_code.0");
-        return;
-      }
-
-      if (e.key === "Backspace" && typeof currFocus === "number") {
-        setValue(
-          "totp_code",
-          code.totp_code.map((v, idx) => (idx === currFocus ? "" : v)),
-          { shouldValidate: true }
-        );
-        setFocus(`totp_code.${currFocus - 1 >= 0 ? currFocus - 1 : 0}`);
-        return;
-      }
-
-      // if (REG_INT.test(e.key) && typeof currFocus === "number") {
-      //   setValue(
-      //     "totp_code",
-      //     code.totp_code.map((v, idx) => (idx === currFocus ? e.key : v)),
-      //     { shouldValidate: true }
-      //   );
-      //   setFocus(`totp_code.${Math.min(currFocus + 1, 5)}`);
-      // }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [ctrlPressed, currFocus, code.totp_code, setValue, setFocus]);
 
   return (
     <WrapSwapMultiForm
@@ -149,11 +81,17 @@ const TotpForm: FC<PropsType> = ({
                     {...field}
                     type="text"
                     value={field.value ?? ""}
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     onChange={({ target: { value: v } }) => {
-                      if (v.length > 1 || !REG_INT.test(v)) return;
-
-                      field.onChange(v);
-                      setFocus(`totp_code.${realLength + 1}`);
+                      // if (v.length > 1) {
+                      //   if (!v.at(-1)?.trim()) return;
+                      //   field.onChange(v.at(-1));
+                      //   setFocus(`totp_code.${realLength}`);
+                      //   return;
+                      // }
+                      // if (!REG_INT.test(v)) return;
+                      // field.onChange(v);
+                      // setFocus(`totp_code.${realLength + 1}`);
                     }}
                     onFocus={() => {
                       setCurrFocus(innerIdx + idx * 3);
