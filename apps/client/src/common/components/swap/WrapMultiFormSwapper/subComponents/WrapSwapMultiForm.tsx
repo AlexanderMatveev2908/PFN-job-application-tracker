@@ -47,7 +47,7 @@ const WrapSwapMultiForm = <T extends FieldValues>({
             }}
           />
 
-          {children}
+          <div className="cont__grid__md">{children}</div>
 
           <div className="mt-[50px] w-[250px] justify-self-center">
             <BtnShim
