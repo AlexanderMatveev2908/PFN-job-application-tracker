@@ -2,7 +2,7 @@
 "use client";
 
 import type { FC } from "react";
-import Portal from "../portals/Portal";
+import Portal from "../wrappers/portals/Portal";
 import { css } from "@emotion/react";
 import { SerializedStyles } from "@emotion/react";
 import { ChildrenT } from "@/common/types/ui";

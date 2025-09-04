@@ -5,12 +5,12 @@ import type { FC } from "react";
 import { FormManageAccPropsType } from "../types";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 import { usePop } from "@/core/hooks/etc/usePop";
-import Portal from "@/common/components/portals/Portal";
+import Portal from "@/common/components/wrappers/portals/Portal";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useUser } from "@/features/user/hooks/useUser";
 import { userSliceAPI } from "@/features/user/slices/api";
 import WrapSwapManageAcc from "./subComponents/WrapSwapManageAcc";
-import WrapPop from "@/common/components/WrapPop/WrapPop";
+import Popup from "@/common/components/wrappers/Popup/Popup";
 
 const DelAccountSwap: FC<Omit<FormManageAccPropsType, "swapState">> = ({
   contentRef,
@@ -62,7 +62,7 @@ const DelAccountSwap: FC<Omit<FormManageAccPropsType, "swapState">> = ({
           needEvents: true,
         }}
       >
-        <WrapPop
+        <Popup
           {...{
             isPop,
             setIsPop,
@@ -86,7 +86,7 @@ const DelAccountSwap: FC<Omit<FormManageAccPropsType, "swapState">> = ({
               data without any possibility of recover it.
             </span>
           </div>
-        </WrapPop>
+        </Popup>
       </Portal>
 
       <div className="w-full flex justify-center px-10">

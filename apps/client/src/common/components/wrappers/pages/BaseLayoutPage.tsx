@@ -1,6 +1,6 @@
 import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
-import Title from "../txt/Title";
+import Title from "../../elements/txt/Title";
 
 type PropsType = {
   title: string;

@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
-import Portal from "@/common/components/portals/Portal";
+import Portal from "@/common/components/wrappers/portals/Portal";
 import { css } from "@emotion/react";
 import { isObjOk } from "@/core/lib/dataStructure";
 

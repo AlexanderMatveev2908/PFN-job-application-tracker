@@ -12,7 +12,7 @@ import ChangePwdForm from "@/features/user/pages/manage-account/components/Chang
 import DelAccountSwap from "@/features/user/pages/manage-account/components/DelAccountSwap";
 import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA/SwapSetup2FA";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
-import WrapCSR from "@/common/components/pageWrappers/WrapCSR";
+import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({

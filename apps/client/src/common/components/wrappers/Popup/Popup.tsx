@@ -9,9 +9,9 @@ import { X } from "lucide-react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { AppEventT } from "@/common/types/api";
 import { parseLabelToTestID } from "@/core/lib/etc";
-import BlackBg from "../BlackBg";
-import BtnSvg from "../buttons/BtnSvg";
-import BtnShadow from "../buttons/BtnShadow";
+import BlackBg from "../../BlackBg";
+import BtnSvg from "../../buttons/BtnSvg";
+import BtnShadow from "../../buttons/BtnShadow";
 
 export type BtnWrapPopT = {
   msg?: string;
@@ -33,7 +33,7 @@ export type WrapPopPropsType = {
   };
 };
 
-const WrapPop: FC<WrapPopPropsType> = ({
+const Popup: FC<WrapPopPropsType> = ({
   isPop,
   setIsPop,
   children,
@@ -116,4 +116,4 @@ const WrapPop: FC<WrapPopPropsType> = ({
   );
 };
 
-export default WrapPop;
+export default Popup;

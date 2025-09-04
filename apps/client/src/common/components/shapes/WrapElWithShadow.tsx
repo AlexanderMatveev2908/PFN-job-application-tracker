@@ -6,8 +6,8 @@ import { css, SerializedStyles } from "@emotion/react";
 import { CSSProperties, useMemo, type FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import Link from "next/link";
-import WrapBtnAPI from "../buttonWrappers/WrapBtnAPI";
 import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
+import WrapBtnAPI from "../wrappers/buttons/WrapBtnAPI";
 
 type PropsType = {
   wrapper: "next_link" | "html_button";

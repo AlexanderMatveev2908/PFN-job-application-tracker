@@ -2,11 +2,11 @@
 
 import type { FC } from "react";
 import LinkShadow from "@/common/components/links/LinkShadow";
-import WrapEventPage from "@/common/components/pageWrappers/WrapEventPage/WrapEventPage";
+import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
 
 const NotFound: FC = () => {
   return (
-    <WrapEventPage
+    <AppEventPage
       {...{
         act: "INFO",
         msg: "The treasure chest is empty. Someone got here before you... 💰",
@@ -24,7 +24,7 @@ const NotFound: FC = () => {
           }}
         />
       </div>
-    </WrapEventPage>
+    </AppEventPage>
   );
 };
 

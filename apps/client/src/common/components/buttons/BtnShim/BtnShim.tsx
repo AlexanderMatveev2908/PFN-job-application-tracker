@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { useState, type FC } from "react";
 import InnerShadow from "./components/InnerShadow";
 import { TestIDT } from "@/common/types/ui";
-import WrapBtnAPI from "../../buttonWrappers/WrapBtnAPI";
+import WrapBtnAPI from "../../wrappers/buttons/WrapBtnAPI";
 
 type PropsType = {
   label: string;

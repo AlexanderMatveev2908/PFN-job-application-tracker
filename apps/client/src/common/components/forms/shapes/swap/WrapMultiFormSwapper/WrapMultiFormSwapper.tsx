@@ -9,7 +9,7 @@ import {
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import WrapSwapper from "../WrapSwapper";
-import WrapPage from "@/common/components/pageWrappers/WrapPage";
+import WrapPage from "@/common/components/wrappers/pages/WrapPage";
 
 type PropsType = {
   formTestID: string;

@@ -2,8 +2,8 @@
 "use client";
 
 import LinkShadow from "@/common/components/links/LinkShadow";
-import WrapCSR from "@/common/components/pageWrappers/WrapCSR";
-import WrapEventPage from "@/common/components/pageWrappers/WrapEventPage/WrapEventPage";
+import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
+import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
 import { mapperCbs } from "@/features/notice/lib/etc";
@@ -20,7 +20,7 @@ const Page: FC = () => {
 
   return (
     <WrapCSR>
-      <WrapEventPage
+      <AppEventPage
         {...{
           act: noticeState.type,
           msg: noticeState.msg,
@@ -42,7 +42,7 @@ const Page: FC = () => {
             />
           </div>
         )}
-      </WrapEventPage>
+      </AppEventPage>
     </WrapCSR>
   );
 };

@@ -8,7 +8,7 @@ import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { ReactNode } from "react";
 import ProgressSwap from "./swap/subComponents/ProgressSwap";
 import { PropsTypeBtnsSwapper } from "./swap/subComponents/BtnsSwapper";
-import WrapPage from "../../pageWrappers/WrapPage";
+import WrapPage from "../../wrappers/pages/WrapPage";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {

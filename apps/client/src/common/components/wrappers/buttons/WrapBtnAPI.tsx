@@ -4,7 +4,7 @@
 import type { FC } from "react";
 import { AppEventT } from "@/common/types/api";
 import { ChildrenT } from "@/common/types/ui";
-import SpinBtn from "../spinners/SpinBtn";
+import SpinBtn from "../../elements/spinners/SpinBtn";
 
 type PropsType = {
   isLoading?: boolean;

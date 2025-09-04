@@ -8,7 +8,7 @@ import { getSideState, sideSlice } from "./slice";
 import BlackBg from "@/common/components/BlackBg";
 import { motion } from "framer-motion";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
-import TxtScroll from "@/common/components/txt/TxtScroll";
+import TxtScroll from "@/common/components/elements/txt/TxtScroll";
 import { css } from "@emotion/react";
 import SideContent from "./components/SideContent/SideContent";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";

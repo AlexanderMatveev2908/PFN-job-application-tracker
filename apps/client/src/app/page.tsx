@@ -2,7 +2,7 @@
 "use client";
 
 import BtnShadow from "@/common/components/buttons/BtnShadow";
-import WrapCSR from "@/common/components/pageWrappers/WrapCSR";
+import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { testSliceAPI } from "@/features/test/slices/api";
 import { type FC } from "react";

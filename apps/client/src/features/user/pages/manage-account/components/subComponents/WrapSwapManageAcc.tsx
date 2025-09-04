@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import Title from "@/common/components/txt/Title";
+import Title from "@/common/components/elements/txt/Title";
 import WrapSwap, {
   PropsTypeWrapSwap,
 } from "@/common/components/forms/shapes/swap/subComponents/WrapSwap";

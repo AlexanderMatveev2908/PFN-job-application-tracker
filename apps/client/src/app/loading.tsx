@@ -1,4 +1,4 @@
-import SpinPage from "@/common/components/spinners/SpinPage/SpinPage";
+import SpinPage from "@/common/components/elements/spinners/SpinPage/SpinPage";
 import type { FC } from "react";
 
 const loading: FC = () => {

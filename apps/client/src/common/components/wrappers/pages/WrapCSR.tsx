@@ -5,7 +5,7 @@ import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { useMemo, type FC, type ReactNode } from "react";
 import WrapPage from "./WrapPage";
 import { ErrApp } from "@/core/lib/err";
-import SpinPage from "../spinners/SpinPage/SpinPage";
+import SpinPage from "../../elements/spinners/SpinPage/SpinPage";
 
 type PropsType = {
   isLoading?: boolean;

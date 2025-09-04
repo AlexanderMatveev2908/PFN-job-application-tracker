@@ -2,7 +2,7 @@
 "use client";
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
-import Title from "@/common/components/txt/Title";
+import Title from "@/common/components/elements/txt/Title";
 import { ChildrenT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";

@@ -6,14 +6,14 @@ import type { FC } from "react";
 import { $argClr } from "@/core/uiFactory/style";
 import { ChildrenT } from "@/common/types/ui";
 import { SvgsAppEvents } from "./uiFactory";
-import BounceIconSSR from "../../bounceIcons/BounceIconSSR/BounceIconSSR";
+import BounceIconSSR from "@/common/components/bounceIcons/BounceIconSSR/BounceIconSSR";
 
 type PropsType = {
   act: AppEventT;
   msg: string;
 } & ChildrenT;
 
-const WrapEventPage: FC<PropsType> = ({ act, msg, children }) => {
+const AppEventPage: FC<PropsType> = ({ act, msg, children }) => {
   const $clr = $argClr[act];
 
   return (
@@ -41,4 +41,4 @@ const WrapEventPage: FC<PropsType> = ({ act, msg, children }) => {
   );
 };
 
-export default WrapEventPage;
+export default AppEventPage;
