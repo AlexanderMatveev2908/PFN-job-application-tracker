@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -11,7 +10,7 @@ import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import { ToptFormT } from "@/core/paperwork";
 import { css } from "@emotion/react";
-import { type FC } from "react";
+import { RefObject, type FC } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useSideStuffTotpForm } from "./hooks/useSideStuffTotpForm";
 
@@ -63,7 +62,7 @@ const TotpForm: FC<PropsType> = ({
       }}
     >
       <div
-        ref={parentRef as any}
+        ref={parentRef as RefObject<HTMLDivElement>}
         className="w-fit grid grid-cols-1 items-center gap-6 sm:flex sm:justify-center justify-items-center relative mx-auto"
       >
         {Array.from({ length: 2 }).map((_, idx) => (

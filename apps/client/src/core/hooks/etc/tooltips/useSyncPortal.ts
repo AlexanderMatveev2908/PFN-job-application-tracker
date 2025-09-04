@@ -7,7 +7,7 @@ export type CoordsTooltipT = Record<CoordsT, number>;
 
 export const useSyncPortal = (optDep?: any[]) => {
   const parentRef = useRef<
-    HTMLElement | HTMLButtonElement | HTMLAnchorElement | null
+    HTMLElement | HTMLDivElement | HTMLButtonElement | HTMLAnchorElement | null
   >(null);
   const [coords, setCoords] = useState<CoordsTooltipT>({
     top: 0,
