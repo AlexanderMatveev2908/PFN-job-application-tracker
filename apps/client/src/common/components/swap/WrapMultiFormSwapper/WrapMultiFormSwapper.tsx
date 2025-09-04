@@ -8,8 +8,8 @@ import {
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import WrapSwapper from "../WrapSwapper";
-import WrapPage from "@/common/components/wrappers/pages/WrapPage";
 import WrapFormFooter from "../../forms/wrappers/subComponents/WrapFormFooter";
+import WrapCSR from "../../wrappers/pages/WrapCSR";
 
 type PropsType = {
   formTestID: string;
@@ -21,6 +21,10 @@ type PropsType = {
   };
   totSwaps: number;
   swapState: SwapStateT;
+  propsWrapCSR?: {
+    isApiOk?: boolean;
+    isLoading?: boolean;
+  };
 } & ChildrenT;
 
 const WrapMultiFormSwapper: FC<PropsType> = ({
@@ -30,9 +34,15 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
   propsWrapSwapper,
   totSwaps,
   swapState,
+  propsWrapCSR = { isApiOk: true, isLoading: false },
 }) => {
   return (
-    <WrapPage>
+    <WrapCSR
+      {...{
+        isApiOk: propsWrapCSR.isApiOk,
+        isLoading: propsWrapCSR.isLoading,
+      }}
+    >
       <div data-testid={formTestID + "__form"} className="form__shape">
         <WrapSwapper
           {...{
@@ -54,7 +64,7 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
           }}
         />
       </div>
-    </WrapPage>
+    </WrapCSR>
   );
 };
 

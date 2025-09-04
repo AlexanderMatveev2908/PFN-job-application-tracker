@@ -6,9 +6,9 @@ import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { ReactNode } from "react";
-import WrapPage from "../../wrappers/pages/WrapPage";
 import { PropsTypeBtnsSwapper } from "../../swap/components/BtnsSwapper";
 import ProgressSwap from "../../swap/components/ProgressSwap";
+import WrapCSR from "../../wrappers/pages/WrapCSR";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {
@@ -35,7 +35,7 @@ const WrapFormPage = <T extends FieldValues>({
   AdditionalFooterNode,
 }: WrapFormPagePropsType<T>) => {
   return (
-    <WrapPage>
+    <WrapCSR>
       {isObjOk(propsProgressSwap) && (
         <ProgressSwap
           {...({
@@ -65,7 +65,7 @@ const WrapFormPage = <T extends FieldValues>({
           {typeof AdditionalFooterNode === "function" && AdditionalFooterNode()}
         </form>
       </FormProvider>
-    </WrapPage>
+    </WrapCSR>
   );
 };
 
