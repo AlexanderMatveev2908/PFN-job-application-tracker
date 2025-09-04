@@ -2,8 +2,6 @@
 "use client";
 
 import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
-import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
-import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import type { FC, RefObject } from "react";
 import TotpForm from "./components/TotpForm/TotpForm";
 import BackupCodeForm from "./components/BackupCodeForm/BackupCodeForm";
@@ -57,6 +55,7 @@ const Form2FA: FC<Form2FAPropsType> = ({
           isCurr: !swapState.currSwap,
           formCtx: backupCodeProps.formCtx,
           handleSave: backupCodeProps.handleSave,
+          swapState,
         }}
       />
 

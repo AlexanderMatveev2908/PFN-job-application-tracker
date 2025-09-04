@@ -17,6 +17,6 @@ export const useFocusMultiForm = <T extends FieldValues>({
 }: Params<T>) => {
   useEffect(() => {
     if (swapState.currSwap === targetSwap && swapState.swapMode !== "swapping")
-      setFocus(keyField);
+      setTimeout(() => setFocus(keyField), 0);
   }, [setFocus, keyField, swapState, targetSwap]);
 };

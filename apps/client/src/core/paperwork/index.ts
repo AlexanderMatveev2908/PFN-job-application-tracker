@@ -1,5 +1,6 @@
 import z from "zod";
 import { REG_BACKUP_CODE, REG_PWD, REG_TOTP_CODE } from "../constants/regex";
+import { isStr } from "../lib/dataStructure";
 
 export const emailSchema = z.object({
   email: z
@@ -47,17 +48,23 @@ export const resetValsPwdsForm: PwdsFormT = {
   confirm_password: "",
 };
 
-export const schemaTotpCode = z.object({
-  totp_code: z
-    .string()
-    .min(1, "Totp code is required")
-    .regex(REG_TOTP_CODE, "Invalid code"),
-});
+export const schemaTotpCode = z
+  .object({
+    totp_code: z.array(z.string()).length(6, "Invalid Totp code length"),
+  })
+  .refine((data) => data.totp_code.filter((v) => isStr(v)).length === 6, {
+    message: "Totp Code Required",
+    path: ["totp_code"],
+  })
+  .refine((data) => REG_TOTP_CODE.test(data.totp_code.join("")), {
+    message: "Invalid Totp Code",
+    path: ["totp_code"],
+  });
 
 export type ToptFormT = z.infer<typeof schemaTotpCode>;
 
 export const resetValsTotpForm: ToptFormT = {
-  totp_code: "",
+  totp_code: Array.from({ length: 6 }, () => ""),
 };
 
 export const schemaBackupForm = z.object({

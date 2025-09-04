@@ -47,7 +47,7 @@ const RawField = <T extends FieldValues>({
 
         if (optRef) optRef.current = node;
       },
-      className: `input__base txt__md ${
+      className: `input__txt txt__md ${
         el.type === "textarea" && "scroll__app"
       }`,
 
