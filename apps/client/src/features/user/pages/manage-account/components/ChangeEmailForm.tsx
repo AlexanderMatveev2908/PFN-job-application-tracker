@@ -14,7 +14,7 @@ import { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { FormManageAccPropsType } from "../types";
 import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
-import WrapSwapMultiForm from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
+import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 
 const ChangeEmailForm: FC<FormManageAccPropsType> = ({
   contentRef,

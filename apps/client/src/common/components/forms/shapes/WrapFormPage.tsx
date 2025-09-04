@@ -6,9 +6,9 @@ import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { ReactNode } from "react";
-import ProgressSwap from "./swap/subComponents/ProgressSwap";
-import { PropsTypeBtnsSwapper } from "./swap/subComponents/BtnsSwapper";
 import WrapPage from "../../wrappers/pages/WrapPage";
+import { PropsTypeBtnsSwapper } from "../../swap/subComponents/BtnsSwapper";
+import ProgressSwap from "../../swap/subComponents/ProgressSwap";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {

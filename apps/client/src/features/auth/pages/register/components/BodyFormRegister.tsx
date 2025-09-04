@@ -10,9 +10,9 @@ import { RegisterFormT } from "../paperwork";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
-import WrapSwapper from "@/common/components/forms/shapes/swap/WrapSwapper";
-import WrapSwap from "@/common/components/forms/shapes/swap/subComponents/WrapSwap";
 import PairPwd from "@/common/components/PairPwd/PairPwd";
+import WrapSwapper from "@/common/components/swap/WrapSwapper";
+import WrapSwap from "@/common/components/swap/subComponents/WrapSwap";
 
 type PropsType = {
   swapState: SwapStateT;

@@ -1,14 +1,12 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapMultiFormSwapper from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
+import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import type { FC } from "react";
 
-type PropsType = {};
-
-const Form2FA: FC<PropsType> = ({}) => {
+const Form2FA: FC = () => {
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
 

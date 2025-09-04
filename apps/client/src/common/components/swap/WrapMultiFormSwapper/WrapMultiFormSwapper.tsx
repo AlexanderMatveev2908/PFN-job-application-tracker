@@ -3,13 +3,13 @@
 
 import type { FC } from "react";
 import { ChildrenT } from "@/common/types/ui";
-import WrapFormFooter from "../../subComponents/WrapFormFooter";
 import {
   PayloadStartSwapT,
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import WrapSwapper from "../WrapSwapper";
 import WrapPage from "@/common/components/wrappers/pages/WrapPage";
+import WrapFormFooter from "../../forms/shapes/subComponents/WrapFormFooter";
 
 type PropsType = {
   formTestID: string;

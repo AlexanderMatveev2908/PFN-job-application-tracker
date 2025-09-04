@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapMultiFormSwapper from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 import { TokenT } from "@/common/types/tokens";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
@@ -13,6 +12,7 @@ import DelAccountSwap from "@/features/user/pages/manage-account/components/DelA
 import SwapSetup2FA from "@/features/user/pages/manage-account/components/SwapSetup2FA/SwapSetup2FA";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
+import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 
 const Page: FC = () => {
   useCheckTypeCbcHmac({
