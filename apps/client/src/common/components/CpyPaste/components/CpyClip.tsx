@@ -3,9 +3,9 @@
 
 import { useEffect, type FC } from "react";
 import { easeInOut, motion, useAnimationControls } from "framer-motion";
-import Portal from "../../../portals/Portal";
 import { CoordsTooltipT } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
+import Portal from "../../portals/Portal";
 
 type PropsType = {
   isCopied: boolean;

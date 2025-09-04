@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
-import WrapEventPage from "@/common/components/HOC/pageWrappers/WrapEventPage/WrapEventPage";
 import LinkShadow from "@/common/components/links/LinkShadow";
+import WrapCSR from "@/common/components/pageWrappers/WrapCSR";
+import WrapEventPage from "@/common/components/pageWrappers/WrapEventPage/WrapEventPage";
 import { envApp } from "@/core/constants/env";
 import { isStr } from "@/core/lib/dataStructure";
 import { mapperCbs } from "@/features/notice/lib/etc";

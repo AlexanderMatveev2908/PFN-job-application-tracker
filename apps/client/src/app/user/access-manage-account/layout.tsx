@@ -1,4 +1,4 @@
-import BaseLayoutPage from "@/common/components/HOC/pageWrappers/BaseLayoutPage";
+import BaseLayoutPage from "@/common/components/pageWrappers/BaseLayoutPage";
 import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
 

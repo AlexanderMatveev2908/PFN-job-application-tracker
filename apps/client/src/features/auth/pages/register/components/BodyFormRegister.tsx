@@ -2,7 +2,6 @@
 "use client";
 
 import { type FC } from "react";
-import WrapSwap from "../../../../../common/components/swap/subComponents/WrapSwap";
 import { registerSwap_0, termsField } from "../uiFactory/register";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
@@ -10,9 +9,10 @@ import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { RegisterFormT } from "../paperwork";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import FormFieldCheck from "@/common/components/forms/inputs/FormFieldCheck/FormFieldCheck";
-import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
-import WrapSwapper from "@/common/components/swap/WrapSwapper";
+import WrapSwapper from "@/common/components/forms/shapes/swap/WrapSwapper";
+import WrapSwap from "@/common/components/forms/shapes/swap/subComponents/WrapSwap";
+import PairPwd from "@/common/components/PairPwd/PairPwd";
 
 type PropsType = {
   swapState: SwapStateT;

@@ -3,7 +3,6 @@
 
 import { type FC } from "react";
 import { FormManageAccPropsType } from "../types";
-import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import { useForm } from "react-hook-form";
 import { PwdsFormT, pwdsSchema, resetValsPwdsForm } from "@/core/paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,7 @@ import { userSliceAPI } from "@/features/user/slices/api";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import WrapSwapMultiForm from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
+import PairPwd from "@/common/components/PairPwd/PairPwd";
 
 const ChangePwdForm: FC<FormManageAccPropsType> = ({
   contentRef,

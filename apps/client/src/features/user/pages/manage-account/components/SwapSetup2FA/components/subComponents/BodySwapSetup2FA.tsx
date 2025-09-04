@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import CpyPaste from "@/common/components/tooltips/CpyPaste/CpyPaste";
-import ImgLoader from "@/common/components/HOC/assetsHandlers/ImgLoader";
 import { Setup2FAReturnT } from "@/features/user/slices/api";
 import { useMemo, type FC } from "react";
 import { SwapModeT } from "@/core/hooks/etc/useSwap/etc/initState";
+import ImgLoader from "@/common/components/assetsHandlers/ImgLoader";
+import CpyPaste from "@/common/components/CpyPaste/CpyPaste";
 
 type PropsType = {
   res2FA: Setup2FAReturnT | null;
