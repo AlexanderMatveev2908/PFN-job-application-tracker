@@ -5,10 +5,11 @@ import { ChildrenT } from "@/common/types/ui";
 import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import { PropsTypeBtnsSwapper } from "../../swap/components/BtnsSwapper";
 import ProgressSwap from "../../swap/components/ProgressSwap";
 import WrapCSR from "../../wrappers/pages/WrapCSR";
+import WrapFormBody from "./subComponents/WrapFormBody";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {
   propsProgressSwap?: {
@@ -20,7 +21,6 @@ export type WrapFormPagePropsType<T extends FieldValues> = {
   handleSave: () => void;
   formTestID: string;
   isLoading: boolean;
-  appendAuthSpanner?: boolean;
   AdditionalFooterNode?: () => ReactNode;
 } & ChildrenT;
 
@@ -34,6 +34,8 @@ const WrapFormPage = <T extends FieldValues>({
   propsBtnsSwapper,
   AdditionalFooterNode,
 }: WrapFormPagePropsType<T>) => {
+  const ChildrenWrapper = propsBtnsSwapper ? Fragment : WrapFormBody;
+
   return (
     <WrapCSR>
       {isObjOk(propsProgressSwap) && (
@@ -52,7 +54,7 @@ const WrapFormPage = <T extends FieldValues>({
           className="form__shape"
           onSubmit={handleSave}
         >
-          {children}
+          <ChildrenWrapper>{children}</ChildrenWrapper>
 
           <WrapFormFooter
             {...{
