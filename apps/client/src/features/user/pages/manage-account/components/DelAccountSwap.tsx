@@ -3,7 +3,6 @@
 
 import type { FC } from "react";
 import { FormManageAccPropsType } from "../types";
-import WrapSwapManageAcc from "./subComponents/WrapSwapManageAcc";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 import WrapPop from "@/common/components/HOC/WrapPop/WrapPop";
 import { usePop } from "@/core/hooks/etc/usePop";
@@ -11,6 +10,7 @@ import Portal from "@/common/components/elements/portals/Portal";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useUser } from "@/features/user/hooks/useUser";
 import { userSliceAPI } from "@/features/user/slices/api";
+import WrapSwapManageAcc from "./subComponents/WrapSwapManageAcc";
 
 const DelAccountSwap: FC<Omit<FormManageAccPropsType, "swapState">> = ({
   contentRef,

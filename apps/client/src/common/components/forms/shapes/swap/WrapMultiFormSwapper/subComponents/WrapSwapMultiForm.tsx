@@ -3,12 +3,10 @@
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import Title from "@/common/components/elements/txt/Title";
-import WrapSwap, {
-  PropsTypeWrapSwap,
-} from "@/common/components/swap/subComponents/WrapSwap";
 import { ChildrenT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
+import WrapSwap, { PropsTypeWrapSwap } from "../../subComponents/WrapSwap";
 
 type PropsType<T extends FieldValues> = {
   title: string;
@@ -18,7 +16,7 @@ type PropsType<T extends FieldValues> = {
 } & ChildrenT &
   Omit<PropsTypeWrapSwap, "children">;
 
-const WrapFormManageAcc = <T extends FieldValues>({
+const WrapSwapMultiForm = <T extends FieldValues>({
   title,
   children,
   contentRef,
@@ -67,4 +65,4 @@ const WrapFormManageAcc = <T extends FieldValues>({
   );
 };
 
-export default WrapFormManageAcc;
+export default WrapSwapMultiForm;

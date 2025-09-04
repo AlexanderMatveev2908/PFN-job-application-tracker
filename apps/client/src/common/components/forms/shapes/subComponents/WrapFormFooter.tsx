@@ -2,11 +2,11 @@
 "use client";
 
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
-import BtnsSwapper, {
-  PropsTypeBtnsSwapper,
-} from "@/common/components/swap/subComponents/BtnsSwapper";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
+import BtnsSwapper, {
+  PropsTypeBtnsSwapper,
+} from "../swap/subComponents/BtnsSwapper";
 
 type PropsType = {
   propsBtnsSwapper?: PropsTypeBtnsSwapper;

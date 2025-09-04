@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormManageAcc from "@/features/user/pages/manage-account/components/subComponents/WrapFormManageAcc";
 import { type FC } from "react";
 import { FormManageAccPropsType } from "../types";
 import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
@@ -13,6 +12,7 @@ import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
 import { userSliceAPI } from "@/features/user/slices/api";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
+import WrapSwapMultiForm from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 
 const ChangePwdForm: FC<FormManageAccPropsType> = ({
   contentRef,
@@ -49,7 +49,7 @@ const ChangePwdForm: FC<FormManageAccPropsType> = ({
   }, logFormErrs);
 
   return (
-    <WrapFormManageAcc
+    <WrapSwapMultiForm
       {...{
         contentRef,
         isCurr,
@@ -65,7 +65,7 @@ const ChangePwdForm: FC<FormManageAccPropsType> = ({
           swapMode: swapState.swapMode,
         }}
       />
-    </WrapFormManageAcc>
+    </WrapSwapMultiForm>
   );
 };
 

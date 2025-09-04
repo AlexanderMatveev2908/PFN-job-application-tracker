@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper";
+import WrapMultiFormSwapper from "@/common/components/forms/shapes/swap/WrapMultiFormSwapper/WrapMultiFormSwapper";
 import WrapCSR from "@/common/components/HOC/pageWrappers/WrapCSR";
 import { TokenT } from "@/common/types/tokens";
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";

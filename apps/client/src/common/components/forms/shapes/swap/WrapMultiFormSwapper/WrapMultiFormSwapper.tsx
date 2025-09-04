@@ -2,14 +2,14 @@
 "use client";
 
 import type { FC } from "react";
-import WrapPage from "../HOC/pageWrappers/WrapPage";
+import WrapPage from "../../../../HOC/pageWrappers/WrapPage";
 import { ChildrenT } from "@/common/types/ui";
-import WrapFormFooter from "../forms/shapes/subComponents/WrapFormFooter";
-import WrapSwapper from "./WrapSwapper";
+import WrapFormFooter from "../../subComponents/WrapFormFooter";
 import {
   PayloadStartSwapT,
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
+import WrapSwapper from "../WrapSwapper";
 
 type PropsType = {
   formTestID: string;
