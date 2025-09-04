@@ -16,4 +16,4 @@ export const REG_CBC_HMAC =
 
 export const REG_TOTP_SECRET = /^[A-Z2-7]{32}$/;
 export const REG_TOTP_CODE = /^\d{6}$/;
-export const REG_BACKUP_CODE = /^[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+export const REG_BACKUP_CODE = /^[A-F0-9]{4}-[A-F0-9]{4}$/;
