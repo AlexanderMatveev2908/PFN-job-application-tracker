@@ -15,7 +15,7 @@ const WrapSwap: FC<PropsTypeWrapSwap> = ({ children, isCurr, contentRef }) => {
     <WrapFormBody
       ref={isCurr ? contentRef : null}
       {...{
-        className: `form__body transition-all duration-300 ${
+        $twd: `transition-all duration-300 ${
           isCurr
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"

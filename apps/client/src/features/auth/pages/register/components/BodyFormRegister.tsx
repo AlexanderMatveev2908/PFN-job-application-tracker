@@ -13,6 +13,7 @@ import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import WrapSwapper from "@/common/components/swap/WrapSwapper/WrapSwapper";
 import WrapSwap from "@/common/components/swap/WrapSwapper/subComponents/WrapSwap";
+import { genLorem } from "@/core/lib/etc";
 
 type PropsType = {
   swapState: SwapStateT;
@@ -73,6 +74,8 @@ const BodyFormRegister: FC<PropsType> = ({ swapState }) => {
           contentRef,
         }}
       >
+        {genLorem(5)}
+
         <PairPwd
           {...{
             isCurrSwap: currSwap === 1,
