@@ -3,7 +3,6 @@
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { useMemo, type FC, type ReactNode } from "react";
-import WrapPage from "./WrapPage";
 import { ErrApp } from "@/core/lib/err";
 import SpinPage from "../../elements/spinners/SpinPage/SpinPage";
 
@@ -34,13 +33,21 @@ const WrapCSR: FC<PropsType> = ({
       "Data structure of API response does not fit expected shape ☢️"
     );
 
-  return isPending ? (
-    <SpinPage />
-  ) : isApiOk ? (
-    <WrapPage>
-      {typeof children === "function" ? children({ isHydrated }) : children}
-    </WrapPage>
-  ) : null;
+  return (
+    <div className="page__shape">
+      {isPending && <SpinPage />}
+
+      <div
+        className={`page__shape ${
+          isPending
+            ? "opacity-0 pointer-events-none"
+            : "opacity-100 pointer-events-auto"
+        }`}
+      >
+        {typeof children === "function" ? children({ isHydrated }) : children}
+      </div>
+    </div>
+  );
 };
 
 export default WrapCSR;

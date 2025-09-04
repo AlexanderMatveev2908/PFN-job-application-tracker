@@ -13,7 +13,7 @@ export const useScroll = () => {
           top: 0,
           behavior: "smooth",
         });
-      }, 50);
+      }, 100);
 
     wrapClientListener(cb);
   }, [wrapClientListener, p]);

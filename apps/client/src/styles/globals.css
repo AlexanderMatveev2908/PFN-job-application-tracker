@@ -322,6 +322,10 @@
   box-shadow: 0 0 2.5px var(--white__0), 0 0 5px var(--white__0), 0 0 10px var(--white__0), 0 0 15px var(--white__0), 0 0 20px var(--white__0);
 }
 
+.page__shape {
+  @apply w-full flex flex-col justify-center gap-10;
+}
+
 .cont__grid__sm,
 .cont__grid__md,
 .cont__grid__lg {
