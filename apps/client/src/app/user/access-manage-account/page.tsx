@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormPage from "@/common/components/forms/shapes/WrapFormPage";
+import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage";
 import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";

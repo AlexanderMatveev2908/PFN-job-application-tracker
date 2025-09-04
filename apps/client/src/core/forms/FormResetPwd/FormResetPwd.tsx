@@ -3,7 +3,7 @@
 
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
+import WrapFormBody from "@/common/components/forms/wrappers/subComponents/WrapFormBody";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 import { PwdsFormT } from "@/core/paperwork";
 import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";

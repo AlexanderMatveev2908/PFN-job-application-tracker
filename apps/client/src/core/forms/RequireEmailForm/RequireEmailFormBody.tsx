@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
+import WrapFormBody from "@/common/components/forms/wrappers/subComponents/WrapFormBody";
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { emailField } from "@/core/uiFactory/formFields";

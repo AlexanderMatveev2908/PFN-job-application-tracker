@@ -2,7 +2,7 @@
 "use client";
 
 import FormFieldPwd from "@/common/components/forms/inputs/FormFieldPwd";
-import WrapFormBody from "@/common/components/forms/shapes/subComponents/WrapFormBody";
+import WrapFormBody from "@/common/components/forms/wrappers/subComponents/WrapFormBody";
 import type { FC } from "react";
 import { pwdField } from "../uiFactory";
 import { useTogglePwd } from "@/core/hooks/etc/useTogglePwd";

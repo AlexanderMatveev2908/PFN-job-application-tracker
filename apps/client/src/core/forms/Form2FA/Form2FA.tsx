@@ -5,6 +5,8 @@ import WrapMultiFormSwapper from "@/common/components/swap/WrapMultiFormSwapper/
 import { useListenHeight } from "@/core/hooks/etc/height/useListenHeight";
 import { useSwap } from "@/core/hooks/etc/useSwap/useSwap";
 import type { FC } from "react";
+import TotpForm from "./components/TotpForm/TotpForm";
+import BackupCodeForm from "./components/BackupCodeForm/BackupCodeForm";
 
 const Form2FA: FC = () => {
   const { startSwap, swapState } = useSwap();
@@ -28,7 +30,19 @@ const Form2FA: FC = () => {
         totSwaps: 2,
       }}
     >
-      <div className=""></div>
+      <TotpForm
+        {...{
+          contentRef,
+          isCurr: !currSwap,
+        }}
+      />
+
+      <BackupCodeForm
+        {...{
+          contentRef,
+          isCurr: !!currSwap,
+        }}
+      />
     </WrapMultiFormSwapper>
   );
 };
