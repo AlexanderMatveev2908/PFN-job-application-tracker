@@ -1,6 +1,5 @@
 import z from "zod";
 import { REG_BACKUP_CODE, REG_PWD, REG_TOTP_CODE } from "../constants/regex";
-import { isStr } from "../lib/dataStructure";
 
 export const emailSchema = z.object({
   email: z
@@ -51,10 +50,6 @@ export const resetValsPwdsForm: PwdsFormT = {
 export const schemaTotpCode = z
   .object({
     totp_code: z.array(z.string()).length(6, "Invalid Totp code length"),
-  })
-  .refine((data) => data.totp_code.filter((v) => isStr(v)).length === 6, {
-    message: "Totp Code Required",
-    path: ["totp_code"],
   })
   .refine((data) => REG_TOTP_CODE.test(data.totp_code.join("")), {
     message: "Invalid Totp Code",
