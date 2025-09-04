@@ -2,10 +2,22 @@
 "use client";
 
 import { ChildrenT } from "@/common/types/ui";
-import type { FC } from "react";
+import { forwardRef } from "react";
 
-const WrapFormBody: FC<ChildrenT> = ({ children }) => {
-  return <div className="form__body">{children}</div>;
-};
+type PropsType = {
+  $twd?: string;
+} & ChildrenT;
+
+const WrapFormBody = forwardRef<HTMLDivElement, PropsType>(
+  ({ children, $twd }, ref) => {
+    return (
+      <div ref={ref} className={`form__body ${$twd ?? ""}`}>
+        {children}
+      </div>
+    );
+  }
+);
+
+WrapFormBody.displayName = "WrapFormBody";
 
 export default WrapFormBody;
