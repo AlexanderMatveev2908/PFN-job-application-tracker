@@ -2,7 +2,6 @@
 "use client";
 
 import { ChildrenT } from "@/common/types/ui";
-import { isObjOk } from "@/core/lib/dataStructure";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { Fragment, ReactNode } from "react";
@@ -38,16 +37,15 @@ const WrapFormPage = <T extends FieldValues>({
 
   return (
     <WrapCSR>
-      {isObjOk(propsProgressSwap) && (
+      {propsProgressSwap && (
         <ProgressSwap
-          {...({
+          {...{
             maxW: 800,
             ...propsProgressSwap,
-          } as WrapFormPagePropsType<T>["propsProgressSwap"] & {
-            maxW: number;
-          })}
+          }}
         />
       )}
+
       <FormProvider {...formCtx}>
         <form
           data-testid={formTestID + "__form"}
