@@ -341,11 +341,11 @@
 }
 
 .form__shape {
-  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 pb-5 overflow-hidden;
+  @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5 overflow-hidden;
 }
 
 .form__body {
-  @apply grid grid-cols-1 gap-6 w-full h-fit items-start p-5;
+  @apply grid grid-cols-1 gap-6 w-full max-h-fit items-start p-5;
 }
 
 @keyframes skeleton {

@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormBody from "@/common/components/forms/wrappers/subComponents/WrapFormBody";
 import { ChildrenT } from "@/common/types/ui";
 import type { FC, RefObject } from "react";
 
@@ -12,18 +11,16 @@ export type PropsTypeWrapSwap = {
 
 const WrapSwap: FC<PropsTypeWrapSwap> = ({ children, isCurr, contentRef }) => {
   return (
-    <WrapFormBody
+    <div
       ref={isCurr ? contentRef : null}
-      {...{
-        $twd: `transition-all duration-300  ${
-          isCurr
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`,
-      }}
+      className={`form__body transition-all duration-300 ${
+        isCurr
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      }`}
     >
       {children}
-    </WrapFormBody>
+    </div>
   );
 };
 
