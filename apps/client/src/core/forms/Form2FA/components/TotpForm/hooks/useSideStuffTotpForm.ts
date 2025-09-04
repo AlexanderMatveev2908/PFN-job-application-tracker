@@ -1,5 +1,4 @@
 import { REG_INT } from "@/core/constants/regex";
-import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { ToptFormT } from "@/core/paperwork";
 import { useEffect, useState } from "react";
 import {
@@ -23,11 +22,6 @@ export const useSideStuffTotpForm = ({
 }: Params) => {
   const [ctrlPressed, setCtrlPressed] = useState<boolean>();
   const [currFocus, setCurrFocus] = useState<number | null>(null);
-
-  useFocus("totp_code.0", {
-    setFocus,
-    tmr: 300,
-  });
 
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {

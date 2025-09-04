@@ -13,6 +13,8 @@ import { css } from "@emotion/react";
 import { RefObject, type FC } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useSideStuffTotpForm } from "./hooks/useSideStuffTotpForm";
+import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
+import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 
 type PropsType = {
   formCtx: UseFormReturn<ToptFormT>;
@@ -36,8 +38,15 @@ const TotpForm: FC<PropsType> = ({
     trigger,
   } = formCtx;
 
+  useFocus("totp_code.0", { setFocus });
+  useFocusMultiForm<ToptFormT>({
+    keyField: "totp_code.0",
+    setFocus,
+    swapState,
+    targetSwap: 0,
+  });
+
   const codeForm = watch();
-  // const realLength = codeForm["totp_code"].filter((ch) => isStr(ch)).length;
 
   const { ctrlPressed, setCtrlPressed, setCurrFocus } = useSideStuffTotpForm({
     setFocus,
