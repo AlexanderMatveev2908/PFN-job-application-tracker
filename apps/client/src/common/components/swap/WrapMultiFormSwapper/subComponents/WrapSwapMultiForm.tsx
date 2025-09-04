@@ -6,7 +6,9 @@ import Title from "@/common/components/elements/txt/Title";
 import { ChildrenT } from "@/common/types/ui";
 import { parseLabelToTestID } from "@/core/lib/etc";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
-import WrapSwap, { PropsTypeWrapSwap } from "../../subComponents/WrapSwap";
+import WrapSwap, {
+  PropsTypeWrapSwap,
+} from "../../WrapSwapper/subComponents/WrapSwap";
 
 type PropsType<T extends FieldValues> = {
   title: string;

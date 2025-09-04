@@ -4,7 +4,7 @@
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import BtnsSwapper, {
   PropsTypeBtnsSwapper,
-} from "@/common/components/swap/subComponents/BtnsSwapper";
+} from "@/common/components/swap/components/BtnsSwapper";
 import { isObjOk } from "@/core/lib/dataStructure";
 import type { FC } from "react";
 
@@ -20,7 +20,7 @@ const WrapFormFooter: FC<PropsType> = ({
   submitBtnTestID,
 }) => {
   return (
-    <div className="cont__grid__lg px-5">
+    <div className="cont__grid__lg p-5">
       {isObjOk(propsBtnsSwapper) && (
         <BtnsSwapper
           {...({

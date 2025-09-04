@@ -7,7 +7,7 @@ import {
   PayloadStartSwapT,
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
-import WrapSwapper from "../WrapSwapper";
+import WrapSwapper from "../WrapSwapper/WrapSwapper";
 import WrapPage from "@/common/components/wrappers/pages/WrapPage";
 import WrapFormFooter from "../../forms/wrappers/subComponents/WrapFormFooter";
 

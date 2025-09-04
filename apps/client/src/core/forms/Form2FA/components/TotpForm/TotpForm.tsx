@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { PropsTypeWrapSwap } from "@/common/components/swap/subComponents/WrapSwap";
+import { PropsTypeWrapSwap } from "@/common/components/swap/WrapSwapper/subComponents/WrapSwap";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
 import { logFormErrs } from "@/core/lib/etc";
 import { __cg } from "@/core/lib/log";
