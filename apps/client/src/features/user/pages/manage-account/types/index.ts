@@ -1,4 +1,4 @@
-import { PropsTypeWrapSwap } from "@/common/components/swap/WrapSwapper/subComponents/WrapSwap";
+import { PropsTypeWrapSwap } from "@/common/components/swap/components/WrapSwap";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
 
 export type FormManageAccPropsType = {
