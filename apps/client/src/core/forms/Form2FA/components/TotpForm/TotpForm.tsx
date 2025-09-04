@@ -11,6 +11,7 @@ import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { SwapStateT } from "@/core/hooks/etc/useSwap/etc/initState";
+import { isStr } from "@/core/lib/dataStructure";
 import { ToptFormT } from "@/core/paperwork";
 import { css } from "@emotion/react";
 import { useEffect, useState, type FC } from "react";
@@ -41,7 +42,7 @@ const TotpForm: FC<PropsType> = ({
   } = formCtx;
 
   const code = watch();
-  // const realLength = code["totp_code"].filter((ch) => isStr(ch)).length;
+  const realLength = code["totp_code"].filter((ch) => isStr(ch)).length;
 
   const { ids } = useGenIDs({ lengths: [2, 3, 3] });
 
@@ -49,6 +50,7 @@ const TotpForm: FC<PropsType> = ({
 
   useFocus("totp_code.0", {
     setFocus,
+    tmr: 300,
   });
 
   useEffect(() => {
@@ -103,14 +105,14 @@ const TotpForm: FC<PropsType> = ({
         return;
       }
 
-      if (REG_INT.test(e.key) && typeof currFocus === "number") {
-        setValue(
-          "totp_code",
-          code.totp_code.map((v, idx) => (idx === currFocus ? e.key : v)),
-          { shouldValidate: true }
-        );
-        setFocus(`totp_code.${Math.min(currFocus + 1, 5)}`);
-      }
+      // if (REG_INT.test(e.key) && typeof currFocus === "number") {
+      //   setValue(
+      //     "totp_code",
+      //     code.totp_code.map((v, idx) => (idx === currFocus ? e.key : v)),
+      //     { shouldValidate: true }
+      //   );
+      //   setFocus(`totp_code.${Math.min(currFocus + 1, 5)}`);
+      // }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -147,11 +149,11 @@ const TotpForm: FC<PropsType> = ({
                     {...field}
                     type="text"
                     value={field.value ?? ""}
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     onChange={({ target: { value: v } }) => {
-                      // if (v.length > 1) return;
-                      // field.onChange(v);
-                      // if (isStr(v)) setFocus(`totp_code.${realLength + 1}`);
+                      if (v.length > 1 || !REG_INT.test(v)) return;
+
+                      field.onChange(v);
+                      setFocus(`totp_code.${realLength + 1}`);
                     }}
                     onFocus={() => {
                       setCurrFocus(innerIdx + idx * 3);
