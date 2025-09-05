@@ -22,7 +22,7 @@ export const useCheckCbcHmac = () => {
       const aad = extractAadFromCbcHmac(cbc_hmac_token);
 
       if (!aad || !Object.values(TokenT).includes(aad.token_t)) {
-        if (pathPush && !aad) {
+        if (pathPush) {
           nav.replace(pathPush);
         } else {
           setNotice({
@@ -36,11 +36,15 @@ export const useCheckCbcHmac = () => {
       }
 
       if (tokenType && aad.token_t !== tokenType) {
-        setNotice({
-          msg: `Invalid token type`,
-          type: "ERR",
-        });
-        nav.replace("/notice");
+        if (pathPush) {
+          nav.replace(pathPush);
+        } else {
+          setNotice({
+            msg: `Invalid token type`,
+            type: "ERR",
+          });
+          nav.replace("/notice");
+        }
 
         return;
       }

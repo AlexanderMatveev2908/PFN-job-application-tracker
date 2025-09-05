@@ -7,33 +7,34 @@ import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { AccessTokenReturnT, authSliceAPI } from "@/features/auth/slices/api";
 import { useUser } from "@/features/user/hooks/useUser";
+import {
+  GainAccessManageAccReturnT,
+  userSliceAPI,
+} from "@/features/user/slices/api";
 import { useCallback, type FC } from "react";
 
 const Page: FC = () => {
-  const [mutate] = authSliceAPI.useLoginAuth2FAMutation();
+  const [mutate] = userSliceAPI.useGetAccessManageAcc2FAMutation();
   const { nav } = useKitHooks();
-  const { loginUser } = useUser();
+  const { saveCbcHmac } = useUser();
 
   const successCb = useCallback(
-    async (res: UnwrappedResApiT<AccessTokenReturnT>) => {
-      if (!res.access_token) return;
+    async (res: UnwrappedResApiT<GainAccessManageAccReturnT>) => {
+      saveCbcHmac(res.cbc_hmac_token);
 
-      loginUser(res.access_token);
-
-      nav.replace("/");
+      nav.replace("/user/manage-account");
     },
-    [loginUser, nav]
+    [saveCbcHmac, nav]
   );
 
   const props = use2FAForm({
     mutationTrigger: mutate,
     successCb,
-    delCbcOnSuccess: true,
+    delCbcOnSuccess: false,
   });
 
-  useCheckTypeCbcHmac({ tokenType: TokenT.LOGIN_2FA });
+  useCheckTypeCbcHmac({ tokenType: TokenT.MANAGE_ACC_2FA });
 
   return <Form2FA {...{ ...props }} />;
 };

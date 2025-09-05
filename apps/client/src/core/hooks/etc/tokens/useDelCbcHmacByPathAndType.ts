@@ -25,8 +25,12 @@ export const useDelCbcHmacByPathAndType = () => {
         (token_t === TokenT.RECOVER_PWD &&
           !p.includes("auth/recover-password")) ||
         (token_t === TokenT.MANAGE_ACC &&
-          !p.includes("/user/manage-account")) ||
-        (token_t === TokenT.LOGIN_2FA && !p.includes("/auth/login-2FA"))
+          !["/user/manage-account", "/user/access-manage-account-2FA"].some(
+            (allowed) => p.includes(allowed)
+          )) ||
+        (token_t === TokenT.LOGIN_2FA && !p.includes("/auth/login-2FA")) ||
+        (token_t === TokenT.MANAGE_ACC_2FA &&
+          !p.includes("/user/access-manage-account-2FA"))
       ) {
         delCbcHmac();
 
