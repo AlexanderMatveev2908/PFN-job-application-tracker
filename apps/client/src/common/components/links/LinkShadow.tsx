@@ -3,7 +3,7 @@
 
 import type { FC } from "react";
 import { SerializedStyles } from "@emotion/react";
-import { FieldTxtSvgT } from "@/common/types/ui";
+import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import { AppEventT } from "@/common/types/api";
 import WrapElWithShadow from "../shapes/WrapElWithShadow";
 
@@ -14,7 +14,8 @@ type PropsType = {
   $customLabelCSS?: SerializedStyles;
   el: FieldTxtSvgT;
   act: AppEventT;
-};
+} & TestIDT;
+
 const LinkShadow: FC<PropsType> = (arg: PropsType) => {
   return (
     <WrapElWithShadow

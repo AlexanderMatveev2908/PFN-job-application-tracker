@@ -70,6 +70,7 @@ export const getAccessManageAccVerified = async (browser: Browser) => {
   return {
     ...rst,
     page,
+    payload,
     swap,
   };
 };
