@@ -30,7 +30,9 @@ export const useDelCbcHmacByPathAndType = () => {
         (token_t === TokenT.MANAGE_ACC_2FA &&
           !p.includes("/user/access-manage-account-2FA")) ||
         (token_t === TokenT.CHANGE_EMAIL_2FA &&
-          !p.includes("/verify/change-email-2FA"))
+          !p.includes("/verify/change-email-2FA")) ||
+        (token_t === TokenT.RECOVER_PWD_2FA &&
+          !p.includes("/verify/recover-password-2FA"))
       ) {
         delCbcHmac();
 

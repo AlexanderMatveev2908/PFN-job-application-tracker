@@ -16,7 +16,7 @@ export const useCheckCbcHmac = () => {
       pathPush,
     }: {
       cbc_hmac_token?: string | null;
-      tokenType?: TokenT;
+      tokenType?: TokenT | TokenT[];
       pathPush?: string;
     }) => {
       const aad = extractAadFromCbcHmac(cbc_hmac_token);
@@ -35,7 +35,11 @@ export const useCheckCbcHmac = () => {
         return;
       }
 
-      if (tokenType && aad.token_t !== tokenType) {
+      if (
+        tokenType &&
+        ((typeof tokenType === "string" && aad.token_t !== tokenType) ||
+          (Array.isArray(tokenType) && !tokenType.includes(aad.token_t)))
+      ) {
         if (pathPush) {
           nav.replace(pathPush);
         } else {

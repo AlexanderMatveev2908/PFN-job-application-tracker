@@ -5,7 +5,7 @@ import { useCheckCbcHmac } from "./useCheckCbcHmac";
 import { useRunOnHydrate } from "../hydration/useRunOnHydrate";
 
 type Params = {
-  tokenType: TokenT;
+  tokenType: TokenT | TokenT[];
   pathPush?: string;
 };
 
