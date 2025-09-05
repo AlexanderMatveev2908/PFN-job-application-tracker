@@ -14,23 +14,15 @@ import { logFormErrs } from "@/core/lib/etc";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useCallback } from "react";
 import { useKitHooks } from "../useKitHooks";
-import { DataApiT } from "@/common/types/api";
+import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
 import { useManageCbcHmac } from "../tokens/useManageCbcHmac";
 
-type Params = {
-  mutationTrigger: (args: {
-    cbc_hmac_token: string;
-    totp_code?: string;
-    backup_code?: string;
-  }) => {
-    unwrap: () => Promise<{
-      data: DataApiT;
-    }>;
-  };
-  successCb: () => void;
+type Params<T> = {
+  mutationTrigger: TriggerApiT<T>;
+  successCb: (res: UnwrappedResApiT<T>) => void;
 };
 
-export const use2FAForm = ({ mutationTrigger, successCb }: Params) => {
+export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
 
@@ -59,7 +51,7 @@ export const use2FAForm = ({ mutationTrigger, successCb }: Params) => {
 
       delCbcHmac();
 
-      successCb();
+      successCb(res);
     },
     [userState.cbc_hmac_token, wrapAPI, delCbcHmac, mutationTrigger, successCb]
   );

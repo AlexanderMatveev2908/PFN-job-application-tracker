@@ -1,4 +1,4 @@
-import { ResApiT, TagAPI, UnwrappedResT } from "@/common/types/api";
+import { ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { UserT } from "../types";
 import { userSlice } from "./slice";
@@ -26,7 +26,7 @@ export type Setup2FAReturnT = {
 
 export const userSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProfile: builder.query<UnwrappedResT<{ user: UserT }>, void>({
+    getProfile: builder.query<ResApiT<{ user: UserT }>, void>({
       query: () => ({
         url: `${BASE}/profile`,
         method: "GET",

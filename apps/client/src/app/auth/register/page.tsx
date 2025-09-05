@@ -13,7 +13,7 @@ import {
   resetValsRegister,
 } from "@/features/auth/pages/register/paperwork";
 import { swapOnErr } from "@/core/lib/forms";
-import { authSliceAPI, RegisterUserReturnT } from "@/features/auth/slices/api";
+import { authSliceAPI, AccessTokenReturnT } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -49,15 +49,15 @@ const Page: FC = () => {
 
   const handleSave = handleSubmit(
     async (data) => {
-      const res = await wrapAPI<RegisterUserReturnT>({
+      const res = await wrapAPI<AccessTokenReturnT>({
         cbAPI: () => mutate(data),
       });
 
-      if (!res) return;
+      if (!res?.access_token) return;
 
       reset(resetValsRegister);
 
-      loginUser(res!.access_token);
+      loginUser(res.access_token);
 
       setNotice({
         msg: genMailNoticeMsg("to confirm the account"),
