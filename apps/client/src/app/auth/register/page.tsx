@@ -13,7 +13,7 @@ import {
   resetValsRegister,
 } from "@/features/auth/pages/register/paperwork";
 import { swapOnErr } from "@/core/lib/forms";
-import { authSliceAPI, AccessTokenReturnT } from "@/features/auth/slices/api";
+import { authSliceAPI } from "@/features/auth/slices/api";
 import { useRouter } from "next/navigation";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -21,6 +21,7 @@ import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocusSwap } from "@/core/hooks/etc/focus/useFocusSwap";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
+import { JwtReturnT } from "@/common/types/api";
 
 const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
@@ -49,7 +50,7 @@ const Page: FC = () => {
 
   const handleSave = handleSubmit(
     async (data) => {
-      const res = await wrapAPI<AccessTokenReturnT>({
+      const res = await wrapAPI<JwtReturnT>({
         cbAPI: () => mutate(data),
       });
 

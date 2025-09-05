@@ -1,13 +1,18 @@
-import { ResApiT, TagAPI } from "@/common/types/api";
+import {
+  CbcHmacReturnT,
+  JwtReturnT,
+  ResApiT,
+  TagAPI,
+} from "@/common/types/api";
 import { ParamsAPI2FA } from "@/core/paperwork";
 import { apiSlice } from "@/core/store/api";
-import { AccessTokenReturnT } from "@/features/auth/slices/api";
 
 const BASE = "/verify";
 
 export type VerifyCbcHmacReturnT = {
   cbc_hmac_token?: string;
   access_token?: string;
+  strategy_2FA?: boolean;
 };
 
 export type VerifyCbcHmacEndpointT =
@@ -32,16 +37,22 @@ export const verifySliceAPI = apiSlice.injectEndpoints({
       }),
     }),
 
-    changeEmail2FA: builder.mutation<ResApiT<AccessTokenReturnT>, ParamsAPI2FA>(
-      {
-        query: (data) => ({
-          url: `${BASE}/new-email-2FA`,
-          method: "PATCH",
-          data,
-        }),
+    changeEmail2FA: builder.mutation<ResApiT<JwtReturnT>, ParamsAPI2FA>({
+      query: (data) => ({
+        url: `${BASE}/new-email-2FA`,
+        method: "PATCH",
+        data,
+      }),
 
-        invalidatesTags: [TagAPI.USER],
-      }
-    ),
+      invalidatesTags: [TagAPI.USER],
+    }),
+
+    recoverPwd2FA: builder.mutation<ResApiT<CbcHmacReturnT>, ParamsAPI2FA>({
+      query: (data) => ({
+        url: `${BASE}/recover-pwd-2FA`,
+        method: "POST",
+        data,
+      }),
+    }),
   }),
 });

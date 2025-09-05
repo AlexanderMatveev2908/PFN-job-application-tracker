@@ -11,7 +11,9 @@ import { extractNamePagePath } from "@/core/lib/path";
 
 const AuthSpannerLinks: FC = () => {
   const p = usePathname();
-  const isAuthLayout = p.includes("/auth");
+  const isAuthLayout =
+    ["register", "login"].some((allowed) => p.includes(allowed)) ||
+    p.includes("require-email");
 
   const links =
     authSpannerLinks?.[

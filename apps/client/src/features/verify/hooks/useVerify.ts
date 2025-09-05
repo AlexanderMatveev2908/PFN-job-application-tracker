@@ -66,7 +66,11 @@ export const useVerify = () => {
         if (!res) return;
 
         saveCbcHmac(cbc_hmac_token);
-        nav.replace("/auth/recover-password");
+        nav.replace(
+          res.strategy_2FA
+            ? "/verify/recover-password-2FA"
+            : "/auth/recover-password"
+        );
       },
 
       CHANGE_EMAIL: async (cbc_hmac_token: string) => {

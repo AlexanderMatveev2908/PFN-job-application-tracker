@@ -51,3 +51,11 @@ export type UnwrappedResApiT<T> = ResApiT<T>["data"] & T;
 export type TriggerApiT<T> = (arg: any) => {
   unwrap: () => Promise<UnwrappedResApiT<T>>;
 };
+
+export type JwtReturnT = {
+  access_token: string;
+};
+
+export type CbcHmacReturnT = {
+  cbc_hmac_token: string;
+};

@@ -1,39 +1,38 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { JwtReturnT, UnwrappedResApiT } from "@/common/types/api";
+import { CbcHmacReturnT, UnwrappedResApiT } from "@/common/types/api";
 import { TokenT } from "@/common/types/tokens";
 import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { authSliceAPI } from "@/features/auth/slices/api";
 import { useUser } from "@/features/user/hooks/useUser";
+import { verifySliceAPI } from "@/features/verify/slices/api";
+
 import { useCallback, type FC } from "react";
 
 const Page: FC = () => {
-  const [mutate] = authSliceAPI.useLoginAuth2FAMutation();
+  const [mutate] = verifySliceAPI.useRecoverPwd2FAMutation();
   const { nav } = useKitHooks();
-  const { loginUser } = useUser();
+  const { saveCbcHmac } = useUser();
 
   const successCb = useCallback(
-    async (res: UnwrappedResApiT<JwtReturnT>) => {
-      if (!res.access_token) return;
+    async (res: UnwrappedResApiT<CbcHmacReturnT>) => {
+      saveCbcHmac(res.cbc_hmac_token);
 
-      loginUser(res.access_token);
-
-      nav.replace("/");
+      nav.replace("/auth/recover-password-2FA");
     },
-    [loginUser, nav]
+    [nav, saveCbcHmac]
   );
 
   const props = use2FAForm({
     mutationTrigger: mutate,
     successCb,
-    delCbcOnSuccess: true,
+    delCbcOnSuccess: false,
   });
 
-  useCheckTypeCbcHmac({ tokenType: TokenT.LOGIN_2FA });
+  useCheckTypeCbcHmac({ tokenType: TokenT.RECOVER_PWD });
 
   return <Form2FA {...{ ...props }} />;
 };

@@ -1,12 +1,10 @@
-import { ResApiT, TagAPI } from "@/common/types/api";
+import { JwtReturnT, ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { RegisterFormT } from "../pages/register/paperwork";
 import { LoginFormT } from "../pages/login/paperwork";
 import { ParamsAPI2FA } from "@/core/paperwork";
 
 const BASE = "/auth";
-
-export type AccessTokenReturnT = { access_token: string };
 
 export type LoginUserReturnT = {
   access_token?: string;
@@ -15,7 +13,7 @@ export type LoginUserReturnT = {
 
 export const authSliceAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    registerAuth: builder.mutation<ResApiT<AccessTokenReturnT>, RegisterFormT>({
+    registerAuth: builder.mutation<ResApiT<JwtReturnT>, RegisterFormT>({
       query: (data) => ({
         url: `${BASE}/register`,
         method: "POST",
@@ -24,7 +22,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    loginAuth: builder.mutation<ResApiT<LoginUserReturnT>, LoginFormT>({
+    loginAuth: builder.mutation<ResApiT<JwtReturnT>, LoginFormT>({
       query: (data) => ({
         url: `${BASE}/login`,
         method: "POST",
@@ -41,7 +39,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
     }),
 
     recoverPwdAuth: builder.mutation<
-      ResApiT<LoginUserReturnT>,
+      ResApiT<JwtReturnT>,
       { cbc_hmac_token: string; password: string }
     >({
       query: (data) => ({
@@ -52,12 +50,25 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    loginAuth2FA: builder.mutation<ResApiT<AccessTokenReturnT>, ParamsAPI2FA>({
+    loginAuth2FA: builder.mutation<ResApiT<JwtReturnT>, ParamsAPI2FA>({
       query: (data) => ({
         url: `${BASE}/login-2FA`,
         method: "POST",
         data,
       }),
+      invalidatesTags: [TagAPI.USER],
+    }),
+
+    recoverPwdAuthReset2FA: builder.mutation<
+      ResApiT<JwtReturnT>,
+      { cbc_hmac_token: string; password: string }
+    >({
+      query: (data) => ({
+        url: `${BASE}/recover-pwd-2FA`,
+        method: "PATCH",
+        data,
+      }),
+
       invalidatesTags: [TagAPI.USER],
     }),
   }),
