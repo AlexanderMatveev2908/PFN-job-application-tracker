@@ -16,7 +16,7 @@ export const useEndPendingActionUser = () => {
       actionSessionTimerID.current = setTimeout(() => {
         dispatch(userSlice.actions.endPendingActionSession());
         clearTmr(actionSessionTimerID);
-      }, 1000);
+      }, 1500);
 
     return () => {
       clearTmr(actionSessionTimerID);
@@ -28,7 +28,7 @@ export const useEndPendingActionUser = () => {
       actionCbcHmacTimerID.current = setTimeout(() => {
         dispatch(userSlice.actions.endPendingActionCbcHmac());
         clearTmr(actionCbcHmacTimerID);
-      }, 1000);
+      }, 1500);
 
     return () => {
       clearTmr(actionCbcHmacTimerID);
