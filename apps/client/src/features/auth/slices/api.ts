@@ -22,7 +22,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    loginAuth: builder.mutation<ResApiT<LoginUserReturnT>, LoginFormT>({
+    loginAuth: builder.mutation<ResApiT<JwtReturnT>, LoginFormT>({
       query: (data) => ({
         url: `${BASE}/login`,
         method: "POST",
@@ -39,7 +39,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
     }),
 
     recoverPwdAuth: builder.mutation<
-      ResApiT<LoginUserReturnT>,
+      ResApiT<JwtReturnT>,
       { cbc_hmac_token: string; password: string }
     >({
       query: (data) => ({
