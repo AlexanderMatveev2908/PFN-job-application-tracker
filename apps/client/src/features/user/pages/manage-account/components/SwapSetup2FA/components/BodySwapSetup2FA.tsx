@@ -52,7 +52,7 @@ const BodySwapSetup2FA: FC<PropsType> = ({ res2FA, isCurr, swapMode }) => {
               txt: (() => {
                 let txt = "";
 
-                for (let i = 0; i < 6; i += 2) {
+                for (let i = 0; i < 8; i += 2) {
                   txt += res2FA.backup_codes.slice(i, i + 2).join("  ") + "\n";
                 }
 
