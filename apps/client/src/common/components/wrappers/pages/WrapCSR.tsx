@@ -35,17 +35,13 @@ const WrapCSR: FC<PropsType> = ({
 
   return (
     <div className="page__shape">
-      {isPending && <SpinPage />}
-
-      <div
-        className={`page__shape ${
-          isPending
-            ? "opacity-0 pointer-events-none"
-            : "opacity-100 pointer-events-auto"
-        }`}
-      >
-        {typeof children === "function" ? children({ isHydrated }) : children}
-      </div>
+      {isPending ? (
+        <SpinPage />
+      ) : typeof children === "function" ? (
+        children({ isHydrated })
+      ) : (
+        children
+      )}
     </div>
   );
 };

@@ -19,9 +19,9 @@ const NoticeSetup2FA: FC<PropsType> = ({ user }) => {
   const $baseTwd = "w-[150px] h-[150px]";
 
   const msg = user?.use_2FA
-    ? "User has 2Fa setup"
+    ? "User has 2FA activated"
     : user?.is_verified
-    ? "Setup 2FA with Totp Code and backup codes"
+    ? "Setup 2FA with TOTP code"
     : "User need to confirm account before setup 2FA";
 
   return (

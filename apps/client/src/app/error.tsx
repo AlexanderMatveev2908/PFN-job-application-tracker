@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/** @jsxImportSource @emotion/react */
 "use client";
 
 import type { FC } from "react";
@@ -8,6 +6,7 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
 
 type PropsType = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any;
   reset: () => void;
 };

@@ -16,10 +16,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "@/features/user/hooks/useUser";
+import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
+import { TokenT } from "@/common/types/tokens";
 
 const Page: FC = () => {
   const { wrapAPI, nav } = useKitHooks();
-  const { saveCbcHmac } = useUser();
+  const { saveCbcHmac, delCbcHmac } = useUser();
   const [mutate, { isLoading }] = userSliceAPI.useGainAccessManageAccMutation();
 
   const formCtx = useForm<PwdFormT>({
@@ -39,18 +41,26 @@ const Page: FC = () => {
 
     if (!res) return;
 
-    if (res?.cbc_hmac_token) {
-      saveCbcHmac(res.cbc_hmac_token);
-      reset(resetValsPwdForm);
-      nav.replace("/user/manage-account");
-    }
+    const tokenType = extractAadFromCbcHmac(res.cbc_hmac_token)?.token_t;
+
+    saveCbcHmac(res.cbc_hmac_token);
+    reset(resetValsPwdForm);
+
+    nav.replace(
+      tokenType === TokenT.MANAGE_ACC
+        ? "/user/manage-account"
+        : "/user/access-manage-account-2FA"
+    );
   }, logFormErrs);
 
   const { pendingActionCbcHmac, cbc_hmac_token } = useGetUserState();
 
   useEffect(() => {
-    if (cbc_hmac_token && !pendingActionCbcHmac) nav.replace("/");
-  }, [cbc_hmac_token, nav, pendingActionCbcHmac]);
+    if (cbc_hmac_token && !pendingActionCbcHmac) {
+      delCbcHmac();
+      nav.replace("/");
+    }
+  }, [cbc_hmac_token, delCbcHmac, nav, pendingActionCbcHmac]);
 
   return (
     <WrapFormPage

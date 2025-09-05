@@ -19,9 +19,14 @@ import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
 type Params<T> = {
   mutationTrigger: TriggerApiT<T>;
   successCb: (res: UnwrappedResApiT<T>) => void;
+  delCbcOnSuccess: boolean;
 };
 
-export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
+export const use2FAForm = <T>({
+  mutationTrigger,
+  successCb,
+  delCbcOnSuccess,
+}: Params<T>) => {
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
 
@@ -62,7 +67,7 @@ export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
 
       if (!res) return;
 
-      delCbcHmac();
+      if (delCbcOnSuccess) delCbcHmac();
 
       resetTotp(resetValsTotpForm);
       resetBackup(resetValsBackupForm);
@@ -77,6 +82,7 @@ export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
       successCb,
       resetBackup,
       resetTotp,
+      delCbcOnSuccess,
     ]
   );
 

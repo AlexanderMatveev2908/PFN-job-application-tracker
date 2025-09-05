@@ -52,23 +52,23 @@ const SwapSetup2FA: FC<FormManageAccPropsType & { user: UserT | null }> = ({
         testID,
       }}
     >
-      {!res2FA && (
+      {!res2FA ? (
         <NoticeSetup2FA
           {...{
             user,
           }}
         />
+      ) : (
+        <BodySwapSetup2FA
+          {...{
+            isCurr,
+            res2FA,
+            swapMode: swapState.swapMode,
+          }}
+        />
       )}
 
-      <BodySwapSetup2FA
-        {...{
-          isCurr,
-          res2FA,
-          swapMode: swapState.swapMode,
-        }}
-      />
-
-      {user?.is_verified && (
+      {user?.is_verified && (!user?.use_2FA || res2FA) && (
         <FooterSwapSetup2FA
           {...{
             handleClick,

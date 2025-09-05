@@ -1,3 +1,5 @@
+"use client";
+
 import { AppEventT } from "@/common/types/api";
 import type { FC } from "react";
 import { IconType } from "react-icons";
