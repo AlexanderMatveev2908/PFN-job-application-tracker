@@ -8,7 +8,7 @@ export default defineConfig({
     timeout: 15 * 1000,
   },
   retries: 2,
-  workers: "100%",
+  workers: "50%",
   use: {
     baseURL:
       process.env.NEXT_PUBLIC_ENV === "test"
