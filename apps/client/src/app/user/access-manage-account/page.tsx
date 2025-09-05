@@ -2,7 +2,6 @@
 "use client";
 
 import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage";
-import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { logFormErrs } from "@/core/lib/etc";
@@ -16,10 +15,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
+import { useUser } from "@/features/user/hooks/useUser";
 
 const Page: FC = () => {
   const { wrapAPI, nav } = useKitHooks();
-  const { saveCbcHmac } = useManageCbcHmac();
+  const { saveCbcHmac } = useUser();
   const [mutate, { isLoading }] = userSliceAPI.useGainAccessManageAccMutation();
 
   const formCtx = useForm<PwdFormT>({

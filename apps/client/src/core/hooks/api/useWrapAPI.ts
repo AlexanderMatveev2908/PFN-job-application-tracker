@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from "react";
 import { useErrAPI } from "./useErrAPI";
-import { ResApiT } from "@/common/types/api";
+import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
 import { __cg } from "@/core/lib/log";
 import { useMsgAPI } from "./useMsgAPI";
 
@@ -18,14 +18,14 @@ export const useWrapAPI = () => {
       throwErr,
       pushNotice,
     }: {
-      cbAPI: () => { unwrap: () => Promise<ResApiT<T>> };
+      cbAPI: TriggerApiT<T>;
       showToast?: boolean;
       hideErr?: boolean;
       throwErr?: boolean;
       pushNotice?: number[] | "*";
-    }): Promise<ResApiT<T>["data"] | null> => {
+    }): Promise<UnwrappedResApiT<T> | null> => {
       try {
-        const data = (await cbAPI().unwrap()) as ResApiT<T>["data"];
+        const data = (await cbAPI(undefined).unwrap()) as UnwrappedResApiT<T>;
 
         __cg("wrapper res api", data);
 

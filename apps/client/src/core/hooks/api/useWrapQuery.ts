@@ -14,7 +14,7 @@ type Params<T extends Record<string, any> | void> = {
   isSuccess?: boolean;
   isError?: boolean;
   error?: any;
-  data?: ResApiT<T>["data"];
+  data?: ResApiT<T>;
 };
 
 export const useWrapQuery = <T extends Record<string, any> | void>({

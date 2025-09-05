@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { TagAPI } from "@/common/types/api";
-import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useDispatch } from "react-redux";
 import { apiSlice } from "@/core/store/api";
 
@@ -17,8 +16,7 @@ export type MapperVerifyT = Record<
 export const useVerify = () => {
   const [triggerRTK] = verifySliceAPI.useLazyVerifyCbcHmacQuery();
 
-  const { loginUser } = useUser();
-  const { saveCbcHmac } = useManageCbcHmac();
+  const { loginUser, saveCbcHmac } = useUser();
   const { wrapAPI } = useWrapAPI();
   const dispatch = useDispatch();
 

@@ -31,7 +31,7 @@ export const useEmailForm = () => {
 
   const handleSaveMaker = (args: Params) =>
     handleSubmit(async (data) => {
-      const res = await wrapAPI<void>({
+      const res = await wrapAPI({
         cbAPI: () => mutate({ ...data, endpoint: args.endpointT }),
       });
 

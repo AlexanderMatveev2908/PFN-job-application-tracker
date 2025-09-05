@@ -74,3 +74,9 @@ export type BackupCodeFormT = z.infer<typeof schemaBackupForm>;
 export const resetValsBackupForm: BackupCodeFormT = {
   backup_code: "",
 };
+
+export type ParamsAPI2FA = {
+  cbc_hmac_token: string;
+  totp_code?: string;
+  backup_code?: string;
+};

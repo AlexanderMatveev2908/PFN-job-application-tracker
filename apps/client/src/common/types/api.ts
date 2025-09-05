@@ -44,6 +44,10 @@ export type DataApiT = {
 
 export type ResApiT<T> = T extends void
   ? { data: DataApiT }
-  : { data: DataApiT & T };
+  : { data: DataApiT } & T;
 
-export type UnwrappedResT<T> = ResApiT<T>["data"];
+export type UnwrappedResApiT<T> = ResApiT<T>["data"] & T;
+
+export type TriggerApiT<T> = (arg: any) => {
+  unwrap: () => Promise<UnwrappedResApiT<T>>;
+};

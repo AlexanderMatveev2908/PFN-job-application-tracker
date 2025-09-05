@@ -8,8 +8,9 @@ import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { Setup2FAReturnT, userSliceAPI } from "@/features/user/slices/api";
 import { UserT } from "@/features/user/types";
-import ContentSetup2FA from "./components/ContentSetup2FA";
 import NoticeSetup2FA from "./components/NoticeSetup2FA";
+import BodySwapSetup2FA from "./components/BodySwapSetup2FA";
+import FooterSwapSetup2FA from "./components/FooterSwapSetup2FA";
 
 const SwapSetup2FA: FC<FormManageAccPropsType & { user: UserT | null }> = ({
   contentRef,
@@ -51,22 +52,30 @@ const SwapSetup2FA: FC<FormManageAccPropsType & { user: UserT | null }> = ({
         testID,
       }}
     >
-      {!res2FA && (user?.use_2FA || !user?.is_verified) ? (
+      {!res2FA && (
         <NoticeSetup2FA
           {...{
             user,
           }}
         />
-      ) : (
-        <ContentSetup2FA
+      )}
+
+      <BodySwapSetup2FA
+        {...{
+          isCurr,
+          res2FA,
+          swapMode: swapState.swapMode,
+        }}
+      />
+
+      {user?.is_verified && (
+        <FooterSwapSetup2FA
           {...{
             handleClick,
-            isCurr,
-            isLoading,
             res2FA,
-            swapState,
+            isLoading,
             testID,
-            contentRef,
+            user,
           }}
         />
       )}

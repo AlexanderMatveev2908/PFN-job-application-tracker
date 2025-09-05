@@ -41,7 +41,7 @@ const ChangeEmailForm: FC<FormManageAccPropsType> = ({
   const { setNotice, wrapAPI, nav } = useKitHooks();
 
   const handleSave = handleSubmit(async (data) => {
-    const res = await wrapAPI<void>({
+    const res = await wrapAPI({
       cbAPI: () =>
         mutate({
           ...data,
