@@ -1,5 +1,7 @@
-import { ResApiT } from "@/common/types/api";
+import { ResApiT, TagAPI } from "@/common/types/api";
+import { ParamsAPI2FA } from "@/core/paperwork";
 import { apiSlice } from "@/core/store/api";
+import { AccessTokenReturnT } from "@/features/auth/slices/api";
 
 const BASE = "/verify";
 
@@ -29,5 +31,17 @@ export const verifySliceAPI = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    changeEmail2FA: builder.mutation<ResApiT<AccessTokenReturnT>, ParamsAPI2FA>(
+      {
+        query: (data) => ({
+          url: `${BASE}/new-email-2FA`,
+          method: "PATCH",
+          data,
+        }),
+
+        invalidatesTags: [TagAPI.USER],
+      }
+    ),
   }),
 });

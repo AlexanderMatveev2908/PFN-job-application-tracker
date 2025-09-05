@@ -79,6 +79,9 @@ export const useVerify = () => {
 
         if (res?.access_token) {
           loginCb(res.access_token);
+        } else if (res?.cbc_hmac_token) {
+          saveCbcHmac(res.cbc_hmac_token);
+          nav.replace("/verify/change-email-2FA");
         }
       },
     }),

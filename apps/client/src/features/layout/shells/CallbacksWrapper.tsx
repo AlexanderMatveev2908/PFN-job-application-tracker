@@ -4,7 +4,7 @@
 import { ChildrenT } from "@/common/types/ui";
 import { REG_CBC_HMAC, REG_JWT } from "@/core/constants/regex";
 import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
-import { useDelCbcHmacByPathAndType } from "@/core/hooks/etc/tokens/useDelCbcHmacByPathAndType";
+import { useDelCbcHmacByPathAndType } from "@/features/user/hooks/useDelCbcHmacByPathAndType";
 import { useWrapClientListener } from "@/core/hooks/etc/hydration/useWrapClientListener";
 import { useScroll } from "@/core/hooks/etc/navigation/useScroll";
 import { isObjOk } from "@/core/lib/dataStructure";
