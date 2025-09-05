@@ -21,7 +21,7 @@ const Page: FC = () => {
   const { wrapAPI } = useWrapAPI();
   const nav = useRouter();
   const [mutate, { isLoading }] = authSliceAPI.useLoginAuthMutation();
-  const { loginUser } = useUser();
+  const { loginUser, saveCbcHmac } = useUser();
 
   const formCtx = useForm<LoginFormT>({
     mode: "onChange",
@@ -37,13 +37,12 @@ const Page: FC = () => {
 
     if (!res) return;
 
-    if (res?.access_token) {
-      loginUser(res.access_token);
+    if (res?.access_token) loginUser(res.access_token);
+    else if (res?.cbc_hmac_token) saveCbcHmac(res.cbc_hmac_token);
 
-      reset(resetValsLogin);
+    reset(resetValsLogin);
 
-      nav.replace("/");
-    }
+    nav.replace(res?.access_token ? "/" : "/auth/login-2FA");
   }, logFormErrs);
 
   useFocus("email", { setFocus });
