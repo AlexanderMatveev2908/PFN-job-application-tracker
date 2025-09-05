@@ -43,31 +43,20 @@ async def ok_t(api: AsyncClient) -> None:
         method="GET",
     )
 
-    res_err = await wrap_httpx(
-        api,
-        url="/auth/recover-pwd",
-        method="PATCH",
-        data={
-            "password": gen_pwd(5),
-            "cbc_hmac_token": tokens_res["cbc_hmac_token"],
-        },
-        expected_code=401,
-    )
-
-    assrt_msg(res_err, "cbc_hmac_not_found")
-
-    get_aad_cbc_hmac(
-        res_verify["data"]["cbc_hmac_token"], TokenT.RECOVER_PWD_2FA
-    )
+    assert res_verify["data"]["strategy_2FA"] is True
 
     res_totp = await wrap_httpx(
         api,
         url="/verify/recover-pwd-2FA",
         data={
-            "cbc_hmac_token": res_verify["data"]["cbc_hmac_token"],
+            "cbc_hmac_token": tokens_res["cbc_hmac_token"],
             "totp_code": gen_totp(res_logged["totp_secret"]),
         },
         expected_code=200,
+    )
+
+    get_aad_cbc_hmac(
+        res_totp["data"]["cbc_hmac_token"], TokenT.RECOVER_PWD_2FA
     )
 
     assrt_msg(res_totp, "verification successful")
@@ -78,7 +67,7 @@ async def ok_t(api: AsyncClient) -> None:
         expected_code=200,
         data={
             "password": gen_pwd(5),
-            "cbc_hmac_token": res_verify["data"]["cbc_hmac_token"],
+            "cbc_hmac_token": res_totp["data"]["cbc_hmac_token"],
         },
         method="PATCH",
     )
@@ -101,15 +90,14 @@ async def bad_cases_t(
 ) -> None:
     res_logged = await get_us_2FA_lib(api, cbc_hmac_t=TokenT.RECOVER_PWD)
 
-    res_verify = await wrap_httpx(
+    token_2FA = res_logged["cbc_hmac_token"]
+
+    await wrap_httpx(
         api,
         url=f"/verify/recover-pwd?cbc_hmac_token={res_logged['cbc_hmac_token']}",  # noqa: E501
         method="GET",
         expected_code=200,
     )
-
-    token_2FA = res_verify["data"]["cbc_hmac_token"]
-    get_aad_cbc_hmac(token_2FA, TokenT.RECOVER_PWD_2FA)
 
     if case == "cbc_hmac_expired":
         token_2FA = (
@@ -117,7 +105,7 @@ async def bad_cases_t(
                 api,
                 existing_payload=res_logged["payload"],
                 expired=["cbc_hmac"],
-                cbc_hmac_t=TokenT.RECOVER_PWD_2FA,
+                cbc_hmac_t=TokenT.RECOVER_PWD,
             )
         )["cbc_hmac_token"]
 
