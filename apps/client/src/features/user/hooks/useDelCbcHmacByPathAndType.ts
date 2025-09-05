@@ -23,16 +23,16 @@ export const useDelCbcHmacByPathAndType = () => {
       const { token_t } = aad;
       if (
         (token_t === TokenT.RECOVER_PWD &&
-          !p.includes("auth/recover-password")) ||
+          !["/verify/recover-password-2FA", "auth/recover-password"].some(
+            (allowed) => p.includes(allowed)
+          )) ||
         (token_t === TokenT.MANAGE_ACC &&
           !p.includes("/user/manage-account")) ||
         (token_t === TokenT.LOGIN_2FA && !p.includes("/auth/login-2FA")) ||
         (token_t === TokenT.MANAGE_ACC_2FA &&
           !p.includes("/user/access-manage-account-2FA")) ||
         (token_t === TokenT.CHANGE_EMAIL_2FA &&
-          !p.includes("/verify/change-email-2FA")) ||
-        (token_t === TokenT.RECOVER_PWD_2FA &&
-          !p.includes("/verify/recover-password-2FA"))
+          !p.includes("/verify/change-email-2FA"))
       ) {
         delCbcHmac();
 

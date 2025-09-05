@@ -18,7 +18,8 @@ const Page: FC = () => {
   const { userState, loginUser, delCbcHmac } = useUser();
   const { nav, wrapAPI } = useKitHooks();
 
-  const [mutate, { isLoading }] = authSliceAPI.useRecoverPwdAuth2FAMutation();
+  const [mutate, { isLoading }] =
+    authSliceAPI.useRecoverPwdAuthReset2FAMutation();
 
   const handleSave = handleSubmit(async (data) => {
     const res = await wrapAPI({

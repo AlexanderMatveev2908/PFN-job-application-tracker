@@ -1,4 +1,9 @@
-import { JwtReturnT, ResApiT, TagAPI } from "@/common/types/api";
+import {
+  CbcHmacReturnT,
+  JwtReturnT,
+  ResApiT,
+  TagAPI,
+} from "@/common/types/api";
 import { ParamsAPI2FA } from "@/core/paperwork";
 import { apiSlice } from "@/core/store/api";
 
@@ -7,6 +12,7 @@ const BASE = "/verify";
 export type VerifyCbcHmacReturnT = {
   cbc_hmac_token?: string;
   access_token?: string;
+  strategy_2FA?: boolean;
 };
 
 export type VerifyCbcHmacEndpointT =
@@ -41,7 +47,7 @@ export const verifySliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    recoverPwd2FA: builder.mutation<ResApiT<void>, ParamsAPI2FA>({
+    recoverPwd2FA: builder.mutation<ResApiT<CbcHmacReturnT>, ParamsAPI2FA>({
       query: (data) => ({
         url: `${BASE}/recover-pwd-2FA`,
         method: "POST",

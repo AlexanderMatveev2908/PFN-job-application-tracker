@@ -59,7 +59,7 @@ export const authSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    recoverPwdAuth2FA: builder.mutation<
+    recoverPwdAuthReset2FA: builder.mutation<
       ResApiT<JwtReturnT>,
       { cbc_hmac_token: string; password: string }
     >({

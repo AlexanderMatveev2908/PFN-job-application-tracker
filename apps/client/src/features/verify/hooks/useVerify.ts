@@ -65,9 +65,9 @@ export const useVerify = () => {
 
         if (!res) return;
 
-        saveCbcHmac(res.cbc_hmac_token || cbc_hmac_token);
+        saveCbcHmac(cbc_hmac_token);
         nav.replace(
-          res.cbc_hmac_token
+          res.strategy_2FA
             ? "/verify/recover-password-2FA"
             : "/auth/recover-password"
         );
