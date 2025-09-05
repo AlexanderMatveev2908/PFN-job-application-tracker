@@ -74,3 +74,34 @@ export const getAccessManageAccVerified = async (browser: Browser) => {
     swap,
   };
 };
+
+export interface ResUser2FA {
+  payload: PayloadRegisterT;
+  user: UserT;
+  totp_secret: string;
+  backup_codes: string[];
+  access_token: string;
+  cbc_hmac_token: string;
+}
+
+export const getUser2FA = async (
+  browser: Browser,
+  {
+    tokenType = TokenT.CONF_EMAIL,
+  }: {
+    tokenType?: TokenT;
+  }
+): Promise<ResUser2FA & { page: Page }> => {
+  const page = await preTest(browser, "/");
+
+  const res = await page.request.post(
+    `${BASE_URL}/test/get-user-2FA?cbc_hmac_t=${tokenType}`
+  );
+  const data = await res.json();
+
+  await page.evaluate((token: string) => {
+    sessionStorage.setItem("access_token", token);
+  }, data.access_token);
+
+  return { ...data, page: page };
+};

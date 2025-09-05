@@ -10,14 +10,12 @@ from src.features.test.lib.idx import get_optional_payload, get_query_token_t
 from src.features.test.services.tokens_health import (
     tokens_health_svc,
 )
-from src.features.user.services.TFA_zip import TFA_zip_svc
 from src.lib.TFA.backup import gen_backup_codes
 from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
 from src.lib.algs.fernet import gen_fernet
 from src.lib.cookies import gen_refresh_cookie
 from src.lib.data_structure import dest_d, pick
 from src.lib.etc import parse_bd
-from src.lib.qrcode.idx import GenQrcodeReturnT, gen_qrcode
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid
 from src.lib.tokens.cbc_hmac import check_cbc_hmac_with_us, gen_cbc_hmac
@@ -155,13 +153,13 @@ async def get_us_2FA_ctrl(
             reverse="cbc_hmac" in expired,
         )
 
-        qrcode_result: GenQrcodeReturnT = gen_qrcode(uri=secret_result["uri"])
+        # qrcode_result: GenQrcodeReturnT = gen_qrcode(uri=secret_result["uri"])  # noqa: E501
 
-        await TFA_zip_svc(
-            backup_codes=backup_codes,
-            binary_qr_code=qrcode_result["binary"],
-            totp_secret=secret_result["secret"],
-        )
+        # await TFA_zip_svc(
+        #     backup_codes=backup_codes,
+        #     binary_qr_code=qrcode_result["binary"],
+        #     totp_secret=secret_result["secret"],
+        # )
 
         return ResAPI(
             req,
