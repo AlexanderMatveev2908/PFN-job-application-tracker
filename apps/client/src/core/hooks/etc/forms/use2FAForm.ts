@@ -30,6 +30,21 @@ export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
   const { wrapAPI } = useKitHooks();
   const { delCbcHmac } = useManageCbcHmac();
 
+  const formTotpCtx = useForm<ToptFormT>({
+    mode: "onChange",
+    resolver: zodResolver(schemaTotpCode),
+    defaultValues: resetValsTotpForm,
+  });
+  const { handleSubmit: submitTotp, reset: resetTotp } = formTotpCtx;
+
+  const formBackupCodeCtx = useForm<BackupCodeFormT>({
+    mode: "onChange",
+    resolver: zodResolver(schemaBackupForm),
+    defaultValues: resetValsBackupForm,
+  });
+  const { handleSubmit: submitBackupCode, reset: resetBackup } =
+    formBackupCodeCtx;
+
   const mainCb = useCallback(
     async ({
       totp_code,
@@ -51,36 +66,31 @@ export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
 
       delCbcHmac();
 
+      resetTotp(resetValsTotpForm);
+      resetBackup(resetValsBackupForm);
+
       successCb(res);
     },
-    [userState.cbc_hmac_token, wrapAPI, delCbcHmac, mutationTrigger, successCb]
+    [
+      userState.cbc_hmac_token,
+      wrapAPI,
+      delCbcHmac,
+      mutationTrigger,
+      successCb,
+      resetBackup,
+      resetTotp,
+    ]
   );
 
   const { contentRef, contentH } = useListenHeight({
     opdDep: [currSwap],
   });
 
-  const formBackupCodeCtx = useForm<BackupCodeFormT>({
-    mode: "onChange",
-    resolver: zodResolver(schemaBackupForm),
-    defaultValues: resetValsBackupForm,
-  });
-
-  const { handleSubmit: submitBackupCode } = formBackupCodeCtx;
-
   const handleSaveBackupCode = submitBackupCode(async (data) => {
     await mainCb({
       backup_code: data.backup_code,
     });
   }, logFormErrs);
-
-  const formTotpCtx = useForm<ToptFormT>({
-    mode: "onChange",
-    resolver: zodResolver(schemaTotpCode),
-    defaultValues: resetValsTotpForm,
-  });
-
-  const { handleSubmit: submitTotp } = formTotpCtx;
 
   const handleSaveTotp = submitTotp(async (data) => {
     await mainCb({

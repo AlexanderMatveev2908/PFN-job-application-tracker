@@ -22,7 +22,7 @@ export const useCheckCbcHmac = () => {
       const aad = extractAadFromCbcHmac(cbc_hmac_token);
 
       if (!aad || !Object.values(TokenT).includes(aad.token_t)) {
-        if (pathPush) {
+        if (pathPush && !aad) {
           nav.replace(pathPush);
         } else {
           setNotice({

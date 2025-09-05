@@ -2,8 +2,10 @@
 "use client";
 
 import { UnwrappedResApiT } from "@/common/types/api";
+import { TokenT } from "@/common/types/tokens";
 import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
+import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { AccessTokenReturnT, authSliceAPI } from "@/features/auth/slices/api";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -29,6 +31,8 @@ const Page: FC = () => {
     mutationTrigger: mutate,
     successCb,
   });
+
+  useCheckTypeCbcHmac({ tokenType: TokenT.LOGIN_2FA });
 
   return <Form2FA {...{ ...props }} />;
 };
