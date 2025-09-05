@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { userSlice } from "../slices/slice";
 import { useCallback } from "react";
-import { clearStorage, saveStorage } from "@/core/lib/storage";
+import { clearStorage, delStorageItm, saveStorage } from "@/core/lib/storage";
 import { useGetUserState } from "./useGetUserState";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { authSliceAPI } from "@/features/auth/slices/api";
@@ -45,11 +45,26 @@ export const useUser = () => {
     nav.replace("/");
   }, [wrapAPI, mutate, commonLogoutActions, nav]);
 
+  const saveCbcHmac = useCallback(
+    (cbc_hmac_token: string) => {
+      dispatch(userSlice.actions.setCbcHmac(cbc_hmac_token));
+      saveStorage(cbc_hmac_token, { key: "cbc_hmac_token" });
+    },
+    [dispatch]
+  );
+
+  const delCbcHmac = useCallback(() => {
+    delStorageItm("cbc_hmac_token");
+    dispatch(userSlice.actions.clearCbcHmac());
+  }, [dispatch]);
+
   return {
     userState: useGetUserState(),
     loginUser,
     voluntaryLogoutUser,
     isVoluntaryLoggingOut,
     commonLogoutActions,
+    saveCbcHmac,
+    delCbcHmac,
   };
 };

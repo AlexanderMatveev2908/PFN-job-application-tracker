@@ -1,6 +1,5 @@
 import { TokenT } from "@/common/types/tokens";
 import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
-import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useUser } from "@/features/user/hooks/useUser";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -8,11 +7,10 @@ import { useWrapAPI } from "../../api/useWrapAPI";
 import { cleanupSliceAPI } from "@/features/cleanup/slices/api";
 
 export const useDelCbcHmacByPathAndType = () => {
-  const { userState } = useUser();
+  const { userState, delCbcHmac } = useUser();
 
   const p = usePathname();
 
-  const { delCbcHmac } = useManageCbcHmac();
   const { wrapAPI } = useWrapAPI();
   const [mutate] = cleanupSliceAPI.useCleanCbcHmacMutation();
 

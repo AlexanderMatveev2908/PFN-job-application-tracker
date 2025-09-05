@@ -9,16 +9,14 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { TokenT } from "@/common/types/tokens";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { authSliceAPI } from "@/features/auth/slices/api";
-import { useManageCbcHmac } from "@/core/hooks/etc/tokens/useManageCbcHmac";
 import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 
 const Page: FC = () => {
   const { formCtx } = usePwdsForm();
   const { handleSubmit } = formCtx;
 
-  const { userState, loginUser } = useUser();
+  const { userState, loginUser, delCbcHmac } = useUser();
   const { nav, wrapAPI } = useKitHooks();
-  const { delCbcHmac } = useManageCbcHmac();
 
   const [mutate, { isLoading }] = authSliceAPI.useRecoverPwdAuthMutation();
 

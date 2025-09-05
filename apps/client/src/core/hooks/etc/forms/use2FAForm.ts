@@ -15,7 +15,6 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { useCallback } from "react";
 import { useKitHooks } from "../useKitHooks";
 import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
-import { useManageCbcHmac } from "../tokens/useManageCbcHmac";
 
 type Params<T> = {
   mutationTrigger: TriggerApiT<T>;
@@ -26,9 +25,8 @@ export const use2FAForm = <T>({ mutationTrigger, successCb }: Params<T>) => {
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
 
-  const { userState } = useUser();
+  const { userState, delCbcHmac } = useUser();
   const { wrapAPI } = useKitHooks();
-  const { delCbcHmac } = useManageCbcHmac();
 
   const formTotpCtx = useForm<ToptFormT>({
     mode: "onChange",
