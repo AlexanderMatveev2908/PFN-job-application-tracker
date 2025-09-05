@@ -3,7 +3,7 @@ import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
 import { useUser } from "@/features/user/hooks/useUser";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { useWrapAPI } from "../../api/useWrapAPI";
+import { useWrapAPI } from "../../../core/hooks/api/useWrapAPI";
 import { cleanupSliceAPI } from "@/features/cleanup/slices/api";
 
 export const useDelCbcHmacByPathAndType = () => {
@@ -25,12 +25,12 @@ export const useDelCbcHmacByPathAndType = () => {
         (token_t === TokenT.RECOVER_PWD &&
           !p.includes("auth/recover-password")) ||
         (token_t === TokenT.MANAGE_ACC &&
-          !["/user/manage-account", "/user/access-manage-account-2FA"].some(
-            (allowed) => p.includes(allowed)
-          )) ||
+          !p.includes("/user/manage-account")) ||
         (token_t === TokenT.LOGIN_2FA && !p.includes("/auth/login-2FA")) ||
         (token_t === TokenT.MANAGE_ACC_2FA &&
-          !p.includes("/user/access-manage-account-2FA"))
+          !p.includes("/user/access-manage-account-2FA")) ||
+        (token_t === TokenT.CHANGE_EMAIL_2FA &&
+          !p.includes("/verify/change-email-2FA"))
       ) {
         delCbcHmac();
 
