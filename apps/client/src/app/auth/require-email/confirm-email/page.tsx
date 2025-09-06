@@ -4,10 +4,6 @@ import RequireAuthEmailForm from "@/features/auth/components/RequireAuthEmailFor
 import { useEmailForm } from "@/core/hooks/etc/forms/useEmailForm";
 import type { FC } from "react";
 
-export const metadata = {
-  title: "Confirm Email",
-};
-
 const Page: FC = () => {
   const { formCtx, handleSaveMaker, isLoading } = useEmailForm();
 

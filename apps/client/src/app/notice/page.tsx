@@ -10,10 +10,6 @@ import { getNoticeState } from "@/features/notice/slices/slice";
 import { useEffect, type FC } from "react";
 import { useSelector } from "react-redux";
 
-export const metadata = {
-  title: "Notice",
-};
-
 const Page: FC = () => {
   const noticeState = useSelector(getNoticeState);
 

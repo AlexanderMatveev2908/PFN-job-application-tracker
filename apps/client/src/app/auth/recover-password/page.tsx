@@ -5,10 +5,6 @@ import FormResetPwd from "@/core/forms/FormResetPwd/FormResetPwd";
 import { useRecoverPwd } from "@/core/hooks/etc/forms/useRecoverPwd";
 import { type FC } from "react";
 
-export const metadata = {
-  title: "Recover Password",
-};
-
 const Page: FC = () => {
   const { handleSave, isLoading, formCtx } = useRecoverPwd({
     strategy_2FA: false,

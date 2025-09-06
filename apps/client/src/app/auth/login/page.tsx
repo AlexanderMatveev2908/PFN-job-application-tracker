@@ -17,10 +17,6 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 
-export const metadata = {
-  title: "Login",
-};
-
 const Page: FC = () => {
   const { wrapAPI } = useWrapAPI();
   const nav = useRouter();
