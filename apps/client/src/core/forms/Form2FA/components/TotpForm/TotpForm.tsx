@@ -89,6 +89,7 @@ const TotpForm: FC<PropsType> = ({
                   <input
                     {...field}
                     type="text"
+                    data-testid={`totp_code.${innerIdx + idx * 3}`}
                     value={field.value ?? ""}
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     onChange={({ target: { value: v } }) => {

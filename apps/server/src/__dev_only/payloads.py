@@ -22,10 +22,11 @@ class RegisterPayloadT(RegisterPartPayloadT):
 def get_payload_register() -> RegisterPayloadT:
     pwd = gen_pwd(enc="utf-8", n=5)
     first_name = faker.first_name()
+
     return {
         "first_name": first_name,
         "last_name": faker.last_name(),
-        "email": f"{first_name}-{os.urandom(10).hex()}&@gmail.com",
+        "email": f"{first_name}.{os.urandom(10).hex()}@gmail.com",
         "password": pwd,
         "confirm_password": pwd,
         "terms": True,

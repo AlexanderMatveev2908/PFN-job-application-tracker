@@ -1,5 +1,5 @@
 import { Browser } from "@playwright/test";
-import { closeToast, getByTxt, preTest } from "../../lib/idx";
+import { closeToast, getByTxt, preTest } from "../../lib_tests/idx";
 
 export const preAuthNavigation = async (browser: Browser) => {
   const page = await preTest(browser, "/");

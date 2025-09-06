@@ -1,8 +1,8 @@
 import test from "@playwright/test";
-import { getTokensLib, isToastOk, preTest } from "../../lib/idx";
+import { getTokensLib, isToastOk, preTest } from "../../lib_tests/idx";
 import { TokenT } from "@/common/types/tokens";
-import { waitURL } from "../../lib/shortcuts/wait";
-import { changeEmailOk } from "../../lib/actions/user";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
+import { changeEmailOk } from "../../lib_tests/actions/user";
 
 test("conf new email", async ({ browser }) => {
   const { payload } = await changeEmailOk(browser);

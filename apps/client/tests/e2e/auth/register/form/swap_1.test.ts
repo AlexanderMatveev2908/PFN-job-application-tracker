@@ -1,10 +1,10 @@
 import test, { expect } from "@playwright/test";
-import { getByID, getByTxt } from "../../../lib/shortcuts/get";
-import { checkTxtList } from "../../../lib/shortcuts/check";
-import { clickByID } from "../../../lib/shortcuts/click";
-import { checkTxtOpc } from "../../../lib/shortcuts/style";
+import { getByID, getByTxt } from "../../../lib_tests/shortcuts/get";
+import { checkTxtList } from "../../../lib_tests/shortcuts/check";
+import { clickByID } from "../../../lib_tests/shortcuts/click";
+import { checkTxtOpc } from "../../../lib_tests/shortcuts/style";
 import { preAuthRegister } from "../pre";
-import { waitTmr } from "../../../lib/shortcuts/wait";
+import { waitTmr } from "../../../lib_tests/shortcuts/wait";
 
 test("register form swap 1", async ({ browser }) => {
   const { form, page } = await preAuthRegister(browser);

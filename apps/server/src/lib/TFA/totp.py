@@ -38,6 +38,9 @@ def check_totp_lib(secret: str | bytes | None, user_code: str) -> bool:
     totp = pyotp.TOTP(secret_b_32)
 
     if not totp.verify(user_code, valid_window=1):
-        raise ErrAPI(msg="totp_code_invalid", status=401)
+        raise ErrAPI(
+            msg="totp_code_invalid",
+            status=401,
+        )
 
     return True

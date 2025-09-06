@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { clickByID, getByID, isToastOk } from "../../../lib/idx";
-import { waitTmr, waitURL } from "../../../lib/shortcuts/wait";
-import { getAccessManageAcc } from "../../../lib/actions/user";
+import { clickByID, getByID, isToastOk } from "../../../lib_tests/idx";
+import { waitTmr, waitURL } from "../../../lib_tests/shortcuts/wait";
+import { getAccessManageAcc } from "../../../lib_tests/actions/user";
 
 test("del acc ok", async ({ browser }) => {
   const { page, container } = await getAccessManageAcc(browser);

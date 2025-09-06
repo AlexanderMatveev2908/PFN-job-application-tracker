@@ -1,9 +1,9 @@
 import test from "@playwright/test";
 import { preAuthLogin } from "./pre";
-import { getByID, getByTxt } from "../../lib/shortcuts/get";
-import { clickByID } from "../../lib/shortcuts/click";
-import { checkIsFocused } from "../../lib/shortcuts/check";
-import { waitTmr } from "../../lib/shortcuts/wait";
+import { getByID, getByTxt } from "../../lib_tests/shortcuts/get";
+import { clickByID } from "../../lib_tests/shortcuts/click";
+import { checkIsFocused } from "../../lib_tests/shortcuts/check";
+import { waitTmr } from "../../lib_tests/shortcuts/wait";
 
 test("login validation", async ({ browser }) => {
   const { form, page } = await preAuthLogin(browser);
