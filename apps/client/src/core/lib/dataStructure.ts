@@ -182,3 +182,26 @@ export const b32ToHex = (str: string) => {
 
   return output.map((b) => b.toString(16).padStart(2, "0")).join("");
 };
+
+const ALPHB64 =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+export const b64ToHex = (str: string) => {
+  let buffer = 0;
+  let bitsLeft = 0;
+  const output = [];
+
+  for (const char of str.replace(/=+$/, "")) {
+    const idx = ALPHB64.indexOf(char);
+    if (idx === -1) throw new Error("Invalid b64 => " + char);
+
+    buffer = (buffer << 6) | idx;
+    bitsLeft += 6;
+
+    if (bitsLeft >= 8) {
+      bitsLeft -= 8;
+      output.push((buffer >> bitsLeft) & 0xff);
+    }
+  }
+  return output.map((b) => b.toString(16).padStart(2, "0")).join("");
+};
