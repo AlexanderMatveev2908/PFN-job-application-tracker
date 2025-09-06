@@ -2,9 +2,11 @@
 "use client";
 
 import BtnShadow from "@/common/components/buttons/BtnShadow";
+import LinkShadow from "@/common/components/links/LinkShadow";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { testSliceAPI } from "@/features/test/slices/api";
+import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { type FC } from "react";
 
 const Home: FC = () => {
@@ -16,6 +18,8 @@ const Home: FC = () => {
       cbAPI: () => mutate({ msg: "Client message" }),
     });
   };
+
+  const { isUsOk } = useGetUserState();
 
   return (
     <WrapCSR>
@@ -31,6 +35,19 @@ const Home: FC = () => {
                 label: "Click me",
               },
               isLoading,
+            }}
+          />
+        </div>
+
+        <div className="w-[275px]">
+          <LinkShadow
+            {...{
+              act: isUsOk ? "OK" : "ERR",
+              handleClick,
+              el: {
+                label: "Protected Page",
+              },
+              href: "/protected",
             }}
           />
         </div>

@@ -33,7 +33,7 @@ export const useErrAPI = () => {
       if (err?.refreshFailed) {
         dispatch(
           toastSlice.actions.open({
-            msg: "session expired",
+            msg: err?.msg ?? "session expired",
             type: "ERR",
           })
         );
