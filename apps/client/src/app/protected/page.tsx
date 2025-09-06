@@ -7,6 +7,10 @@ import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 
+export const metadata = {
+  title: "Protected Data",
+};
+
 const Page: FC = () => {
   const canPushNonLogged = useGetUserState().canPushNonLogged;
 

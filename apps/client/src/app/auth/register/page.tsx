@@ -23,6 +23,10 @@ import { useFocusSwap } from "@/core/hooks/etc/focus/useFocusSwap";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
 import { JwtReturnT } from "@/common/types/api";
 
+export const metadata = {
+  title: "Register",
+};
+
 const Page: FC = () => {
   const formCtx = useForm<RegisterFormT>({
     mode: "onChange",

@@ -3,14 +3,14 @@ import { ChildrenT } from "@/common/types/ui";
 import type { FC } from "react";
 
 export const metadata = {
-  title: "Recover Password 2FA",
+  title: "Job Applications",
 };
 
 const Layout: FC<ChildrenT> = ({ children }) => {
   return (
     <BaseLayoutPage
       {...{
-        title: "Recover Password 2FA",
+        title: "Job Applications",
       }}
     >
       {children}

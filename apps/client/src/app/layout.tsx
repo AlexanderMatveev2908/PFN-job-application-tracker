@@ -16,8 +16,8 @@ const fira_code = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Replace App name...",
-  description: "Fancy description app...",
+  title: "APPLICATION TRACKER",
+  description: "A cool app 👻",
   icons: {
     icon: "/favicon.svg",
   },

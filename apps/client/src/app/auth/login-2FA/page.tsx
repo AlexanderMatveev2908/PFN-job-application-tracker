@@ -10,6 +10,10 @@ import { authSliceAPI } from "@/features/auth/slices/api";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useCallback, type FC } from "react";
 
+export const metadata = {
+  title: "Login 2FA",
+};
+
 const Page: FC = () => {
   const [mutate] = authSliceAPI.useLoginAuth2FAMutation();
   const { nav } = useKitHooks();
