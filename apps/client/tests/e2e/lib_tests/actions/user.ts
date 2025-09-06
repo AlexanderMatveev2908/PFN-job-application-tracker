@@ -2,7 +2,13 @@ import { Browser } from "@playwright/test";
 import { getTokensLib, getUser2FA } from "./fullActions";
 import { goPage } from "../shortcuts/go";
 import { waitTmr, waitURL } from "../shortcuts/wait";
-import { clickByID, getByID, getByTxt, isToastOk } from "../idx";
+import {
+  clickByID,
+  getByID,
+  getByTxt,
+  isToastOk,
+  submitFormTOTP,
+} from "../idx";
 import { faker } from "@faker-js/faker";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { TokenT } from "@/common/types/tokens";
@@ -91,7 +97,7 @@ export const getAccessManageAccVerified = async (browser: Browser) => {
   };
 };
 
-export const getAccessManageAcc2FA = async (browser: Browser) => {
+export const goFormPreManageAcc2FA = async (browser: Browser) => {
   const { page, payload, ...rst } = await getUser2FA(browser, {});
 
   await page.goto("/user/manage-account");
@@ -113,5 +119,20 @@ export const getAccessManageAcc2FA = async (browser: Browser) => {
     page,
     payload,
     form2FA,
+  };
+};
+
+export const getAccessManageAcc2FA = async (browser: Browser) => {
+  const { page, totp_secret, ...rst } = await goFormPreManageAcc2FA(browser);
+
+  await submitFormTOTP(page, { totp_secret, url: "/user/manage-account" });
+
+  const form = await getByID(page, "manage_acc__form");
+
+  return {
+    ...rst,
+    page,
+    totp_secret,
+    form,
   };
 };
