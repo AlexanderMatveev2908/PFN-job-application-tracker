@@ -6,7 +6,7 @@ const Layout: FC<ChildrenT> = ({ children }) => {
   return (
     <BaseLayoutPage
       {...{
-        title: "Create Job Application",
+        title: "Add Job Application",
       }}
     >
       {children}
