@@ -9,11 +9,11 @@ test("setup 2FA ok", async ({ browser }) => {
 
   await clickByID(swap, "setup_2FA__btn");
 
-  await waitTmr(page);
+  await waitTmr(page, 10000);
 
   await isToastOk(page);
 
-  const qrLk = await getByID(swap, "qr_code_resul");
+  const qrLk = await getByID(swap, "qr_code_result");
   const zipBtn = await getByID(swap, "setup_2FA__link");
 
   const [imgFile] = await Promise.all([

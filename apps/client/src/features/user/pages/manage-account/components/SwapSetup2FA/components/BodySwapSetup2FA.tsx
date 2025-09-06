@@ -25,7 +25,7 @@ const BodySwapSetup2FA: FC<PropsType> = ({ res2FA, isCurr, swapMode }) => {
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 justify-items-center items-center">
       <a
-        data-testid={"qr_code_resul"}
+        data-testid={"qr_code_result"}
         download={"qrcode.png"}
         href={res2FA.totp_secret_qrcode}
         className="w-[250px] h-[250px] my-[30px]"
