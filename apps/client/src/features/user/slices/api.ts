@@ -88,7 +88,7 @@ export const userSliceAPI = apiSlice.injectEndpoints({
       invalidatesTags: [TagAPI.USER],
     }),
 
-    goFormPreManageAcc2FA: builder.mutation<
+    getAccessManageAcc2FA: builder.mutation<
       ResApiT<GainAccessManageAccReturnT>,
       ParamsAPI2FA
     >({
