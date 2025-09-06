@@ -1,6 +1,6 @@
 import { Browser } from "@playwright/test";
-import { clickByID, getByID, getUser2FA, preTest } from "../../lib/idx";
-import { waitURL } from "../../lib/shortcuts/wait";
+import { clickByID, getByID, getUser2FA, preTest } from "../../lib_tests/idx";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
 
 export const preLogin2FA = async (browser: Browser) => {
   const { payload, ...rst } = await getUser2FA(browser, {});

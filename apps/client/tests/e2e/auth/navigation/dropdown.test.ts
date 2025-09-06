@@ -1,7 +1,12 @@
 import test from "@playwright/test";
 import { preAuthNavigation } from "./pre";
-import { checkLinksList, clickByID, clickByTxt, getByID } from "../../lib/idx";
-import { waitURL } from "../../lib/shortcuts/wait";
+import {
+  checkLinksList,
+  clickByID,
+  clickByTxt,
+  getByID,
+} from "../../lib_tests/idx";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
 
 test("navigation to register page with dropdown", async ({ browser }) => {
   const { page } = await preAuthNavigation(browser);

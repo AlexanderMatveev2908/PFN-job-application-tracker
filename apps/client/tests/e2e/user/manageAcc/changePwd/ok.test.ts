@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { getAccessManageAcc } from "../../../lib/actions/user";
-import { clickByID, getByID, isToastOk } from "../../../lib/idx";
-import { waitTmr } from "../../../lib/shortcuts/wait";
+import { getAccessManageAcc } from "../../../lib_tests/actions/user";
+import { clickByID, getByID, isToastOk } from "../../../lib_tests/idx";
+import { waitTmr } from "../../../lib_tests/shortcuts/wait";
 import { genPwd } from "@/core/lib/pwd";
 
 test("change pwd ok", async ({ browser }) => {

@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { getAccessManageAcc } from "../../lib/actions/user";
-import { clickByID, getByID, getByTxt } from "../../lib/idx";
-import { waitTmr } from "../../lib/shortcuts/wait";
+import { getAccessManageAcc } from "../../lib_tests/actions/user";
+import { clickByID, getByID, getByTxt } from "../../lib_tests/idx";
+import { waitTmr } from "../../lib_tests/shortcuts/wait";
 
 test("setup 2FA user not verified", async ({ browser }) => {
   const { container, page } = await getAccessManageAcc(browser);

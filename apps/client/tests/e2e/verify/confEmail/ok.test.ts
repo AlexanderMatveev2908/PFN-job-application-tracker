@@ -1,8 +1,8 @@
 import test, { expect } from "@playwright/test";
-import { getTokensLib } from "../../lib/actions/fullActions";
+import { getTokensLib } from "../../lib_tests/actions/fullActions";
 import { TokenT } from "@/common/types/tokens";
 import { REG_JWE, REG_JWT } from "@/core/constants/regex";
-import { waitURL } from "../../lib/shortcuts/wait";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
 
 test("conf email ok", async ({ browser }) => {
   const { cbc_hmac_token } = await getTokensLib(browser, {

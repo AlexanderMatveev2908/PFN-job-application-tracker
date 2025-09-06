@@ -1,10 +1,10 @@
 import test from "@playwright/test";
-import { getTokensLib } from "../../lib/actions/fullActions";
-import { getByID, getByTxt } from "../../lib/shortcuts/get";
-import { closeToast } from "../../lib/actions/sideActions";
-import { clickByID } from "../../lib/shortcuts/click";
+import { getTokensLib } from "../../lib_tests/actions/fullActions";
+import { getByID, getByTxt } from "../../lib_tests/shortcuts/get";
+import { closeToast } from "../../lib_tests/actions/sideActions";
+import { clickByID } from "../../lib_tests/shortcuts/click";
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
+import { waitTmr, waitURL } from "../../lib_tests/shortcuts/wait";
 
 test("require email user ok", async ({ browser }) => {
   const { page, payload } = await getTokensLib(browser, {});

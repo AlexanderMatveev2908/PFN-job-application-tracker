@@ -1,8 +1,8 @@
 import test from "@playwright/test";
-import { checkTxtList } from "../../../lib/shortcuts/check";
-import { checkTxtListOpc } from "../../../lib/shortcuts/style";
+import { checkTxtList } from "../../../lib_tests/shortcuts/check";
+import { checkTxtListOpc } from "../../../lib_tests/shortcuts/style";
 import { preAuthRegister } from "../pre";
-import { waitTmr } from "../../../lib/shortcuts/wait";
+import { waitTmr } from "../../../lib_tests/shortcuts/wait";
 
 test("register form swap 0", async ({ browser }) => {
   const { form, page } = await preAuthRegister(browser);
