@@ -36,8 +36,8 @@ export const useDelCbcHmacByPathAndType = () => {
 
       if (
         (Array.isArray(mapper[token_t]) &&
-          mapper[token_t].some((allowed) => p.includes(allowed))) ||
-        (typeof mapper[token_t] === "string" && p.includes(mapper[token_t]))
+          mapper[token_t].some((allowed) => p.startsWith(allowed))) ||
+        (typeof mapper[token_t] === "string" && p.startsWith(mapper[token_t]))
       )
         return;
 
