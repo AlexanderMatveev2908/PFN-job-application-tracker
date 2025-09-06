@@ -159,3 +159,26 @@ export const hexToRgb = (hex: string): string => {
 
   return `rgb(${r}, ${g}, ${b})`;
 };
+
+const ALPHB32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+export const b32ToHex = (str: string) => {
+  let buffer = 0;
+  let bitsLeft = 0;
+  const output = [];
+
+  for (const char of str.replace(/=+$/, "")) {
+    const idx = ALPHB32.indexOf(char.toUpperCase());
+    if (idx === -1) throw new Error("Invalid b32 => " + char);
+
+    buffer = (buffer << 5) | idx;
+    bitsLeft += 5;
+
+    if (bitsLeft >= 8) {
+      bitsLeft -= 8;
+      output.push((buffer >> bitsLeft) & 0xff);
+    }
+  }
+
+  return output.map((b) => b.toString(16).padStart(2, "0")).join("");
+};

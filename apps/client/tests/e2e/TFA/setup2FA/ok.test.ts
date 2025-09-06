@@ -1,12 +1,8 @@
 import test, { expect } from "@playwright/test";
-import {
-  clickByID,
-  getAccessManageAccVerified,
-  getByID,
-  isToastOk,
-} from "../../lib/idx";
+import { clickByID, getByID, isToastOk } from "../../lib/idx";
 import { waitTmr } from "../../lib/shortcuts/wait";
 import AdmZip from "adm-zip";
+import { getAccessManageAccVerified } from "../../lib/actions/user";
 
 test("setup 2FA ok", async ({ browser }) => {
   const { swap, page } = await getAccessManageAccVerified(browser);

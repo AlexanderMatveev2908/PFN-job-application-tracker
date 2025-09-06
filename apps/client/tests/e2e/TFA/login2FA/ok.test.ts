@@ -4,8 +4,8 @@ import { waitTmr, waitURL } from "../../lib/shortcuts/wait";
 import { REG_JWT } from "@/core/constants/regex";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { authenticator, totp } from "otplib";
-import base32Decode from "base32-decode";
 import { preLogin2FA } from "./pre";
+import { b32ToHex } from "@/core/lib/dataStructure";
 
 test("login 2FA TOTP ok", async ({ browser }) => {
   const { page, totp_secret } = await preLogin2FA(browser);
@@ -17,14 +17,10 @@ test("login 2FA TOTP ok", async ({ browser }) => {
 
   await expect(firstSquare).toBeFocused();
 
-  const hexSecret = Buffer.from(base32Decode(totp_secret, "RFC4648")).toString(
-    "hex"
-  );
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   totp.options = { encoding: "hex" as any };
 
-  const code = totp.generate(hexSecret);
+  const code = totp.generate(b32ToHex(totp_secret));
 
   // const code = authenticator.generate(totp_secret);
 
