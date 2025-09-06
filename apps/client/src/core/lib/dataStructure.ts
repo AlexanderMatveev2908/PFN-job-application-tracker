@@ -129,7 +129,9 @@ export const hexToBytes = (hex: string) => {
 export const hexToDict = (hex: string) =>
   JSON.parse(new TextDecoder().decode(hexToBytes(hex)));
 
-export const extractAadFromCbcHmac = (cbc_hmac_token?: string | null) => {
+export const extractAadFromCbcHmac = (
+  cbc_hmac_token?: string | null
+): AadCbcHmacT | null => {
   let aad: AadCbcHmacT | null = null;
   try {
     if (cbc_hmac_token && REG_CBC_HMAC.test(cbc_hmac_token))

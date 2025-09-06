@@ -5,8 +5,8 @@ import { UnwrappedResApiT } from "@/common/types/api";
 import { TokenT } from "@/common/types/tokens";
 import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
-import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
+import { usePushOnCbcHmacPresent } from "@/features/user/hooks/usePushOnCbcHmacPresent";
 import { useUser } from "@/features/user/hooks/useUser";
 import {
   GainAccessManageAccReturnT,
@@ -32,9 +32,10 @@ const Page: FC = () => {
     mutationTrigger: mutate,
     successCb,
     delCbcOnSuccess: false,
+    tokenType: TokenT.MANAGE_ACC_2FA,
   });
 
-  useCheckTypeCbcHmac({ tokenType: TokenT.MANAGE_ACC_2FA });
+  usePushOnCbcHmacPresent({ tokenType: TokenT.MANAGE_ACC });
 
   return <Form2FA {...{ ...props }} />;
 };

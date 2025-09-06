@@ -5,7 +5,6 @@ import { JwtReturnT, UnwrappedResApiT } from "@/common/types/api";
 import { TokenT } from "@/common/types/tokens";
 import Form2FA from "@/core/forms/Form2FA/Form2FA";
 import { use2FAForm } from "@/core/hooks/etc/forms/use2FAForm";
-import { useCheckTypeCbcHmac } from "@/core/hooks/etc/tokens/useCheckTypeCbcHmac";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useUser } from "@/features/user/hooks/useUser";
 import { verifySliceAPI } from "@/features/verify/slices/api";
@@ -28,9 +27,8 @@ const Page: FC = () => {
     mutationTrigger: mutate,
     successCb,
     delCbcOnSuccess: true,
+    tokenType: TokenT.CHANGE_EMAIL_2FA,
   });
-
-  useCheckTypeCbcHmac({ tokenType: TokenT.CHANGE_EMAIL_2FA });
 
   return <Form2FA {...{ ...props }} />;
 };
