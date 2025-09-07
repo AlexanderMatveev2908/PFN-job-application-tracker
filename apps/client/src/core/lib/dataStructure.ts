@@ -54,64 +54,77 @@ type JSONValT =
   | JSONValT[]
   | { [key: string]: JSONValT };
 
-export function serialize(
-  v: unknown,
+export const serialize = (
+  data: unknown,
   seen: WeakSet<any> = new WeakSet()
-): JSONValT {
+): JSONValT => {
   if (
-    v === null ||
-    typeof v === "string" ||
-    typeof v === "number" ||
-    typeof v === "boolean"
+    data === null ||
+    typeof data === "string" ||
+    typeof data === "number" ||
+    typeof data === "boolean"
   )
-    return v;
+    return data;
 
-  if (typeof v === "bigint") return v + "";
+  if (typeof data === "bigint") return data + "";
   if (
-    typeof v === "function" ||
-    typeof v === "symbol" ||
-    typeof v === "undefined"
+    typeof data === "function" ||
+    typeof data === "symbol" ||
+    typeof data === "undefined"
   )
-    return `=> ${typeof v}`;
+    return `=> ${typeof data}`;
 
-  if (v instanceof Date) return v.toISOString();
+  if (data instanceof Date) return data.toISOString();
 
-  if (Array.isArray(v)) {
-    if (seen.has(v)) throw new Error("circular reference detected");
-    seen.add(v);
-    return v.map((item) => serialize(item, seen));
+  if (Array.isArray(data)) {
+    if (seen.has(data)) throw new ErrApp("circular reference detected");
+    seen.add(data);
+    return data.map((item) => serialize(item, seen));
   }
 
-  if (v instanceof Map) {
-    if (seen.has(v)) throw new Error("circular reference detected");
-    seen.add(v);
+  if (data instanceof Map) {
+    if (seen.has(data)) throw new ErrApp("circular reference detected");
+    seen.add(data);
 
     const obj: Record<string, JSONValT> = {};
 
-    for (const [k, vv] of v.entries()) {
+    for (const [k, vv] of data.entries()) {
       obj[JSON.stringify(serialize(k, seen))] = serialize(vv, seen);
     }
     return obj;
   }
 
-  if (v instanceof Set) {
-    if (seen.has(v)) throw new Error("circular reference detected");
-    seen.add(v);
-    return Array.from(v).map((item) => serialize(item, seen));
+  if (data instanceof Set) {
+    if (seen.has(data)) throw new ErrApp("circular reference detected");
+    seen.add(data);
+    return Array.from(data).map((item) => serialize(item, seen));
   }
 
-  if (typeof v === "object") {
-    if (seen.has(v)) throw new Error("circular reference detected");
-    seen.add(v);
+  if (data instanceof FormData) {
+    if (seen.has(data)) throw new ErrApp("circular reference detected");
+    seen.add(data);
+
     const obj: Record<string, JSONValT> = {};
-    for (const [k, vv] of Object.entries(v)) {
+
+    for (const [k, v] of data.entries()) {
+      obj[k] = serialize(v);
+    }
+
+    return obj;
+  }
+
+  if (typeof data === "object") {
+    if (seen.has(data)) throw new ErrApp("circular reference detected");
+    seen.add(data);
+    const obj: Record<string, JSONValT> = {};
+    for (const [k, vv] of Object.entries(data)) {
       obj[k] = serialize(vv, seen);
     }
     return obj;
   }
 
   return null;
-}
+};
 
 export const hexToBytes = (hex: string) => {
   const arg = new Uint8Array(hex.length / 2);
@@ -171,7 +184,7 @@ export const b32ToHex = (str: string) => {
 
   for (const char of str.replace(/=+$/, "")) {
     const idx = ALPHB32.indexOf(char.toUpperCase());
-    if (idx === -1) throw new Error("Invalid b32 => " + char);
+    if (idx === -1) throw new ErrApp("Invalid b32 => " + char);
 
     buffer = (buffer << 5) | idx;
     bitsLeft += 5;
@@ -195,7 +208,7 @@ export const b64ToHex = (str: string) => {
 
   for (const char of str.replace(/=+$/, "")) {
     const idx = ALPHB64.indexOf(char);
-    if (idx === -1) throw new Error("Invalid b64 => " + char);
+    if (idx === -1) throw new ErrApp("Invalid b64 => " + char);
 
     buffer = (buffer << 6) | idx;
     bitsLeft += 6;

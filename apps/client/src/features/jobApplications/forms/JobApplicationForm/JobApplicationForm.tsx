@@ -22,7 +22,11 @@ type PropsType = {
 };
 
 const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
-  const { control, setFocus } = useFormContext<JobApplicationFormT>();
+  const {
+    control,
+    setFocus,
+    formState: { isSubmitting },
+  } = useFormContext<JobApplicationFormT>();
 
   const testID = "job_application";
 
@@ -62,6 +66,7 @@ const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
               type: "submit",
               label: "Submit",
               testID: `${testID}__form__submit`,
+              isLoading: isSubmitting,
             }}
           />
         </div>

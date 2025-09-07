@@ -3,13 +3,14 @@
 
 import JobApplicationForm from "@/features/jobApplications/forms/JobApplicationForm/JobApplicationForm";
 import { logFormErrs } from "@/core/lib/etc";
-import { __cg } from "@/core/lib/log";
 import { addJobApplicationSchema } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { defValDatePicker } from "@/core/lib/formatters";
+import { defValDatePicker, genFormData } from "@/core/lib/formatters";
 import { ApplicationStatusT } from "@/features/jobApplications/types";
+import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
+import { jobApplicationSliceAPI } from "@/features/jobApplications/slices/api";
 
 const Page: FC = () => {
   const formCtx = useForm({
@@ -25,8 +26,15 @@ const Page: FC = () => {
   });
   const { handleSubmit } = formCtx;
 
+  const { nav, wrapAPI } = useKitHooks();
+  const [mutate] = jobApplicationSliceAPI.useAddJobApplicationMutation();
+
   const handleSave = handleSubmit(async (data) => {
-    __cg(data);
+    const formData = genFormData(data);
+
+    const res = await wrapAPI({
+      cbAPI: () => mutate(formData),
+    });
   }, logFormErrs);
 
   return (
