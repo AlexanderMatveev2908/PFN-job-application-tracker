@@ -27,3 +27,7 @@ REG_CBC_HMAC = re.compile(
 REG_TOTP_SECRET = re.compile(r"^[A-Z2-7]{32}$")
 REG_TOTP_CODE = re.compile(r"^\d{6}$")
 REG_BACKUP_CODE = re.compile(r"^[A-F0-9]{4}-[A-F0-9]{4}$")
+
+REG_DATE_PICKER = re.compile(
+    r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+)

@@ -1,22 +1,6 @@
 import { REG_DATE_PICKER, REG_NAME, REG_TXT } from "@/core/constants/regex";
-import { parseDevValUsFriendly } from "@/core/lib/formatters";
+import { ApplicationStatusT } from "@/features/jobApplications/types";
 import z from "zod";
-
-export enum ApplicationStatusT {
-  APPLIED = "APPLIED",
-  UNDER_REVIEW = "UNDER_REVIEW",
-  INTERVIEW = "INTERVIEW",
-  OFFER = "OFFER",
-  REJECTED = "REJECTED",
-  WITHDRAWN = "WITHDRAWN",
-}
-
-export const applicationStatusChoices = Object.values(ApplicationStatusT).map(
-  (v) => ({
-    val: v,
-    label: parseDevValUsFriendly(v),
-  })
-);
 
 export const addJobApplicationSchema = z.object({
   company_name: z

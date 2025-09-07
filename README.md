@@ -513,11 +513,14 @@ A ready-to-use **Postman setup** is available at the root of the repo in the **p
 erDiagram
   users ||--o{ tokens : has
   users ||--o{ backup_codes : has
+  users ||--o{ job_applications : has
   tokens }o--|| token_type : uses
   tokens }o--|| alg_type : uses
+  job_applications }o--||application_status_type : uses
   root_table ||--|| users : extends
   root_table ||--|| tokens : extends
   root_table ||--|| backup_codes : extends
+  root_table ||--|| job_applications : extends
 
   root_table {
     uuid id
@@ -550,6 +553,14 @@ erDiagram
     bigint exp
   }
 
+  job_applications {
+    uuid user_id
+    string company_name
+    string position_name
+    applications_status_type status
+    bigint date_applied
+  }
+
   token_type {
     enum REFRESH
     enum CONF_EMAIL
@@ -567,6 +578,15 @@ erDiagram
     enum AES_CBC_HMAC_SHA256
     enum RSA_OAEP_256_A256GCM
     enum HMAC_SHA256
+  }
+
+  application_status_type {
+  enum APPLIED
+  enum UNDER_REVIEW
+  enum INTERVIEW
+  enum OFFER
+  enum REJECTED
+  enum WITHDRAWN
   }
 ```
 

@@ -4,14 +4,12 @@
 import JobApplicationForm from "@/features/jobApplications/forms/JobApplicationForm/JobApplicationForm";
 import { logFormErrs } from "@/core/lib/etc";
 import { __cg } from "@/core/lib/log";
-import {
-  addJobApplicationSchema,
-  ApplicationStatusT,
-} from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
+import { addJobApplicationSchema } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { defValDatePicker } from "@/core/lib/formatters";
+import { ApplicationStatusT } from "@/features/jobApplications/types";
 
 const Page: FC = () => {
   const formCtx = useForm({
