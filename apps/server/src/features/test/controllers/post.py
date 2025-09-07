@@ -30,16 +30,23 @@ async def post_form_ctrl(req: Request) -> Response:
 
     parsed_f = req.state.parsed_f
 
-    images = parsed_f["images"]
+    images = parsed_f.get("images")
+    video = parsed_f.get("video")
 
-    uploaded_images = await asyncio.gather(*(upload_w3(img) for img in images))
+    uploaded_images = (
+        await asyncio.gather(*(upload_w3(img) for img in images))
+        if images
+        else []
+    )
 
-    uploaded_video = await upload_w3(parsed_f["video"])
+    uploaded_video = await upload_w3(video) if video else None
 
     del_vid(parsed_f)
 
     return ResAPI(req).ok_201(
-        uploaded_images=uploaded_images, uploaded_video=uploaded_video
+        parsed_f=parsed_f,
+        uploaded_images=uploaded_images,
+        uploaded_video=uploaded_video,
     )
 
 

@@ -3,8 +3,10 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.decorators.err import ErrAPI
 from src.lib.logger import cent
+from src.middleware.parsers.form_data_parser.form_data_parser import (
+    FormDataParser,
+)
 from src.middleware.security.cors import CorsMDW
-from src.middleware.parsers.form_data_parser import FormDataParser
 from src.middleware.dev_only.json_logger import LoggerJSON
 from src.middleware.wrap_api import WrapAPI
 from src.routes.idx import api

@@ -1,5 +1,5 @@
 import { isStr } from "./dataStructure";
-import { formatDate } from "./formatters";
+import { formatDate } from "./dataStructure/formatters";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const __cg = (...args: any[]) => {

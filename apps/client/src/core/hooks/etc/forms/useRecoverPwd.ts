@@ -1,10 +1,10 @@
 import { authSliceAPI } from "@/features/auth/slices/api";
 import { useKitHooks } from "../useKitHooks";
 import { usePwdsForm } from "./usePwdsForm";
-import { logFormErrs } from "@/core/lib/etc";
 import { useCheckTypeCbcHmac } from "../tokens/useCheckTypeCbcHmac";
 import { TokenT } from "@/common/types/tokens";
 import { useUser } from "@/features/user/hooks/useUser";
+import { logFormErrs } from "@/core/lib/forms";
 
 type Params = {
   strategy_2FA: boolean;

@@ -60,3 +60,5 @@ class JobApplication(RootTable):
     )
 
     date_applied: Mapped[int] = mapped_column(BigInteger, nullable=False)
+
+    notes: Mapped[str] = mapped_column(String(1000), nullable=True)

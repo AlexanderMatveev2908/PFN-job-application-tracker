@@ -6,13 +6,13 @@ import { FormManageAccPropsType } from "../types";
 import { useForm } from "react-hook-form";
 import { PwdsFormT, pwdsSchema, resetValsPwdsForm } from "@/core/paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { logFormErrs } from "@/core/lib/etc";
 import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
 import { userSliceAPI } from "@/features/user/slices/api";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
 import PairPwd from "@/common/components/HOC/PairPwd/PairPwd";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
+import { logFormErrs } from "@/core/lib/forms";
 
 const ChangePwdForm: FC<FormManageAccPropsType> = ({
   contentRef,

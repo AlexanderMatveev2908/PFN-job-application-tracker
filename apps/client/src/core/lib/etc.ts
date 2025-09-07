@@ -1,5 +1,4 @@
 import { RefObject } from "react";
-import { __cg } from "./log";
 
 export const clearTmr = (timerID: RefObject<NodeJS.Timeout | null>) => {
   if (!timerID.current) return;
@@ -17,13 +16,6 @@ export const genLorem = (n?: number) =>
 
 export const genMinMax = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const logFormErrs = (errs: any) => {
-  __cg("errs", errs);
-
-  return errs;
-};
 
 export const parseLabelToTestID = (label: string) =>
   label.toLowerCase().replaceAll(" ", "_");

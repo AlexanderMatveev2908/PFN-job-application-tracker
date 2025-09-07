@@ -1,7 +1,7 @@
 import { FormFieldCheckT, FormFieldTxtT } from "@/common/types/ui";
 import { FieldValues, Path } from "react-hook-form";
 import { v4 } from "uuid";
-import { captAll } from "../lib/formatters";
+import { captAll } from "../lib/dataStructure/formatters";
 
 export class FormFieldGen<T extends FieldValues> {
   private genID(): string {
