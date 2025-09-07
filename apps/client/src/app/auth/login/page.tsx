@@ -2,7 +2,6 @@
 
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
-import { logFormErrs } from "@/core/lib/etc";
 import BodyFormLogin from "@/features/auth/pages/login/components/BodyFormLogin";
 import {
   LoginFormT,
@@ -16,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import WrapAuthFormPage from "@/features/auth/components/WrapAuthFormPage";
+import { logFormErrs } from "@/core/lib/forms";
 
 const Page: FC = () => {
   const { wrapAPI } = useWrapAPI();

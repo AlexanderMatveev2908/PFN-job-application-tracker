@@ -1,5 +1,5 @@
 import { ErrApp } from "./err";
-import { captAll } from "./formatters";
+import { captAll } from "./dataStructure/formatters";
 
 export const calcIsCurrPath = (path: string, href: string) => {
   const noQuery = path.split(/[?#]/).shift();

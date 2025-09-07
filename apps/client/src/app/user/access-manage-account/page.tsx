@@ -4,7 +4,6 @@
 import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage/WrapFormPage";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
-import { logFormErrs } from "@/core/lib/etc";
 import { PwdFormT, pwdSchema, resetValsPwdForm } from "@/core/paperwork";
 import BodyFormAccessManageAccount from "@/features/user/pages/access-manage-account/components/BodyFormAccessManageAccount";
 import {
@@ -18,6 +17,7 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
 import { TokenT } from "@/common/types/tokens";
 import { usePushOnCbcHmacPresent } from "@/features/user/hooks/usePushOnCbcHmacPresent";
+import { logFormErrs } from "@/core/lib/forms";
 
 const Page: FC = () => {
   const { wrapAPI, nav } = useKitHooks();

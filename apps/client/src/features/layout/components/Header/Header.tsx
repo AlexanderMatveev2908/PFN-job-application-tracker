@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 import { headerHight } from "@/core/constants/style";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
-import { extractInitialsUser } from "@/core/lib/formatters";
+import { extractInitialsUser } from "@/core/lib/dataStructure/formatters";
 import HeaderLogout from "./components/HeaderLogout";
 import { calcIsCurrPath } from "@/core/lib/path";
 import { useLinksLogged } from "@/core/hooks/etc/navigation/useLinksLogged";

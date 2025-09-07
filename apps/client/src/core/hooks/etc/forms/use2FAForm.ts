@@ -10,13 +10,13 @@ import {
   ToptFormT,
 } from "@/core/paperwork";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { logFormErrs } from "@/core/lib/etc";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useCallback } from "react";
 import { useKitHooks } from "../useKitHooks";
 import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
 import { useCheckTypeCbcHmac } from "../tokens/useCheckTypeCbcHmac";
 import { TokenT } from "@/common/types/tokens";
+import { logFormErrs } from "@/core/lib/forms";
 
 type Params<T> = {
   mutationTrigger: TriggerApiT<T>;

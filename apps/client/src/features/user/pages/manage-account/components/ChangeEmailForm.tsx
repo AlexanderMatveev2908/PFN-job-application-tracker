@@ -4,7 +4,6 @@
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
-import { logFormErrs } from "@/core/lib/etc";
 import { EmailFormT, emailSchema, resetValsEmailForm } from "@/core/paperwork";
 import { emailField } from "@/core/uiFactory/formFields";
 import { useGetUserState } from "@/features/user/hooks/useGetUserState";
@@ -15,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { FormManageAccPropsType } from "../types";
 import { useFocusMultiForm } from "@/core/hooks/etc/focus/useFocusMultiForm";
 import WrapSwapMultiForm from "@/common/components/swap/WrapMultiFormSwapper/subComponents/WrapSwapMultiForm";
+import { logFormErrs } from "@/core/lib/forms";
 
 const ChangeEmailForm: FC<FormManageAccPropsType> = ({
   contentRef,

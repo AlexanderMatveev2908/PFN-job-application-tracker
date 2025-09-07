@@ -8,7 +8,7 @@ import {
   requireEmailSliceAPI,
 } from "@/features/requireEmail/slices/api";
 import { genMailNoticeMsg } from "@/core/constants/etc";
-import { logFormErrs } from "@/core/lib/etc";
+import { logFormErrs } from "@/core/lib/forms";
 
 type Params = {
   endpointT: RequireEmailEndpointT;

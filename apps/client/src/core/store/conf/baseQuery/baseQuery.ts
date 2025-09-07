@@ -1,10 +1,10 @@
 import { instanceAxs } from "./axiosInstance";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import { serialize } from "@/core/lib/dataStructure";
 import { BaseQueryArgT, BaseQueryReturnT } from "./lib/types";
 import { extractHeaders, extractMsgErr, parseErr } from "./lib/etc";
 import { handleRefreshErr, refreshToken } from "./lib/refresh";
 import { getStorage } from "@/core/lib/storage";
+import { serialize } from "@/core/lib/dataStructure/serialization";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

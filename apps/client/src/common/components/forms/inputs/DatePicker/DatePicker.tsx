@@ -4,7 +4,7 @@
 import { FormFieldTxtT } from "@/common/types/ui";
 import { Controller, FieldValues, useFormContext } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
-import { defValDatePicker } from "@/core/lib/formatters";
+import { defValDatePicker } from "@/core/lib/dataStructure/formatters";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;

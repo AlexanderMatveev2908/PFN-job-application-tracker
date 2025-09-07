@@ -1,5 +1,5 @@
 import test from "@playwright/test";
-import { extractInitialsUser } from "@/core/lib/formatters";
+import { extractInitialsUser } from "@/core/lib/dataStructure/formatters";
 import { preAuthLogout } from "./pre";
 import { clickByID, getByID, getByTxt } from "../../lib_tests/idx";
 import { waitTmr, waitURL } from "../../lib_tests/shortcuts/wait";

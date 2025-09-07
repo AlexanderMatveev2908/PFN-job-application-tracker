@@ -1,5 +1,5 @@
 import { SqlTableRoot } from "@/common/types/db";
-import { parseDevValUsFriendly } from "@/core/lib/formatters";
+import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 
 export enum ApplicationStatusT {
   APPLIED = "APPLIED",
