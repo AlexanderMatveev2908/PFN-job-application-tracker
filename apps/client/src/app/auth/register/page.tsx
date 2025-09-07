@@ -100,7 +100,7 @@ const Page: FC = () => {
         handleSave,
         formCtx,
         propsBtnsSwapper: {
-          swapState,
+          currSwap: swapState.currSwap,
           startSwap,
           totSwaps: 2,
         },

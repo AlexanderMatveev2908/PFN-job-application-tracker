@@ -3,7 +3,7 @@
 
 import type { FC } from "react";
 import { UseFormReturn } from "react-hook-form";
-import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage";
+import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage/WrapFormPage";
 import RequireEmailFormBody from "./RequireEmailFormBody";
 import { EmailFormT } from "@/core/paperwork";
 

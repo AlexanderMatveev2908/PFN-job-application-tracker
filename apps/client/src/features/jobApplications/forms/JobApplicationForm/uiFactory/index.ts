@@ -13,7 +13,7 @@ export const txtFieldsApplicationForm = [
   notesField,
 ];
 
-const statusField = gen.checkField({
+export const statusField = gen.checkField({
   label: "Status Application",
   name: "status",
   type: "checkbox",

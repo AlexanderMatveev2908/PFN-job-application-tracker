@@ -19,6 +19,7 @@ type PropsType = {
   isLoading?: boolean;
   el: FieldTxtSvgT;
   act: AppEventT;
+  type?: "submit" | "button";
 } & TestIDT;
 
 const WrapElWithShadow: FC<PropsType> = ({
@@ -32,6 +33,7 @@ const WrapElWithShadow: FC<PropsType> = ({
   isLoading,
   el,
   testID,
+  type = "button",
 }) => {
   const $clr = $argClr[act];
 
@@ -92,7 +94,12 @@ const WrapElWithShadow: FC<PropsType> = ({
     </Link>
   ) : (
     <WrapBtnAPI {...{ isLoading, act }}>
-      <button onClick={handleClick} disabled={!isEnabled} {...objProps}>
+      <button
+        type={type}
+        onClick={handleClick}
+        disabled={!isEnabled}
+        {...objProps}
+      >
         {content}
       </button>
     </WrapBtnAPI>

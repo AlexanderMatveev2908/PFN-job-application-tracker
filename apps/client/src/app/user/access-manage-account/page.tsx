@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage";
+import WrapFormPage from "@/common/components/forms/wrappers/WrapFormPage/WrapFormPage";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import { logFormErrs } from "@/core/lib/etc";

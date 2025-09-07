@@ -10,6 +10,17 @@ export enum ApplicationStatusT {
   WITHDRAWN = "WITHDRAWN",
 }
 
+export const applicationStatusChoices = Array.from(
+  { length: 30 },
+  (_, idx) => ({ val: idx + "", label: idx + "" })
+);
+// export const applicationStatusChoices = Object.values(ApplicationStatusT)
+//   .map((v) => ({
+//     val: v,
+//     label: v.at(0) + v.slice(1),
+//   }))
+//   .flatMap((ch) => Array.from({ length: 5 }, () => ch));
+
 export const addJobApplicationSchema = z.object({
   company_name: z
     .string()

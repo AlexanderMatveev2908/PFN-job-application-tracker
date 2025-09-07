@@ -5,9 +5,9 @@ import { ChildrenT } from "@/common/types/ui";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import WrapFormFooter from "./subComponents/WrapFormFooter";
 import { Fragment, ReactNode } from "react";
-import { PropsTypeBtnsSwapper } from "../../swap/components/BtnsSwapper";
-import ProgressSwap from "../../swap/components/ProgressSwap";
-import WrapCSR from "../../wrappers/pages/WrapCSR";
+import { PropsTypeBtnsSwapper } from "../../../swap/components/BtnsSwapper";
+import ProgressSwap from "../../../swap/components/ProgressSwap";
+import WrapCSR from "../../../wrappers/pages/WrapCSR";
 import WrapFormBody from "./subComponents/WrapFormBody";
 
 export type WrapFormPagePropsType<T extends FieldValues> = {

@@ -39,6 +39,11 @@ export type FormFieldCheckT<T extends FieldValues> = {
   type: FieldCheckT;
 };
 
+export type CheckChoiceT = {
+  val: string;
+  label: string;
+};
+
 export type PortalConfT = {
   showPortal: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
