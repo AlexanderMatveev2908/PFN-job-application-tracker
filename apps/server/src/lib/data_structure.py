@@ -11,7 +11,7 @@ class BoolParser(Enum):
     FALSE = False
 
 
-def parse_bool(v: str) -> bool | str:
+def parse_bool(v: Any) -> bool | str:
     upper = v.upper()
     if upper in BoolParser.__members__:
         return BoolParser[upper].value
