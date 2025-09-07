@@ -53,11 +53,12 @@ export const genFormData = (
     const key = prefix ? `${prefix}[${k}]` : k;
 
     if (Array.isArray(v)) {
+      const arrayKey = key + "[]";
       for (const vv of v) {
         if (isObjOk(vv)) {
-          genFormData(vv, formData, key);
+          genFormData(vv, formData, arrayKey);
         } else {
-          formData.append(key, isStr(vv) ? vv : vv + "");
+          formData.append(arrayKey, isStr(vv) ? vv : vv + "");
         }
       }
     } else if (isObjOk(v)) {
