@@ -6,6 +6,7 @@ from src.features.verify.routes.idx import verify_router
 from src.features.require_email.routes.idx import require_email_router
 from src.features.user.routes.idx import user_router
 from src.features.cleanup.routes.idx import cleanup_router
+from src.features.job_applications.routes.idx import job_applications_router
 
 api = APIRouter(prefix="/api/v1")
 
@@ -16,3 +17,4 @@ api.include_router(verify_router)
 api.include_router(require_email_router)
 api.include_router(user_router)
 api.include_router(cleanup_router)
+api.include_router(job_applications_router)
