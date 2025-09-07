@@ -58,6 +58,8 @@ sqlalchemy = {extras = ["mypy"], version = "^2.0.42"}
 types-aiofiles = "^24.1.0.20250801"
 pytest-json-report = "^1.5.0"
 pytest-xdist = "^3.8.0"
+pytest-html = "^4.1.1"
+allure-pytest = "^2.15.0"
 
 
 [[tool.poetry.packages]]
@@ -67,6 +69,8 @@ from = "."
 
 [[tool.poetry.include]]
 path = "src/lib/emails/*.html"
+
+
 [tool.black]
 line-length = 79
 target-version = ["py312"]
@@ -80,6 +84,8 @@ line-length = 79
 
 [tool.ruff.lint]
 ignore = ["E203", "E741"]
+
+
 
 [tool.mypy]
 python_version = "3.12"
@@ -96,6 +102,6 @@ testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 python_functions = ["*_t", "test_*"]
 python_classes = ["*TST", "Test*"]
-addopts = "-v --no-header --json-report --json-report-file=test-results/reports.json"
+addopts = "-v --no-header --html=test-results/report.html --self-contained-html --alluredir=test-results/allure"
 asyncio_mode = "strict"
 pythonpath = [".", "apps/server"]

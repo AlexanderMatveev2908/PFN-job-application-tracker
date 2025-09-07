@@ -86,8 +86,11 @@ ini.setdefault("python_files", ["test_*.py", "*_test.py"])
 ini.setdefault("python_functions", ["*_t", "test_*"])
 ini.setdefault("python_classes", ["*TST", "Test*"])
 ini["addopts"] = (
-    "-v --no-header --json-report --json-report-file=test-results/reports.json"
+    "-v --no-header "
+    "--html=test-results/report.html --self-contained-html "
+    "--alluredir=test-results/allure"
 )
+
 ini.setdefault("asyncio_mode", "strict")
 ini.setdefault("pythonpath", [".", "apps/server"])
 
