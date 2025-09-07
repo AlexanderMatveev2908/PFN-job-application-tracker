@@ -12,36 +12,30 @@ from src.middleware.parsers.form_data_parser.types import (
 )
 
 
-def assign_nested(d: dict, key: str, value: ParsedValue) -> None:
+def assign_nested(d: dict, key: str, val: ParsedValue) -> None:
     parts = key.replace("]", "").split("[")
+
     curr = d
+    stop = -2 if not parts[-1] else -1
 
-    if len(parts) == 2 and parts[-1] == "":
-        arr = curr.setdefault(parts[0], [])
-        if isinstance(arr, list):
-            arr.append(value)
-        else:
-            curr[parts[0]] = [arr, value]
-        return
-
-    for p in parts[:-1]:
+    for p in parts[:stop]:
         curr = curr.setdefault(p, {})
     last = parts[-1]
 
-    if last == "":
+    if not last:
         arr = curr.setdefault(parts[-2], [])
         if isinstance(arr, list):
-            arr.append(value)
+            arr.append(val)
         else:
-            curr[parts[-2]] = [arr, value]
+            curr[parts[-2]] = [arr, val]
     elif last in curr:
         existing = curr[last]
         if isinstance(existing, list):
-            existing.append(value)
+            existing.append(val)
         else:
-            curr[last] = [existing, value]
+            curr[last] = [existing, val]
     else:
-        curr[last] = value
+        curr[last] = val
 
 
 class FormDataParser(BaseHTTPMiddleware):
