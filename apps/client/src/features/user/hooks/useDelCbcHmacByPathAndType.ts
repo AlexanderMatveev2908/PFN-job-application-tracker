@@ -15,6 +15,7 @@ const mapper: Record<TokenT, string | string[]> = {
     "/auth/recover-password",
     "/verify/recover-password-2FA",
   ],
+  [TokenT.RECOVER_PWD_2FA]: "/auth/recover-password-2FA",
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
