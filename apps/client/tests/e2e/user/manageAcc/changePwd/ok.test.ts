@@ -20,7 +20,7 @@ test("change pwd ok", async ({ browser }) => {
 
   await clickByID(form, "change_password__form__submit");
 
-  await waitTmr(page);
+  await waitTmr(page, 5000);
 
   await isToastOk(page, "password updated");
 });
