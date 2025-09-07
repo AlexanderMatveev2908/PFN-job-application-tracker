@@ -55,6 +55,34 @@ async def gen_local_vid(uf: UploadFile) -> str:
     return str(fp)
 
 
+async def parse_file(v: UploadFile) -> AppFile:
+    size_b = getattr(v, "size", 0)
+    size_MB = round(size_b / (1024**2), ndigits=2) if size_b else None
+
+    file_rec: AppFile = {
+        "content_type": v.content_type,
+        "size": size_MB,
+    }
+
+    if v.content_type and v.content_type.startswith("video/"):
+        saved_path = await gen_local_vid(v)
+        file_rec.update(
+            {
+                "filename": Path(saved_path).name,
+                "path": saved_path,
+            }
+        )
+    else:
+        file_rec.update(
+            {
+                "filename": gen_filename(v),
+                "buffer": await v.read(),
+            }
+        )
+
+    return file_rec
+
+
 class FormDataParser(BaseHTTPMiddleware):
     def __init__(self, app: ASGIApp) -> None:
         super().__init__(app)
@@ -75,33 +103,7 @@ class FormDataParser(BaseHTTPMiddleware):
             value: ParsedItem
 
             if isinstance(v, UploadFile):
-                size_b = getattr(v, "size", 0)
-                size_MB = (
-                    round(size_b / (1024**2), ndigits=2) if size_b else None
-                )
-
-                file_rec: AppFile = {
-                    "content_type": v.content_type,
-                    "size": size_MB,
-                }
-
-                if v.content_type and v.content_type.startswith("video/"):
-                    saved_path = await gen_local_vid(v)
-                    file_rec.update(
-                        {
-                            "filename": Path(saved_path).name,
-                            "path": saved_path,
-                        }
-                    )
-                else:
-                    file_rec.update(
-                        {
-                            "filename": gen_filename(v),
-                            "buffer": await v.read(),
-                        }
-                    )
-
-                value = file_rec
+                value = await parse_file(v)
             else:
                 value = parse_bool(v)
 

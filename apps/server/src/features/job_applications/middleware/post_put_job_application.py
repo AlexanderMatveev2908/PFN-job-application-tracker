@@ -2,7 +2,7 @@ import datetime
 from fastapi import Request
 from pydantic import BaseModel, Field
 
-from src.constants.reg import REG_DATE_PICKER, REG_NAME
+from src.constants.reg import REG_DATE_PICKER, REG_NAME, REG_TXT
 from src.middleware.forms.check_form import check_form_mdw
 from src.models.job_application import ApplicationStatusT
 
@@ -20,9 +20,13 @@ class JobApplicationFormT(BaseModel):
 
     status: ApplicationStatusT
 
+    notes: str | None = Field(
+        default=None, max_length=1000, pattern=REG_TXT.pattern
+    )
+
 
 async def post_put_job_application_mdw(req: Request) -> dict:
-    data = await check_form_mdw(JobApplicationFormT, req)
+    data = await check_form_mdw(JobApplicationFormT, data=req.state.parsed_f)
 
     return {
         **data.model_dump(),

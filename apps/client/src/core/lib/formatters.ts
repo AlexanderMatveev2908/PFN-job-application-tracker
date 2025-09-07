@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserT } from "@/features/user/types";
+import { isObjOk, isStr } from "./dataStructure";
 
 export const formatDate = (date: Date | string | number) => {
   const param =
@@ -39,3 +41,37 @@ export const defValDatePicker = () => new Date().toISOString().split("T")[0];
 
 export const fromPickerToTmst = (v: string) =>
   new Date(v + "T00:00:00Z").getTime();
+
+export const genFormData = (
+  obj: any,
+  formData: FormData = new FormData(),
+  prefix = ""
+): FormData => {
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue;
+
+    const key = prefix ? `${prefix}[${k}]` : k;
+
+    if (Array.isArray(v)) {
+      for (const vv of v) {
+        if (isObjOk(vv)) {
+          genFormData(vv, formData, key);
+        } else {
+          formData.append(key, isStr(vv) ? vv : vv + "");
+        }
+      }
+    } else if (isObjOk(v)) {
+      genFormData(v, formData, key);
+    } else {
+      formData.append(key, (isStr(v) ? v : v + "") as string);
+    }
+  }
+
+  return formData;
+};
+
+export const logFormData = (formData: FormData) => {
+  for (const [k, v] of formData.entries()) {
+    console.log(`🔑 ${k} => 💎 ${v}`);
+  }
+};

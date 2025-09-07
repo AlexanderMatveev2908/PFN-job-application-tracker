@@ -89,7 +89,7 @@ export function serialize(
     const obj: Record<string, JSONValT> = {};
 
     for (const [k, vv] of v.entries()) {
-      obj[serialize(k, seen) + ""] = serialize(vv, seen);
+      obj[JSON.stringify(serialize(k, seen))] = serialize(vv, seen);
     }
     return obj;
   }

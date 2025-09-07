@@ -7,7 +7,9 @@ from src.my_types.idx import FormT
 
 
 async def check_form_mdw(
-    model: Type[FormT], req: Request | None = None, data: dict | None = None
+    model: Type[FormT],
+    req: Request | None = None,
+    data: dict | None = None,
 ) -> FormT:
 
     parsed: dict | None = None
