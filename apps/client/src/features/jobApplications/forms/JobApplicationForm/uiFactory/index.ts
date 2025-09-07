@@ -16,5 +16,5 @@ export const txtFieldsApplicationForm = [
 export const statusField = gen.checkField({
   label: "Status Application",
   name: "status",
-  type: "checkbox",
+  type: "radio",
 });

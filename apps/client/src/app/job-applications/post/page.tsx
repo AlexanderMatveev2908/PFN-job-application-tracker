@@ -21,7 +21,7 @@ const Page: FC = () => {
       position_name: "",
       notes: "",
       date_applied: undefined,
-      status: ApplicationStatusT.APPLIED,
+      status: "" as ApplicationStatusT,
     },
   });
   const { handleSubmit } = formCtx;

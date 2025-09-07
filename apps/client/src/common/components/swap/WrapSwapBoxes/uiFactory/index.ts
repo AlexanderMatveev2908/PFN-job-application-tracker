@@ -8,5 +8,5 @@ export const getColsForSwap = () => {
 
   const w = window.innerWidth;
 
-  return w > uiBreaks.lg ? 4 : w > uiBreaks.md ? 3 : w > uiBreaks.sm ? 2 : 1;
+  return w > uiBreaks.xl ? 4 : w > uiBreaks.lg ? 3 : w > uiBreaks.md ? 2 : 1;
 };

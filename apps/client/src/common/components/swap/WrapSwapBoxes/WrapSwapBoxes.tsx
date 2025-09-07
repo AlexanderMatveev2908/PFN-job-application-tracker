@@ -2,12 +2,16 @@
 "use client";
 
 import { CheckChoiceT, FormFieldCheckT } from "@/common/types/ui";
-import { useEffect, useMemo, useState } from "react";
-import { FieldValues } from "react-hook-form";
+import { RefObject, useCallback, useEffect, useMemo, useState } from "react";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { getColsForSwap } from "./uiFactory";
 import { css } from "@emotion/react";
 import SwapBoxes from "./subComponents/SwapBoxes";
 import BtnsSwapper from "../components/BtnsSwapper";
+import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
+import ErrField from "../../forms/etc/ErrField";
+import Portal from "../../wrappers/portals/Portal";
+import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldCheckT<T>;
@@ -45,14 +49,55 @@ const WrapSwapBoxes = <T extends FieldValues>({
     [choices.length, colsForSwap]
   );
 
+  const { ids } = useGenIDs({ lengths: [totSwaps, choices.length] });
+
+  const { coords, parentRef } = useSyncPortal();
+
+  const {
+    formState: { errors },
+    setValue,
+    getValues,
+  } = useFormContext();
+
+  const handleClick = useCallback(
+    (v: T[Path<T>]) => {
+      if (el.type === "radio") {
+        const existing = getValues(el.name) ?? "";
+
+        setValue(el.name, existing === v ? ("" as T[Path<T>]) : v, {
+          shouldValidate: true,
+        });
+      } else {
+        const existing = getValues(el.name) ?? [];
+
+        setValue(el.name, [...existing, v] as T[Path<T>], {
+          shouldValidate: true,
+        });
+      }
+    },
+    [el, setValue, getValues]
+  );
+
+  const isCurrChoice = useCallback(
+    (v: T[Path<T>]) => {
+      const existing = (getValues(el.name) ?? []) as T[Path<T>];
+
+      if (el.type === "radio") return existing === v;
+      else return existing.includes(v);
+    },
+    [el, getValues]
+  );
+
   return (
-    <div className="cont__grid__md">
+    <div className="cont__grid__md ">
       <div className="w-full flex justify-start">
         <span className="txt__lg">{el.label}</span>
       </div>
 
-      <div className="w-full flex flex-col border-3 border-w__0 rounded-xl max-w-[80%] mx-auto overflow-hidden py-5 gap-10">
+      <div className="w-full flex flex-col border-3 border-w__0 rounded-xl max-w-[90%] mx-auto overflow-hidden py-5 gap-10">
         <div
+          className="relative"
+          ref={parentRef as RefObject<HTMLDivElement>}
           css={css`
             display: grid;
             grid-template-columns: repeat(${totSwaps}, 100%);
@@ -61,19 +106,35 @@ const WrapSwapBoxes = <T extends FieldValues>({
             transform: translateX(-${currSwap * 100}%);
           `}
         >
-          {Array.from({ length: totSwaps }).map((_, idx) => {
+          <Portal>
+            <ErrField
+              {...{
+                msg: errors?.[el.name]?.message as string,
+                $ctmCSS: css`
+                  top: ${coords.top - 25}px;
+                  right: ${coords.right}px;
+                `,
+              }}
+            />
+          </Portal>
+
+          {ids[0].map((id, idx) => {
             const boxesForSwap = colsForSwap * 3;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const calcSlice = (arg: any[]) =>
+              arg.slice(idx * boxesForSwap, (idx + 1) * boxesForSwap);
 
             return (
               <SwapBoxes
-                key={idx}
+                key={id}
                 {...{
-                  choices: choices.slice(
-                    idx * boxesForSwap,
-                    (idx + 1) * boxesForSwap
-                  ),
+                  choices: calcSlice(choices),
                   colsForSwap,
                   isCurr: idx === currSwap,
+                  ids: calcSlice(ids[1]),
+                  handleClick,
+                  isCurrChoice,
+                  el,
                 }}
               />
             );
