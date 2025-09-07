@@ -6,6 +6,19 @@ import { useEffect } from "react";
 import { useWrapAPI } from "../../../core/hooks/api/useWrapAPI";
 import { cleanupSliceAPI } from "@/features/cleanup/slices/api";
 
+const mapper: Record<TokenT, string | string[]> = {
+  [TokenT.MANAGE_ACC]: "/user/manage-account",
+  [TokenT.LOGIN_2FA]: "/auth/login-2FA",
+  [TokenT.MANAGE_ACC_2FA]: "/user/access-manage-account-2FA",
+  [TokenT.CHANGE_EMAIL_2FA]: "/verify/change-email-2FA",
+  [TokenT.RECOVER_PWD]: [
+    "/auth/recover-password",
+    "/verify/recover-password-2FA",
+  ],
+  [TokenT.RECOVER_PWD_2FA]: "/auth/recover-password-2FA",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
+
 export const useDelCbcHmacByPathAndType = () => {
   const { userState, delCbcHmac } = useUser();
 
@@ -21,29 +34,21 @@ export const useDelCbcHmacByPathAndType = () => {
       if (!aad) return;
 
       const { token_t } = aad;
-      if (
-        (token_t === TokenT.RECOVER_PWD &&
-          !["/verify/recover-password-2FA", "auth/recover-password"].some(
-            (allowed) => p.includes(allowed)
-          )) ||
-        (token_t === TokenT.RECOVER_PWD_2FA &&
-          !p.includes("/auth/recover-password-2FA")) ||
-        (token_t === TokenT.MANAGE_ACC &&
-          !p.includes("/user/manage-account")) ||
-        (token_t === TokenT.MANAGE_ACC_2FA &&
-          !p.includes("/user/access-manage-account-2FA")) ||
-        (token_t === TokenT.LOGIN_2FA && !p.includes("/auth/login-2FA")) ||
-        (token_t === TokenT.CHANGE_EMAIL_2FA &&
-          !p.includes("/verify/change-email-2FA"))
-      ) {
-        delCbcHmac();
 
-        await wrapAPI({
-          cbAPI: () => mutate(userState.cbc_hmac_token),
-          showToast: false,
-          hideErr: true,
-        });
-      }
+      if (
+        (Array.isArray(mapper[token_t]) &&
+          mapper[token_t].some((allowed) => p.startsWith(allowed))) ||
+        (typeof mapper[token_t] === "string" && p.startsWith(mapper[token_t]))
+      )
+        return;
+
+      delCbcHmac();
+
+      await wrapAPI({
+        cbAPI: () => mutate(userState.cbc_hmac_token),
+        showToast: false,
+        hideErr: true,
+      });
     };
 
     cb();

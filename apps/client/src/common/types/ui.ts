@@ -22,7 +22,13 @@ export type ChildrenT = {
   children: ReactNode;
 };
 
-export type FieldInputT = "text" | "email" | "password" | "url" | "textarea";
+export type FieldInputT =
+  | "text"
+  | "email"
+  | "password"
+  | "url"
+  | "textarea"
+  | "date";
 
 export type FormFieldTxtT<T extends FieldValues> = {
   name: Path<T>;
@@ -37,6 +43,11 @@ export type FormFieldCheckT<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   type: FieldCheckT;
+};
+
+export type CheckChoiceT = {
+  val: string;
+  label: string;
 };
 
 export type PortalConfT = {

@@ -8,7 +8,7 @@ import {
   SwapStateT,
 } from "@/core/hooks/etc/useSwap/etc/initState";
 import WrapSwapper from "../WrapSwapper";
-import WrapFormFooter from "../../forms/wrappers/subComponents/WrapFormFooter";
+import WrapFormFooter from "../../forms/wrappers/WrapFormPage/subComponents/WrapFormFooter";
 import WrapCSR from "../../wrappers/pages/WrapCSR";
 
 type PropsType = {
@@ -33,7 +33,7 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
 }) => {
   return (
     <WrapCSR>
-      <div data-testid={formTestID + "__form"} className="form__shape">
+      <div data-testid={formTestID + "__form"} className="form__shape__sm">
         <WrapSwapper
           {...{
             ...propsWrapSwapper,
@@ -48,7 +48,7 @@ const WrapMultiFormSwapper: FC<PropsType> = ({
           {...{
             propsBtnsSwapper: {
               ...propsBtnsSwapper,
-              swapState,
+              currSwap: swapState.currSwap,
               totSwaps,
             },
           }}

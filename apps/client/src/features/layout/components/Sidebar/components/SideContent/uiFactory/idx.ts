@@ -6,12 +6,12 @@ import { FieldTxtSvgT, LinkAppSvgT } from "@/common/types/ui";
 export const sideLinksLogged: LinkAppSvgT[] = [
   {
     label: "Applications",
-    href: "/applications/list",
+    href: "/job-applications/read",
     Svg: SvgSearch,
   },
   {
     label: "Add application",
-    href: "/applications/post",
+    href: "/job-applications/post",
     Svg: SvgWrite,
   },
 ];

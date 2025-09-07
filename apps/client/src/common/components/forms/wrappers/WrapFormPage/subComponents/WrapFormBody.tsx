@@ -11,7 +11,7 @@ type PropsType = {
 const WrapFormBody = forwardRef<HTMLDivElement, PropsType>(
   ({ children, $twd }, ref) => {
     return (
-      <div ref={ref} className={`form__body ${$twd ?? ""}`}>
+      <div ref={ref} className={`form__body__sm ${$twd ?? ""}`}>
         {children}
       </div>
     );

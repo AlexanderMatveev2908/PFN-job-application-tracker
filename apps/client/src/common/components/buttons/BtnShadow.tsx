@@ -14,6 +14,7 @@ type PropsType = {
   isLoading?: boolean;
   el: FieldTxtSvgT;
   act: AppEventT;
+  type?: "submit" | "button";
 } & TestIDT;
 
 const BtnShadow: FC<PropsType> = (arg: PropsType) => {
@@ -21,6 +22,7 @@ const BtnShadow: FC<PropsType> = (arg: PropsType) => {
     <WrapElWithShadow
       {...{
         ...arg,
+
         wrapper: "html_button",
       }}
     />

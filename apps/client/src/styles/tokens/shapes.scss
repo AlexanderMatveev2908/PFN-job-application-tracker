@@ -18,10 +18,10 @@
   @apply gap-8;
 }
 
-.form__shape {
+.form__shape__sm {
   @apply w-full mx-auto max-w-[800px] h-fit rounded-xl border-3 border-neutral-300 py-5 overflow-hidden;
 }
 
-.form__body {
+.form__body__sm {
   @apply grid grid-cols-1 gap-6 w-full h-fit max-h-fit items-start p-5;
 }

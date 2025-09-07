@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import WrapFormBody from "@/common/components/forms/wrappers/subComponents/WrapFormBody";
+import WrapFormBody from "@/common/components/forms/wrappers/WrapFormPage/subComponents/WrapFormBody";
 import { ChildrenT } from "@/common/types/ui";
 import type { FC, RefObject } from "react";
 

@@ -1,29 +1,26 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import {
-  PayloadStartSwapT,
-  SwapStateT,
-} from "@/core/hooks/etc/useSwap/etc/initState";
+import { PayloadStartSwapT } from "@/core/hooks/etc/useSwap/etc/initState";
 import BtnShadow from "@/common/components/buttons/BtnShadow";
 
 export type PropsTypeBtnsSwapper = {
   totSwaps: number;
-  swapState: SwapStateT;
-  startSwap: (v: PayloadStartSwapT) => void;
+  currSwap: number;
+  startSwap?: (v: PayloadStartSwapT) => void;
+  setCurrSwap?: Dispatch<SetStateAction<number>>;
 };
 
 const BtnsSwapper: FC<PropsTypeBtnsSwapper> = ({
-  swapState,
+  currSwap,
   startSwap,
+  setCurrSwap,
   totSwaps,
 }) => {
   const { ids } = useGenIDs({ lengths: [2] });
-
-  const { currSwap } = swapState;
 
   return (
     <div className="w-full grid grid-cols-2">
@@ -42,7 +39,9 @@ const BtnsSwapper: FC<PropsTypeBtnsSwapper> = ({
               isEnabled: !i ? currSwap >= 1 : currSwap + 1 < totSwaps,
               handleClick: () => {
                 const val = !i ? currSwap - 1 : currSwap + 1;
-                startSwap({ swap: val });
+
+                if (typeof startSwap === "function") startSwap({ swap: val });
+                else if (typeof setCurrSwap === "function") setCurrSwap(val);
               },
             }}
           />

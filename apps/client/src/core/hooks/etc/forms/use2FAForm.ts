@@ -15,18 +15,24 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { useCallback } from "react";
 import { useKitHooks } from "../useKitHooks";
 import { TriggerApiT, UnwrappedResApiT } from "@/common/types/api";
+import { useCheckTypeCbcHmac } from "../tokens/useCheckTypeCbcHmac";
+import { TokenT } from "@/common/types/tokens";
 
 type Params<T> = {
   mutationTrigger: TriggerApiT<T>;
   successCb: (res: UnwrappedResApiT<T>) => void;
   delCbcOnSuccess: boolean;
+  tokenType: TokenT;
 };
 
 export const use2FAForm = <T>({
   mutationTrigger,
   successCb,
   delCbcOnSuccess,
+  tokenType,
 }: Params<T>) => {
+  useCheckTypeCbcHmac({ tokenType });
+
   const { startSwap, swapState } = useSwap();
   const { currSwap } = swapState;
 
