@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 import uuid
 
 from sqlalchemy import (
@@ -23,6 +23,14 @@ class ApplicationStatusT(Enum):
     OFFER = "OFFER"
     REJECTED = "REJECTED"
     WITHDRAWN = "WITHDRAWN"
+
+
+class JobApplicationDct(TypedDict):
+    user_id: str
+    company_name: str
+    position_name: str
+    status: ApplicationStatusT
+    date_applied: int
 
 
 class JobApplication(RootTable):
