@@ -3,10 +3,7 @@
 
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";
-import {
-  applicationStatusChoices,
-  JobApplicationFormT,
-} from "./paperwork/jobAppliication";
+import { JobApplicationFormT } from "./paperwork/jobAppliication";
 import {
   dateApplicationField,
   statusField,
@@ -18,6 +15,7 @@ import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import WrapSwapBoxes from "@/common/components/swap/WrapSwapBoxes/WrapSwapBoxes";
 import DatePicker from "@/common/components/forms/inputs/DatePicker/DatePicker";
+import { applicationStatusChoices } from "../../types";
 
 type PropsType = {
   handleSave: () => void;

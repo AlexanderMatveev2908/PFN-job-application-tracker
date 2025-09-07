@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 import uuid
 
 from sqlalchemy import (
@@ -13,6 +13,9 @@ from src.models.root import RootTable
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.user import UserDcT
+
+if TYPE_CHECKING:
+    from .user import User
 
 
 class TokenT(Enum):
@@ -76,7 +79,7 @@ class Token(RootTable):
 
     exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
-    user = relationship("User", back_populates="tokens")
+    user: Mapped["User"] = relationship("User", back_populates="tokens")
 
 
 class GenTokenReturnT(TypedDict):
