@@ -7,10 +7,11 @@ import { __cg } from "@/core/lib/log";
 import {
   addJobApplicationSchema,
   ApplicationStatusT,
-} from "@/features/jobApplications/paperwork";
+} from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { defValDatePicker } from "@/core/lib/formatters";
 
 const Page: FC = () => {
   const formCtx = useForm({
@@ -20,7 +21,7 @@ const Page: FC = () => {
       company_name: "",
       position_name: "",
       notes: "",
-      date_applied: undefined,
+      date_applied: defValDatePicker(),
       status: "" as ApplicationStatusT,
     },
   });

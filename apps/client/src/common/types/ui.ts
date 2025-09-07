@@ -22,7 +22,13 @@ export type ChildrenT = {
   children: ReactNode;
 };
 
-export type FieldInputT = "text" | "email" | "password" | "url" | "textarea";
+export type FieldInputT =
+  | "text"
+  | "email"
+  | "password"
+  | "url"
+  | "textarea"
+  | "date";
 
 export type FormFieldTxtT<T extends FieldValues> = {
   name: Path<T>;

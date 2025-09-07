@@ -1,5 +1,5 @@
 import { FormFieldGen } from "@/core/uiFactory/classes";
-import { JobApplicationFormT } from "@/features/jobApplications/paperwork";
+import { JobApplicationFormT } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
 
 const gen = new FormFieldGen<JobApplicationFormT>();
 
@@ -17,4 +17,9 @@ export const statusField = gen.checkField({
   label: "Status Application",
   name: "status",
   type: "radio",
+});
+
+export const dateApplicationField = gen.txtField({
+  name: "date_applied",
+  type: "date",
 });

@@ -3,13 +3,21 @@
 
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";
-import { applicationStatusChoices, JobApplicationFormT } from "../../paperwork";
-import { statusField, txtFieldsApplicationForm } from "./uiFactory";
+import {
+  applicationStatusChoices,
+  JobApplicationFormT,
+} from "./paperwork/jobAppliication";
+import {
+  dateApplicationField,
+  statusField,
+  txtFieldsApplicationForm,
+} from "./uiFactory";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import WrapSwapBoxes from "@/common/components/swap/WrapSwapBoxes/WrapSwapBoxes";
+import DatePicker from "@/common/components/forms/inputs/DatePicker/DatePicker";
 
 type PropsType = {
   handleSave: () => void;
@@ -46,6 +54,8 @@ const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
               choices: applicationStatusChoices,
             }}
           />
+
+          <DatePicker {...{ el: dateApplicationField }} />
         </div>
 
         <div className="w-[250px] mx-auto mt-[50px]">

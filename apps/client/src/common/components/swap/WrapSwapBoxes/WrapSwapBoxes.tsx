@@ -89,12 +89,12 @@ const WrapSwapBoxes = <T extends FieldValues>({
   );
 
   return (
-    <div data-testid={"wrap_swap_boxes"} className="cont__grid__md ">
+    <div data-testid={"wrap_swap_boxes"} className="cont__grid__md">
       <div className="w-full flex justify-start">
         <span className="txt__lg">{el.label}</span>
       </div>
 
-      <div className="w-full flex flex-col border-3 border-w__0 rounded-xl max-w-[90%] mx-auto overflow-hidden py-5 gap-10">
+      <div className="w-full flex flex-col border-3 border-w__0 rounded-xl mx-auto max-w-[95%] overflow-hidden py-5 gap-10">
         <div
           className="relative"
           ref={parentRef as RefObject<HTMLDivElement>}

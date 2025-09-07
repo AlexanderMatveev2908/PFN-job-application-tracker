@@ -1,4 +1,4 @@
-import { REG_NAME, REG_TXT } from "@/core/constants/regex";
+import { REG_DATE_PICKER, REG_NAME, REG_TXT } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/formatters";
 import z from "zod";
 
@@ -38,11 +38,13 @@ export const addJobApplicationSchema = z.object({
     .optional(),
 
   date_applied: z
-    .number()
-    .int()
-    .nonnegative("Value must be a positive integer")
-    .optional()
-    .default(() => Date.now()),
+    .string()
+    .regex(REG_DATE_PICKER, "Invalid date format")
+    .refine((v) => {
+      const d = new Date(v);
+
+      return !isNaN(d.getTime()) && d.toISOString().split("T")[0] === v;
+    }, "Invalid date"),
 
   status: z
     .preprocess(
