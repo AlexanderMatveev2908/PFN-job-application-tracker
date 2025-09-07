@@ -36,9 +36,11 @@ const SwapBoxes = <T extends FieldValues>({
         const isChosen = isCurrChoice(ch.val as T[Path<T>]);
 
         return (
-          <div
+          <button
+            data-testid={`swap_boxes__${ch.val}`}
+            type="button"
             key={ids[idx]}
-            className="w-[200px] max-w-[250px] rounded-xl py-3 flex justify-center items-center h-fit"
+            className="w-[250px] rounded-xl py-3 flex justify-center items-center h-fit"
             css={css`
               transition: ${isChosen ? 0.2 : 0.3}s ease-in-out;
               border: 2px solid var(--${isChosen ? "white__0" : "neutral__600"});
@@ -53,8 +55,8 @@ const SwapBoxes = <T extends FieldValues>({
             `}
             onClick={handleClick.bind(null, ch.val as T[Path<T>])}
           >
-            <span className="txt__lg text-center">{ch.val}</span>
-          </div>
+            <span className="txt__lg text-center">{ch.label}</span>
+          </button>
         );
       })}
     </div>

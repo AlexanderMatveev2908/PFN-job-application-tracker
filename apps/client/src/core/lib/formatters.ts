@@ -31,3 +31,6 @@ export const captAll = (str?: string) =>
 
 export const extractInitialsUser = (user: UserT) =>
   user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase();
+
+export const parseDevValUsFriendly = (v: string) =>
+  captAll(v.split("_").join(" ").toLowerCase());

@@ -1,4 +1,5 @@
 import { REG_NAME, REG_TXT } from "@/core/constants/regex";
+import { parseDevValUsFriendly } from "@/core/lib/formatters";
 import z from "zod";
 
 export enum ApplicationStatusT {
@@ -10,16 +11,12 @@ export enum ApplicationStatusT {
   WITHDRAWN = "WITHDRAWN",
 }
 
-export const applicationStatusChoices = Array.from(
-  { length: 30 },
-  (_, idx) => ({ val: idx + "", label: idx + "" })
+export const applicationStatusChoices = Object.values(ApplicationStatusT).map(
+  (v) => ({
+    val: v,
+    label: parseDevValUsFriendly(v),
+  })
 );
-// export const applicationStatusChoices = Object.values(ApplicationStatusT)
-//   .map((v) => ({
-//     val: v,
-//     label: v.at(0) + v.slice(1),
-//   }))
-//   .flatMap((ch) => Array.from({ length: 5 }, () => ch));
 
 export const addJobApplicationSchema = z.object({
   company_name: z
@@ -47,10 +44,16 @@ export const addJobApplicationSchema = z.object({
     .optional()
     .default(() => Date.now()),
 
-  status: z.enum(
-    Object.values(ApplicationStatusT),
-    "Invalid application status"
-  ),
+  status: z
+    .preprocess(
+      (val) => (!val ? undefined : val),
+      z
+        .enum(Object.values(ApplicationStatusT), {
+          error: "Invalid application status",
+        })
+        .optional()
+    )
+    .refine((v) => !!v, { message: "Status required" }),
 });
 
 export type JobApplicationFormT = z.infer<typeof addJobApplicationSchema>;

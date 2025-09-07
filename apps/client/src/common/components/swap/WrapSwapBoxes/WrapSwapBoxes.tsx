@@ -89,7 +89,7 @@ const WrapSwapBoxes = <T extends FieldValues>({
   );
 
   return (
-    <div className="cont__grid__md ">
+    <div data-testid={"wrap_swap_boxes"} className="cont__grid__md ">
       <div className="w-full flex justify-start">
         <span className="txt__lg">{el.label}</span>
       </div>
