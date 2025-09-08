@@ -1,4 +1,7 @@
+import { getDefValDatePicker } from "@/core/lib/dataStructure/formatters";
+import { genLorem, pickRandom } from "@/core/lib/etc";
 import { genPwd } from "@/core/lib/pwd";
+import { ApplicationStatusT } from "@/features/jobApplications/types";
 import { faker } from "@faker-js/faker";
 
 export interface PayloadRegisterT {
@@ -22,3 +25,19 @@ export const genRegisterPayload = (): PayloadRegisterT => {
     terms: true,
   };
 };
+
+export interface PayloadJobApplT {
+  company_name: string;
+  position_name: string;
+  status: ApplicationStatusT;
+  date_applied: string;
+  notes?: string;
+}
+
+export const genPayloadJobAppl = (): PayloadJobApplT => ({
+  company_name: faker.company.name(),
+  position_name: faker.person.jobTitle(),
+  date_applied: getDefValDatePicker(),
+  status: pickRandom(Object.values(ApplicationStatusT)) as ApplicationStatusT,
+  notes: genLorem(4),
+});

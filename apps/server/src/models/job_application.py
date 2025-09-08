@@ -26,7 +26,7 @@ class ApplicationStatusT(Enum):
 
 
 class JobApplicationDct(TypedDict):
-    user_id: str
+    user_id: str | uuid.UUID
     company_name: str
     position_name: str
     status: ApplicationStatusT

@@ -1,4 +1,5 @@
-export const REG_NAME = /^[\p{L}\s`']*$/u;
+export const REG_NAME = /^[\p{L}\s,`'\-]*$/u;
+export const REG_JOB_NAME = /^[\p{L}\s,`'\/\-]*$/u;
 export const REG_PWD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])\S{8,}$/u;
 export const REG_TXT = /^[\p{L}\d\s\-'"\.,;!?]*$/u;
 

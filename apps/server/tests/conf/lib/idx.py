@@ -16,6 +16,7 @@ async def wrap_httpx(
     url: str,
     method: Literal["POST", "GET", "PUT", "PATCH", "DELETE"] = "POST",
     data: Any | None = None,
+    files: dict | None = None,
     access_token: str = "",
     expected_code: int = 200,
 ) -> WrapReturnT:
@@ -29,6 +30,7 @@ async def wrap_httpx(
     }
     if method in ["POST", "PUT", "PATCH"]:
         kwargs["json"] = data
+        kwargs["files"] = files
     res = await fn(**kwargs)
 
     parsed = parse_res(res, expected_code=expected_code)

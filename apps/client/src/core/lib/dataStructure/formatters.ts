@@ -35,7 +35,7 @@ export const extractInitialsUser = (user: UserT) =>
 export const parseDevValUsFriendly = (v: string) =>
   captAll(v.split("_").join(" ").toLowerCase());
 
-export const defValDatePicker = () => new Date().toISOString().split("T")[0];
+export const getDefValDatePicker = () => new Date().toISOString().split("T")[0];
 
 export const fromPickerToTmst = (v: string) =>
   new Date(v + "T00:00:00Z").getTime();
