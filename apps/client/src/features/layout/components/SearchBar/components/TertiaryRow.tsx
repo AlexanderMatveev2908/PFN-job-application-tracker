@@ -18,9 +18,9 @@ const TertiaryRow: FC<PropsType> = ({ handleReset }) => {
   } = useGenIDs({ lengths: [2] });
 
   return (
-    <div className="w-full grid grid-cols-2 gap-10 justify-items-center">
+    <div className="search_bar__wrap_btns">
       {mainBtnsSearchBar.map((btn, i) => (
-        <div key={ids[i]} className="w-[80px] md:w-[250px]">
+        <div key={ids[i]} className="search_bar__btn">
           <BtnShadow
             {...{
               act: btn.act,

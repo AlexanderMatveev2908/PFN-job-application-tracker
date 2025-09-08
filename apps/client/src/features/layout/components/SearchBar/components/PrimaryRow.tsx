@@ -3,7 +3,6 @@
 
 import BtnSvg from "@/common/components/buttons/BtnSvg";
 import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
-import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import {
   Control,
   FieldValues,
@@ -11,19 +10,20 @@ import {
   UseFieldArrayRemove,
 } from "react-hook-form";
 import { MdDelete } from "react-icons/md";
+import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 
 type PropsType<T extends FieldValues> = {
-  fields: FormFieldTxtSearchBarT<T>[];
   control: Control<T>;
   remove: UseFieldArrayRemove;
+  existingFields: FormFieldTxtSearchBarT<T>[];
 };
 
 const PrimaryRow = <T extends FieldValues>({
-  fields,
   remove,
   control,
+  existingFields,
 }: PropsType<T>) => {
-  return fields.map((el, i) => (
+  return existingFields.map((el, i, arg) => (
     <div key={el.id} className="w-full relative">
       <FormFieldTxt
         {...{
@@ -45,7 +45,7 @@ const PrimaryRow = <T extends FieldValues>({
             confPortal: {
               showPortal: true,
               txt: `Remove`,
-              optDep: [fields.length],
+              optDep: [arg.length],
             },
           }}
         />

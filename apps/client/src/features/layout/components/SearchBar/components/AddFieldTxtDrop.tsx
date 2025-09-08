@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import BtnSvg from "@/common/components/buttons/BtnSvg";
+import BtnShadow from "@/common/components/buttons/BtnShadow";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import { css } from "@emotion/react";
@@ -45,14 +45,11 @@ const AddFieldTxtDrop = <T extends FieldValues>({
   return (
     !!filtered.length && (
       <div ref={contRef} className="w-[75px] relative">
-        <BtnSvg
+        <BtnShadow
           {...{
             act: "INFO",
-            Svg: FaPlus,
-            confPortal: {
-              txt: "Add Input",
-              showPortal: true,
-              optDep: [existingFields.length],
+            el: {
+              Svg: FaPlus,
             },
             handleClick: () => setIsShw(!isShw),
           }}

@@ -15,9 +15,10 @@ import {
   useFormContext,
 } from "react-hook-form";
 import PrimaryRow from "./components/PrimaryRow";
-import SecondaryRow from "./components/SecondaryRow/SecondaryRow";
+import SecondaryRow from "./components/SecondaryRow";
 import TertiaryRow from "./components/TertiaryRow";
 import { useCallback } from "react";
+import AddFieldTxtDrop from "./components/AddFieldTxtDrop";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -59,15 +60,20 @@ const SearchBar = <T extends FieldValues>({
       onSubmit={handleSave}
       className="w-full max-w-[1200px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
     >
-      <PrimaryRow {...{ fields: existingFields, remove, control }} />
+      <div className="w-full grid grid-cols-1 gap-6 relative">
+        <PrimaryRow
+          {...{ existingFields, remove, control, append, allowedTxtFields }}
+        />
+        <AddFieldTxtDrop
+          {...{
+            allowedTxtFields,
+            append,
+            existingFields,
+          }}
+        />
+      </div>
 
-      <SecondaryRow
-        {...{
-          existingFields,
-          allowedTxtFields,
-          append,
-        }}
-      />
+      <SecondaryRow />
 
       <TertiaryRow
         {...{
