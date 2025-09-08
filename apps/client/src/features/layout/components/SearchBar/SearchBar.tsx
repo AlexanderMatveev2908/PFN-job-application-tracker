@@ -15,7 +15,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import PrimaryRow from "./components/PrimaryRow";
-import SecondaryRow from "./components/SecondaryRow";
+import SecondaryRow from "./components/SecondaryRow/SecondaryRow";
 import TertiaryRow from "./components/TertiaryRow";
 import { useCallback } from "react";
 
