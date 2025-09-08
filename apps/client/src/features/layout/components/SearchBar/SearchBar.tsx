@@ -58,7 +58,7 @@ const SearchBar = <T extends FieldValues>({
   ) : (
     <form
       onSubmit={handleSave}
-      className="w-full max-w-[1200px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
+      className="w-full max-w-[1400px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
     >
       <div className="w-full grid grid-cols-1 gap-6 relative">
         <PrimaryRow
@@ -73,13 +73,15 @@ const SearchBar = <T extends FieldValues>({
         />
       </div>
 
-      <SecondaryRow />
+      <div className="w-full grid grid-cols-1 gap-8 xl:grid-cols-2">
+        <SecondaryRow />
 
-      <TertiaryRow
-        {...{
-          handleReset,
-        }}
-      />
+        <TertiaryRow
+          {...{
+            handleReset,
+          }}
+        />
+      </div>
     </form>
   );
 };
