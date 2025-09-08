@@ -19,6 +19,7 @@ import SecondaryRow from "./components/SecondaryRow";
 import TertiaryRow from "./components/TertiaryRow";
 import { useCallback } from "react";
 import AddFieldTxtDrop from "./components/AddFieldTxtDrop";
+import FilterBar from "./components/FilterBar/FilterBar";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -82,6 +83,12 @@ const SearchBar = <T extends FieldValues>({
           }}
         />
       </div>
+
+      <FilterBar
+        {...{
+          handleReset,
+        }}
+      />
     </form>
   );
 };

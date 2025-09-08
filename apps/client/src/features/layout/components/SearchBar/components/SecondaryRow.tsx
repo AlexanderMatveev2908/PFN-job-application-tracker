@@ -7,11 +7,14 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import { resp } from "@/core/lib/style";
 import { css } from "@emotion/react";
 import { FC } from "react";
+import { useSearchCtxConsumer } from "../context/hooks/ctxConsumer";
 
 const SecondaryRow: FC = ({}) => {
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
+
+  const { setBar } = useSearchCtxConsumer();
 
   return (
     <div className="w-full grid grid-cols-1 gap-8">
@@ -22,6 +25,8 @@ const SecondaryRow: FC = ({}) => {
               {...{
                 el: btn,
                 act: "INFO",
+                handleClick: () =>
+                  setBar({ bar: !i ? "filterBar" : "sortBar", val: true }),
                 $customLabelCSS: css`
                   display: none;
 

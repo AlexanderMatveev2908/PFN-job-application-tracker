@@ -1,46 +1,21 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import BtnShadow from "@/common/components/buttons/BtnShadow";
-import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
-import { resp } from "@/core/lib/style";
-import { css } from "@emotion/react";
 import type { FC } from "react";
-import { mainBtnsSearchBar } from "../uiFactory";
+import MainBtnsSearchBar, {
+  MainBtnsSearchBarPropsType,
+} from "./subComponents/MainBtnsSearchBar";
 
-type PropsType = {
-  handleReset: () => void;
-};
+type PropsType = {} & MainBtnsSearchBarPropsType;
 
 const TertiaryRow: FC<PropsType> = ({ handleReset }) => {
-  const {
-    ids: [ids],
-  } = useGenIDs({ lengths: [2] });
-
   return (
     <div className="search_bar__wrap_btns">
-      {mainBtnsSearchBar.map((btn, i) => (
-        <div key={ids[i]} className="search_bar__btn">
-          <BtnShadow
-            {...{
-              act: btn.act,
-              el: {
-                label: btn.label,
-                Svg: btn.Svg,
-              },
-              handleClick: btn.act === "OK" ? () => null : handleReset,
-              type: btn.act === "OK" ? "submit" : "button",
-              $customLabelCSS: css`
-                display: none;
-
-                ${resp("md")} {
-                  display: block;
-                }
-              `,
-            }}
-          />
-        </div>
-      ))}
+      <MainBtnsSearchBar
+        {...{
+          handleReset,
+        }}
+      />
     </div>
   );
 };
