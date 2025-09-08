@@ -1,10 +1,12 @@
 import { FormFieldGen } from "@/core/uiFactory/classes";
 import { JobApplicationFormT } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
+import {
+  companyNameField,
+  positionNameField,
+} from "@/features/jobApplications/uiFactory";
 
 const gen = new FormFieldGen<JobApplicationFormT>();
 
-const companyNameField = gen.txtField({ name: "company_name" });
-const positionNameField = gen.txtField({ name: "position_name" });
 const notesField = gen.txtField({ name: "notes", type: "textarea" });
 
 export const txtFieldsApplicationForm = [

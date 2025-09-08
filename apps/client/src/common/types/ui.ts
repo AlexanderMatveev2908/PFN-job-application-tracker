@@ -37,6 +37,11 @@ export type FormFieldTxtT<T extends FieldValues> = {
   type: FieldInputT;
 };
 
+export type FormFieldTxtSearchBarT<T extends FieldValues> = FormFieldTxtT<T> & {
+  id: string;
+  val: string;
+};
+
 export type FieldCheckT = "checkbox" | "radio";
 
 export type FormFieldCheckT<T extends FieldValues> = {
