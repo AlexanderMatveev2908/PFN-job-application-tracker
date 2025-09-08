@@ -1,5 +1,5 @@
 import { REG_DATE_PICKER, REG_JOB_NAME, REG_TXT } from "@/core/constants/regex";
-import { defValDatePicker } from "@/core/lib/dataStructure/formatters";
+import { getDefValDatePicker } from "@/core/lib/dataStructure/formatters";
 import { ApplicationStatusT } from "@/features/jobApplications/types";
 import z from "zod";
 
@@ -40,7 +40,7 @@ export const addJobApplicationSchema = z.object({
         })
         .optional()
     )
-    .refine((v) => !!v, { message: "Status required" }),
+    .refine((v) => !!v, { message: "Application status required" }),
 });
 
 export type JobApplicationFormT = z.infer<typeof addJobApplicationSchema>;
@@ -49,6 +49,6 @@ export const resetValsJobApplForm = {
   company_name: "",
   position_name: "",
   notes: "",
-  date_applied: defValDatePicker(),
+  date_applied: getDefValDatePicker(),
   status: "" as ApplicationStatusT,
 };

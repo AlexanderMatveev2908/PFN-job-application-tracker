@@ -54,6 +54,7 @@ const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
             {...{
               el: statusField,
               choices: applicationStatusChoices,
+              testID: "application_status",
             }}
           />
 

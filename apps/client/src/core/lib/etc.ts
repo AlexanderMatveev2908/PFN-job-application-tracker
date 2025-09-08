@@ -17,5 +17,7 @@ export const genLorem = (n?: number) =>
 export const genMinMax = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+export const pickRandom = (arr: string[]) => arr[genMinMax(0, arr.length - 1)];
+
 export const parseLabelToTestID = (label: string) =>
   label.toLowerCase().replaceAll(" ", "_");

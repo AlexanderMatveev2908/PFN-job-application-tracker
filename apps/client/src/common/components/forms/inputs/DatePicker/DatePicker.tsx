@@ -4,7 +4,7 @@
 import { FormFieldTxtT } from "@/common/types/ui";
 import { Controller, FieldValues, useFormContext } from "react-hook-form";
 import ErrField from "../../etc/ErrField";
-import { defValDatePicker } from "@/core/lib/dataStructure/formatters";
+import { getDefValDatePicker } from "@/core/lib/dataStructure/formatters";
 
 type PropsType<T extends FieldValues> = {
   el: FormFieldTxtT<T>;
@@ -32,7 +32,7 @@ const DatePicker = <T extends FieldValues>({ el }: PropsType<T>) => {
                   {...field}
                   type={el.type}
                   data-testid={el.name}
-                  value={field.value ?? defValDatePicker()}
+                  value={field.value ?? getDefValDatePicker()}
                   className="input__txt"
                 />
 

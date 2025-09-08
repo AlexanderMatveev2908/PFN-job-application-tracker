@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { CheckChoiceT, FormFieldCheckT } from "@/common/types/ui";
+import { CheckChoiceT, FormFieldCheckT, TestIDT } from "@/common/types/ui";
 import { RefObject, useCallback, useEffect, useMemo, useState } from "react";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { getColsForSwap } from "./uiFactory";
@@ -16,11 +16,12 @@ import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 type PropsType<T extends FieldValues> = {
   el: FormFieldCheckT<T>;
   choices: CheckChoiceT[];
-};
+} & TestIDT;
 
 const WrapSwapBoxes = <T extends FieldValues>({
   el,
   choices,
+  testID,
 }: PropsType<T>) => {
   const [colsForSwap, setColsForSwap] = useState(getColsForSwap());
   const [currSwap, setCurrSwap] = useState(0);
@@ -89,7 +90,7 @@ const WrapSwapBoxes = <T extends FieldValues>({
   );
 
   return (
-    <div data-testid={"wrap_swap_boxes"} className="cont__grid__md">
+    <div data-testid={`wrap_swap_boxes__${testID}`} className="cont__grid__md">
       <div className="w-full flex justify-start">
         <span className="txt__lg">{el.label}</span>
       </div>
