@@ -31,6 +31,7 @@ export type FieldInputT =
   | "date";
 
 export type FormFieldTxtT<T extends FieldValues> = {
+  id?: string;
   name: Path<T>;
   label: string;
   place: string;

@@ -1,3 +1,4 @@
+import { FormFieldTxtT } from "@/common/types/ui";
 import { FormFieldGen } from "@/core/uiFactory/classes";
 import { JobApplicationFormT } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
 import {
@@ -13,7 +14,7 @@ export const txtFieldsApplicationForm = [
   companyNameField,
   positionNameField,
   notesField,
-];
+] as FormFieldTxtT<JobApplicationFormT>[];
 
 export const statusField = gen.checkField({
   label: "Status Application",
