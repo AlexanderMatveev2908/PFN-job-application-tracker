@@ -1,4 +1,5 @@
 import { REG_JOB_NAME } from "@/core/constants/regex";
+import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
 
@@ -20,24 +21,26 @@ export const searchJobsSchema = z
   .superRefine((data, ctx) => {
     let i = 0;
 
-    do {
+    while (i < data.txtFields.length) {
       const curr = data.txtFields?.[i];
+      const friendlyName = parseDevValUsFriendly(curr.name, {});
+
       if (curr.val.trim().length)
         if (!mapper[curr.name as keyof typeof mapper].reg.test(curr.val))
           ctx.addIssue({
             code: "custom",
-            message: `Invalid ${curr.name}`,
+            message: `Invalid ${friendlyName}`,
             path: [`txtFields.${i}.val`],
           });
         else if (curr.val.length > mapper[curr.name as keyof typeof mapper].max)
           ctx.addIssue({
             code: "custom",
-            message: `${curr.name} length exceeded`,
+            message: `${friendlyName} length exceeded`,
             path: [`txtFields.${i}.val`],
           });
 
       i++;
-    } while (i < data.txtFields.length);
+    }
   });
 
 export type SearchJobsFormT = z.infer<typeof searchJobsSchema>;

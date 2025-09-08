@@ -13,7 +13,7 @@ export enum ApplicationStatusT {
 export const applicationStatusChoices = Object.values(ApplicationStatusT).map(
   (v) => ({
     val: v,
-    label: parseDevValUsFriendly(v),
+    label: parseDevValUsFriendly(v, { titleCase: true }),
   })
 );
 

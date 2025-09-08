@@ -16,7 +16,7 @@ const Page: FC = () => {
     mode: "onChange",
     resolver: zodResolver(searchJobsSchema),
     defaultValues: {
-      txtFields: [{ ...searchJobsFieldsTxt[0], val: "" }],
+      txtFields: searchJobsFieldsTxt.map((f) => ({ ...f, val: "" })),
     },
   });
 
