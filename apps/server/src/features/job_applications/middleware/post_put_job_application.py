@@ -3,7 +3,7 @@ from typing import TypedDict, cast
 from fastapi import Request
 from pydantic import BaseModel, Field
 
-from src.constants.reg import REG_DATE_PICKER, REG_NAME, REG_TXT
+from src.constants.reg import REG_DATE_PICKER, REG_JOB_NAME, REG_TXT
 from src.middleware.forms.check_form import (
     check_form_mdw_logged,
 )
@@ -13,11 +13,11 @@ from src.models.user import UserDcT
 
 class JobApplicationFormT(BaseModel):
     company_name: str = Field(
-        min_length=1, max_length=100, pattern=REG_NAME.pattern
+        min_length=1, max_length=100, pattern=REG_JOB_NAME.pattern
     )
 
     position_name: str = Field(
-        min_length=1, max_length=100, pattern=REG_NAME.pattern
+        min_length=1, max_length=100, pattern=REG_JOB_NAME.pattern
     )
 
     date_applied: str = Field(min_length=1, pattern=REG_DATE_PICKER.pattern)

@@ -2,6 +2,7 @@ import re
 import regex
 
 REG_NAME = regex.compile(r"^[\p{L}\s,`'\-]*$", flags=regex.UNICODE)
+REG_JOB_NAME = regex.compile(r"^[\p{L}\s,`'\/\-]*$", flags=regex.UNICODE)
 REG_PWD = regex.compile(
     r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])\S{8,}$",  # noqa: E231
     flags=regex.UNICODE,

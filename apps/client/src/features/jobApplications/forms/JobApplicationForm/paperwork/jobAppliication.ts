@@ -1,4 +1,4 @@
-import { REG_DATE_PICKER, REG_NAME, REG_TXT } from "@/core/constants/regex";
+import { REG_DATE_PICKER, REG_JOB_NAME, REG_TXT } from "@/core/constants/regex";
 import { defValDatePicker } from "@/core/lib/dataStructure/formatters";
 import { ApplicationStatusT } from "@/features/jobApplications/types";
 import z from "zod";
@@ -8,13 +8,13 @@ export const addJobApplicationSchema = z.object({
     .string()
     .min(1, "Company name required")
     .max(100, "Max length exceeded")
-    .regex(REG_NAME, "Invalid company name"),
+    .regex(REG_JOB_NAME, "Invalid company name"),
 
   position_name: z
     .string()
     .min(1, "Position name required")
     .max(100, "Max length exceeded")
-    .regex(REG_NAME, "Invalid position name"),
+    .regex(REG_JOB_NAME, "Invalid position name"),
 
   notes: z
     .string()
