@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import type { FC } from "react";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
-import SearchBarCtxProvider from "../context/SearchBarCtxProvider";
+import SearchBarCtxProvider from "./context/SearchBarCtxProvider";
 import { ChildrenT } from "@/common/types/ui";
 
 type PropsType<T extends FieldValues> = {
