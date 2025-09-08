@@ -1,10 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import BtnShadow from "@/common/components/buttons/BtnShadow";
-import BtnSvg from "@/common/components/buttons/BtnSvg";
 import Shim from "@/common/components/elements/Shim";
-import FormFieldTxt from "@/common/components/forms/inputs/FormFieldTxt";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { logFormErrs } from "@/core/lib/forms";
@@ -19,19 +16,21 @@ import {
 } from "react-hook-form";
 import PrimaryRow from "./components/PrimaryRow";
 import SecondaryRow from "./components/SecondaryRow";
-import { FaSearch } from "react-icons/fa";
-import { resp } from "@/core/lib/style";
 import TertiaryRow from "./components/TertiaryRow";
 
-type PropsType<T extends FieldValues> = {};
+type PropsType<T extends FieldValues> = {
+  allowedTxtFields: FormFieldTxtSearchBarT<T>[];
+};
 
-const SearchBar = <T extends FieldValues>({}: PropsType<T>) => {
+const SearchBar = <T extends FieldValues>({
+  allowedTxtFields,
+}: PropsType<T>) => {
   const { isHydrated } = useHydration();
   const { watch, control, handleSubmit } = useFormContext<T>();
-  const fields: FormFieldTxtSearchBarT<T>[] =
+  const existingFields: FormFieldTxtSearchBarT<T>[] =
     watch("txtFields" as Path<T>) ?? [];
 
-  const { remove } = useFieldArray({
+  const { remove, append } = useFieldArray({
     control,
     name: "txtFields" as ArrayPath<T>,
   });
@@ -55,11 +54,13 @@ const SearchBar = <T extends FieldValues>({}: PropsType<T>) => {
       onSubmit={handleSave}
       className="w-full max-w-[1200px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
     >
-      <PrimaryRow {...{ fields, remove, control }} />
+      <PrimaryRow {...{ fields: existingFields, remove, control }} />
 
       <SecondaryRow
         {...{
-          fields,
+          existingFields,
+          allowedTxtFields,
+          append,
         }}
       />
 

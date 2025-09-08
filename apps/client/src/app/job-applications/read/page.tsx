@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import {
   SearchJobsFormT,
   searchJobsSchema,
@@ -23,7 +24,12 @@ const Page: FC = () => {
   return (
     <div className="page__shape">
       <FormProvider {...formCtx}>
-        <SearchBar />
+        <SearchBar
+          {...{
+            allowedTxtFields:
+              searchJobsFieldsTxt as FormFieldTxtSearchBarT<SearchJobsFormT>[],
+          }}
+        />
       </FormProvider>
     </div>
   );
