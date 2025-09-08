@@ -8,6 +8,7 @@ import { $argClr } from "@/core/uiFactory/style";
 import Link from "next/link";
 import { FieldTxtSvgT, TestIDT } from "@/common/types/ui";
 import WrapBtnAPI from "../wrappers/buttons/WrapBtnAPI";
+import PairTxtSvg from "../elements/PairTxtSvg";
 
 type PropsType = {
   wrapper: "next_link" | "html_button";
@@ -20,6 +21,7 @@ type PropsType = {
   el: FieldTxtSvgT;
   act: AppEventT;
   type?: "submit" | "button";
+  isTxtLoading?: boolean;
 } & TestIDT;
 
 const WrapElWithShadow: FC<PropsType> = ({
@@ -34,6 +36,7 @@ const WrapElWithShadow: FC<PropsType> = ({
   el,
   testID,
   type = "button",
+  isTxtLoading,
 }) => {
   const $clr = $argClr[act];
 
@@ -64,18 +67,14 @@ const WrapElWithShadow: FC<PropsType> = ({
 
   const content = (
     <>
-      {el.Svg && <el.Svg className="svg__md" />}
-
-      {el.label && (
-        <span
-          css={css`
-            ${$customLabelCSS}
-          `}
-          className="txt__lg"
-        >
-          {el.label}
-        </span>
-      )}
+      <PairTxtSvg
+        {...{
+          el,
+          $ctmLabelCSS: $customLabelCSS,
+          act,
+          isLoading: isTxtLoading,
+        }}
+      />
     </>
   );
 

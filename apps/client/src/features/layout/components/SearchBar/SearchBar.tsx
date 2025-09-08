@@ -18,6 +18,10 @@ import {
   useFormContext,
 } from "react-hook-form";
 import PrimaryRow from "./components/PrimaryRow";
+import SecondaryRow from "./components/SecondaryRow";
+import { FaSearch } from "react-icons/fa";
+import { resp } from "@/core/lib/style";
+import TertiaryRow from "./components/TertiaryRow";
 
 type PropsType<T extends FieldValues> = {};
 
@@ -49,20 +53,17 @@ const SearchBar = <T extends FieldValues>({}: PropsType<T>) => {
   ) : (
     <form
       onSubmit={handleSave}
-      className="w-full max-w-[1200px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-10"
+      className="w-full max-w-[1200px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
     >
       <PrimaryRow {...{ fields, remove, control }} />
-      <div className="w-[250px]">
-        <BtnShadow
-          {...{
-            act: "OK",
-            el: {
-              label: "Search",
-            },
-            type: "submit",
-          }}
-        />
-      </div>
+
+      <SecondaryRow
+        {...{
+          fields,
+        }}
+      />
+
+      <TertiaryRow />
     </form>
   );
 };
