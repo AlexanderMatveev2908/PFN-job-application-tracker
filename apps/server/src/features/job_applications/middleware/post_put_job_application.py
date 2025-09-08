@@ -1,10 +1,14 @@
 import datetime
+from typing import TypedDict, cast
 from fastapi import Request
 from pydantic import BaseModel, Field
 
 from src.constants.reg import REG_DATE_PICKER, REG_NAME, REG_TXT
-from src.middleware.forms.check_form import check_form_mdw
-from src.models.job_application import ApplicationStatusT
+from src.middleware.forms.check_form import (
+    check_form_mdw_logged,
+)
+from src.models.job_application import ApplicationStatusT, JobApplicationDct
+from src.models.user import UserDcT
 
 
 class JobApplicationFormT(BaseModel):
@@ -25,15 +29,34 @@ class JobApplicationFormT(BaseModel):
     )
 
 
-async def post_put_job_application_mdw(req: Request) -> dict:
-    data = await check_form_mdw(JobApplicationFormT, data=req.state.parsed_f)
+class PostPutJobApplMdwReturnT(TypedDict):
+    job_appl: JobApplicationDct
+    us_d: UserDcT
+
+
+async def post_put_job_application_mdw(
+    req: Request,
+) -> PostPutJobApplMdwReturnT:
+
+    res_check = await check_form_mdw_logged(
+        JobApplicationFormT, data=getattr(req.state, "parsed_f", None)
+    )(req)
 
     return {
-        **data.model_dump(),
-        "date_applied": int(
-            datetime.datetime.fromisoformat(data.date_applied)
-            .replace(tzinfo=datetime.timezone.utc)
-            .timestamp()
-            * 1000
+        "job_appl": cast(
+            JobApplicationDct,
+            {
+                **res_check["form_inst"].model_dump(),
+                "date_applied": int(
+                    datetime.datetime.fromisoformat(
+                        res_check["form_inst"].date_applied
+                    )
+                    .replace(tzinfo=datetime.timezone.utc)
+                    .timestamp()
+                    * 1000
+                ),
+                "user_id": res_check["us_d"]["id"],
+            },
         ),
+        "us_d": res_check["us_d"],
     }

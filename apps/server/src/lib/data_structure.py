@@ -12,9 +12,10 @@ class BoolParser(Enum):
 
 
 def parse_bool(v: Any) -> bool | str:
-    upper = v.upper()
-    if upper in BoolParser.__members__:
-        return BoolParser[upper].value
+    if isinstance(v, str):
+        upper = v.upper()
+        if upper in BoolParser.__members__:
+            return BoolParser[upper].value
     return v
 
 

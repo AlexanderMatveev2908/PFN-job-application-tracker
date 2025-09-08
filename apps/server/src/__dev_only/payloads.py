@@ -1,8 +1,11 @@
+import datetime
 import os
-from typing import TypedDict
+from typing import TypedDict, cast
+import uuid
 
 from faker import Faker
 from src.lib.pwd_gen import gen_pwd
+from src.models.job_application import ApplicationStatusT, JobApplicationDct
 
 faker = Faker()
 
@@ -31,3 +34,19 @@ def get_payload_register() -> RegisterPayloadT:
         "confirm_password": pwd,
         "terms": True,
     }
+
+
+def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
+
+    return cast(
+        JobApplicationDct,
+        {
+            "company_name": faker.company(),
+            "position_name": faker.job(),
+            "date_applied": datetime.datetime.now(datetime.timezone.utc)
+            .date()
+            .isoformat(),
+            "status": ApplicationStatusT.APPLIED.value,
+            "user_id": str(us_id),
+        },
+    )
