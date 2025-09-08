@@ -11,7 +11,7 @@ test("recover pwd err same pwd", async ({ browser }) => {
 
   await clickByID(form, "recover_pwd__form__submit");
 
-  await waitTmr(page);
+  await waitTmr(page, 5000);
 
   await getByTxt(page, "new password must be different from old one");
 });
