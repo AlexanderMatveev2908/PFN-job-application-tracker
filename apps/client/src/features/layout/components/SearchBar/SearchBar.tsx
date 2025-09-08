@@ -17,16 +17,19 @@ import {
 import PrimaryRow from "./components/PrimaryRow";
 import SecondaryRow from "./components/SecondaryRow";
 import TertiaryRow from "./components/TertiaryRow";
+import { useCallback } from "react";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
+  resetVals: T;
 };
 
 const SearchBar = <T extends FieldValues>({
   allowedTxtFields,
+  resetVals,
 }: PropsType<T>) => {
   const { isHydrated } = useHydration();
-  const { watch, control, handleSubmit } = useFormContext<T>();
+  const { watch, control, handleSubmit, reset } = useFormContext<T>();
   const existingFields: FormFieldTxtSearchBarT<T>[] =
     watch("txtFields" as Path<T>) ?? [];
 
@@ -38,6 +41,8 @@ const SearchBar = <T extends FieldValues>({
   const handleSave = handleSubmit(async (data) => {
     __cg(data);
   }, logFormErrs);
+
+  const handleReset = useCallback(() => reset(resetVals), [reset, resetVals]);
 
   return !isHydrated ? (
     <Shim
@@ -64,7 +69,11 @@ const SearchBar = <T extends FieldValues>({
         }}
       />
 
-      <TertiaryRow />
+      <TertiaryRow
+        {...{
+          handleReset,
+        }}
+      />
     </form>
   );
 };

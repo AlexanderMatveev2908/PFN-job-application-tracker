@@ -3,6 +3,7 @@
 
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import {
+  resetValsSearchJobs,
   SearchJobsFormT,
   searchJobsSchema,
 } from "@/features/jobApplications/paperwork/searchJobs";
@@ -16,9 +17,7 @@ const Page: FC = () => {
   const formCtx = useForm<SearchJobsFormT>({
     mode: "onChange",
     resolver: zodResolver(searchJobsSchema),
-    defaultValues: {
-      txtFields: [{ ...searchJobsFieldsTxt[0], val: "" }],
-    },
+    defaultValues: resetValsSearchJobs,
   });
 
   return (
@@ -28,6 +27,7 @@ const Page: FC = () => {
           {...{
             allowedTxtFields:
               searchJobsFieldsTxt as FormFieldTxtSearchBarT<SearchJobsFormT>[],
+            resetVals: resetValsSearchJobs,
           }}
         />
       </FormProvider>

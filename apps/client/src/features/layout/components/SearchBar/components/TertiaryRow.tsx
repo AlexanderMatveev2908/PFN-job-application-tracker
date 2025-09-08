@@ -8,9 +8,11 @@ import { css } from "@emotion/react";
 import type { FC } from "react";
 import { mainBtnsSearchBar } from "../uiFactory";
 
-type PropsType = {};
+type PropsType = {
+  handleReset: () => void;
+};
 
-const TertiaryRow: FC<PropsType> = ({}) => {
+const TertiaryRow: FC<PropsType> = ({ handleReset }) => {
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
@@ -26,6 +28,7 @@ const TertiaryRow: FC<PropsType> = ({}) => {
                 label: btn.label,
                 Svg: btn.Svg,
               },
+              handleClick: btn.act === "OK" ? () => null : handleReset,
               type: btn.act === "OK" ? "submit" : "button",
               $customLabelCSS: css`
                 display: none;

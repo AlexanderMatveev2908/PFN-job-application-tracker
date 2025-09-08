@@ -2,6 +2,7 @@ import { REG_JOB_NAME } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
+import { searchJobsFieldsTxt } from "../uiFactory/searchJobs";
 
 const mapper: MapperArrayFieldsT = {
   company_name: {
@@ -44,3 +45,7 @@ export const searchJobsSchema = z
   });
 
 export type SearchJobsFormT = z.infer<typeof searchJobsSchema>;
+
+export const resetValsSearchJobs: SearchJobsFormT = {
+  txtFields: [{ ...searchJobsFieldsTxt[0], val: "" }],
+};
