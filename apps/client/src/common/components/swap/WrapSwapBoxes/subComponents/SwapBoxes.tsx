@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import BoxInput from "@/common/components/forms/inputs/BoxInput";
 import { CheckChoiceT } from "@/common/types/ui";
 import { css } from "@emotion/react";
 import { FieldValues, Path } from "react-hook-form";
@@ -36,27 +37,16 @@ const SwapBoxes = <T extends FieldValues>({
         const isChosen = isCurrChoice(ch.val as T[Path<T>]);
 
         return (
-          <button
-            data-testid={`swap_boxes__${ch.val}`}
-            type="button"
-            key={ids[idx]}
-            className="w-[250px] rounded-xl py-3 flex justify-center items-center h-fit"
-            css={css`
-              transition: ${isChosen ? 0.2 : 0.3}s ease-in-out;
-              border: 2px solid var(--${isChosen ? "white__0" : "neutral__600"});
-              background: var(--${isChosen ? "white__0" : "transparent"});
-              transform: scale(${isChosen ? 0.85 : 1});
-              cursor: pointer;
-              color: var(--${isChosen ? "neutral__950" : "neutral__300"});
-
-              &:hover {
-                transform: scale(${isChosen ? 0.85 : 1.15});
-              }
-            `}
-            onClick={handleClick.bind(null, ch.val as T[Path<T>])}
-          >
-            <span className="txt__lg text-center">{ch.label}</span>
-          </button>
+          <div key={ids[idx]} className="w-[250px]">
+            <BoxInput
+              {...{
+                testID: `swap_boxes__${ch.val}`,
+                handleClick: () => handleClick(ch.val as T[Path<T>]),
+                isChosen,
+                opt: ch,
+              }}
+            />
+          </div>
         );
       })}
     </div>

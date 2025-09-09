@@ -1,8 +1,7 @@
-import { createContext, useContext } from "react";
+import { useContext } from "react";
 import { SearchBarCtxT } from "./useSearchCtxProvider";
 import { ErrApp } from "@/core/lib/err";
-
-export const SearchBarCtx = createContext<SearchBarCtxT | null>(null);
+import { SearchBarCtx } from "../SearchBarCtxProvider";
 
 export const useSearchCtxConsumer = (): SearchBarCtxT => {
   const ctx = useContext<SearchBarCtxT | null>(SearchBarCtx);

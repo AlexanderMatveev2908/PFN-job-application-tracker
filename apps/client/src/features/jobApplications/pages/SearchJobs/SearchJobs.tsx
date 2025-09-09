@@ -3,19 +3,11 @@
 
 import SearchBar from "@/features/layout/components/SearchBar/SearchBar";
 import { filtersSearchJobs, searchJobsFieldsTxt } from "./uiFactory";
-import {
-  resetValsSearchJobs,
-  SearchJobsFormT,
-} from "../../paperwork/searchJobs";
+import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { FC } from "react";
-import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/context/hooks/ctxConsumer";
 
 const SearchJobs: FC = () => {
-  const ctx = useSearchCtxConsumer();
-
-  console.log(ctx);
-
   return (
     <SearchBar
       {...{

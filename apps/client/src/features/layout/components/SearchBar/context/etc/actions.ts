@@ -1,8 +1,11 @@
-export type SearchBarActionsT = "SET_BAR";
-
 export type PayloadSetBarT = { bar: "filterBar" | "sortBar"; val: boolean };
 
-export type SearchBarReducerActionsT = {
-  payload: PayloadSetBarT;
-  type: "SET_BAR";
-};
+export type SearchBarReducerActionsT =
+  | {
+      type: "SET_BAR";
+      payload: PayloadSetBarT;
+    }
+  | {
+      type: "SET_CURR_FILTER";
+      payload: { val: string };
+    };

@@ -17,10 +17,11 @@ import {
 import PrimaryRow from "./components/PrimaryRow";
 import SecondaryRow from "./components/SecondaryRow";
 import TertiaryRow from "./components/TertiaryRow";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import AddFieldTxtDrop from "./components/AddFieldTxtDrop";
 import FilterBar from "./components/FilterBar/FilterBar";
 import { FilterSearchBarT } from "./types";
+import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -48,6 +49,12 @@ const SearchBar = <T extends FieldValues>({
   }, logFormErrs);
 
   const handleReset = useCallback(() => reset(resetVals), [reset, resetVals]);
+
+  const { setCurrFilter } = useSearchCtxConsumer();
+
+  useEffect(() => {
+    setCurrFilter({ val: filters[0].label });
+  }, [filters, setCurrFilter]);
 
   return !isHydrated ? (
     <Shim

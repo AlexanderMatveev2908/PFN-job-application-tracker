@@ -6,7 +6,7 @@ import {
   resetValsSearchJobs,
   SearchJobsFormT,
   searchJobsSchema,
-} from "@/features/jobApplications/paperwork/searchJobs";
+} from "@/features/jobApplications/pages/SearchJobs/paperwork";
 import SearchBarWrapper from "@/features/layout/components/SearchBar/SearchBarWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";

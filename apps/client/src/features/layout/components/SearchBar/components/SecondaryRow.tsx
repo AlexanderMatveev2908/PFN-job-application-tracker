@@ -7,7 +7,7 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import { resp } from "@/core/lib/style";
 import { css } from "@emotion/react";
 import { FC } from "react";
-import { useSearchCtxConsumer } from "../context/hooks/ctxConsumer";
+import { useSearchCtxConsumer } from "../context/hooks/useSearchCtxConsumer";
 
 const SecondaryRow: FC = ({}) => {
   const {

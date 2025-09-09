@@ -3,6 +3,7 @@ export const searchBarInitState = {
     filterBar: false,
     sortBar: false,
   },
+  currFilter: "",
 };
 
 export type SearchBarStateT = typeof searchBarInitState;

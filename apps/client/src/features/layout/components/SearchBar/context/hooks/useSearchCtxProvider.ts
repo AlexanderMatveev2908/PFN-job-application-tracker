@@ -11,9 +11,16 @@ export const useSearchCtxProvider = () => {
     []
   );
 
+  const setCurrFilter = useCallback(
+    (payload: { val: string }) =>
+      dispatchRct({ type: "SET_CURR_FILTER", payload }),
+    []
+  );
+
   return {
     ...state,
     setBar,
+    setCurrFilter,
   };
 };
 

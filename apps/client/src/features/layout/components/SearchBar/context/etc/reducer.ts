@@ -19,7 +19,13 @@ export const searchbarReducer = (
       };
     }
 
+    case "SET_CURR_FILTER":
+      return {
+        ...state,
+        currFilter: action.payload.val,
+      };
+
     default:
-      throw new ErrApp(`Invalid action => ${action.type}`);
+      throw new ErrApp(`Invalid action 😡 => ${action}`);
   }
 };

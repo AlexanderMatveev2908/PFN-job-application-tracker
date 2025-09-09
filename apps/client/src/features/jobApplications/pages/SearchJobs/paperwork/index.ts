@@ -2,8 +2,8 @@ import { REG_JOB_NAME } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
-import { searchJobsFieldsTxt } from "../pages/SearchJobs/uiFactory";
-import { ApplicationStatusT } from "../types";
+import { searchJobsFieldsTxt } from "../uiFactory";
+import { ApplicationStatusT } from "../../../types";
 
 const mapper: MapperArrayFieldsT = {
   company_name: {
