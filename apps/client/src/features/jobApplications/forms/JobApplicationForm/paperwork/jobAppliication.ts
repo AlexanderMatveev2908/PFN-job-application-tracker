@@ -34,21 +34,19 @@ export const addJobApplicationSchema = z.object({
   status: z
     .preprocess(
       (val) => (!val ? undefined : val),
-      z
-        .enum(Object.values(ApplicationStatusT), {
-          error: "Invalid application status",
-        })
-        .optional()
+      z.enum(Object.values(ApplicationStatusT), {
+        error: "Invalid application status",
+      })
     )
     .refine((v) => !!v, { message: "Application status required" }),
 });
 
 export type JobApplicationFormT = z.infer<typeof addJobApplicationSchema>;
 
-export const resetValsJobApplForm: JobApplicationFormT = {
+export const resetValsJobApplForm = {
   company_name: "",
   position_name: "",
   notes: "",
   applied_at: getDefValDatePicker(),
   status: "" as ApplicationStatusT,
-};
+} as JobApplicationFormT;
