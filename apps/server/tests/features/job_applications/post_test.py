@@ -50,7 +50,7 @@ async def bad_cases_t(
     if case == "err_status":
         payload["status"] = cast(Any, "wrong_status")
     elif case == "err_date":
-        payload["date_applied"] = cast(Any, "1234")
+        payload["applied_at"] = cast(Any, "1234")
     elif case == "err_name":
         payload["company_name"] = "<script>"
 

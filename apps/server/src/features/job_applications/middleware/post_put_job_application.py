@@ -20,7 +20,7 @@ class JobApplicationFormT(BaseModel):
         min_length=1, max_length=100, pattern=REG_JOB_NAME.pattern
     )
 
-    date_applied: str = Field(min_length=1, pattern=REG_DATE_PICKER.pattern)
+    applied_at: str = Field(min_length=1, pattern=REG_DATE_PICKER.pattern)
 
     status: ApplicationStatusT
 
@@ -47,9 +47,9 @@ async def post_put_job_application_mdw(
             JobApplicationDct,
             {
                 **res_check["form_inst"].model_dump(),
-                "date_applied": int(
+                "applied_at": int(
                     datetime.datetime.fromisoformat(
-                        res_check["form_inst"].date_applied
+                        res_check["form_inst"].applied_at
                     )
                     .replace(tzinfo=datetime.timezone.utc)
                     .timestamp()

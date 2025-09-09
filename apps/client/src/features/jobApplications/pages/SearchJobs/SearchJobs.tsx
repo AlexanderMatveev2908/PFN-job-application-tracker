@@ -2,7 +2,11 @@
 "use client";
 
 import SearchBar from "@/features/layout/components/SearchBar/SearchBar";
-import { filtersSearchJobs, searchJobsFieldsTxt } from "./uiFactory";
+import {
+  filtersSearchJobs,
+  searchJobsFieldsTxt,
+  sortersSearchJobs,
+} from "./uiFactory";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { FC } from "react";
@@ -15,6 +19,7 @@ const SearchJobs: FC = () => {
           searchJobsFieldsTxt as FormFieldTxtSearchBarT<SearchJobsFormT>[],
         resetVals: resetValsSearchJobs,
         filters: filtersSearchJobs,
+        sorters: sortersSearchJobs,
       }}
     />
   );

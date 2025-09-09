@@ -13,7 +13,7 @@ test("post job appl ok", async ({ browser }) => {
 
   await clickByID(swapBoxes, `swap_boxes__${payload.status}`);
 
-  await (await getByID(form, "date_applied")).fill(payload.date_applied);
+  await (await getByID(form, "applied_at")).fill(payload.applied_at);
   await (await getByID(form, "notes")).fill(payload.notes ?? "");
 
   await clickByID(form, "job_application__form__submit");

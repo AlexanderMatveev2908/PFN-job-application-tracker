@@ -14,5 +14,5 @@ export interface JobApplicationT extends SqlTableRoot {
   user_id: string;
   position_name: string;
   status: ApplicationStatusT;
-  date_applied: string;
+  applied_at: string;
 }

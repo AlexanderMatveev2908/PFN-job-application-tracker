@@ -23,6 +23,6 @@ export const statusField = gen.checkField({
 });
 
 export const dateApplicationField = gen.txtField({
-  name: "date_applied",
+  name: "applied_at",
   type: "date",
 });

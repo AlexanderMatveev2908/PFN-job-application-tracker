@@ -558,7 +558,7 @@ erDiagram
     string company_name
     string position_name
     applications_status_type status
-    bigint date_applied
+    bigint applied_at
   }
 
   token_type {

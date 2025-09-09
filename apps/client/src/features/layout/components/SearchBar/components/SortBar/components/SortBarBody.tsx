@@ -9,7 +9,7 @@ type PropsType = {
   sorters: SorterSearchBarT[];
 };
 
-const SortBarBody: FC<PropsType> = ({ sorters }) => {
+const SortBarBody: FC<PropsType> = ({}) => {
   return (
     <div
       className="flex flex-col overflow-y-auto scroll__app min-h-0"
