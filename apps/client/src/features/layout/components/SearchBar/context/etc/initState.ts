@@ -4,6 +4,10 @@ export type SearchBarStateT = {
     sortBar: null | boolean;
   };
   currFilter: string;
+  pagination: {
+    currBlock: number;
+    currPage: number;
+  };
 };
 
 export const searchBarInitState: SearchBarStateT = {
@@ -13,4 +17,8 @@ export const searchBarInitState: SearchBarStateT = {
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currFilter: "" as any,
+  pagination: {
+    currBlock: 0,
+    currPage: 0,
+  },
 };

@@ -3,8 +3,8 @@
 
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import { ChildrenT } from "@/common/types/ui";
-import SearchBarCtxProvider from "../components/SearchBar/context/SearchBarCtxProvider";
-import PageCounter from "@/common/components/HOC/PageCounter/PageCounter";
+import SearchBarCtxProvider from "../context/SearchBarCtxProvider";
+import PageCounter from "@/features/layout/components/SearchBar/sideComponents/PageCounter/PageCounter";
 
 type PropsType<T extends FieldValues> = {
   formCtx: UseFormReturn<T>;
@@ -19,7 +19,11 @@ const SearchBarWrapper = <T extends FieldValues>({
       <FormProvider {...formCtx}>
         {children}
 
-        <PageCounter />
+        <PageCounter
+          {...{
+            nHits: 35,
+          }}
+        />
       </FormProvider>
     </SearchBarCtxProvider>
   );

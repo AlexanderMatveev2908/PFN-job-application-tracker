@@ -25,6 +25,18 @@ export const searchbarReducer = (
         currFilter: action.payload.val,
       };
 
+    case "SET_PAGINATION": {
+      const { key, val } = action.payload;
+
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          [key]: val,
+        },
+      };
+    }
+
     default:
       throw new ErrApp(`Invalid action 😡 => ${action}`);
   }
