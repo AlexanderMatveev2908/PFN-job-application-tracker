@@ -9,10 +9,13 @@ import FilterBarHeader from "./components/FilterBarHeader";
 import { MainBtnsSearchBarPropsType } from "../subComponents/MainBtnsSearchBar";
 import FilterBarFooter from "./components/FilterBarFooter";
 import FilterBarBody from "./components/FilterBarBody/FilterBarBody";
+import { FilterSearchBarT } from "../../types";
 
-type PropsType = {} & MainBtnsSearchBarPropsType;
+type PropsType = {
+  filters: FilterSearchBarT[];
+} & MainBtnsSearchBarPropsType;
 
-const FilterBar: FC<PropsType> = ({ handleReset }) => {
+const FilterBar: FC<PropsType> = ({ handleReset, filters }) => {
   const {
     bars: { filterBar },
     setBar,
@@ -42,7 +45,11 @@ const FilterBar: FC<PropsType> = ({ handleReset }) => {
           }}
         />
 
-        <FilterBarBody />
+        <FilterBarBody
+          {...{
+            filters,
+          }}
+        />
 
         <FilterBarFooter
           {...{

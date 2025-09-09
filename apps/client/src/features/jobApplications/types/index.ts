@@ -1,5 +1,4 @@
 import { SqlTableRoot } from "@/common/types/db";
-import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 
 export enum ApplicationStatusT {
   APPLIED = "APPLIED",
@@ -9,13 +8,6 @@ export enum ApplicationStatusT {
   REJECTED = "REJECTED",
   WITHDRAWN = "WITHDRAWN",
 }
-
-export const applicationStatusChoices = Object.values(ApplicationStatusT).map(
-  (v) => ({
-    val: v,
-    label: parseDevValUsFriendly(v, { titleCase: true }),
-  })
-);
 
 export interface JobApplicationT extends SqlTableRoot {
   company_name: string;

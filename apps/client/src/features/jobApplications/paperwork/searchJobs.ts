@@ -2,7 +2,8 @@ import { REG_JOB_NAME } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
-import { searchJobsFieldsTxt } from "../uiFactory/searchJobs";
+import { searchJobsFieldsTxt } from "../pages/SearchJobs/uiFactory";
+import { ApplicationStatusT } from "../types";
 
 const mapper: MapperArrayFieldsT = {
   company_name: {
@@ -18,6 +19,8 @@ const mapper: MapperArrayFieldsT = {
 export const searchJobsSchema = z
   .object({
     txtFields: z.array(txtFieldSchema),
+
+    status: z.array(z.enum(Object.values(ApplicationStatusT))),
   })
   .superRefine((data, ctx) => {
     let i = 0;
@@ -48,4 +51,5 @@ export type SearchJobsFormT = z.infer<typeof searchJobsSchema>;
 
 export const resetValsSearchJobs: SearchJobsFormT = {
   txtFields: [{ ...searchJobsFieldsTxt[0], val: "" }],
+  status: [],
 };

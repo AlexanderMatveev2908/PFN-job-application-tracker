@@ -15,7 +15,7 @@ import { useFocus } from "@/core/hooks/etc/focus/useFocus";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import WrapSwapBoxes from "@/common/components/swap/WrapSwapBoxes/WrapSwapBoxes";
 import DatePicker from "@/common/components/forms/inputs/DatePicker/DatePicker";
-import { applicationStatusChoices } from "../../types";
+import { applicationStatusChoices } from "../../uiFactory";
 
 type PropsType = {
   handleSave: () => void;

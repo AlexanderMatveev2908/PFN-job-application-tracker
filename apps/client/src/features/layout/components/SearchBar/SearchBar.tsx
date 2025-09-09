@@ -20,15 +20,18 @@ import TertiaryRow from "./components/TertiaryRow";
 import { useCallback } from "react";
 import AddFieldTxtDrop from "./components/AddFieldTxtDrop";
 import FilterBar from "./components/FilterBar/FilterBar";
+import { FilterSearchBarT } from "./types";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
   resetVals: T;
+  filters: FilterSearchBarT[];
 };
 
 const SearchBar = <T extends FieldValues>({
   allowedTxtFields,
   resetVals,
+  filters,
 }: PropsType<T>) => {
   const { isHydrated } = useHydration();
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
@@ -87,6 +90,7 @@ const SearchBar = <T extends FieldValues>({
       <FilterBar
         {...{
           handleReset,
+          filters,
         }}
       />
     </form>
