@@ -4,10 +4,15 @@
 import type { FC } from "react";
 import { useSearchCtxConsumer } from "../../context/hooks/useSearchCtxConsumer";
 import Popup from "@/common/components/wrappers/Popup/Popup";
+import SortBarHeader from "./components/SortBarHeader";
+import SortBarBody from "./components/SortBarBody";
+import { SorterSearchBarT } from "../../types";
 
-type PropsType = {};
+type PropsType = {
+  sorters: SorterSearchBarT[];
+};
 
-const SortBar: FC<PropsType> = ({}) => {
+const SortBar: FC<PropsType> = ({ sorters }) => {
   const {
     bars: { sortBar },
     setBar,
@@ -19,7 +24,13 @@ const SortBar: FC<PropsType> = ({}) => {
         isPop: sortBar,
         setIsPop: (val: boolean | null) => setBar({ bar: "sortBar", val }),
       }}
-    ></Popup>
+    >
+      <div className="w-full h-full flex flex-col gap-6">
+        <SortBarHeader />
+
+        <SortBarBody {...{ sorters }} />
+      </div>
+    </Popup>
   );
 };
 

@@ -1,10 +1,14 @@
-import { FilterSearchBarT } from "@/features/layout/components/SearchBar/types";
+import {
+  FilterSearchBarT,
+  SorterSearchBarT,
+} from "@/features/layout/components/SearchBar/types";
 import {
   applicationStatusChoices,
   companyNameField,
   positionNameField,
 } from "../../../uiFactory";
 import { IoStatsChart } from "react-icons/io5";
+import { CgSandClock } from "react-icons/cg";
 
 export const searchJobsFieldsTxt = [companyNameField, positionNameField];
 
@@ -30,5 +34,17 @@ export const filtersSearchJobs: FilterSearchBarT[] = [
     type: "checkbox",
     Svg: IoStatsChart,
     options: applicationStatusChoices,
+  },
+];
+
+export const sortersSearchJobs: SorterSearchBarT[] = [
+  {
+    name: "created_at",
+  },
+  {
+    name: "updated_at",
+  },
+  {
+    name: "date_applied",
   },
 ];

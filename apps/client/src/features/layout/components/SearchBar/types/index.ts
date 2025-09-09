@@ -1,10 +1,15 @@
 import { CheckChoiceT, FieldCheckT } from "@/common/types/ui";
 import { IconType } from "react-icons";
 
-export type FilterSearchBarT = {
+type SearchBarField = {
   name: string;
   label: string;
-  type: FieldCheckT;
   Svg: IconType;
-  options: CheckChoiceT[];
 };
+
+export type FilterSearchBarT = {
+  type: FieldCheckT;
+  options: CheckChoiceT[];
+} & SearchBarField;
+
+export type SorterSearchBarT = {} & SearchBarField;

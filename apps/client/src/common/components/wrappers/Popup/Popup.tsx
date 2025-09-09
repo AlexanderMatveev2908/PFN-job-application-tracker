@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 import { useEffect, useRef, type FC } from "react";
 import { motion } from "framer-motion";
 import { varPop } from "./uiFactory";
@@ -90,7 +89,7 @@ const Popup: FC<WrapPopPropsType> = ({
           />
         </div>
 
-        <div className="h-full w-full pt-6">
+        <div className="h-full w-full">
           {typeof children === "function" ? children() : children}
 
           {propsActions && (
