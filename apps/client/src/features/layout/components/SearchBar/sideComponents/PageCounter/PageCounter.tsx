@@ -27,16 +27,35 @@ const PageCounter: FC<PropsType> = ({ nHits }) => {
 
   useEffect(() => {
     const cb = () => {
-      setPagesForSwap(getMaxBtnForSwap());
-      setPagination({ key: "limit", val: getNumCardsForPage() });
+      const newLimit = getNumCardsForPage();
+      const newPagesForSwap = getMaxBtnForSwap();
+
+      setPagesForSwap(newPagesForSwap);
+      setPagination({ key: "limit", val: newLimit });
+
+      const newTotPages = Math.ceil(nHits / newLimit);
+      const newTotSwaps = Math.ceil(newTotPages / newPagesForSwap);
+
+      const lastSwapAllowed = Math.max(0, newTotSwaps - 1);
+      const lastPageAllowed = Math.max(0, newTotPages - 1);
+
+      const shouldFixPage = currPage > lastPageAllowed;
+      const shouldFixSwap = currBlock > lastSwapAllowed;
+
+      if (shouldFixPage)
+        setPagination({ key: "currPage", val: lastPageAllowed });
+      if (shouldFixSwap)
+        setPagination({ key: "currBlock", val: lastSwapAllowed });
     };
+
+    cb();
 
     window.addEventListener("resize", cb);
 
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, [setPagination]);
+  }, [setPagination, nHits, currBlock, currPage]);
 
   const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
   const totSwaps = useMemo(
@@ -64,8 +83,10 @@ const PageCounter: FC<PropsType> = ({ nHits }) => {
     ["totPages", totPages],
     ["pagesForSwap", pagesForSwap],
     ["totSwaps", totSwaps],
-    ["currPages", currPages]
+    ["currPages", currPages],
+    ["currPage", currPage]
   );
+
   return !isHydrated ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
       <div className="w-full grid grid-cols-[75px_1fr_75px] gap-10">
@@ -106,7 +127,7 @@ const PageCounter: FC<PropsType> = ({ nHits }) => {
             act: "NONE",
             handleClick: () =>
               setPagination({ key: "currBlock", val: currBlock + 1 }),
-            isDisabled: (currBlock + 1) * pagesForSwap > totPages,
+            isDisabled: (currBlock + 1) * pagesForSwap > totPages - 1,
           }}
         />
       </div>
