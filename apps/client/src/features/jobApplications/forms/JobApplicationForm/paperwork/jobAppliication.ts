@@ -34,9 +34,11 @@ export const addJobApplicationSchema = z.object({
   status: z
     .preprocess(
       (val) => (!val ? undefined : val),
-      z.enum(Object.values(ApplicationStatusT), {
-        error: "Invalid application status",
-      })
+      z
+        .enum(Object.values(ApplicationStatusT), {
+          error: "Invalid application status",
+        })
+        .optional()
     )
     .refine((v) => !!v, { message: "Application status required" }),
 });
