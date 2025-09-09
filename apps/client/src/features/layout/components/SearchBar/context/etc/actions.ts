@@ -3,7 +3,10 @@ export type PayloadSetBarT = {
   val: boolean | null;
 };
 
-export type PayloadPaginationT = { key: "currPage" | "currBlock"; val: number };
+export type PayloadPaginationT = {
+  key: "currPage" | "currBlock" | "limit";
+  val: number;
+};
 
 export type SearchBarReducerActionsT =
   | {

@@ -1,46 +1,71 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/context/hooks/useSearchCtxConsumer";
-import { getMaxBtnForSwap } from "./uiFactory";
+import { getMaxBtnForSwap, getNumCardsForPage } from "./uiFactory";
 import BtnBg from "../../../../../../common/components/buttons/BtnBg";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import { css } from "@emotion/react";
-import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import BoxInput from "@/common/components/forms/inputs/BoxInput";
-import { CheckChoiceT } from "@/common/types/ui";
-import { keyof } from "zod";
+import { __cg } from "@/core/lib/log";
+import { v4 } from "uuid";
 
 type PropsType = {
   nHits: number;
 };
 
-const PageCounter: FC<PropsType> = ({}) => {
+const PageCounter: FC<PropsType> = ({ nHits }) => {
   const { isHydrated } = useHydration();
-  const [maxBtnsForSwap, setMaxBtnsForSwap] = useState(getMaxBtnForSwap());
+  const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
+
+  const {
+    pagination: { currBlock, currPage, limit },
+    setPagination,
+  } = useSearchCtxConsumer();
 
   useEffect(() => {
-    const cb = () => setMaxBtnsForSwap(getMaxBtnForSwap());
+    const cb = () => {
+      setPagesForSwap(getMaxBtnForSwap());
+      setPagination({ key: "limit", val: getNumCardsForPage() });
+    };
 
     window.addEventListener("resize", cb);
 
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, []);
+  }, [setPagination]);
 
-  const {
-    pagination: { currBlock, currPage },
-    setPagination,
-  } = useSearchCtxConsumer();
+  const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
+  const totSwaps = useMemo(
+    () => Math.ceil(totPages / pagesForSwap),
+    [totPages, pagesForSwap]
+  );
 
-  const {
-    ids: [ids],
-  } = useGenIDs({ lengths: [maxBtnsForSwap] });
+  const currPages = useMemo(() => {
+    const start = currBlock * pagesForSwap;
+    const end = Math.min(start + pagesForSwap, totPages);
 
+    return Array.from({ length: end - start }, (_, i) => start + i).map(
+      (int) => ({
+        val: int,
+        label: int + "",
+        id: v4(),
+      })
+    );
+  }, [currBlock, pagesForSwap, totPages]);
+
+  __cg(
+    "pagination",
+    ["nHits", nHits],
+    ["limit", limit],
+    ["totPages", totPages],
+    ["pagesForSwap", pagesForSwap],
+    ["totSwaps", totSwaps],
+    ["currPages", currPages]
+  );
   return !isHydrated ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
       <div className="w-full grid grid-cols-[75px_1fr_75px] gap-10">
@@ -48,26 +73,26 @@ const PageCounter: FC<PropsType> = ({}) => {
           {...{
             el: { Svg: ArrowBigLeftDash },
             act: "NONE",
+            handleClick: () =>
+              setPagination({ key: "currBlock", val: currBlock - 1 }),
+            isDisabled: !currBlock,
           }}
         />
         <div
           className="w-full grid justify-items-center gap-6"
           css={css`
-            grid-template-columns: repeat(${maxBtnsForSwap}, 1fr);
+            grid-template-columns: repeat(${pagesForSwap}, 1fr);
           `}
         >
-          {ids.map((id, idx) => {
-            const opt: CheckChoiceT = {} as CheckChoiceT;
-            for (const k of ["label", "val"]) (opt as any)[k] = idx + "";
-
+          {currPages.map((page) => {
             return (
-              <div key={ids[idx]} className="w-[60px]">
+              <div key={page.id} className="w-[60px]">
                 <BoxInput
                   {...{
-                    isChosen: idx === currPage,
+                    isChosen: page.val === currPage,
                     handleClick: () =>
-                      setPagination({ key: "currPage", val: idx }),
-                    opt,
+                      setPagination({ key: "currPage", val: page.val }),
+                    opt: page,
                     $labelSizeCls: "lg",
                   }}
                 />
@@ -79,6 +104,9 @@ const PageCounter: FC<PropsType> = ({}) => {
           {...{
             el: { Svg: ArrowBigRightDash },
             act: "NONE",
+            handleClick: () =>
+              setPagination({ key: "currBlock", val: currBlock + 1 }),
+            isDisabled: (currBlock + 1) * pagesForSwap > totPages,
           }}
         />
       </div>

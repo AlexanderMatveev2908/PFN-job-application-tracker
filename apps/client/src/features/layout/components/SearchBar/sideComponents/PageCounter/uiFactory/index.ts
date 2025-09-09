@@ -18,3 +18,19 @@ export const getMaxBtnForSwap = () => {
     ? 2
     : 1;
 };
+
+export const getNumCardsForPage = () => {
+  if (!isWdw()) return 1;
+
+  const w = window.innerWidth;
+
+  return w > uiBreaks.xl
+    ? 8
+    : w > uiBreaks.lg
+    ? 6
+    : w > uiBreaks.md
+    ? 4
+    : w > uiBreaks.sm
+    ? 2
+    : 1;
+};

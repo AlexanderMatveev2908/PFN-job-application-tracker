@@ -1,3 +1,5 @@
+import { getNumCardsForPage } from "../../sideComponents/PageCounter/uiFactory";
+
 export type SearchBarStateT = {
   bars: {
     filterBar: null | boolean;
@@ -7,6 +9,7 @@ export type SearchBarStateT = {
   pagination: {
     currBlock: number;
     currPage: number;
+    limit: number;
   };
 };
 
@@ -20,5 +23,6 @@ export const searchBarInitState: SearchBarStateT = {
   pagination: {
     currBlock: 0,
     currPage: 0,
+    limit: getNumCardsForPage(),
   },
 };

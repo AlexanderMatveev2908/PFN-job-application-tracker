@@ -21,7 +21,7 @@ const SearchBarWrapper = <T extends FieldValues>({
 
         <PageCounter
           {...{
-            nHits: 35,
+            nHits: 100,
           }}
         />
       </FormProvider>
