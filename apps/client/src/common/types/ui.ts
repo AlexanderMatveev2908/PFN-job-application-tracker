@@ -52,7 +52,7 @@ export type FormFieldCheckT<T extends FieldValues> = {
 };
 
 export type CheckChoiceT = {
-  val: string;
+  val: string | number;
   label: string;
   Svg?: IconType;
 };

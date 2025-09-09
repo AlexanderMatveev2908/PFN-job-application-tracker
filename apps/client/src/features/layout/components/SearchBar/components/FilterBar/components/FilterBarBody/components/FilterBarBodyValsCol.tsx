@@ -73,7 +73,7 @@ const FilterBarBodyValsCol: FC<PropsType> = ({ filters }) => {
                 {...{
                   opt: el,
                   isChosen,
-                  handleClick: () => handleClick(el.val),
+                  handleClick: () => handleClick(el.val as string),
                 }}
               />
             </div>

@@ -7,12 +7,15 @@ import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
 import { css, SerializedStyles } from "@emotion/react";
 
+export type LabelSizeT = "lg" | "xl" | "2xl" | "3xl";
+
 type PropsType = {
   el: FieldTxtSvgT;
   act?: AppEventT;
   isLoading?: boolean;
   isHover?: boolean;
   $SvgCls?: string;
+  $labelSizeCls?: LabelSizeT;
   $ctmLabelCSS?: SerializedStyles;
 };
 
@@ -23,6 +26,7 @@ const PairTxtSvg: FC<PropsType> = ({
   isHover,
   act = "NONE",
   $ctmLabelCSS,
+  $labelSizeCls,
 }) => {
   return (
     <div className="flex items-center justify-start gap-6">
@@ -40,7 +44,7 @@ const PairTxtSvg: FC<PropsType> = ({
 
       {el.label && (
         <span
-          className="txt__lg"
+          className={`${$labelSizeCls ? `txt__${$labelSizeCls}` : "txt__lg"}`}
           css={css`
             ${$ctmLabelCSS}
           `}
