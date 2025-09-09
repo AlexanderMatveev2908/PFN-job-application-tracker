@@ -33,8 +33,8 @@
 }
 
 .scroll__app::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 .scroll__app::-webkit-scrollbar-track {
@@ -48,7 +48,7 @@
 }
 
 .scroll__app {
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: var(--white__0) transparent;
 }
 
@@ -98,27 +98,35 @@
 }
 
 .z__bg_sidebar {
-  z-index: 350;
+  z-index: 100;
 }
 
 .z__header {
-  z-index: 400;
+  z-index: 200;
 }
 
 .z__sidebar {
-  z-index: 450;
+  z-index: 300;
+}
+
+.z__black_bg__search_bar {
+  z-index: 400;
+}
+
+.z__search_bar {
+  z-index: 500;
 }
 
 .z__black_bg__popup {
-  z-index: 550;
-}
-
-.z__popup {
   z-index: 600;
 }
 
+.z__popup {
+  z-index: 700;
+}
+
 .z__toast {
-  z-index: 1000;
+  z-index: 800;
 }
 
 .txt__xs {
@@ -356,6 +364,14 @@
 
 .form__body__sm {
   @apply grid grid-cols-1 gap-6 w-full h-fit max-h-fit items-start p-5;
+}
+
+.search_bar__btn {
+  @apply w-[80px] md:w-[250px];
+}
+
+.search_bar__wrap_btns {
+  @apply w-full grid grid-cols-2 gap-10 justify-items-center;
 }
 
 @keyframes skeleton {

@@ -32,8 +32,14 @@ export const captAll = (str?: string) =>
 export const extractInitialsUser = (user: UserT) =>
   user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase();
 
-export const parseDevValUsFriendly = (v: string) =>
-  captAll(v.split("_").join(" ").toLowerCase());
+export const parseDevValUsFriendly = (
+  v: string,
+  { titleCase }: { titleCase?: boolean }
+) => {
+  const res = v.split("_").join(" ").toLowerCase();
+
+  return titleCase ? captAll(res) : res;
+};
 
 export const getDefValDatePicker = () => new Date().toISOString().split("T")[0];
 

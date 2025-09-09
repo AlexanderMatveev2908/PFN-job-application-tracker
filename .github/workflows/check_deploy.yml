@@ -122,11 +122,11 @@ jobs:
             fs.writeFileSync(envPath, lines.join("\n") + "\n", "utf8");
             console.log(`✅ .env generated at ${envPath}`);
 
-      - name: 🧪 run test server 🐍
-        run: yarn workspace server test
-
       - name: 🧪 run test client 💻
         run: yarn workspace client test
+
+      - name: 🧪 run test server 🐍
+        run: yarn workspace server test
 
   deploy:
     name: 🚀 deploy server && client 🚀

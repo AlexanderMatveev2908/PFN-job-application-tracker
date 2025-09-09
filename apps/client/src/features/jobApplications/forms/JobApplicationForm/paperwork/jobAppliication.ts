@@ -22,7 +22,7 @@ export const addJobApplicationSchema = z.object({
     .max(1000, "Max length exceeded")
     .optional(),
 
-  date_applied: z
+  applied_at: z
     .string()
     .regex(REG_DATE_PICKER, "Invalid date format")
     .refine((v) => {
@@ -49,6 +49,6 @@ export const resetValsJobApplForm = {
   company_name: "",
   position_name: "",
   notes: "",
-  date_applied: getDefValDatePicker(),
+  applied_at: getDefValDatePicker(),
   status: "" as ApplicationStatusT,
-};
+} as JobApplicationFormT;

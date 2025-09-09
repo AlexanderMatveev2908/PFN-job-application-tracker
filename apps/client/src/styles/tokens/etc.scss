@@ -30,8 +30,8 @@
 }
 
 .scroll__app::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 .scroll__app::-webkit-scrollbar-track {
@@ -45,6 +45,6 @@
 }
 
 .scroll__app {
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: var(--white__0) transparent;
 }

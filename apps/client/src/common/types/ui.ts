@@ -31,10 +31,16 @@ export type FieldInputT =
   | "date";
 
 export type FormFieldTxtT<T extends FieldValues> = {
+  id?: string;
   name: Path<T>;
   label: string;
   place: string;
   type: FieldInputT;
+};
+
+export type FormFieldTxtSearchBarT<T extends FieldValues> = FormFieldTxtT<T> & {
+  id: string;
+  val: string;
 };
 
 export type FieldCheckT = "checkbox" | "radio";
@@ -48,6 +54,7 @@ export type FormFieldCheckT<T extends FieldValues> = {
 export type CheckChoiceT = {
   val: string;
   label: string;
+  Svg?: IconType;
 };
 
 export type PortalConfT = {

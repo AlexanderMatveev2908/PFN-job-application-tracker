@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import { motion } from "framer-motion";
 import { varPop } from "./uiFactory";
 import { X } from "lucide-react";
@@ -42,14 +41,26 @@ const Popup: FC<WrapPopPropsType> = ({
 }) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
-  useMouseOut({
-    ref: popRef,
-    cb: () => (allowClose ? setIsPop(false) : null),
-  });
-
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
+
+  useEffect(() => {
+    const cb = (e: MouseEvent) => {
+      const isIn = popRef.current?.contains(e.target as Node);
+
+      if (!isIn && allowClose) {
+        setIsPop(false);
+      }
+    };
+
+    document.addEventListener("mousedown", cb);
+
+    return () => {
+      document.removeEventListener("mousedown", cb);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allowClose]);
 
   return (
     <>
@@ -78,7 +89,7 @@ const Popup: FC<WrapPopPropsType> = ({
           />
         </div>
 
-        <div className="h-full w-full pt-6">
+        <div className="h-full w-full">
           {typeof children === "function" ? children() : children}
 
           {propsActions && (

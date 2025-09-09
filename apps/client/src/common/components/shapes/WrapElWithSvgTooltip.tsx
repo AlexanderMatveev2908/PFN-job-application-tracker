@@ -70,10 +70,10 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
         <PortalTooltip
           {...{
             isHover: isHover && confPortal!.showPortal,
-            act: "NONE",
+            act,
             $CSS: css`
               top: ${coords.top - coords.height / 2}px;
-              left: ${coords.left - coords.width}px;
+              left: ${coords.left - coords.width / 2}px;
             `,
             $trgCtmCSS: css`
               left: 15%;
@@ -81,13 +81,12 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
             $sizeTrg: 30,
           }}
         >
-          <span className="txt__md py-2 px-4 inline-block max-w-[200px] sm:max-w-[300px] break-all">
+          <span className="txt__md py-2 px-4 inline-block max-w-[300px] break-all">
             {confPortal!.txt}
           </span>
         </PortalTooltip>
       )}
-
-      <Svg className="svg__lg" />
+      <Svg className="svg__lg z-10" />
     </>
   );
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -16,7 +17,7 @@ import { genFormData, logFormErrs } from "@/core/lib/forms";
 const Page: FC = () => {
   const formCtx = useForm({
     mode: "onChange",
-    resolver: zodResolver(addJobApplicationSchema),
+    resolver: zodResolver(addJobApplicationSchema) as any,
     defaultValues: resetValsJobApplForm,
   });
   const { handleSubmit, reset } = formCtx;

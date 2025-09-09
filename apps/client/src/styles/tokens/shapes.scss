@@ -25,3 +25,11 @@
 .form__body__sm {
   @apply grid grid-cols-1 gap-6 w-full h-fit max-h-fit items-start p-5;
 }
+
+.search_bar__btn {
+  @apply w-[80px] md:w-[250px];
+}
+
+.search_bar__wrap_btns {
+  @apply w-full grid grid-cols-2 gap-10 justify-items-center;
+}

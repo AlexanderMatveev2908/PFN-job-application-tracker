@@ -43,7 +43,7 @@ def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
         {
             "company_name": faker.company(),
             "position_name": faker.job(),
-            "date_applied": datetime.datetime.now(datetime.timezone.utc)
+            "applied_at": datetime.datetime.now(datetime.timezone.utc)
             .date()
             .isoformat(),
             "status": ApplicationStatusT.APPLIED.value,

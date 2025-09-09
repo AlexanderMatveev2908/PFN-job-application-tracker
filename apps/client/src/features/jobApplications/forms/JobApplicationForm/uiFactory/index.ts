@@ -1,17 +1,20 @@
+import { FormFieldTxtT } from "@/common/types/ui";
 import { FormFieldGen } from "@/core/uiFactory/classes";
 import { JobApplicationFormT } from "@/features/jobApplications/forms/JobApplicationForm/paperwork/jobAppliication";
+import {
+  companyNameField,
+  positionNameField,
+} from "@/features/jobApplications/uiFactory";
 
 const gen = new FormFieldGen<JobApplicationFormT>();
 
-const companyNameField = gen.txtField({ name: "company_name" });
-const positionNameField = gen.txtField({ name: "position_name" });
 const notesField = gen.txtField({ name: "notes", type: "textarea" });
 
 export const txtFieldsApplicationForm = [
   companyNameField,
   positionNameField,
   notesField,
-];
+] as FormFieldTxtT<JobApplicationFormT>[];
 
 export const statusField = gen.checkField({
   label: "Status Application",
@@ -20,6 +23,6 @@ export const statusField = gen.checkField({
 });
 
 export const dateApplicationField = gen.txtField({
-  name: "date_applied",
+  name: "applied_at",
   type: "date",
 });

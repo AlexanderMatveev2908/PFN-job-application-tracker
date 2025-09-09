@@ -80,3 +80,18 @@ export type ParamsAPI2FA = {
   totp_code?: string;
   backup_code?: string;
 };
+
+export const txtFieldSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  label: z.string(),
+  place: z.string(),
+  val: z.string(),
+});
+
+export interface MapperArrayFieldsT {
+  [key: string]: {
+    reg: RegExp;
+    max: number;
+  };
+}

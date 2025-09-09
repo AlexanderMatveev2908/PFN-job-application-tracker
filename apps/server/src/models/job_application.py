@@ -30,7 +30,7 @@ class JobApplicationDct(TypedDict):
     company_name: str
     position_name: str
     status: ApplicationStatusT
-    date_applied: int
+    applied_at: int
 
 
 class JobApplication(RootTable):
@@ -59,6 +59,6 @@ class JobApplication(RootTable):
         PgEnum(ApplicationStatusT, name="application_status_type"),
     )
 
-    date_applied: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    applied_at: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
     notes: Mapped[str] = mapped_column(String(1000), nullable=True)

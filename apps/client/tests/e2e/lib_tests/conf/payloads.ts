@@ -30,14 +30,14 @@ export interface PayloadJobApplT {
   company_name: string;
   position_name: string;
   status: ApplicationStatusT;
-  date_applied: string;
+  applied_at: string;
   notes?: string;
 }
 
 export const genPayloadJobAppl = (): PayloadJobApplT => ({
   company_name: faker.company.name(),
   position_name: faker.person.jobTitle(),
-  date_applied: getDefValDatePicker(),
+  applied_at: getDefValDatePicker(),
   status: pickRandom(Object.values(ApplicationStatusT)) as ApplicationStatusT,
   notes: genLorem(4),
 });
