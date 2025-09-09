@@ -1,4 +1,7 @@
-export type PayloadSetBarT = { bar: "filterBar" | "sortBar"; val: boolean };
+export type PayloadSetBarT = {
+  bar: "filterBar" | "sortBar";
+  val: boolean | null;
+};
 
 export type SearchBarReducerActionsT =
   | {

@@ -2,8 +2,8 @@
 "use client";
 
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
-import SearchBarCtxProvider from "./context/SearchBarCtxProvider";
 import { ChildrenT } from "@/common/types/ui";
+import SearchBarCtxProvider from "../components/SearchBar/context/SearchBarCtxProvider";
 
 type PropsType<T extends FieldValues> = {
   formCtx: UseFormReturn<T>;

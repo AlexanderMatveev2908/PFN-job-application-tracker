@@ -22,6 +22,7 @@ import AddFieldTxtDrop from "./components/AddFieldTxtDrop";
 import FilterBar from "./components/FilterBar/FilterBar";
 import { FilterSearchBarT } from "./types";
 import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
+import SortBar from "./components/SortBar/SortBar";
 
 type PropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -100,6 +101,8 @@ const SearchBar = <T extends FieldValues>({
           filters,
         }}
       />
+
+      <SortBar />
     </form>
   );
 };

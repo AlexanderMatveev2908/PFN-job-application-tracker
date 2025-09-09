@@ -7,7 +7,7 @@ import {
   SearchJobsFormT,
   searchJobsSchema,
 } from "@/features/jobApplications/pages/SearchJobs/paperwork";
-import SearchBarWrapper from "@/features/layout/components/SearchBar/SearchBarWrapper";
+import SearchBarWrapper from "@/features/layout/shells/SearchBarWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
