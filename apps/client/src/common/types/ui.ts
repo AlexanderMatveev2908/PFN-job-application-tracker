@@ -54,6 +54,7 @@ export type FormFieldCheckT<T extends FieldValues> = {
 export type CheckChoiceT = {
   val: string;
   label: string;
+  Svg?: IconType;
 };
 
 export type PortalConfT = {

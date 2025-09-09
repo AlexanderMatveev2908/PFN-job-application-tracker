@@ -2,21 +2,29 @@
 "use client";
 
 import { CheckChoiceT, TestIDT } from "@/common/types/ui";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import type { FC } from "react";
+import PairTxtSvg from "../../elements/PairTxtSvg";
 
 type PropsType = {
   handleClick: () => void;
   isChosen: boolean;
   opt: CheckChoiceT;
+  $ctmLabelCSS?: SerializedStyles;
 } & TestIDT;
 
-const BoxInput: FC<PropsType> = ({ testID, isChosen, handleClick, opt }) => {
+const BoxInput: FC<PropsType> = ({
+  testID,
+  isChosen,
+  $ctmLabelCSS,
+  handleClick,
+  opt,
+}) => {
   return (
     <button
       data-testid={testID}
       type="button"
-      className="w-full rounded-xl py-3 px-4 flex justify-center items-center h-fit"
+      className="w-full rounded-xl py-3 px-4 flex justify-center items-center gap-6 h-fit"
       css={css`
         transition: ${isChosen ? 0.2 : 0.3}s ease-in-out;
         border: 2px solid var(--${isChosen ? "white__0" : "neutral__600"});
@@ -31,7 +39,15 @@ const BoxInput: FC<PropsType> = ({ testID, isChosen, handleClick, opt }) => {
       `}
       onClick={handleClick}
     >
-      <span className="txt__lg text-center">{opt.label}</span>
+      <PairTxtSvg
+        {...{
+          el: {
+            label: opt.label,
+            Svg: opt.Svg,
+          },
+          $ctmLabelCSS,
+        }}
+      />
     </button>
   );
 };
