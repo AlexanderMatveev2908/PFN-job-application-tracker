@@ -49,7 +49,7 @@ export const sortersSearchJobs: SorterSearchBarT[] = [
     name: "applied_at",
   },
 ].map((el) => ({
-  ...el,
+  name: el.name + "_sort",
   label: parseDevValUsFriendly(el.name, { titleCase: true }),
   Svg: CgSandClock,
 }));

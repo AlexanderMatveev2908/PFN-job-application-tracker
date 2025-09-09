@@ -45,7 +45,7 @@ export const addJobApplicationSchema = z.object({
 
 export type JobApplicationFormT = z.infer<typeof addJobApplicationSchema>;
 
-export const resetValsJobApplForm = {
+export const resetValsJobApplForm: JobApplicationFormT = {
   company_name: "",
   position_name: "",
   notes: "",

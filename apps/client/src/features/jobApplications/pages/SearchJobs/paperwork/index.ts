@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { REG_JOB_NAME } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
 import { searchJobsFieldsTxt } from "../uiFactory";
 import { ApplicationStatusT } from "../../../types";
+import { isStr } from "@/core/lib/dataStructure";
 
 const mapper: MapperArrayFieldsT = {
   company_name: {
@@ -21,6 +23,10 @@ export const searchJobsSchema = z
     txtFields: z.array(txtFieldSchema),
 
     status: z.array(z.enum(Object.values(ApplicationStatusT))),
+
+    created_at_sort: z.string(),
+    updated_at_sort: z.string(),
+    applied_at_sort: z.string(),
   })
   .superRefine((data, ctx) => {
     let i = 0;
@@ -45,6 +51,19 @@ export const searchJobsSchema = z
 
       i++;
     }
+
+    const targetFields = Object.entries(data).filter(
+      ([k, v]) =>
+        k.includes("_sort") && isStr(v) && !["ASC", "DESC"].includes(v as any)
+    );
+
+    if (targetFields.length)
+      for (const f of targetFields)
+        ctx.addIssue({
+          code: "custom",
+          message: "Invalid Sort Value",
+          path: [f[0]],
+        });
   });
 
 export type SearchJobsFormT = z.infer<typeof searchJobsSchema>;
@@ -52,4 +71,8 @@ export type SearchJobsFormT = z.infer<typeof searchJobsSchema>;
 export const resetValsSearchJobs: SearchJobsFormT = {
   txtFields: [{ ...searchJobsFieldsTxt[0], val: "" }],
   status: [],
+
+  created_at_sort: "",
+  updated_at_sort: "",
+  applied_at_sort: "",
 };
