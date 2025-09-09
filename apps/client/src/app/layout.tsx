@@ -43,14 +43,18 @@ export default function RootLayout({
           <CallbacksWrapper>
             <div
               id="portal-root"
-              className="w-full max-w-full min-h-full overflow-x-hidden absolute pointer-events-none"
+              className="w-full h-full min-h-screen overflow-x-hidden absolute pointer-events-none"
             ></div>
 
             <Header />
             <Sidebar />
             <Toast />
 
-            <WrapWakeUp>{children}</WrapWakeUp>
+            <WrapWakeUp>
+              <div className="w-full h-full p-[25px] sm:pb-[50px]">
+                {children}
+              </div>
+            </WrapWakeUp>
           </CallbacksWrapper>
         </Providers>
       </body>
