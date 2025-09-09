@@ -1,8 +1,9 @@
 from math import ceil
 from fastapi import Depends, Request, Response
-from sqlalchemy import select
+from sqlalchemy import BinaryExpression, select
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
+from src.lib.db.query import build_conditions
 from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.job_application import JobApplication
 from src.models.user import UserDcT
@@ -20,20 +21,16 @@ async def read_job_appl_ctrl(
         limit = int(q["limit"])
         offset = page * limit
 
-        company_name: str = q.get("company_name", "").strip()
-        position_name: str = q.get("position_name", "").strip()
-
-        company_words: list[str] = [w for w in company_name.split() if w]
-        position_words: list[str] = [w for w in position_name.split() if w]
-
         stmt = select(JobApplication).where(JobApplication.user_id == us["id"])
+        cond: list[BinaryExpression] = []
 
-        for w in company_words:
-            stmt = stmt.where(JobApplication.company_name.ilike(f"%{w}%"))
+        keys_query = ["company_name", "position_name"]
 
-        for w in position_words:
-            stmt = stmt.where(JobApplication.position_name.ilike(f"%{w}%"))
+        for k in keys_query:
+            val: str = q.get(k, "").strip()
+            cond += build_conditions(getattr(JobApplication, k), val)
 
+        stmt = stmt.where(*cond)
         res = (
             (await trx.execute(stmt.limit(limit).offset(offset)))
             .scalars()
