@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import BlackBg from "@/common/components/elements/BlackBg";
 import { css } from "@emotion/react";
 import FilterBarHeader from "./components/FilterBarHeader";
@@ -10,7 +10,6 @@ import FilterBarFooter from "./components/FilterBarFooter";
 import FilterBarBody from "./components/FilterBarBody/FilterBarBody";
 import { FilterSearchBarT } from "../../types";
 import { useSearchCtxConsumer } from "../../context/hooks/useSearchCtxConsumer";
-import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 
 type PropsType = {
   filters: FilterSearchBarT[];
@@ -24,10 +23,21 @@ const FilterBar: FC<PropsType> = ({ handleReset, filters }) => {
 
   const filterBarRef = useRef<HTMLDivElement | null>(null);
 
-  useMouseOut({
-    ref: filterBarRef,
-    cb: () => setBar({ bar: "filterBar", val: false }),
-  });
+  useEffect(() => {
+    const handleMouse = (e: MouseEvent) => {
+      if (!filterBarRef.current) return;
+
+      if (!filterBarRef.current.contains(e.target as Node))
+        setBar({ bar: "filterBar", val: false });
+    };
+
+    document.addEventListener("mousedown", handleMouse);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouse);
+    };
+  }, [setBar]);
+
   return (
     <>
       <BlackBg
