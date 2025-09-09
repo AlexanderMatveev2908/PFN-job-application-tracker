@@ -12,7 +12,7 @@ type PropsType = {
 
 const FilterBarHeader: FC<PropsType> = ({ setBar }) => {
   return (
-    <div className="w-full grid grid-cols-2 border-b-2 border-neutral-800 items-center py-3 px-4">
+    <div className="w-full grid grid-cols-2 border-b-2 border-neutral-800 items-center px-4 min-h-[60px]">
       <span className="txt__xl justify-self-start text-neutral-300">
         Filter
       </span>

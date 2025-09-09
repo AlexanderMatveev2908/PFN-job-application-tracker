@@ -8,6 +8,7 @@ import { css } from "@emotion/react";
 import FilterBarHeader from "./components/FilterBarHeader";
 import { MainBtnsSearchBarPropsType } from "../subComponents/MainBtnsSearchBar";
 import FilterBarFooter from "./components/FilterBarFooter";
+import FilterBarBody from "./components/FilterBarBody/FilterBarBody";
 
 type PropsType = {} & MainBtnsSearchBarPropsType;
 
@@ -41,16 +42,7 @@ const FilterBar: FC<PropsType> = ({ handleReset }) => {
           }}
         />
 
-        <div
-          className="w-full grid grid-cols-[80px_3px_1fr] md:grid-cols-[250px_3px_1fr] relative"
-          css={css`
-            height: 100%;
-          `}
-        >
-          <div className=""></div>
-          <div className="w-full min-h-full bg-neutral-800"></div>
-          <div className=""></div>
-        </div>
+        <FilterBarBody />
 
         <FilterBarFooter
           {...{
