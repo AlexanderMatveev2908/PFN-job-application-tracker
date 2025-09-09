@@ -5,7 +5,6 @@ from typing import Callable
 # import attr
 from fastapi import Request
 
-from src.lib.data_structure import is_obj_ok
 from src.lib.logger import clg
 from ...lib.system import write_f
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -37,8 +36,7 @@ class LoggerJSON(BaseHTTPMiddleware):
             return await call_next(request)
 
         try:
-            if "application/json" in request.headers.get("content-type", ""):
-                parsed = json.loads(body)
+            parsed = json.loads(body)
 
         except Exception:
             ...
@@ -58,10 +56,10 @@ class LoggerJSON(BaseHTTPMiddleware):
         params = dict(request.path_params)
 
         obj = {
-            "body": parsed if is_obj_ok(parsed) else None,
-            "params": params if is_obj_ok(params) else None,
-            "parsed_q": parsed_q if is_obj_ok(parsed_q) else None,
-            "parsed_f": parsed_f if is_obj_ok(parsed_f) else None,
+            "body": parsed if parsed else None,
+            "params": params if params else None,
+            "parsed_q": parsed_q if parsed_q else None,
+            "parsed_f": parsed_f if parsed_f else None,
             "access_token": request.headers.get("authorization"),
             "refresh_token": request.cookies.get("refresh_token"),
         }
