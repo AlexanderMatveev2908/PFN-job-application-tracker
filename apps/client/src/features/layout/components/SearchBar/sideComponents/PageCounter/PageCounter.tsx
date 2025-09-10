@@ -3,7 +3,7 @@
 "use client";
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/context/hooks/useSearchCtxConsumer";
 import { getMaxBtnForSwap, getNumCardsForPage } from "./uiFactory";
 import BtnBg from "../../../../../../common/components/buttons/BtnBg";
@@ -14,6 +14,7 @@ import BoxInput from "@/common/components/forms/inputs/BoxInput";
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
 import { FreshDataArgT } from "../../context/hooks/useSearchCtxProvider";
+import { PayloadPaginationT } from "../../context/etc/actions";
 
 type PropsType<K extends (...args: any) => any[]> = {
   hook: ReturnType<K>;
@@ -35,6 +36,26 @@ const PageCounter = <T, K extends (...args: any) => any[]>({
     prevData,
   } = useSearchCtxConsumer();
 
+  const handleChangePagination = useCallback(
+    async (arg: PayloadPaginationT) => {
+      const { key, val } = arg;
+
+      setPagination(arg);
+
+      await triggerSearch({
+        freshData: {
+          ...(prevData.current ?? {}),
+          page: key === "page" ? val : 0,
+          limit: key === "limit" ? val : limit,
+        } as FreshDataArgT<T>,
+        triggerRTK,
+        keyPending: "submit",
+        skipCall: true,
+      });
+    },
+    [limit, prevData, setPagination, triggerRTK, triggerSearch]
+  );
+
   useEffect(() => {
     const cb = async () => {
       const newLimit = getNumCardsForPage();
@@ -42,18 +63,7 @@ const PageCounter = <T, K extends (...args: any) => any[]>({
 
       if (pagesForSwap !== newPagesForSwap) setPagesForSwap(newPagesForSwap);
       if (limit !== newLimit) {
-        setPagination({ key: "limit", val: newLimit });
-
-        await triggerSearch({
-          freshData: {
-            ...(prevData.current ?? {}),
-            page: 0,
-            limit: newLimit,
-          } as FreshDataArgT<T>,
-          triggerRTK,
-          keyPending: "submit",
-          skipCall: true,
-        });
+        await handleChangePagination({ key: "limit", val: newLimit });
       }
 
       // const newTotPages = Math.ceil(n_hits / newLimit);
@@ -84,9 +94,7 @@ const PageCounter = <T, K extends (...args: any) => any[]>({
     pages,
     limit,
     pagesForSwap,
-    triggerSearch,
-    triggerRTK,
-    prevData,
+    handleChangePagination,
   ]);
 
   const totPages = useMemo(() => Math.ceil(n_hits / limit), [limit, n_hits]);
@@ -120,18 +128,7 @@ const PageCounter = <T, K extends (...args: any) => any[]>({
   // );
 
   const handleChangePage = async (val: number) => {
-    setPagination({ key: "page", val });
-
-    await triggerSearch({
-      freshData: {
-        ...(prevData.current ?? {}),
-        page: val,
-        limit,
-      } as FreshDataArgT<T>,
-      triggerRTK,
-      keyPending: "submit",
-      skipCall: true,
-    });
+    await handleChangePagination({ key: "page", val });
   };
 
   return !isHydrated ? null : (
