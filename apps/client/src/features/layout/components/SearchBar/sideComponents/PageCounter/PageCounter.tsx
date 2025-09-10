@@ -44,7 +44,7 @@ const PageCounter = <K extends (...args: any) => any[]>({
         setPagination({ key: "limit", val: newLimit });
 
         await triggerSearch({
-          freshData: { ...prevData, page: 0, limit: newLimit },
+          freshData: { ...(prevData.current ?? {}), page: 0, limit: newLimit },
           triggerRTK,
           keyPending: "submit",
           skipCall: true,
@@ -118,7 +118,7 @@ const PageCounter = <K extends (...args: any) => any[]>({
     setPagination({ key: "page", val });
 
     await triggerSearch({
-      freshData: { ...prevData, page: val, limit },
+      freshData: { ...(prevData.current ?? {}), page: val, limit },
       triggerRTK,
       keyPending: "submit",
       skipCall: true,

@@ -84,6 +84,7 @@ export type ParamsAPI2FA = {
 export const txtFieldSchema = z.object({
   id: z.string(),
   name: z.string(),
+  type: z.string(),
   label: z.string(),
   place: z.string(),
   val: z.string(),

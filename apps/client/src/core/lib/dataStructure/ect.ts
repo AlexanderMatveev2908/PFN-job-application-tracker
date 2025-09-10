@@ -39,43 +39,63 @@ export const cpyObj = <T>(obj: T): T => {
   return cpy as T;
 };
 
-export const isSameObj = <T>(objA: T, objB: T): boolean => {
-  if (objA === objB) return true;
+type KeyT = string | number | symbol;
 
-  if ([objA, objB].some((el) => el === null || typeof el !== "object"))
+export const isSameObj = (
+  a: unknown,
+  b: unknown,
+  seen = new WeakMap()
+): boolean => {
+  if (a === b) return true;
+
+  if (typeof a === "number" && typeof b === "number" && isNaN(a) && isNaN(b))
+    return true;
+
+  if (
+    a === null ||
+    b === null ||
+    typeof a !== "object" ||
+    typeof b !== "object"
+  )
     return false;
 
-  if (objA instanceof Date && objB instanceof Date)
-    return objA.getTime() === objB.getTime();
+  if (seen.get(a) === b) return true;
+  seen.set(a, b);
 
-  if (objA instanceof RegExp && objB instanceof RegExp)
-    return objA.source === objB.source && objA.flags === objB.flags;
+  if (a instanceof Date && b instanceof Date)
+    return a.getTime() === b.getTime();
 
-  if (Array.isArray(objA) && Array.isArray(objB)) {
-    if (objA.length !== objB.length) return false;
-    return objA.every((val, i) => isSameObj(val, objB[i]));
+  if (a instanceof RegExp && b instanceof RegExp)
+    return a.source === b.source && a.flags === b.flags;
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    return a.every((val, i) => isSameObj(val, b[i], seen));
   }
 
-  if (objA instanceof Set && objB instanceof Set) {
-    if (objA.size !== objB.size) return false;
-    return [...objA].every((val) => [...objB].some((v) => isSameObj(val, v)));
+  if (a instanceof Set && b instanceof Set) {
+    if (a.size !== b.size) return false;
+    for (const val of a) {
+      if (![...b].some((v) => isSameObj(val, v, seen))) return false;
+    }
+
+    return true;
   }
 
-  if (objA instanceof Map && objB instanceof Map) {
-    if (objA.size !== objB.size) return false;
-    return [...objA.entries()].every(
-      ([k, v]) => objB.has(k) && isSameObj(v, objB.get(k))
-    );
+  if (a instanceof Map && b instanceof Map) {
+    if (a.size !== b.size) return false;
+    for (const [k, v] of a) {
+      if (!b.has(k) || !isSameObj(v, b.get(k), seen)) return false;
+    }
+
+    return true;
   }
 
-  const keysA = Object.keys(objA as Record<string, unknown>);
-  const keysB = Object.keys(objB as Record<string, unknown>);
+  const keysA = Reflect.ownKeys(a);
+  const keysB = Reflect.ownKeys(b);
   if (keysA.length !== keysB.length) return false;
 
   return keysA.every((k) =>
-    isSameObj(
-      (objA as Record<string, unknown>)[k],
-      (objB as Record<string, unknown>)[k]
-    )
+    isSameObj((a as Record<KeyT, any>)[k], (b as Record<KeyT, any>)[k], seen)
   );
 };

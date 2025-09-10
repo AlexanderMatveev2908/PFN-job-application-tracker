@@ -47,16 +47,19 @@ export const useSearchCtxProvider = <T>() => {
 
   const triggerSearch = useCallback(
     async (arg: {
-      freshData: T;
+      freshData: T & { page: number; limit: number };
       triggerRTK: TriggerApiT<T>;
       keyPending: "submit" | "reset";
       skipCall?: boolean;
     }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { page, limit, ...rst } = cpyObj(arg.freshData);
+
+      prevData.current = rst as T;
+
       setPending({ key: arg.keyPending, val: true });
 
       setSearchApi({ key: "skipCall", val: !!arg.skipCall });
-
-      prevData.current = cpyObj(arg.freshData);
 
       await wrapAPI({
         cbAPI: () => arg.triggerRTK(genURLSearchQuery(arg.freshData)),
