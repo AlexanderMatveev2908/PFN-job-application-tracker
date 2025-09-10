@@ -28,9 +28,9 @@ const Page: FC = () => {
         SearchJobsFormT,
         typeof jobApplicationSliceAPI.useLazyReadJobApplicationsQuery
       >
-        {...{ formCtx, hook }}
+        {...{ formCtx, hook, schema: searchJobsSchema }}
       >
-        {({ hook }) => <SearchJobs {...{ hook }} />}
+        {(arg) => <SearchJobs {...arg} />}
       </SearchBarWrapper>
     </div>
   );

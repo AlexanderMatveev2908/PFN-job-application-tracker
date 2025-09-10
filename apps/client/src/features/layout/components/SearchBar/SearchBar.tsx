@@ -25,6 +25,7 @@ import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
 import SortBar from "./components/SortBar/SortBar";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useHandleUiPending } from "./hooks/useHandleUiPending";
+import { ZodObject } from "zod";
 
 type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -32,6 +33,7 @@ type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   filters: FilterSearchBarT[];
   sorters: SorterSearchBarT[];
   hook: ReturnType<K>;
+  schema: ZodObject;
 };
 
 const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
@@ -40,6 +42,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
   filters,
   sorters,
   hook,
+  schema,
 }: PropsType<T, K>) => {
   const { isHydrated } = useHydration();
 

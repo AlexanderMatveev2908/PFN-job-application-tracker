@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer, useRef } from "react";
 import { searchBarInitState } from "../etc/initState";
 import { searchbarReducer } from "../etc/reducer";
 import {
@@ -7,8 +7,9 @@ import {
   PayloadSetBarT,
 } from "../etc/actions";
 
-export const useSearchCtxProvider = () => {
+export const useSearchCtxProvider = <T>() => {
   const [state, dispatchRct] = useReducer(searchbarReducer, searchBarInitState);
+  const prevForm = useRef<T | null>(null);
 
   const setBar = useCallback(
     (payload: PayloadSetBarT) => dispatchRct({ type: "SET_BAR", payload }),
@@ -38,6 +39,7 @@ export const useSearchCtxProvider = () => {
     setCurrFilter,
     setPagination,
     setPending,
+    prevForm,
   };
 };
 

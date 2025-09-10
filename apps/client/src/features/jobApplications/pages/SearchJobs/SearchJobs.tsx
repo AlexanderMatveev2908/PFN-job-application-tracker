@@ -14,13 +14,16 @@ import { useSelector } from "react-redux";
 import { getJobApplicationsState } from "../../slices/slice";
 import { __cg } from "@/core/lib/log";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
+import { ZodObject } from "zod";
 
 type PropsType<K extends (...args: any) => any[]> = {
   hook: ReturnType<K>;
+  schema: ZodObject;
 };
 
 const SearchJobs = <K extends (...args: any) => any[]>({
   hook,
+  schema,
 }: PropsType<K>) => {
   const jobsState = useSelector(getJobApplicationsState);
 
@@ -39,6 +42,7 @@ const SearchJobs = <K extends (...args: any) => any[]>({
           filters: filtersSearchJobs,
           sorters: sortersSearchJobs,
           hook,
+          schema,
         }}
       />
 
