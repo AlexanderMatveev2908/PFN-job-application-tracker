@@ -13,15 +13,12 @@ import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { ZodObject } from "zod";
 
-type PropsType<K extends (...args: any) => any[]> = {
-  hook: ReturnType<K>;
+type PropsType<K extends any[]> = {
+  hook: K;
   schema: ZodObject;
 };
 
-const SearchJobs = <K extends (...args: any) => any[]>({
-  hook,
-  schema,
-}: PropsType<K>) => {
+const SearchJobs = <K extends any[]>({ hook, schema }: PropsType<K>) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, res] = hook;
 

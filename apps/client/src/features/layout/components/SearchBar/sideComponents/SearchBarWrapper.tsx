@@ -8,17 +8,14 @@ import PageCounter from "@/features/layout/components/SearchBar/sideComponents/P
 import { ReactNode } from "react";
 import { ZodObject } from "zod";
 
-type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
+type PropsType<T extends FieldValues, K extends any[]> = {
   formCtx: UseFormReturn<T>;
-  hook: ReturnType<K>;
+  hook: K;
   schema: ZodObject;
-  children: (arg: { hook: ReturnType<K>; schema: ZodObject }) => ReactNode;
+  children: (arg: { hook: K; schema: ZodObject }) => ReactNode;
 };
 
-const SearchBarWrapper = <
-  T extends FieldValues,
-  K extends (...args: any) => any[]
->({
+const SearchBarWrapper = <T extends FieldValues, K extends any[]>({
   formCtx,
   children,
   hook,
@@ -29,7 +26,7 @@ const SearchBarWrapper = <
       <FormProvider {...formCtx}>
         {children({ hook, schema })}
 
-        <PageCounter
+        <PageCounter<T, K>
           {...{
             hook,
           }}

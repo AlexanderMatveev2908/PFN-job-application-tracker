@@ -27,17 +27,18 @@ import { useHandleUiPending } from "./hooks/useHandleUiPending";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
 import { FreshDataArgT } from "./context/hooks/useSearchCtxProvider";
+import { TriggerApiT } from "@/common/types/api";
 
-type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
+type PropsType<T extends FieldValues, K extends any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
   resetVals: T;
   filters: FilterSearchBarT[];
   sorters: SorterSearchBarT[];
-  hook: ReturnType<K>;
+  hook: K;
   schema: ZodObject;
 };
 
-const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
+const SearchBar = <T extends FieldValues, K extends any[]>({
   allowedTxtFields,
   resetVals,
   filters,
@@ -59,7 +60,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
   const handleSave = handleSubmit(async (data) => {
     await triggerSearch({
       freshData: { ...data, page, limit } as FreshDataArgT<T>,
-      triggerRTK,
+      triggerRTK: triggerRTK as TriggerApiT<K>,
       keyPending: "submit",
       skipCall: true,
     });
@@ -70,7 +71,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
 
     await triggerSearch({
       freshData: { ...resetVals, page: 0, limit } as FreshDataArgT<T>,
-      triggerRTK,
+      triggerRTK: triggerRTK as TriggerApiT<K>,
       keyPending: "reset",
       skipCall: true,
     });
@@ -86,7 +87,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
 
   useDebounce({
     schema,
-    triggerRTK,
+    triggerRTK: triggerRTK as TriggerApiT<K>,
   });
 
   const existingFields: FormFieldTxtSearchBarT<T>[] =

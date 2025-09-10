@@ -15,12 +15,14 @@ import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
 import { FreshDataArgT } from "../../context/hooks/useSearchCtxProvider";
 import { PayloadPaginationT } from "../../context/etc/actions";
+import { FieldValues } from "react-hook-form";
+import { TriggerApiT } from "@/common/types/api";
 
-type PropsType<K extends (...args: any) => any[]> = {
-  hook: ReturnType<K>;
+type PropsType<K extends any[]> = {
+  hook: K;
 };
 
-const PageCounter = <T, K extends (...args: any) => any[]>({
+const PageCounter = <T extends FieldValues, K extends any[]>({
   hook,
 }: PropsType<K>) => {
   const { isHydrated } = useHydration();
@@ -48,7 +50,7 @@ const PageCounter = <T, K extends (...args: any) => any[]>({
           page: key === "page" ? val : 0,
           limit: key === "limit" ? val : limit,
         } as FreshDataArgT<T>,
-        triggerRTK,
+        triggerRTK: triggerRTK as TriggerApiT<K>,
         keyPending: "submit",
         skipCall: true,
       });
