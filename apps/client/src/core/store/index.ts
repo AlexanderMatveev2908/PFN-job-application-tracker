@@ -6,6 +6,7 @@ import { sideSlice } from "@/features/layout/components/Sidebar/slice";
 import { noticeSlice } from "@/features/notice/slices/slice";
 import { userSlice } from "@/features/user/slices/slice";
 import { handleErrorsActions } from "./conf/middleware/errors";
+import { jobApplicationsSlice } from "@/features/jobApplications/slices/slice";
 
 const rootReducer = combineReducers({
   test: testSlice.reducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   side: sideSlice.reducer,
   notice: noticeSlice.reducer,
   user: userSlice.reducer,
+  jobApplications: jobApplicationsSlice.reducer,
 });
 
 export const genStoreSSR = (

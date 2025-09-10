@@ -34,7 +34,7 @@ def build_list_cond_query(
 
     for k in keys:
 
-        val: str = query.get(k, "").strip()
+        val: str = (query.get(k, "") or "").strip()
         cond += build_cond_query(getattr(Table, k), val)
 
     return cond

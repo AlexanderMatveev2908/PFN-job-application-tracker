@@ -6,6 +6,7 @@ export enum TagAPI {
   TEST = "TEST",
   WAKE_UP = "WAKE_UP",
   USER = "USER",
+  JOB_APPLICATIONS = "JOB_APPLICATIONS",
 }
 
 export type AppEventT = "OK" | "INFO" | "WARN" | "ERR" | "NONE";
