@@ -1,7 +1,7 @@
 from cryptography.hazmat.primitives import hashes, hmac as chmac
 import hmac
 from src.conf.env import get_env
-from src.lib.data_structure import h_to_b
+from src.lib.data_structure.etc import h_to_b
 
 
 def gen_hmac(mac_key: bytes, pt: bytes) -> bytes:

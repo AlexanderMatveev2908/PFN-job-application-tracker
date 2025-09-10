@@ -7,7 +7,7 @@ from src.__dev_only.payloads import (
 )
 from src.decorators.err import ErrAPI
 from src.features.auth.middleware.register import RegisterFormT
-from src.lib.data_structure import pick
+from src.lib.data_structure.etc import pick
 from src.models.token import TokenT
 
 

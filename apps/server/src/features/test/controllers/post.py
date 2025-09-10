@@ -14,7 +14,7 @@ from src.lib.TFA.backup import gen_backup_codes
 from src.lib.TFA.totp import GenTotpSecretReturnT, gen_totp_secret
 from src.lib.algs.fernet import gen_fernet
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import dest_d, pick
+from src.lib.data_structure.etc import dest_d, pick
 from src.lib.etc import parse_bd
 from src.lib.s3.post import upload_w3
 from src.lib.system import del_vid

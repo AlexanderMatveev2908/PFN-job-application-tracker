@@ -5,7 +5,7 @@ from sqlalchemy import delete
 from src.conf.db import db_trx
 from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
-from src.lib.data_structure import b_to_d, h_to_b
+from src.lib.data_structure.etc import b_to_d, h_to_b
 from src.lib.tokens.cbc_hmac import AadT
 from src.models.token import Token
 

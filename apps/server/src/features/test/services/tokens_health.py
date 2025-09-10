@@ -4,7 +4,7 @@ import uuid
 from sqlalchemy import delete
 from src.__dev_only.payloads import RegisterPartPayloadT, RegisterPayloadT
 from src.conf.db import db_trx
-from src.lib.data_structure import parse_id, pick
+from src.lib.data_structure.etc import parse_id, pick
 from src.lib.db.idx import get_us_by_email
 from src.lib.tokens.cbc_hmac import (
     gen_cbc_hmac,

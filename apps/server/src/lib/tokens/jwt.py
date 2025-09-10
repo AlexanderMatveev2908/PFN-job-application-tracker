@@ -3,7 +3,7 @@ import jwt
 
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import parse_id
+from src.lib.data_structure.etc import parse_id
 from src.lib.etc import calc_exp
 from src.models.token import PayloadT
 

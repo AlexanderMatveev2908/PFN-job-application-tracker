@@ -7,7 +7,7 @@ from sqlalchemy import null, select
 from src.conf.env import get_env
 from src.constants.reg import REG_CBC_HMAC
 from src.decorators.err import ErrAPI
-from src.lib.data_structure import (
+from src.lib.data_structure.etc import (
     b_to_d,
     b_to_h,
     d_to_b,
@@ -20,7 +20,7 @@ from src.lib.algs.hkdf import DerivedKeysCbcHmacT, derive_hkdf_cbc_hmac
 from src.lib.algs.hmac import check_hmac, gen_hmac, hash_db_hmac
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import calc_exp, lt_now
-from src.lib.serialize_data import serialize
+from src.lib.data_structure.serialize_data import serialize
 from src.models.token import (
     AlgT,
     CheckTokenReturnT,

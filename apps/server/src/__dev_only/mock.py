@@ -34,7 +34,7 @@ async def reset_mock() -> None:
             }
 
             new_us_db = User(**us)
-            await new_us_db.set_pwd(us["password"])
+            await new_us_db.set_pwd(cast(str, us["password"]))
             trx.add(new_us_db)
             await trx.flush([new_us_db])
             await trx.refresh(new_us_db)
