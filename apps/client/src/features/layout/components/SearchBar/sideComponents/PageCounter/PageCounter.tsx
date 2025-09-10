@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { useEffect, useMemo, useState, type FC } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/context/hooks/useSearchCtxConsumer";
 import { getMaxBtnForSwap, getNumCardsForPage } from "./uiFactory";
 import BtnBg from "../../../../../../common/components/buttons/BtnBg";
@@ -13,11 +14,14 @@ import BoxInput from "@/common/components/forms/inputs/BoxInput";
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
 
-type PropsType = {
+type PropsType<K extends (...args: any) => any> = {
   nHits: number;
+  hook: ReturnType<K>;
 };
 
-const PageCounter: FC<PropsType> = ({ nHits }) => {
+const PageCounter = <K extends (...args: any) => any>({
+  nHits,
+}: PropsType<K>) => {
   const { isHydrated } = useHydration();
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 

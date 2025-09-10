@@ -65,3 +65,22 @@ export const genFormData = (
 
   return formData;
 };
+
+export const genURLSearchQuery = (obj: Record<string, unknown>): string => {
+  const params = new URLSearchParams();
+
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue;
+
+    if (Array.isArray(v)) {
+      const arrayKey = `${k}[]`;
+      for (const item of v) {
+        params.append(arrayKey, String(item));
+      }
+    } else {
+      params.append(k, String(v));
+    }
+  }
+
+  return params.toString();
+};

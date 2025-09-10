@@ -7,6 +7,7 @@ import {
   SearchJobsFormT,
   searchJobsSchema,
 } from "@/features/jobApplications/pages/SearchJobs/paperwork";
+import { jobApplicationSliceAPI } from "@/features/jobApplications/slices/api";
 import SearchBarWrapper from "@/features/layout/components/SearchBar/sideComponents/SearchBarWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
@@ -19,10 +20,17 @@ const Page: FC = () => {
     defaultValues: resetValsSearchJobs,
   });
 
+  const hook = jobApplicationSliceAPI.useLazyReadJobApplicationsQuery();
+
   return (
     <div className="page__shape">
-      <SearchBarWrapper {...{ formCtx }}>
-        <SearchJobs />
+      <SearchBarWrapper<
+        SearchJobsFormT,
+        typeof jobApplicationSliceAPI.useLazyReadJobApplicationsQuery
+      >
+        {...{ formCtx, hook }}
+      >
+        {({ hook }) => <SearchJobs {...{ hook }} />}
       </SearchBarWrapper>
     </div>
   );

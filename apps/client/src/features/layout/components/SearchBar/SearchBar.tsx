@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
 import Shim from "@/common/components/elements/Shim";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { logFormErrs } from "@/core/lib/forms";
+import { genURLSearchQuery, logFormErrs } from "@/core/lib/forms";
 import { __cg } from "@/core/lib/log";
 import { css } from "@emotion/react";
 import {
@@ -23,22 +24,54 @@ import FilterBar from "./components/FilterBar/FilterBar";
 import { FilterSearchBarT, SorterSearchBarT } from "./types";
 import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
 import SortBar from "./components/SortBar/SortBar";
+import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 
-type PropsType<T extends FieldValues> = {
+type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
   resetVals: T;
   filters: FilterSearchBarT[];
   sorters: SorterSearchBarT[];
+  hook: ReturnType<K>;
 };
 
-const SearchBar = <T extends FieldValues>({
+const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
   allowedTxtFields,
   resetVals,
   filters,
   sorters,
-}: PropsType<T>) => {
+  hook,
+}: PropsType<T, K>) => {
   const { isHydrated } = useHydration();
+
+  const [triggerRTK] = hook;
+  const { wrapAPI } = useWrapAPI();
+
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
+  const {
+    setCurrFilter,
+    pagination: { currPage, limit },
+  } = useSearchCtxConsumer();
+
+  const handleSave = handleSubmit(async (data) => {
+    await wrapAPI({
+      cbAPI: () =>
+        triggerRTK(genURLSearchQuery({ ...data, page: currPage, limit })),
+    });
+  }, logFormErrs);
+
+  const handleReset = useCallback(async () => {
+    reset(resetVals);
+
+    await wrapAPI({
+      cbAPI: () =>
+        triggerRTK(genURLSearchQuery({ ...resetVals, page: "0", limit })),
+    });
+  }, [reset, resetVals, limit, triggerRTK, wrapAPI]);
+
+  useEffect(() => {
+    setCurrFilter({ val: filters[0].label });
+  }, [filters, setCurrFilter]);
+
   const existingFields: FormFieldTxtSearchBarT<T>[] =
     watch("txtFields" as Path<T>) ?? [];
 
@@ -46,18 +79,6 @@ const SearchBar = <T extends FieldValues>({
     control,
     name: "txtFields" as ArrayPath<T>,
   });
-
-  const handleSave = handleSubmit(async (data) => {
-    __cg(data);
-  }, logFormErrs);
-
-  const handleReset = useCallback(() => reset(resetVals), [reset, resetVals]);
-
-  const { setCurrFilter } = useSearchCtxConsumer();
-
-  useEffect(() => {
-    setCurrFilter({ val: filters[0].label });
-  }, [filters, setCurrFilter]);
 
   return !isHydrated ? (
     <Shim

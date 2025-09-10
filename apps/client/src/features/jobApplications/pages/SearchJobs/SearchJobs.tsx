@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsxImportSource @emotion/react */
 "use client";
 
@@ -9,37 +10,46 @@ import {
 } from "./uiFactory";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
-import { FC } from "react";
 import { useSelector } from "react-redux";
 import { getJobApplicationsState } from "../../slices/slice";
-import { jobApplicationSliceAPI } from "../../slices/api";
-import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
+import { __cg } from "@/core/lib/log";
+import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 
-const SearchJobs: FC = () => {
+type PropsType<K extends (...args: any) => any[]> = {
+  hook: ReturnType<K>;
+};
+
+const SearchJobs = <K extends (...args: any) => any[]>({
+  hook,
+}: PropsType<K>) => {
   const jobsState = useSelector(getJobApplicationsState);
 
-  console.log(jobsState);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, res] = hook;
 
-  const params = new URLSearchParams();
-  params.append("page", "0");
-  params.append("limit", "5");
-
-  const res = jobApplicationSliceAPI.useReadJobApplicationsQuery(
-    params.toString()
-  );
-
-  useWrapQuery(res);
+  __cg("jobs state", jobsState);
 
   return (
-    <SearchBar
-      {...{
-        allowedTxtFields:
-          searchJobsFieldsTxt as FormFieldTxtSearchBarT<SearchJobsFormT>[],
-        resetVals: resetValsSearchJobs,
-        filters: filtersSearchJobs,
-        sorters: sortersSearchJobs,
-      }}
-    />
+    <div className="w-full grid grid-cols-1 gap-10">
+      <SearchBar
+        {...{
+          allowedTxtFields:
+            searchJobsFieldsTxt as FormFieldTxtSearchBarT<SearchJobsFormT>[],
+          resetVals: resetValsSearchJobs,
+          filters: filtersSearchJobs,
+          sorters: sortersSearchJobs,
+          hook,
+        }}
+      />
+
+      <WrapCSR
+        {...{
+          isLoading: res.isLoading,
+        }}
+      >
+        <div className=""></div>
+      </WrapCSR>
+    </div>
   );
 };
 
