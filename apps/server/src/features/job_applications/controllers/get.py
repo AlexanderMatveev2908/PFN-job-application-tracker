@@ -1,9 +1,8 @@
-from math import ceil
 from fastapi import Depends, Request, Response
-from sqlalchemy import BinaryExpression, select
+from sqlalchemy import select
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
-from src.lib.db.query import build_conditions
+from src.lib.db.query import ApplyPagReturnT, apply_pagination, build_list_cond
 from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.job_application import JobApplication
 from src.models.user import UserDcT
@@ -17,31 +16,30 @@ async def read_job_appl_ctrl(
 
         q = req.state.parsed_q
 
-        page = int(q["page"])
-        limit = int(q["limit"])
-        offset = page * limit
-
+        # ? define root cond • look for user appl only
         stmt = select(JobApplication).where(JobApplication.user_id == us["id"])
-        cond: list[BinaryExpression] = []
 
-        keys_query = ["company_name", "position_name"]
-
-        for k in keys_query:
-            val: str = q.get(k, "").strip()
-            cond += build_conditions(getattr(JobApplication, k), val)
-
-        stmt = stmt.where(*cond)
-        res = (
-            (await trx.execute(stmt.limit(limit).offset(offset)))
-            .scalars()
-            .all()
+        # ? chain stmt where cond • avoid boilerplate & repetition,
+        # ? find pattern and use it
+        # ? to chain any kind of text inputs send from client
+        stmt = stmt.where(
+            *build_list_cond(
+                query=q,
+                Table=JobApplication,
+                keys=["company_name", "position_name"],
+            )
         )
 
-        n_hits = len(res)
-        pages = ceil(n_hits / limit)
+        # ? count results before final stmt
+        # ? to know how many there are before paginating
+        res_pag: ApplyPagReturnT = await apply_pagination(trx, stmt, q)
+
+        stmt = res_pag["stmt_paginated"]
+
+        res = (await trx.execute(stmt)).scalars().all()
 
         return ResAPI(req).ok_200(
-            n_hits=n_hits,
-            pages=pages,
+            n_hits=res_pag["n_hits"],
+            pages=res_pag["pages"],
             job_applications=[itm.to_d() for itm in res],
         )
