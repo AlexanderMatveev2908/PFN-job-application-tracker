@@ -13,12 +13,13 @@ import BoxInput from "@/common/components/forms/inputs/BoxInput";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
+import { FreshDataArgT } from "../../context/hooks/useSearchCtxProvider";
 
 type PropsType<K extends (...args: any) => any[]> = {
   hook: ReturnType<K>;
 };
 
-const PageCounter = <K extends (...args: any) => any[]>({
+const PageCounter = <T, K extends (...args: any) => any[]>({
   hook,
 }: PropsType<K>) => {
   const { isHydrated } = useHydration();
@@ -44,7 +45,11 @@ const PageCounter = <K extends (...args: any) => any[]>({
         setPagination({ key: "limit", val: newLimit });
 
         await triggerSearch({
-          freshData: { ...(prevData.current ?? {}), page: 0, limit: newLimit },
+          freshData: {
+            ...(prevData.current ?? {}),
+            page: 0,
+            limit: newLimit,
+          } as FreshDataArgT<T>,
           triggerRTK,
           keyPending: "submit",
           skipCall: true,
@@ -118,7 +123,11 @@ const PageCounter = <K extends (...args: any) => any[]>({
     setPagination({ key: "page", val });
 
     await triggerSearch({
-      freshData: { ...(prevData.current ?? {}), page: val, limit },
+      freshData: {
+        ...(prevData.current ?? {}),
+        page: val,
+        limit,
+      } as FreshDataArgT<T>,
       triggerRTK,
       keyPending: "submit",
       skipCall: true,

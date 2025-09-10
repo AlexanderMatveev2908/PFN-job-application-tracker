@@ -12,6 +12,12 @@ import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { TriggerApiT } from "@/common/types/api";
 import { cpyObj } from "@/core/lib/dataStructure/ect";
 
+export type FreshDataArgT<T> = T & {
+  page: number;
+  limit: number;
+  txtFields: Record<string, string>[];
+};
+
 export const useSearchCtxProvider = <T>() => {
   const [state, dispatchRct] = useReducer(searchbarReducer, searchBarInitState);
   const prevData = useRef<T | null>(null);
@@ -47,11 +53,7 @@ export const useSearchCtxProvider = <T>() => {
 
   const triggerSearch = useCallback(
     async (arg: {
-      freshData: T & {
-        page: number;
-        limit: number;
-        txtFields: Record<string, string>[];
-      };
+      freshData: FreshDataArgT<T>;
       triggerRTK: TriggerApiT<T>;
       keyPending: "submit" | "reset";
       skipCall?: boolean;

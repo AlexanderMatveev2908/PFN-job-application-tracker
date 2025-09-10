@@ -26,6 +26,7 @@ import SortBar from "./components/SortBar/SortBar";
 import { useHandleUiPending } from "./hooks/useHandleUiPending";
 import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
+import { FreshDataArgT } from "./context/hooks/useSearchCtxProvider";
 
 type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -57,7 +58,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
 
   const handleSave = handleSubmit(async (data) => {
     await triggerSearch({
-      freshData: { ...data, page, limit },
+      freshData: { ...data, page, limit } as FreshDataArgT<T>,
       triggerRTK,
       keyPending: "submit",
       skipCall: true,
@@ -68,7 +69,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
     reset(resetVals);
 
     await triggerSearch({
-      freshData: { ...resetVals, page: 0, limit },
+      freshData: { ...resetVals, page: 0, limit } as FreshDataArgT<T>,
       triggerRTK,
       keyPending: "reset",
       skipCall: true,

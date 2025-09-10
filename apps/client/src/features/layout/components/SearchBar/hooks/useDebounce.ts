@@ -7,6 +7,7 @@ import { clearTmr } from "@/core/lib/etc";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { TriggerApiT } from "@/common/types/api";
 import { getNumCardsForPage } from "../sideComponents/PageCounter/uiFactory";
+import { FreshDataArgT } from "../context/hooks/useSearchCtxProvider";
 
 type Params<T> = {
   schema: ZodObject;
@@ -38,7 +39,11 @@ export const useDebounce = <T>({ schema, triggerRTK }: Params<T>) => {
 
     timerID.current = setTimeout(async () => {
       await triggerSearch({
-        freshData: { ...currForm, page: 0, limit: getNumCardsForPage() },
+        freshData: {
+          ...currForm,
+          page: 0,
+          limit: getNumCardsForPage(),
+        } as FreshDataArgT<T>,
         triggerRTK,
         keyPending: "submit",
       });
