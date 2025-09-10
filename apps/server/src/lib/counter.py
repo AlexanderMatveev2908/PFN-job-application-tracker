@@ -47,4 +47,4 @@ async def counter_cb(cb: Callable[[], Awaitable[None]]) -> None:
         interval.stop()
 
         t1 = time.perf_counter() - t0
-        print(f"🔪 clean tables toke {t1} ms ⏰")
+        print(f"operation last {t1} ms ⏰")

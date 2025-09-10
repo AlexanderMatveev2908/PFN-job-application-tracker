@@ -1,6 +1,6 @@
 from src.conf.db import db_trx
 from src.lib.combo.TFA import check_2FA_lib
-from src.lib.data_structure import dest_d
+from src.lib.data_structure.etc import dest_d
 from src.lib.tokens.combo import TokensSessionsReturnT, gen_tokens_session
 from src.middleware.combo.idx import ComboCheckJwtCbcBodyReturnT
 

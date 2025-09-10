@@ -9,6 +9,7 @@ import BtnBg from "../../../../../../common/components/buttons/BtnBg";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import { css } from "@emotion/react";
 import BoxInput from "@/common/components/forms/inputs/BoxInput";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
 
@@ -58,10 +59,10 @@ const PageCounter: FC<PropsType> = ({ nHits }) => {
   }, [setPagination, nHits, currBlock, currPage]);
 
   const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
-  const totSwaps = useMemo(
-    () => Math.ceil(totPages / pagesForSwap),
-    [totPages, pagesForSwap]
-  );
+  // const totSwaps = useMemo(
+  //   () => Math.ceil(totPages / pagesForSwap),
+  //   [totPages, pagesForSwap]
+  // );
 
   const currPages = useMemo(() => {
     const start = currBlock * pagesForSwap;
@@ -76,16 +77,16 @@ const PageCounter: FC<PropsType> = ({ nHits }) => {
     );
   }, [currBlock, pagesForSwap, totPages]);
 
-  __cg(
-    "pagination",
-    ["nHits", nHits],
-    ["limit", limit],
-    ["totPages", totPages],
-    ["pagesForSwap", pagesForSwap],
-    ["totSwaps", totSwaps],
-    ["currPages", currPages],
-    ["currPage", currPage]
-  );
+  // __cg(
+  //   "pagination",
+  //   ["nHits", nHits],
+  //   ["limit", limit],
+  //   ["totPages", totPages],
+  //   ["pagesForSwap", pagesForSwap],
+  //   ["totSwaps", totSwaps],
+  //   ["currPages", currPages],
+  //   ["currPage", currPage]
+  // );
 
   return !isHydrated ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">

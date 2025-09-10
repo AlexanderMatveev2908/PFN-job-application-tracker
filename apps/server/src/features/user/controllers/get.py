@@ -2,7 +2,7 @@ from fastapi import Depends, Request
 from fastapi.responses import Response
 
 from src.decorators.res import ResAPI
-from src.lib.data_structure import pick
+from src.lib.data_structure.etc import pick
 from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.user import UserDcT
 

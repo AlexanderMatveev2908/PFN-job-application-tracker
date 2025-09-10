@@ -1,7 +1,7 @@
 from typing import Any, Literal, TypedDict
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
-from src.lib.serialize_data import serialize
+from src.lib.data_structure.serialize_data import serialize
 
 
 class ClearCookieT(TypedDict):

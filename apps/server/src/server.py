@@ -20,6 +20,7 @@ from src.lib.etc import wrap_loop  # noqa: F401
 from src.lib.resdis.idx import clean_redis, get_all_redis  # noqa: F401
 from src.lib.s3.get import gen_list_assets  # noqa: F401
 from src.__dev_only.delete import clean_DBs  # noqa: F401
+from src.__dev_only.mock import reset_mock  # noqa: F401
 
 
 @asynccontextmanager
@@ -32,6 +33,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     # await get_cost()
     # await clean_redis()
     # await clean_DBs(True)
+    # await reset_mock()
 
     cent("⬜ whitelist ⬜", False)
     print(whitelist)

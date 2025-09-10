@@ -8,7 +8,7 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy.dialects.postgresql import UUID
 
-from src.lib.serialize_data import serialize
+from src.lib.data_structure.serialize_data import serialize
 
 
 class Base(DeclarativeBase):

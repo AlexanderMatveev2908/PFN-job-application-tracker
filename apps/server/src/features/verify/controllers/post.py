@@ -4,7 +4,7 @@ from fastapi.responses import Response
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.combo.TFA import check_2FA_lib
-from src.lib.data_structure import dest_d
+from src.lib.data_structure.etc import dest_d
 from src.lib.tokens.cbc_hmac import gen_cbc_hmac
 from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (

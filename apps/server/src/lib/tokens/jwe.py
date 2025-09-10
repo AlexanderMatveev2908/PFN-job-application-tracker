@@ -7,7 +7,13 @@ from sqlalchemy import select
 from src.conf.env import get_env
 from src.decorators.err import ErrAPI
 from src.lib.algs.hmac import hash_db_hmac
-from src.lib.data_structure import b_to_d, b_to_h, d_to_b, h_to_b, parse_id
+from src.lib.data_structure.parsers import (
+    b_to_d,
+    b_to_h,
+    d_to_b,
+    h_to_b,
+    parse_id,
+)
 from src.lib.db.idx import del_token_by_t, get_us_by_id
 from src.lib.etc import calc_exp, lt_now
 from src.models.token import (

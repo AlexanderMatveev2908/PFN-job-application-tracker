@@ -4,7 +4,7 @@ from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.lib.combo.TFA import check_2FA_lib
 from src.lib.cookies import gen_refresh_cookie
-from src.lib.data_structure import dest_d
+from src.lib.data_structure.etc import dest_d
 from src.lib.tokens.combo import gen_tokens_session
 from src.lib.validators.idx import TFAFormT
 from src.middleware.combo.idx import (

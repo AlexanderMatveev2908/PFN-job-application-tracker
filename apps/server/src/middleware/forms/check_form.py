@@ -42,7 +42,7 @@ async def check_form_mdw(
 
 
 class CheckFormLoggedReturnT(TypedDict, Generic[FormT]):
-    form_inst: FormT
+    data: dict
     us_d: UserDcT
 
 
@@ -61,7 +61,7 @@ def check_form_mdw_logged(
             params_check["req"] = req
 
         return {
-            "form_inst": await check_form_mdw(**params_check),
+            "data": (await check_form_mdw(**params_check)).model_dump(),
             "us_d": us_d,
         }
 
