@@ -47,22 +47,33 @@ export const useSearchCtxProvider = <T>() => {
 
   const triggerSearch = useCallback(
     async (arg: {
-      freshData: T & { page: number; limit: number };
+      freshData: T & {
+        page: number;
+        limit: number;
+        txtFields: Record<string, string>[];
+      };
       triggerRTK: TriggerApiT<T>;
       keyPending: "submit" | "reset";
       skipCall?: boolean;
     }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { page, limit, ...rst } = cpyObj(arg.freshData);
+      const cpy = cpyObj(arg.freshData);
 
+      // ? pagination is handled separately so does not need to be tracked
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { page, limit, ...rst } = cpy;
       prevData.current = rst as T;
+
+      // ? is enough to send to server key value pairs, no need to send all object with useless properties for sql query
+      for (const field of cpy?.txtFields) {
+        (cpy as Record<string, unknown>)[field.name] = field.val;
+      }
 
       setPending({ key: arg.keyPending, val: true });
 
       setSearchApi({ key: "skipCall", val: !!arg.skipCall });
 
       await wrapAPI({
-        cbAPI: () => arg.triggerRTK(genURLSearchQuery(arg.freshData)),
+        cbAPI: () => arg.triggerRTK(genURLSearchQuery(cpy)),
       });
     },
     [wrapAPI, setPending, setSearchApi]
