@@ -64,3 +64,13 @@ class TFAFormT(BaseModel):
                 status=401,
             )
         return self
+
+
+class PaginationFormT(BaseModel):
+    page: int = Field(
+        ge=0,
+    )
+
+    limit: int = Field(
+        gt=1,
+    )

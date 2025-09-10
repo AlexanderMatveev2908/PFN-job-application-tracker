@@ -46,10 +46,10 @@ async def post_put_job_application_mdw(
         "job_appl": cast(
             JobApplicationDct,
             {
-                **res_check["form_inst"].model_dump(),
+                **res_check["data"],
                 "applied_at": int(
                     datetime.datetime.fromisoformat(
-                        res_check["form_inst"].applied_at
+                        res_check["data"]["applied_at"]
                     )
                     .replace(tzinfo=datetime.timezone.utc)
                     .timestamp()

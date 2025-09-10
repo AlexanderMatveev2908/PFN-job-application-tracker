@@ -1,6 +1,8 @@
-from typing import Literal, TypeVar
+from typing import Literal, TypeVar, TypedDict
 
 from pydantic import BaseModel
+
+from src.models.user import UserDcT
 
 ParamWindowTime = Literal["15s", "30s", "60s", "15m", "30m", "1h", "1d"]
 
@@ -15,3 +17,7 @@ MAPPER_WINDOW_TIME: dict[ParamWindowTime, int] = {
 }
 
 FormT = TypeVar("FormT", bound=BaseModel)
+
+
+class UserDctReturnT(TypedDict):
+    us_d: UserDcT
