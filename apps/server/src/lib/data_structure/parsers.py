@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 from typing import Any
 import uuid
 
@@ -63,3 +64,29 @@ def parse_enum(v: Enum | str) -> str:
         return v.value
     else:
         raise ErrAPI(msg="invalid v, neither enum or str", status=500)
+
+
+def h_to_b(txt_hex: str) -> bytes:
+    return bytes.fromhex(txt_hex)
+
+
+def b_to_h(b: bytes) -> str:
+    return b.hex()
+
+
+def d_to_b(obj: dict[str, Any]) -> bytes:
+    return json.dumps(obj, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
+
+
+def b_to_d(
+    b: bytes, err_msg: str = "wrong data format", err_status: int = 422
+) -> dict:
+    try:
+        return json.loads(
+            b.decode("utf-8"),
+        )
+
+    except Exception:
+        raise ErrAPI(msg=err_msg, status=err_status)

@@ -1,8 +1,6 @@
-import json
 import re
 from typing import Any, Optional
 import uuid
-from src.decorators.err import ErrAPI
 
 
 def is_obj_ok(obj: object | None) -> bool:
@@ -36,32 +34,6 @@ def t_str(v: str | None, reg: re.Pattern[str]) -> bool:
         return False
 
     return bool(reg.match(v))
-
-
-def h_to_b(txt_hex: str) -> bytes:
-    return bytes.fromhex(txt_hex)
-
-
-def b_to_h(b: bytes) -> str:
-    return b.hex()
-
-
-def d_to_b(obj: dict[str, Any]) -> bytes:
-    return json.dumps(obj, separators=(",", ":"), sort_keys=True).encode(
-        "utf-8"
-    )
-
-
-def b_to_d(
-    b: bytes, err_msg: str = "wrong data format", err_status: int = 422
-) -> dict:
-    try:
-        return json.loads(
-            b.decode("utf-8"),
-        )
-
-    except Exception:
-        raise ErrAPI(msg=err_msg, status=err_status)
 
 
 def pick(

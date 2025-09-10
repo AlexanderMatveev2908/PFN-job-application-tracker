@@ -7,7 +7,7 @@ from src.__dev_only.payloads import RegisterPayloadT
 from src.constants.reg import REG_CBC_HMAC, REG_JWE, REG_JWT, REG_TOTP_SECRET
 from src.decorators.err import ErrAPI
 from src.lib.algs.fernet import check_fernet
-from src.lib.data_structure.etc import b_to_d, h_to_b
+from src.lib.data_structure.parsers import b_to_d, h_to_b
 from src.lib.etc import grab
 from src.lib.tokens.cbc_hmac import AadT
 from src.models.token import TokenT

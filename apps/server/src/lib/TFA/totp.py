@@ -3,7 +3,7 @@ import pyotp
 
 from src.decorators.err import ErrAPI
 from src.lib.algs.fernet import check_fernet
-from src.lib.data_structure.etc import h_to_b
+from src.lib.data_structure.parsers import h_to_b
 
 
 class GenTotpSecretReturnT(TypedDict):
