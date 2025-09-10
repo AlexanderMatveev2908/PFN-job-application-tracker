@@ -21,3 +21,6 @@ export const pickRandom = (arr: string[]) => arr[genMinMax(0, arr.length - 1)];
 
 export const parseLabelToTestID = (label: string) =>
   label.toLowerCase().replaceAll(" ", "_");
+
+export const skipUselessFalsy = (v: unknown) =>
+  !v && typeof v !== "number" && typeof v !== "boolean";

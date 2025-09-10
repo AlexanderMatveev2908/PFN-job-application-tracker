@@ -39,7 +39,7 @@ async def reset_mock() -> None:
             await trx.flush([new_us_db])
             await trx.refresh(new_us_db)
 
-            for _ in range(10):
+            for i in range(10):
                 payload = gen_job_appl_payload(new_us_db.id)
 
                 dt = datetime.datetime.strptime(
@@ -48,7 +48,16 @@ async def reset_mock() -> None:
 
                 payload["applied_at"] = int(dt.timestamp() * 1000)
 
-                newJobAppl = JobApplication(**payload)
+                newJobAppl = JobApplication(
+                    **payload,
+                    created_at=int(
+                        datetime.datetime.now(
+                            datetime.timezone.utc
+                        ).timestamp()
+                        * 1000
+                    )
+                    + i * 1000,
+                )
                 trx.add(newJobAppl)
                 await trx.flush([newJobAppl])
                 await trx.refresh(newJobAppl)

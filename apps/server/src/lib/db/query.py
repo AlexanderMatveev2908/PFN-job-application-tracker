@@ -1,6 +1,14 @@
 from math import ceil
 from typing import Type, TypedDict
-from sqlalchemy import BinaryExpression, Select, func, select
+from sqlalchemy import (
+    BinaryExpression,
+    Select,
+    UnaryExpression,
+    asc,
+    desc,
+    func,
+    select,
+)
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -73,3 +81,21 @@ async def apply_pagination(
         "n_hits": n_hits,
         "pages": pages,
     }
+
+
+def build_order_query(
+    q: dict, Table: Type[DeclarativeBase], keys: list[str]
+) -> list[UnaryExpression]:
+    sort_clauses: list[UnaryExpression] = []
+
+    for k in keys:
+        val = q.get(k, "") or ""
+        if not val:
+            continue
+
+        parsed_key_sort = k.replace("_sort", "")
+        col = getattr(Table, parsed_key_sort)
+
+        sort_clauses.append(asc(col) if val == "ASC" else desc(col))
+
+    return sort_clauses

@@ -1,3 +1,4 @@
+from typing import Literal
 from fastapi import Request
 from pydantic import Field
 from src.constants.reg import REG_JOB_NAME
@@ -19,6 +20,10 @@ class ReadJobsFormT(PaginationFormT):
     )
 
     status: list[ApplicationStatusT] | None = Field(default=None)
+
+    created_at_sort: Literal["ASC", "DESC"] | None = Field(default=None)
+    updated_at_sort: Literal["ASC", "DESC"] | None = Field(default=None)
+    applied_at_sort: Literal["ASC", "DESC"] | None = Field(default=None)
 
 
 async def read_job_appl_mdw(req: Request) -> CheckFormLoggedReturnT:
