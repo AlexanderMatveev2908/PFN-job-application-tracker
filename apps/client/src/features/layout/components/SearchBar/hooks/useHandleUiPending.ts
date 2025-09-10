@@ -19,7 +19,7 @@ export const useHandleUiPending = ({ rootLoading }: Params) => {
       timerID.current = setTimeout(() => {
         setPending({ key: submit ? "submit" : "reset", val: false });
         clearTmr(timerID);
-      }, 500);
+      }, 250);
 
     return () => {
       clearTmr(timerID);

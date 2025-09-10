@@ -28,6 +28,7 @@ const PageCounter = <K extends (...args: any) => any>({
   const {
     pagination: { swap, page, limit },
     setPagination,
+    prevData,
   } = useSearchCtxConsumer();
 
   useEffect(() => {

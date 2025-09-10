@@ -5,7 +5,7 @@
 import Shim from "@/common/components/elements/Shim";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { genURLSearchQuery, logFormErrs } from "@/core/lib/forms";
+import { logFormErrs } from "@/core/lib/forms";
 import { css } from "@emotion/react";
 import {
   ArrayPath,
@@ -23,9 +23,9 @@ import FilterBar from "./components/FilterBar/FilterBar";
 import { FilterSearchBarT, SorterSearchBarT } from "./types";
 import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
 import SortBar from "./components/SortBar/SortBar";
-import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { useHandleUiPending } from "./hooks/useHandleUiPending";
 import { ZodObject } from "zod";
+import { useDebounce } from "./hooks/useDebounce";
 
 type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -47,34 +47,31 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
   const { isHydrated } = useHydration();
 
   const [triggerRTK, res] = hook;
-  const { wrapAPI } = useWrapAPI();
 
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
   const {
     setCurrFilter,
     pagination: { page, limit },
-    setPending,
+    triggerSearch,
   } = useSearchCtxConsumer();
 
   const handleSave = handleSubmit(async (data) => {
-    setPending({ key: "submit", val: true });
-
-    await wrapAPI({
-      cbAPI: () =>
-        triggerRTK(genURLSearchQuery({ ...data, page: page, limit })),
+    await triggerSearch({
+      freshData: { ...data, page, limit },
+      triggerRTK,
+      keyPending: "submit",
     });
   }, logFormErrs);
 
   const handleReset = useCallback(async () => {
-    setPending({ key: "reset", val: true });
-
     reset(resetVals);
 
-    await wrapAPI({
-      cbAPI: () =>
-        triggerRTK(genURLSearchQuery({ ...resetVals, page: "0", limit })),
+    await triggerSearch({
+      freshData: { ...resetVals, page: 0, limit },
+      triggerRTK,
+      keyPending: "reset",
     });
-  }, [reset, resetVals, limit, triggerRTK, wrapAPI, setPending]);
+  }, [reset, resetVals, limit, triggerRTK, triggerSearch]);
 
   useEffect(() => {
     setCurrFilter({ val: filters[0].label });
@@ -82,6 +79,11 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
 
   useHandleUiPending({
     rootLoading: res?.isLoading || res?.isFetching,
+  });
+
+  useDebounce({
+    schema,
+    triggerRTK,
   });
 
   const existingFields: FormFieldTxtSearchBarT<T>[] =

@@ -10,9 +10,6 @@ import {
 } from "./uiFactory";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
-import { useSelector } from "react-redux";
-import { getJobApplicationsState } from "../../slices/slice";
-import { __cg } from "@/core/lib/log";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
 import { ZodObject } from "zod";
 
@@ -25,12 +22,8 @@ const SearchJobs = <K extends (...args: any) => any[]>({
   hook,
   schema,
 }: PropsType<K>) => {
-  const jobsState = useSelector(getJobApplicationsState);
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, res] = hook;
-
-  __cg("jobs state", jobsState);
 
   return (
     <div className="w-full grid grid-cols-1 gap-10">
@@ -48,7 +41,7 @@ const SearchJobs = <K extends (...args: any) => any[]>({
 
       <WrapCSR
         {...{
-          isLoading: res.isLoading,
+          isLoading: res.isLoading || res?.isFetching,
         }}
       >
         <div className=""></div>

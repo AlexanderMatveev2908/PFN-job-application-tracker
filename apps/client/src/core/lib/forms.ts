@@ -66,10 +66,10 @@ export const genFormData = (
   return formData;
 };
 
-export const genURLSearchQuery = (obj: Record<string, unknown>): string => {
+export const genURLSearchQuery = <T>(obj: T): string => {
   const params = new URLSearchParams();
 
-  for (const [k, v] of Object.entries(obj)) {
+  for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
     if (v === undefined) continue;
 
     if (Array.isArray(v)) {
