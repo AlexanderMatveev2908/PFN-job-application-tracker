@@ -37,6 +37,17 @@ export const searchbarReducer = (
       };
     }
 
+    case "SET_PENDING":
+      const { key, val } = action.payload;
+
+      return {
+        ...state,
+        pending: {
+          ...state.pending,
+          [key]: val,
+        },
+      };
+
     default:
       throw new ErrApp(`Invalid action 😡 => ${action}`);
   }

@@ -72,5 +72,5 @@ class PaginationFormT(BaseModel):
     )
 
     limit: int = Field(
-        gt=1,
+        gt=0,
     )

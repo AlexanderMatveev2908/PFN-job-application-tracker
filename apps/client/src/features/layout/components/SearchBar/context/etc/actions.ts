@@ -4,8 +4,13 @@ export type PayloadSetBarT = {
 };
 
 export type PayloadPaginationT = {
-  key: "currPage" | "currBlock" | "limit";
+  key: "page" | "swap" | "limit";
   val: number;
+};
+
+export type PayloadPendingT = {
+  key: "submit" | "reset";
+  val: boolean;
 };
 
 export type SearchBarReducerActionsT =
@@ -20,4 +25,8 @@ export type SearchBarReducerActionsT =
   | {
       type: "SET_PAGINATION";
       payload: PayloadPaginationT;
+    }
+  | {
+      type: "SET_PENDING";
+      payload: PayloadPendingT;
     };

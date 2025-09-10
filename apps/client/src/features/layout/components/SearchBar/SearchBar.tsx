@@ -6,7 +6,6 @@ import Shim from "@/common/components/elements/Shim";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
 import { genURLSearchQuery, logFormErrs } from "@/core/lib/forms";
-import { __cg } from "@/core/lib/log";
 import { css } from "@emotion/react";
 import {
   ArrayPath,
@@ -25,6 +24,7 @@ import { FilterSearchBarT, SorterSearchBarT } from "./types";
 import { useSearchCtxConsumer } from "./context/hooks/useSearchCtxConsumer";
 import SortBar from "./components/SortBar/SortBar";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
+import { useHandleUiPending } from "./hooks/useHandleUiPending";
 
 type PropsType<T extends FieldValues, K extends (...args: any) => any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -43,34 +43,43 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
 }: PropsType<T, K>) => {
   const { isHydrated } = useHydration();
 
-  const [triggerRTK] = hook;
+  const [triggerRTK, res] = hook;
   const { wrapAPI } = useWrapAPI();
 
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
   const {
     setCurrFilter,
-    pagination: { currPage, limit },
+    pagination: { page, limit },
+    setPending,
   } = useSearchCtxConsumer();
 
   const handleSave = handleSubmit(async (data) => {
+    setPending({ key: "submit", val: true });
+
     await wrapAPI({
       cbAPI: () =>
-        triggerRTK(genURLSearchQuery({ ...data, page: currPage, limit })),
+        triggerRTK(genURLSearchQuery({ ...data, page: page, limit })),
     });
   }, logFormErrs);
 
   const handleReset = useCallback(async () => {
+    setPending({ key: "reset", val: true });
+
     reset(resetVals);
 
     await wrapAPI({
       cbAPI: () =>
         triggerRTK(genURLSearchQuery({ ...resetVals, page: "0", limit })),
     });
-  }, [reset, resetVals, limit, triggerRTK, wrapAPI]);
+  }, [reset, resetVals, limit, triggerRTK, wrapAPI, setPending]);
 
   useEffect(() => {
     setCurrFilter({ val: filters[0].label });
   }, [filters, setCurrFilter]);
+
+  useHandleUiPending({
+    rootLoading: res?.isLoading || res?.isFetching,
+  });
 
   const existingFields: FormFieldTxtSearchBarT<T>[] =
     watch("txtFields" as Path<T>) ?? [];

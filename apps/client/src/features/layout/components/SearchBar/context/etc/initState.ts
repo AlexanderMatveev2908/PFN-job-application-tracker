@@ -7,9 +7,14 @@ export type SearchBarStateT = {
   };
   currFilter: string;
   pagination: {
-    currBlock: number;
-    currPage: number;
+    swap: number;
+    page: number;
     limit: number;
+  };
+
+  pending: {
+    submit: boolean;
+    reset: boolean;
   };
 };
 
@@ -21,8 +26,12 @@ export const searchBarInitState: SearchBarStateT = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currFilter: "" as any,
   pagination: {
-    currBlock: 0,
-    currPage: 0,
+    swap: 0,
+    page: 0,
     limit: getNumCardsForPage(),
+  },
+  pending: {
+    reset: false,
+    submit: false,
   },
 };

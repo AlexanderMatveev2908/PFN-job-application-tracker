@@ -7,6 +7,7 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 import { resp } from "@/core/lib/style";
 import { css } from "@emotion/react";
 import { FC } from "react";
+import { useSearchCtxConsumer } from "../../context/hooks/useSearchCtxConsumer";
 
 export type MainBtnsSearchBarPropsType = {
   handleReset: () => void;
@@ -16,6 +17,8 @@ const MainBtnsSearchBar: FC<MainBtnsSearchBarPropsType> = ({ handleReset }) => {
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
+
+  const { pending } = useSearchCtxConsumer();
 
   return mainBtnsSearchBar.map((btn, i) => (
     <div key={ids[i]} className="search_bar__btn">
@@ -30,11 +33,12 @@ const MainBtnsSearchBar: FC<MainBtnsSearchBarPropsType> = ({ handleReset }) => {
           type: btn.act === "OK" ? "submit" : "button",
           $customLabelCSS: css`
             display: none;
-
             ${resp("md")} {
               display: block;
             }
           `,
+
+          isTxtLoading: btn.act === "OK" ? pending.submit : pending.reset,
         }}
       />
     </div>

@@ -26,7 +26,7 @@ const PageCounter = <K extends (...args: any) => any>({
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 
   const {
-    pagination: { currBlock, currPage, limit },
+    pagination: { swap, page, limit },
     setPagination,
   } = useSearchCtxConsumer();
 
@@ -44,13 +44,11 @@ const PageCounter = <K extends (...args: any) => any>({
       const lastSwapAllowed = Math.max(0, newTotSwaps - 1);
       const lastPageAllowed = Math.max(0, newTotPages - 1);
 
-      const shouldFixPage = currPage > lastPageAllowed;
-      const shouldFixSwap = currBlock > lastSwapAllowed;
+      const shouldFixPage = page > lastPageAllowed;
+      const shouldFixSwap = swap > lastSwapAllowed;
 
-      if (shouldFixPage)
-        setPagination({ key: "currPage", val: lastPageAllowed });
-      if (shouldFixSwap)
-        setPagination({ key: "currBlock", val: lastSwapAllowed });
+      if (shouldFixPage) setPagination({ key: "page", val: lastPageAllowed });
+      if (shouldFixSwap) setPagination({ key: "swap", val: lastSwapAllowed });
     };
 
     cb();
@@ -60,7 +58,7 @@ const PageCounter = <K extends (...args: any) => any>({
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, [setPagination, nHits, currBlock, currPage]);
+  }, [setPagination, nHits, swap, page]);
 
   const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
   // const totSwaps = useMemo(
@@ -69,7 +67,7 @@ const PageCounter = <K extends (...args: any) => any>({
   // );
 
   const currPages = useMemo(() => {
-    const start = currBlock * pagesForSwap;
+    const start = swap * pagesForSwap;
     const end = Math.min(start + pagesForSwap, totPages);
 
     return Array.from({ length: end - start }, (_, i) => start + i).map(
@@ -79,7 +77,7 @@ const PageCounter = <K extends (...args: any) => any>({
         id: v4(),
       })
     );
-  }, [currBlock, pagesForSwap, totPages]);
+  }, [swap, pagesForSwap, totPages]);
 
   // __cg(
   //   "pagination",
@@ -89,7 +87,7 @@ const PageCounter = <K extends (...args: any) => any>({
   //   ["pagesForSwap", pagesForSwap],
   //   ["totSwaps", totSwaps],
   //   ["currPages", currPages],
-  //   ["currPage", currPage]
+  //   ["page", page]
   // );
 
   return !isHydrated ? null : (
@@ -99,9 +97,8 @@ const PageCounter = <K extends (...args: any) => any>({
           {...{
             el: { Svg: ArrowBigLeftDash },
             act: "NONE",
-            handleClick: () =>
-              setPagination({ key: "currBlock", val: currBlock - 1 }),
-            isDisabled: !currBlock,
+            handleClick: () => setPagination({ key: "swap", val: swap - 1 }),
+            isDisabled: !swap,
           }}
         />
         <div
@@ -110,15 +107,15 @@ const PageCounter = <K extends (...args: any) => any>({
             grid-template-columns: repeat(${pagesForSwap}, 1fr);
           `}
         >
-          {currPages.map((page) => {
+          {currPages.map((el) => {
             return (
-              <div key={page.id} className="w-[60px]">
+              <div key={el.id} className="w-[60px]">
                 <BoxInput
                   {...{
-                    isChosen: page.val === currPage,
+                    isChosen: el.val === page,
                     handleClick: () =>
-                      setPagination({ key: "currPage", val: page.val }),
-                    opt: page,
+                      setPagination({ key: "page", val: el.val }),
+                    opt: el,
                     $labelSizeCls: "lg",
                   }}
                 />
@@ -130,9 +127,8 @@ const PageCounter = <K extends (...args: any) => any>({
           {...{
             el: { Svg: ArrowBigRightDash },
             act: "NONE",
-            handleClick: () =>
-              setPagination({ key: "currBlock", val: currBlock + 1 }),
-            isDisabled: (currBlock + 1) * pagesForSwap > totPages - 1,
+            handleClick: () => setPagination({ key: "swap", val: swap + 1 }),
+            isDisabled: (swap + 1) * pagesForSwap > totPages - 1,
           }}
         />
       </div>

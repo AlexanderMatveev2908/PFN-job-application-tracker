@@ -1,7 +1,11 @@
 import { useCallback, useReducer } from "react";
 import { searchBarInitState } from "../etc/initState";
 import { searchbarReducer } from "../etc/reducer";
-import { PayloadPaginationT, PayloadSetBarT } from "../etc/actions";
+import {
+  PayloadPaginationT,
+  PayloadPendingT,
+  PayloadSetBarT,
+} from "../etc/actions";
 
 export const useSearchCtxProvider = () => {
   const [state, dispatchRct] = useReducer(searchbarReducer, searchBarInitState);
@@ -23,11 +27,17 @@ export const useSearchCtxProvider = () => {
     []
   );
 
+  const setPending = useCallback(
+    (payload: PayloadPendingT) => dispatchRct({ type: "SET_PENDING", payload }),
+    []
+  );
+
   return {
     ...state,
     setBar,
     setCurrFilter,
     setPagination,
+    setPending,
   };
 };
 
