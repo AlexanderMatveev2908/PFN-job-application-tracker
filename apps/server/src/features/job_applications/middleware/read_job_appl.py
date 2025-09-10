@@ -27,4 +27,4 @@ async def read_job_appl_mdw(req: Request) -> CheckFormLoggedReturnT:
         data=getattr(req.state, "parsed_q"), model=ReadJobsFormT
     )(req)
 
-    return {"us_d": data["us_d"], "data": data["data"]}
+    return data
