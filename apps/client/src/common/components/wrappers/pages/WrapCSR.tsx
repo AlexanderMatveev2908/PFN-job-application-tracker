@@ -13,6 +13,8 @@ type PropsType = {
   children?:
     | ReactNode
     | (({ isHydrated }: { isHydrated: boolean }) => ReactNode);
+
+  $minH?: string;
 };
 
 const WrapCSR: FC<PropsType> = ({
@@ -20,6 +22,7 @@ const WrapCSR: FC<PropsType> = ({
   isLoading,
   throwErr,
   children,
+  $minH,
 }) => {
   const { isHydrated } = useHydration();
 
@@ -36,7 +39,7 @@ const WrapCSR: FC<PropsType> = ({
   return (
     <div className="page__shape">
       {isPending ? (
-        <SpinPage />
+        <SpinPage {...{ $minH }} />
       ) : typeof children === "function" ? (
         children({ isHydrated })
       ) : (

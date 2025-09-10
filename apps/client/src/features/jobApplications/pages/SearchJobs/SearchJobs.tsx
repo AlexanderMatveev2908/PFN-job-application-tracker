@@ -39,6 +39,7 @@ const SearchJobs = <K extends any[]>({ hook, schema }: PropsType<K>) => {
       <WrapCSR
         {...{
           isLoading: res.isLoading || res?.isFetching,
+          $minH: "min-h-[75vh]",
         }}
       >
         <div className=""></div>
