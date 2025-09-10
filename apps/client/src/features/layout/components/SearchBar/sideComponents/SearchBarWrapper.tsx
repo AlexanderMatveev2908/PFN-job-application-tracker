@@ -31,7 +31,6 @@ const SearchBarWrapper = <
 
         <PageCounter
           {...{
-            nHits: 50,
             hook,
           }}
         />

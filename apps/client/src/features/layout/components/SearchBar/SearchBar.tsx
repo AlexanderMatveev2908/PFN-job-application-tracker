@@ -60,6 +60,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
       freshData: { ...data, page, limit },
       triggerRTK,
       keyPending: "submit",
+      skipCall: true,
     });
   }, logFormErrs);
 
@@ -70,6 +71,7 @@ const SearchBar = <T extends FieldValues, K extends (...args: any) => any[]>({
       freshData: { ...resetVals, page: 0, limit },
       triggerRTK,
       keyPending: "reset",
+      skipCall: true,
     });
   }, [reset, resetVals, limit, triggerRTK, triggerSearch]);
 

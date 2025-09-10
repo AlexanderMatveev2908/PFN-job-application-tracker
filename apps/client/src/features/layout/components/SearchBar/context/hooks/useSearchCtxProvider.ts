@@ -4,11 +4,13 @@ import { searchbarReducer } from "../etc/reducer";
 import {
   PayloadPaginationT,
   PayloadPendingT,
+  PayloadSearchAPIT,
   PayloadSetBarT,
 } from "../etc/actions";
 import { genURLSearchQuery } from "@/core/lib/forms";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { TriggerApiT } from "@/common/types/api";
+import { cpyObj } from "@/core/lib/dataStructure/ect";
 
 export const useSearchCtxProvider = <T>() => {
   const [state, dispatchRct] = useReducer(searchbarReducer, searchBarInitState);
@@ -38,21 +40,29 @@ export const useSearchCtxProvider = <T>() => {
     []
   );
 
+  const setSearchApi = useCallback(
+    (payload: PayloadSearchAPIT) => dispatchRct({ type: "SET_API", payload }),
+    []
+  );
+
   const triggerSearch = useCallback(
     async (arg: {
       freshData: T;
       triggerRTK: TriggerApiT<T>;
       keyPending: "submit" | "reset";
+      skipCall?: boolean;
     }) => {
       setPending({ key: arg.keyPending, val: true });
 
-      prevData.current = arg.freshData;
+      setSearchApi({ key: "skipCall", val: !!arg.skipCall });
+
+      prevData.current = cpyObj(arg.freshData);
 
       await wrapAPI({
         cbAPI: () => arg.triggerRTK(genURLSearchQuery(arg.freshData)),
       });
     },
-    [wrapAPI, setPending]
+    [wrapAPI, setPending, setSearchApi]
   );
 
   return {

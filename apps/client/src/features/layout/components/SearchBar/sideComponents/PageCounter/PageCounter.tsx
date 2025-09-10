@@ -14,36 +14,48 @@ import BoxInput from "@/common/components/forms/inputs/BoxInput";
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
 
-type PropsType<K extends (...args: any) => any> = {
-  nHits: number;
+type PropsType<K extends (...args: any) => any[]> = {
   hook: ReturnType<K>;
 };
 
-const PageCounter = <K extends (...args: any) => any>({
-  nHits,
+const PageCounter = <K extends (...args: any) => any[]>({
+  hook,
 }: PropsType<K>) => {
   const { isHydrated } = useHydration();
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 
+  const [triggerRTK, res] = hook;
+  const { data: { n_hits = 0, pages = 0 } = {} } = res ?? {};
+
   const {
     pagination: { swap, page, limit },
     setPagination,
+    triggerSearch,
     prevData,
   } = useSearchCtxConsumer();
 
   useEffect(() => {
-    const cb = () => {
+    const cb = async () => {
       const newLimit = getNumCardsForPage();
       const newPagesForSwap = getMaxBtnForSwap();
 
-      setPagesForSwap(newPagesForSwap);
-      setPagination({ key: "limit", val: newLimit });
+      if (pagesForSwap !== newPagesForSwap) setPagesForSwap(newPagesForSwap);
+      if (limit !== newLimit) {
+        setPagination({ key: "limit", val: newLimit });
 
-      const newTotPages = Math.ceil(nHits / newLimit);
-      const newTotSwaps = Math.ceil(newTotPages / newPagesForSwap);
+        await triggerSearch({
+          freshData: { ...prevData, page: 0, limit: newLimit },
+          triggerRTK,
+          keyPending: "submit",
+          skipCall: true,
+        });
+      }
+
+      // const newTotPages = Math.ceil(n_hits / newLimit);
+      const newTotSwaps = Math.ceil(pages / newPagesForSwap);
 
       const lastSwapAllowed = Math.max(0, newTotSwaps - 1);
-      const lastPageAllowed = Math.max(0, newTotPages - 1);
+      const lastPageAllowed = Math.max(0, pages - 1);
 
       const shouldFixPage = page > lastPageAllowed;
       const shouldFixSwap = swap > lastSwapAllowed;
@@ -59,9 +71,20 @@ const PageCounter = <K extends (...args: any) => any>({
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, [setPagination, nHits, swap, page]);
+  }, [
+    setPagination,
+    n_hits,
+    swap,
+    page,
+    pages,
+    limit,
+    pagesForSwap,
+    triggerSearch,
+    triggerRTK,
+    prevData,
+  ]);
 
-  const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
+  const totPages = useMemo(() => Math.ceil(n_hits / limit), [limit, n_hits]);
   // const totSwaps = useMemo(
   //   () => Math.ceil(totPages / pagesForSwap),
   //   [totPages, pagesForSwap]
@@ -82,7 +105,7 @@ const PageCounter = <K extends (...args: any) => any>({
 
   // __cg(
   //   "pagination",
-  //   ["nHits", nHits],
+  //   ["n_hits", n_hits],
   //   ["limit", limit],
   //   ["totPages", totPages],
   //   ["pagesForSwap", pagesForSwap],
@@ -90,6 +113,17 @@ const PageCounter = <K extends (...args: any) => any>({
   //   ["currPages", currPages],
   //   ["page", page]
   // );
+
+  const handleChangePage = async (val: number) => {
+    setPagination({ key: "page", val });
+
+    await triggerSearch({
+      freshData: { ...prevData, page: val, limit },
+      triggerRTK,
+      keyPending: "submit",
+      skipCall: true,
+    });
+  };
 
   return !isHydrated ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
@@ -114,8 +148,7 @@ const PageCounter = <K extends (...args: any) => any>({
                 <BoxInput
                   {...{
                     isChosen: el.val === page,
-                    handleClick: () =>
-                      setPagination({ key: "page", val: el.val }),
+                    handleClick: async () => await handleChangePage(el.val),
                     opt: el,
                     $labelSizeCls: "lg",
                   }}
