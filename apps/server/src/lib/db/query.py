@@ -18,14 +18,14 @@ def apply_query(
     return stmt
 
 
-def build_cond(
+def build_cond_query(
     col: InstrumentedAttribute[str], val: str
 ) -> list[BinaryExpression]:
     words = [w for w in val.split() if w]
     return [col.ilike(f"%{w}%") for w in words if words]
 
 
-def build_list_cond(
+def build_list_cond_query(
     query: dict,
     Table: Type[DeclarativeBase],
     keys: list[str],
@@ -35,7 +35,7 @@ def build_list_cond(
     for k in keys:
 
         val: str = query.get(k, "").strip()
-        cond += build_cond(getattr(Table, k), val)
+        cond += build_cond_query(getattr(Table, k), val)
 
     return cond
 

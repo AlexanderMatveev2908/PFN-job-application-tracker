@@ -2,7 +2,11 @@ from fastapi import Depends, Request, Response
 from sqlalchemy import select
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
-from src.lib.db.query import ApplyPagReturnT, apply_pagination, build_list_cond
+from src.lib.db.query import (
+    ApplyPagReturnT,
+    apply_pagination,
+    build_list_cond_query,
+)
 from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.job_application import JobApplication
 from src.models.user import UserDcT
@@ -23,7 +27,7 @@ async def read_job_appl_ctrl(
         # ? find pattern and use it
         # ? to chain any kind of text inputs send from client
         stmt = stmt.where(
-            *build_list_cond(
+            *build_list_cond_query(
                 query=q,
                 Table=JobApplication,
                 keys=["company_name", "position_name"],

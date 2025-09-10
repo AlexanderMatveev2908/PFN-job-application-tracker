@@ -1,5 +1,6 @@
 import datetime
 import os
+import random
 from typing import TypedDict, cast
 import uuid
 
@@ -36,6 +37,9 @@ def get_payload_register() -> RegisterPayloadT:
     }
 
 
+status_str = [x.value for x in ApplicationStatusT]
+
+
 def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
 
     return cast(
@@ -46,7 +50,7 @@ def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
             "applied_at": datetime.datetime.now(datetime.timezone.utc)
             .date()
             .isoformat(),
-            "status": ApplicationStatusT.APPLIED.value,
+            "status": random.choice(status_str),
             "user_id": str(us_id),
         },
     )
