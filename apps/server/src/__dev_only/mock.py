@@ -20,6 +20,7 @@ async def reset_mock() -> None:
                 await trx.execute(
                     text(f'TRUNCATE "{mp.class_.__tablename__}" CASCADE')
                 )
+            print("🔪 cleaned DB")
 
             await clean_redis()
 
@@ -33,6 +34,7 @@ async def reset_mock() -> None:
             }
 
             new_us_db = User(**us)
+            await new_us_db.set_pwd(us["password"])
             trx.add(new_us_db)
             await trx.flush([new_us_db])
             await trx.refresh(new_us_db)
