@@ -7,7 +7,6 @@ import { useWrapQuery } from "@/core/hooks/api/useWrapQuery";
 import { useDelCbcHmacByPathAndType } from "@/features/user/hooks/useDelCbcHmacByPathAndType";
 import { useWrapClientListener } from "@/core/hooks/etc/hydration/useWrapClientListener";
 import { useScroll } from "@/core/hooks/etc/navigation/useScroll";
-import { isObjOk } from "@/core/lib/dataStructure";
 import { getStorage } from "@/core/lib/storage";
 import { noticeSlice } from "@/features/notice/slices/slice";
 import { useEndPendingActionUser } from "@/features/user/hooks/useEndPendingActionUser";
@@ -15,6 +14,7 @@ import { userSliceAPI } from "@/features/user/slices/api";
 import { userSlice } from "@/features/user/slices/slice";
 import { useEffect, type FC } from "react";
 import { useDispatch } from "react-redux";
+import { isObjOk } from "@/core/lib/dataStructure/ect";
 
 const CallbacksWrapper: FC<ChildrenT> = ({ children }) => {
   // ? ui

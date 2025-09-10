@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "@/features/user/hooks/useUser";
-import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
+import { extractAadFromCbcHmac } from "@/core/lib/dataStructure/parsers";
 import { TokenT } from "@/common/types/tokens";
 import { usePushOnCbcHmacPresent } from "@/features/user/hooks/usePushOnCbcHmacPresent";
 import { logFormErrs } from "@/core/lib/forms";

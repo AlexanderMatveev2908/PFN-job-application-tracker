@@ -2,21 +2,6 @@ import { AadCbcHmacT } from "@/common/types/tokens";
 import { REG_CBC_HMAC } from "../../constants/regex";
 import { ErrApp } from "../err";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const isStr = (str: unknown): boolean =>
-  typeof str === "string" && !!str.trim().length;
-
-export const isObjOk = (obj: any, cb?: (v: any) => boolean): boolean =>
-  typeof obj === "object" &&
-  obj !== null &&
-  !!Object.keys(obj).length &&
-  Object.values(obj).some((v) => (typeof cb === "function" ? cb(v) : true));
-
-export const isArrOk = (arr: any, cb?: (v: any) => boolean) =>
-  Array.isArray(arr) &&
-  arr.length &&
-  arr.every((el) => (typeof cb === "function" ? cb(el) : true));
-
 export const hexToBytes = (hex: string) => {
   const arg = new Uint8Array(hex.length / 2);
 

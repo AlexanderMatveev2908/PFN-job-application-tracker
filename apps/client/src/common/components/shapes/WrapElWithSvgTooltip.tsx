@@ -8,10 +8,10 @@ import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import { css } from "@emotion/react";
-import { isObjOk } from "@/core/lib/dataStructure";
 import Link from "next/link";
 import { RefObject } from "react";
 import PortalTooltip from "../tooltips/PortalTooltip";
+import { isObjOk } from "@/core/lib/dataStructure/ect";
 
 export type WrapSvgTltPropsT = {
   Svg: IconType;

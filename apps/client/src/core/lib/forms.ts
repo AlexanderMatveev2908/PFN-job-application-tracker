@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldErrors, FieldValues, Path } from "react-hook-form";
-import { isObjOk, isStr } from "./dataStructure";
 import { __cg } from "./log";
+import { isObjOk, isStr } from "./dataStructure/ect";
 
 export const swapOnErr = <T extends FieldValues>({
   errs,

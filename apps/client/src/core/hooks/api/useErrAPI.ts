@@ -1,5 +1,5 @@
 import { ResApiT } from "@/common/types/api";
-import { isArrOk, isStr } from "@/core/lib/dataStructure";
+import { isArrOk, isStr } from "@/core/lib/dataStructure/ect";
 import { ErrApp } from "@/core/lib/err";
 import { __cg } from "@/core/lib/log";
 import { apiSlice } from "@/core/store/api";

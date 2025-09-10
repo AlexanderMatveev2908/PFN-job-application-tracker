@@ -13,7 +13,7 @@ import ErrField from "../../etc/ErrField";
 import { useSyncPortal } from "@/core/hooks/etc/tooltips/useSyncPortal";
 import Portal from "@/common/components/wrappers/portals/Portal";
 import { css } from "@emotion/react";
-import { isObjOk } from "@/core/lib/dataStructure";
+import { isObjOk } from "@/core/lib/dataStructure/ect";
 
 type PropsType<T extends FieldValues> = {
   children?: ReactNode;

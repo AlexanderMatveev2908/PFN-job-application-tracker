@@ -3,8 +3,8 @@
 
 import { useEffect, useState, type FC } from "react";
 import Tooltip from "../../tooltips/Tooltip/Tooltip";
-import { isStr } from "@/core/lib/dataStructure";
 import { SerializedStyles } from "@emotion/react";
+import { isStr } from "@/core/lib/dataStructure/ect";
 
 type PropsType = {
   msg?: string | null;

@@ -1,5 +1,5 @@
 import { TokenT } from "@/common/types/tokens";
-import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
+import { extractAadFromCbcHmac } from "@/core/lib/dataStructure/parsers";
 import { useUser } from "@/features/user/hooks/useUser";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";

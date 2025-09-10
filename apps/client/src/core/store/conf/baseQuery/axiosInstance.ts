@@ -1,5 +1,5 @@
 import { envApp } from "@/core/constants/env";
-import { isStr } from "@/core/lib/dataStructure";
+import { isStr } from "@/core/lib/dataStructure/ect";
 import { getStorage } from "@/core/lib/storage";
 import axios from "axios";
 
