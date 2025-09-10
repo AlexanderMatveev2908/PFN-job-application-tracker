@@ -3,7 +3,8 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from starlette.responses import Response
-from src.lib.data_structure.etc import assign_nested_parser, parse_bool
+
+from src.lib.data_structure.parsers import assign_nested_parser, parse_bool
 
 
 class ParserQuery(BaseHTTPMiddleware):

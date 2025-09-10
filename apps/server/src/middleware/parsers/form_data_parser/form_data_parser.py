@@ -3,7 +3,7 @@ from fastapi import Request, UploadFile
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 from starlette.types import ASGIApp
-from src.lib.data_structure.etc import assign_nested_parser, parse_bool
+from src.lib.data_structure.parsers import assign_nested_parser, parse_bool
 from src.middleware.parsers.form_data_parser.lib import parse_file
 from src.middleware.parsers.form_data_parser.types import (
     ParsedForm,
