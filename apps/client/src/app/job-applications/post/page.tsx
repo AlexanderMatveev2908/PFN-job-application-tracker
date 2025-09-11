@@ -26,7 +26,7 @@ const Page: FC = () => {
 
   const { formCtxJobs: formCtxRead } = useAppFormsCtxConsumer();
   const { control: controlRead } = formCtxRead;
-  const { append } = useFieldArray({
+  const { append: appendReadForm } = useFieldArray({
     control: controlRead,
     name: "txtFields",
   });
@@ -45,7 +45,7 @@ const Page: FC = () => {
 
     reset(resetValsJobApplForm);
 
-    append({ ...positionNameField, val: "" });
+    appendReadForm({ ...positionNameField, val: "" });
 
     formCtxRead.setValue("txtFields.0.val", res.job_application.company_name, {
       shouldValidate: true,

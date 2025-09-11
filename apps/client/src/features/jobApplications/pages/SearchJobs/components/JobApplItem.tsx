@@ -35,6 +35,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
 
   return (
     <div
+      data-testid={`job_appl__card`}
       className="w-full grid grid-cols-1 border-3 p-5 rounded-xl gap-6"
       css={css`
         border-color: var(--${suffix});
@@ -94,6 +95,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
       </div>
 
       <div
+        data-testid={"job_appl__card__status"}
         className="mx-auto border-2 rounded-xl py-2 px-10"
         css={css`
           color: var(--${suffix});
