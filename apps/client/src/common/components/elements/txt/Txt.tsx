@@ -2,16 +2,17 @@
 "use client";
 
 import type { FC } from "react";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import { SizeT } from "@/common/types/ui";
 
 type PropsType = {
   $size: SizeT;
   $justify: "start" | "center" | "end";
+  $ctmCSS?: SerializedStyles;
   txt: string;
 };
 
-const Txt: FC<PropsType> = ({ $size, $justify, txt }) => {
+const Txt: FC<PropsType> = ({ $size, $justify, $ctmCSS, txt }) => {
   return (
     <div
       className="flex"
@@ -19,7 +20,14 @@ const Txt: FC<PropsType> = ({ $size, $justify, txt }) => {
         justify-content: ${$justify};
       `}
     >
-      <span className={`txt__${$size}`}>{txt}</span>
+      <span
+        className={`txt__${$size}`}
+        css={css`
+          ${$ctmCSS}
+        `}
+      >
+        {txt}
+      </span>
     </div>
   );
 };

@@ -75,7 +75,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
 
   const content = (
     <>
-      {isObjOk(confPortal) ? (
+      {!tooltipTxt ? null : isObjOk(confPortal) ? (
         <PortalTooltip
           {...{
             isHover: isHover && confPortal!.showPortal,
@@ -107,6 +107,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
           }}
         />
       )}
+
       <Svg className={`${$SvgSize ? `svg__${$SvgSize}` : "svg__lg"} z-10`} />
     </>
   );
