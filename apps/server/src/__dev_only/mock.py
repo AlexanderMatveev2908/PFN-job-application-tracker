@@ -16,7 +16,7 @@ def random_timestamp() -> int:
     return int(
         (
             datetime.datetime.now(datetime.timezone.utc)
-            + datetime.timedelta(days=random.randint(1, 7))
+            + datetime.timedelta(days=random.randint(1, 60))
         ).timestamp()
         * 1000
     )

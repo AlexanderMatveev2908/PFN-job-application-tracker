@@ -53,8 +53,6 @@ const PageCounter = <
     async (arg: PayloadPaginationT) => {
       const { key, val } = arg;
 
-      setPagination(arg);
-
       await triggerSearch({
         freshData: {
           ...(prevData.current ?? {}),
@@ -64,9 +62,10 @@ const PageCounter = <
         triggerRTK: triggerRTK as TriggerApiT<R>,
         keyPending: "submit",
         skipCall: true,
+        payloadPagination: arg,
       });
     },
-    [limit, prevData, setPagination, triggerRTK, triggerSearch]
+    [limit, prevData, triggerRTK, triggerSearch]
   );
 
   useEffect(() => {

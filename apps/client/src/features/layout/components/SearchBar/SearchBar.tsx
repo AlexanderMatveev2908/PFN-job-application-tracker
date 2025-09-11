@@ -58,16 +58,17 @@ const SearchBar = <
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
   const {
     setCurrFilter,
-    pagination: { page, limit },
+    pagination: { limit },
     triggerSearch,
   } = useSearchCtxConsumer();
 
   const handleSave = handleSubmit(async (data) => {
     await triggerSearch({
-      freshData: { ...data, page, limit } as FreshDataArgT<T>,
+      freshData: { ...data, page: 0, limit } as FreshDataArgT<T>,
       triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "submit",
       skipCall: true,
+      payloadPagination: { key: "page", val: 0 },
     });
   }, logFormErrs);
 
@@ -79,6 +80,7 @@ const SearchBar = <
       triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "reset",
       skipCall: true,
+      payloadPagination: { key: "page", val: 0 },
     });
   }, [reset, resetVals, limit, triggerRTK, triggerSearch]);
 

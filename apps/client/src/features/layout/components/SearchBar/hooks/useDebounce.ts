@@ -49,6 +49,7 @@ export const useDebounce = <T extends FieldValues, R>({
         } as FreshDataArgT<T>,
         triggerRTK,
         keyPending: "submit",
+        payloadPagination: { key: "page", val: 0 },
       });
       clearTmr(timerID);
     }, 750);

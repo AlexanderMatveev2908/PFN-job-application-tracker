@@ -61,6 +61,7 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
       freshData: FreshDataArgT<T>;
       triggerRTK: TriggerApiT<R>;
       keyPending: "submit" | "reset";
+      payloadPagination?: PayloadPaginationT;
       skipCall?: boolean;
     }) => {
       const cpy = cpyObj(arg.freshData);
@@ -77,13 +78,15 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
 
       setPending({ key: arg.keyPending, val: true });
 
+      if (arg.payloadPagination) setPagination(arg.payloadPagination);
+
       setSearchApi({ key: "skipCall", val: !!arg.skipCall });
 
       await wrapAPI({
         cbAPI: () => arg.triggerRTK(genURLSearchQuery(cpy)),
       });
     },
-    [wrapAPI, setPending, setSearchApi]
+    [wrapAPI, setPending, setSearchApi, setPagination]
   );
 
   return {
