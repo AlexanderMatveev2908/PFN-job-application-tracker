@@ -1,5 +1,5 @@
 import { TokenT } from "@/common/types/tokens";
-import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
+import { extractAadFromCbcHmac } from "@/core/lib/dataStructure/parsers";
 import { useNotice } from "@/features/notice/hooks/useNotice";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";

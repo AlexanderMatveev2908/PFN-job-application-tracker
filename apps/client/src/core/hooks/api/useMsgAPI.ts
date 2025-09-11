@@ -1,5 +1,5 @@
 import { ResApiT } from "@/common/types/api";
-import { isStr } from "@/core/lib/dataStructure";
+import { isStr } from "@/core/lib/dataStructure/ect";
 import { toastSlice } from "@/features/layout/components/Toast/slices";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";

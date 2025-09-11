@@ -16,6 +16,10 @@ export type SearchBarStateT = {
     submit: boolean;
     reset: boolean;
   };
+
+  api: {
+    skipCall: boolean;
+  };
 };
 
 export const searchBarInitState: SearchBarStateT = {
@@ -33,5 +37,9 @@ export const searchBarInitState: SearchBarStateT = {
   pending: {
     reset: false,
     submit: false,
+  },
+
+  api: {
+    skipCall: false,
   },
 };

@@ -3,7 +3,7 @@
 "use client";
 
 import { useHydration } from "@/core/hooks/etc/hydration/useHydration";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchCtxConsumer } from "@/features/layout/components/SearchBar/context/hooks/useSearchCtxConsumer";
 import { getMaxBtnForSwap, getNumCardsForPage } from "./uiFactory";
 import BtnBg from "../../../../../../common/components/buttons/BtnBg";
@@ -13,36 +13,70 @@ import BoxInput from "@/common/components/forms/inputs/BoxInput";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { __cg } from "@/core/lib/log";
 import { v4 } from "uuid";
+import { FreshDataArgT } from "../../context/hooks/useSearchCtxProvider";
+import { PayloadPaginationT } from "../../context/etc/actions";
+import { FieldValues } from "react-hook-form";
+import { TriggerApiT } from "@/common/types/api";
 
-type PropsType<K extends (...args: any) => any> = {
-  nHits: number;
-  hook: ReturnType<K>;
+type PropsType<H extends any[]> = {
+  hook: H;
 };
 
-const PageCounter = <K extends (...args: any) => any>({
-  nHits,
-}: PropsType<K>) => {
+const PageCounter = <
+  T extends FieldValues,
+  H extends any[],
+  R = ReturnType<H[0]["call"]>
+>({
+  hook,
+}: PropsType<H>) => {
   const { isHydrated } = useHydration();
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
+
+  const [triggerRTK, res] = hook;
+  const { data: { n_hits = 0, pages = 0 } = {} } = res ?? {};
 
   const {
     pagination: { swap, page, limit },
     setPagination,
+    triggerSearch,
+    prevData,
   } = useSearchCtxConsumer();
 
+  const handleChangePagination = useCallback(
+    async (arg: PayloadPaginationT) => {
+      const { key, val } = arg;
+
+      setPagination(arg);
+
+      await triggerSearch({
+        freshData: {
+          ...(prevData.current ?? {}),
+          page: key === "page" ? val : 0,
+          limit: key === "limit" ? val : limit,
+        } as FreshDataArgT<T>,
+        triggerRTK: triggerRTK as TriggerApiT<R>,
+        keyPending: "submit",
+        skipCall: true,
+      });
+    },
+    [limit, prevData, setPagination, triggerRTK, triggerSearch]
+  );
+
   useEffect(() => {
-    const cb = () => {
+    const cb = async () => {
       const newLimit = getNumCardsForPage();
       const newPagesForSwap = getMaxBtnForSwap();
 
-      setPagesForSwap(newPagesForSwap);
-      setPagination({ key: "limit", val: newLimit });
+      if (pagesForSwap !== newPagesForSwap) setPagesForSwap(newPagesForSwap);
+      if (limit !== newLimit) {
+        await handleChangePagination({ key: "limit", val: newLimit });
+      }
 
-      const newTotPages = Math.ceil(nHits / newLimit);
-      const newTotSwaps = Math.ceil(newTotPages / newPagesForSwap);
+      // const newTotPages = Math.ceil(n_hits / newLimit);
+      const newTotSwaps = Math.ceil(pages / newPagesForSwap);
 
       const lastSwapAllowed = Math.max(0, newTotSwaps - 1);
-      const lastPageAllowed = Math.max(0, newTotPages - 1);
+      const lastPageAllowed = Math.max(0, pages - 1);
 
       const shouldFixPage = page > lastPageAllowed;
       const shouldFixSwap = swap > lastSwapAllowed;
@@ -58,9 +92,18 @@ const PageCounter = <K extends (...args: any) => any>({
     return () => {
       window.removeEventListener("resize", cb);
     };
-  }, [setPagination, nHits, swap, page]);
+  }, [
+    setPagination,
+    n_hits,
+    swap,
+    page,
+    pages,
+    limit,
+    pagesForSwap,
+    handleChangePagination,
+  ]);
 
-  const totPages = useMemo(() => Math.ceil(nHits / limit), [limit, nHits]);
+  const totPages = useMemo(() => Math.ceil(n_hits / limit), [limit, n_hits]);
   // const totSwaps = useMemo(
   //   () => Math.ceil(totPages / pagesForSwap),
   //   [totPages, pagesForSwap]
@@ -81,7 +124,7 @@ const PageCounter = <K extends (...args: any) => any>({
 
   // __cg(
   //   "pagination",
-  //   ["nHits", nHits],
+  //   ["n_hits", n_hits],
   //   ["limit", limit],
   //   ["totPages", totPages],
   //   ["pagesForSwap", pagesForSwap],
@@ -89,6 +132,10 @@ const PageCounter = <K extends (...args: any) => any>({
   //   ["currPages", currPages],
   //   ["page", page]
   // );
+
+  const handleChangePage = async (val: number) => {
+    await handleChangePagination({ key: "page", val });
+  };
 
   return !isHydrated ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
@@ -113,8 +160,7 @@ const PageCounter = <K extends (...args: any) => any>({
                 <BoxInput
                   {...{
                     isChosen: el.val === page,
-                    handleClick: () =>
-                      setPagination({ key: "page", val: el.val }),
+                    handleClick: async () => await handleChangePage(el.val),
                     opt: el,
                     $labelSizeCls: "lg",
                   }}

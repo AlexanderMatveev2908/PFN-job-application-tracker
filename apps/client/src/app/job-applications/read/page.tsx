@@ -24,13 +24,10 @@ const Page: FC = () => {
 
   return (
     <div className="page__shape">
-      <SearchBarWrapper<
-        SearchJobsFormT,
-        typeof jobApplicationSliceAPI.useLazyReadJobApplicationsQuery
+      <SearchBarWrapper<SearchJobsFormT, typeof hook>
+        {...{ formCtx, hook, schema: searchJobsSchema }}
       >
-        {...{ formCtx, hook }}
-      >
-        {({ hook }) => <SearchJobs {...{ hook }} />}
+        {(arg) => <SearchJobs {...arg} />}
       </SearchBarWrapper>
     </div>
   );

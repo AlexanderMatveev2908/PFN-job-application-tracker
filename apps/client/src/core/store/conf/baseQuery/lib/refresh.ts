@@ -2,11 +2,11 @@
 import { ConfApiT } from "@/common/types/api";
 import { BaseQueryArgT, BaseQueryReturnT } from "./types";
 import { instanceAxs } from "../axiosInstance";
-import { isStr } from "@/core/lib/dataStructure";
 import { clearStorage, saveStorage } from "@/core/lib/storage";
 import { extractHeaders, extractMsgErr } from "./etc";
 import { __cg } from "@/core/lib/log";
 import { AxiosError } from "axios";
+import { isStr } from "@/core/lib/dataStructure/ect";
 
 const getFreshAccessToken = async (): Promise<string> => {
   const { data } = await instanceAxs.get("/auth/refresh");

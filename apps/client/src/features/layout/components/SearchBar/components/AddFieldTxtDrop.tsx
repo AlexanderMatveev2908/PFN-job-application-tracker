@@ -9,6 +9,9 @@ import { useMemo, useRef, useState } from "react";
 import { FieldValues, Path, UseFieldArrayAppend } from "react-hook-form";
 import { FaPlus } from "react-icons/fa6";
 import { v4 } from "uuid";
+import { useSearchCtxConsumer } from "../context/hooks/useSearchCtxConsumer";
+import { cpyObj } from "@/core/lib/dataStructure/ect";
+import { PrevDataT } from "../context/hooks/useSearchCtxProvider";
 
 export type AddFieldTxtPropsType<T extends FieldValues> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -21,6 +24,8 @@ const AddFieldTxtDrop = <T extends FieldValues>({
   append,
   existingFields,
 }: AddFieldTxtPropsType<T>) => {
+  const { prevData } = useSearchCtxConsumer();
+
   const [isShw, setIsShw] = useState(false);
   const contRef = useRef<HTMLDivElement | null>(null);
 
@@ -68,10 +73,20 @@ const AddFieldTxtDrop = <T extends FieldValues>({
             <div
               key={el.id}
               onClick={() => {
-                append({
+                const newField = {
                   ...el,
                   val: "",
-                } as T[Path<T>]);
+                };
+
+                prevData.current = {
+                  ...cpyObj(prevData.current),
+                  txtFields: [
+                    ...((prevData.current as PrevDataT<T>)?.txtFields ?? []),
+                    newField,
+                  ],
+                };
+
+                append(newField as T[Path<T>]);
                 setIsShw(false);
               }}
               className="w-full flex justify-center py-2 hover:text-neutral-950 hover:bg-neutral-300 transition-all duration-300 cursor-pointer"

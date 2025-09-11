@@ -1,5 +1,5 @@
 from fastapi import Depends, Request, Response
-from sqlalchemy import select
+from sqlalchemy import UnaryExpression, select
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
 from src.features.job_applications.middleware.read_job_appl import (
@@ -8,6 +8,7 @@ from src.features.job_applications.middleware.read_job_appl import (
 from src.lib.db.query import (
     ApplyPagReturnT,
     apply_pagination,
+    build_order_query,
     build_list_cond_query,
 )
 from src.middleware.forms.check_form import CheckFormLoggedReturnT
@@ -42,6 +43,15 @@ async def read_job_appl_ctrl(
         status = q.get("status", [])
         if status:
             stmt = stmt.where(JobApplication.status.in_(status))
+
+        cond_order: list[UnaryExpression] = build_order_query(
+            q,
+            Table=JobApplication,
+            keys=["created_at_sort", "updated_at_sort", "applied_at_sort"],
+        )
+
+        if cond_order:
+            stmt = stmt.order_by(*cond_order)
 
         # ? count results before final stmt
         # ? to know how many there are before paginating

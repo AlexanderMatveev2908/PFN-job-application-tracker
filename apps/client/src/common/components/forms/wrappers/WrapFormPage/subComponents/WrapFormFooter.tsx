@@ -5,7 +5,7 @@ import BtnShim from "@/common/components/buttons/BtnShim/BtnShim";
 import BtnsSwapper, {
   PropsTypeBtnsSwapper,
 } from "@/common/components/swap/components/BtnsSwapper";
-import { isObjOk } from "@/core/lib/dataStructure";
+import { isObjOk } from "@/core/lib/dataStructure/ect";
 import type { FC } from "react";
 
 type PropsType = {

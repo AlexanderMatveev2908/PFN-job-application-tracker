@@ -48,6 +48,18 @@ export const searchbarReducer = (
         },
       };
 
+    case "SET_API": {
+      const { key, val } = action.payload;
+
+      return {
+        ...state,
+        api: {
+          ...state.api,
+          [key]: val,
+        },
+      };
+    }
+
     default:
       throw new ErrApp(`Invalid action 😡 => ${action}`);
   }

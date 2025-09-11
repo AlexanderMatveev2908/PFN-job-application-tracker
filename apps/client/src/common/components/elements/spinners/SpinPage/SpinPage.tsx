@@ -6,13 +6,18 @@ import { $argClr } from "@/core/uiFactory/style";
 
 type PropsType = {
   act?: AppEventT;
+  $minH?: string;
 };
 
-const SpinPage: FC<PropsType> = ({ act = "NONE" }) => {
+const SpinPage: FC<PropsType> = ({ act = "NONE", $minH }) => {
   const ids = Array.from({ length: 15 }, () => v4());
 
   return (
-    <div className="w-full h-full min-h-screen overflow-hidden flex justify-center items-center">
+    <div
+      className={`w-full h-full ${
+        $minH ?? "min-h-screen"
+      } overflow-hidden flex justify-center items-center`}
+    >
       <div className={`${s.__wrap} relative w-full`}>
         {ids.map((id, i) => (
           <div

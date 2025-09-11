@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useUser } from "./useUser";
 import { useRouter } from "next/navigation";
-import { extractAadFromCbcHmac } from "@/core/lib/dataStructure";
+import { extractAadFromCbcHmac } from "@/core/lib/dataStructure/parsers";
 import { TokenT } from "@/common/types/tokens";
 
 type Params = {

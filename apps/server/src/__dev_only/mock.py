@@ -1,4 +1,5 @@
 import datetime
+import random
 from typing import cast
 
 from sqlalchemy import text
@@ -9,6 +10,16 @@ from src.lib.resdis.idx import clean_redis
 from src.models.job_application import JobApplication
 from src.models.root import RootTable
 from src.models.user import User
+
+
+def random_timestamp() -> int:
+    return int(
+        (
+            datetime.datetime.now(datetime.timezone.utc)
+            + datetime.timedelta(days=random.randint(1, 7))
+        ).timestamp()
+        * 1000
+    )
 
 
 async def reset_mock() -> None:
@@ -42,13 +53,13 @@ async def reset_mock() -> None:
             for _ in range(10):
                 payload = gen_job_appl_payload(new_us_db.id)
 
-                dt = datetime.datetime.strptime(
-                    cast(str, payload["applied_at"]), "%Y-%m-%d"
-                ).replace(tzinfo=datetime.timezone.utc)
+                payload["applied_at"] = random_timestamp()
 
-                payload["applied_at"] = int(dt.timestamp() * 1000)
-
-                newJobAppl = JobApplication(**payload)
+                newJobAppl = JobApplication(
+                    **payload,
+                    created_at=random_timestamp(),
+                    updated_at=random_timestamp(),
+                )
                 trx.add(newJobAppl)
                 await trx.flush([newJobAppl])
                 await trx.refresh(newJobAppl)

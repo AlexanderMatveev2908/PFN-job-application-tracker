@@ -10,24 +10,17 @@ import {
 } from "./uiFactory";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
-import { useSelector } from "react-redux";
-import { getJobApplicationsState } from "../../slices/slice";
-import { __cg } from "@/core/lib/log";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
+import { ZodObject } from "zod";
 
-type PropsType<K extends (...args: any) => any[]> = {
-  hook: ReturnType<K>;
+type PropsType<K extends any[]> = {
+  hook: K;
+  schema: ZodObject;
 };
 
-const SearchJobs = <K extends (...args: any) => any[]>({
-  hook,
-}: PropsType<K>) => {
-  const jobsState = useSelector(getJobApplicationsState);
-
+const SearchJobs = <K extends any[]>({ hook, schema }: PropsType<K>) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, res] = hook;
-
-  __cg("jobs state", jobsState);
 
   return (
     <div className="w-full grid grid-cols-1 gap-10">
@@ -39,12 +32,14 @@ const SearchJobs = <K extends (...args: any) => any[]>({
           filters: filtersSearchJobs,
           sorters: sortersSearchJobs,
           hook,
+          schema,
         }}
       />
 
       <WrapCSR
         {...{
-          isLoading: res.isLoading,
+          isLoading: res.isLoading || res?.isFetching,
+          $minH: "min-h-[75vh]",
         }}
       >
         <div className=""></div>

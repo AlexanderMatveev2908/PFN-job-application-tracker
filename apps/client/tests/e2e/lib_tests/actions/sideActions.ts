@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { clickByID } from "../shortcuts/click";
 import { getByID, getByTxt } from "../shortcuts/get";
-import { b32ToHex, hexToRgb } from "@/core/lib/dataStructure";
+import { b32ToHex, hexToRgb } from "@/core/lib/dataStructure/parsers";
 import { totp } from "otplib";
 import type { KeyEncodings } from "@otplib/core";
 import { waitTmr, waitURL } from "../shortcuts/wait";

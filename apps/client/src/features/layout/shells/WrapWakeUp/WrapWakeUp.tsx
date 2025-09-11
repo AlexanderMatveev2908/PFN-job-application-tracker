@@ -7,9 +7,9 @@ import { wakeUpSliceAPI } from "./slices/api";
 import { clearTmr } from "@/core/lib/etc";
 import { getStorage, saveStorage } from "@/core/lib/storage";
 import SpinBtn from "@/common/components/elements/spinners/SpinBtn";
-import { isStr } from "@/core/lib/dataStructure";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import Popup from "@/common/components/wrappers/Popup/Popup";
+import { isStr } from "@/core/lib/dataStructure/ect";
 
 type PropsType = {
   children: React.ReactNode;

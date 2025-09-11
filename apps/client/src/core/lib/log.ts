@@ -1,4 +1,4 @@
-import { isStr } from "./dataStructure";
+import { isStr } from "./dataStructure/ect";
 import { formatDate } from "./dataStructure/formatters";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

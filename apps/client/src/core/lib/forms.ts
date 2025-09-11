@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldErrors, FieldValues, Path } from "react-hook-form";
-import { isObjOk, isStr } from "./dataStructure";
 import { __cg } from "./log";
+import { isObjOk, isStr } from "./dataStructure/ect";
+import { skipUselessFalsy } from "./etc";
 
 export const swapOnErr = <T extends FieldValues>({
   errs,
@@ -43,7 +44,7 @@ export const genFormData = (
   prefix = ""
 ): FormData => {
   for (const [k, v] of Object.entries(obj)) {
-    if (v === undefined) continue;
+    if (skipUselessFalsy(v)) continue;
 
     const key = prefix ? `${prefix}[${k}]` : k;
 
@@ -66,11 +67,11 @@ export const genFormData = (
   return formData;
 };
 
-export const genURLSearchQuery = (obj: Record<string, unknown>): string => {
+export const genURLSearchQuery = <T>(obj: T): string => {
   const params = new URLSearchParams();
 
-  for (const [k, v] of Object.entries(obj)) {
-    if (v === undefined) continue;
+  for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
+    if (skipUselessFalsy(v)) continue;
 
     if (Array.isArray(v)) {
       const arrayKey = `${k}[]`;

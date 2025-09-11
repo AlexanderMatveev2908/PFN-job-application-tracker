@@ -5,7 +5,7 @@ import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
 import { searchJobsFieldsTxt } from "../uiFactory";
 import { ApplicationStatusT } from "../../../types";
-import { isStr } from "@/core/lib/dataStructure";
+import { isStr } from "@/core/lib/dataStructure/ect";
 
 const mapper: MapperArrayFieldsT = {
   company_name: {

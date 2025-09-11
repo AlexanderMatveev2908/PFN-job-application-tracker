@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useEffect, useRef, type FC } from "react";
+import { useRef, type FC } from "react";
 import { motion } from "framer-motion";
 import { varPop } from "./uiFactory";
 import { X } from "lucide-react";
@@ -11,6 +11,7 @@ import { parseLabelToTestID } from "@/core/lib/etc";
 import BlackBg from "../../elements/BlackBg";
 import BtnSvg from "../../buttons/BtnSvg";
 import BtnShadow from "../../buttons/BtnShadow";
+import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
 
 export type BtnWrapPopT = {
   msg?: string;
@@ -45,22 +46,10 @@ const Popup: FC<WrapPopPropsType> = ({
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
 
-  useEffect(() => {
-    const cb = (e: MouseEvent) => {
-      const isIn = popRef.current?.contains(e.target as Node);
-
-      if (!isIn && allowClose) {
-        setIsPop(false);
-      }
-    };
-
-    document.addEventListener("mousedown", cb);
-
-    return () => {
-      document.removeEventListener("mousedown", cb);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allowClose]);
+  useMouseOut({
+    ref: popRef,
+    cb: () => allowClose && setIsPop(false),
+  });
 
   return (
     <>

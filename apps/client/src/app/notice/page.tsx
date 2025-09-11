@@ -4,7 +4,7 @@
 import LinkShadow from "@/common/components/links/LinkShadow";
 import AppEventPage from "@/common/components/wrappers/pages/AppEventPage/AppEventPage";
 import { envApp } from "@/core/constants/env";
-import { isStr } from "@/core/lib/dataStructure";
+import { isStr } from "@/core/lib/dataStructure/ect";
 import { mapperCbs } from "@/features/notice/lib/etc";
 import { getNoticeState } from "@/features/notice/slices/slice";
 import { useEffect, type FC } from "react";
