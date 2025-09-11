@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { JobApplicationT } from "../types";
 
-const jobApplicationsAdapter = createEntityAdapter();
+const jobApplicationsAdapter = createEntityAdapter<JobApplicationT>();
 
 const initState = jobApplicationsAdapter.getInitialState({
   n_hits: 0,

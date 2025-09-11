@@ -29,7 +29,7 @@ export const getNumCardsForPage = () => {
     : w > uiBreaks.lg
     ? 6
     : w > uiBreaks.md
-    ? 4
+    ? 3
     : w > uiBreaks.sm
     ? 2
     : 1;

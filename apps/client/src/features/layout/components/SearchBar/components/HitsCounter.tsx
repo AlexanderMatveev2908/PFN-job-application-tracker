@@ -9,9 +9,14 @@ type PropsType<R extends Record<string, any>> = {
 };
 
 const HitsCounter = <R extends Record<string, any>>({ res }: PropsType<R>) => {
-  const { data: { n_hits } = {}, isLoading, isFetching } = res ?? {};
+  const {
+    data: { n_hits } = {},
+    isLoading,
+    isFetching,
+    isUninitialized,
+  } = res ?? {};
 
-  const isPending = isLoading || isFetching || typeof n_hits !== "number";
+  const isPending = isLoading || isFetching || isUninitialized;
 
   return (
     !isPending && (

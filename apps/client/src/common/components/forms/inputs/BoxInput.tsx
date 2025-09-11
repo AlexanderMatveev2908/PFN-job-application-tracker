@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { CheckChoiceT, TestIDT } from "@/common/types/ui";
+import { CheckChoiceT, TestIDT, TxtSizeT } from "@/common/types/ui";
 import { css, SerializedStyles } from "@emotion/react";
 import type { FC } from "react";
-import PairTxtSvg, { LabelSizeT } from "../../elements/PairTxtSvg";
+import PairTxtSvg from "../../elements/PairTxtSvg";
 
 type PropsType = {
   handleClick: () => void;
   isChosen: boolean;
   opt: CheckChoiceT;
   $ctmLabelCSS?: SerializedStyles;
-  $labelSizeCls?: LabelSizeT;
+  $labelSizeCls?: TxtSizeT;
 } & TestIDT;
 
 const BoxInput: FC<PropsType> = ({

@@ -8,7 +8,7 @@ type PropsType = {
 
 const BaseLayoutPage: FC<PropsType> = ({ title, children }) => {
   return (
-    <div className="w-full h-full min-h-screen flex flex-col gap-12 relative">
+    <div className="w-full h-fit min-h-screen flex flex-col gap-12 relative">
       {title && (
         <Title
           {...{

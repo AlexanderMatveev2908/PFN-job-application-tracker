@@ -4,9 +4,9 @@
 import type { FC } from "react";
 import { useSearchCtxConsumer } from "../../context/hooks/useSearchCtxConsumer";
 import Popup from "@/common/components/wrappers/Popup/Popup";
-import SortBarHeader from "./components/SortBarHeader";
 import SortBarBody from "./components/SortBarBody/SortBarBody";
 import { SorterSearchBarT } from "../../types";
+import Txt from "@/common/components/elements/txt/Txt";
 
 type PropsType = {
   sorters: SorterSearchBarT[];
@@ -26,7 +26,7 @@ const SortBar: FC<PropsType> = ({ sorters }) => {
       }}
     >
       <div className="w-full h-full flex flex-col gap-4">
-        <SortBarHeader />
+        <Txt {...{ txt: "Sort", $size: "2xl", $justify: "center" }} />
 
         <SortBarBody {...{ sorters }} />
       </div>

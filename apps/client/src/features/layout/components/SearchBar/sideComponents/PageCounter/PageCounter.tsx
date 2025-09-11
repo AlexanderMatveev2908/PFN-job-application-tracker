@@ -33,7 +33,14 @@ const PageCounter = <
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 
   const [triggerRTK, res] = hook;
-  const { data: { n_hits = 0, pages = 0 } = {} } = res ?? {};
+  const {
+    data: { n_hits = 0, pages = 0 } = {},
+    isLoading,
+    isFetching,
+    isUninitialized,
+  } = res ?? {};
+
+  const isPending = isLoading || isFetching || isUninitialized;
 
   const {
     pagination: { swap, page, limit },
@@ -137,7 +144,7 @@ const PageCounter = <
     await handleChangePagination({ key: "page", val });
   };
 
-  return !isHydrated ? null : (
+  return !isHydrated || isPending || !n_hits ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
       <div className="w-full grid grid-cols-[75px_1fr_75px] gap-10">
         <BtnBg

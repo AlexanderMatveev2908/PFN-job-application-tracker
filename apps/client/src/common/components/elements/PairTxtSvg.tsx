@@ -1,13 +1,11 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT } from "@/common/types/ui";
+import { FieldTxtSvgT, TxtSizeT } from "@/common/types/ui";
 import type { FC } from "react";
 import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
 import { css, SerializedStyles } from "@emotion/react";
-
-export type LabelSizeT = "lg" | "xl" | "2xl" | "3xl";
 
 type PropsType = {
   el: FieldTxtSvgT;
@@ -15,7 +13,7 @@ type PropsType = {
   isLoading?: boolean;
   isHover?: boolean;
   $SvgCls?: string;
-  $labelSizeCls?: LabelSizeT;
+  $labelSizeCls?: TxtSizeT;
   $ctmLabelCSS?: SerializedStyles;
 };
 

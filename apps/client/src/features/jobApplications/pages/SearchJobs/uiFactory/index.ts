@@ -10,6 +10,9 @@ import {
 import { IoStatsChart } from "react-icons/io5";
 import { CgSandClock } from "react-icons/cg";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
+import { FaBuilding } from "react-icons/fa6";
+import { MdWork } from "react-icons/md";
+import { JobApplicationT } from "@/features/jobApplications/types";
 
 export const searchJobsFieldsTxt = [companyNameField, positionNameField];
 
@@ -53,3 +56,19 @@ export const sortersSearchJobs: SorterSearchBarT[] = [
   label: parseDevValUsFriendly(el.name, { titleCase: true }),
   Svg: CgSandClock,
 }));
+
+export const genCardPairs = (jobAppl: JobApplicationT) =>
+  [
+    {
+      key: "company_name",
+      Svg: FaBuilding,
+    },
+    {
+      key: "position_name",
+      Svg: MdWork,
+    },
+  ].map((el) => ({
+    ...el,
+    label: parseDevValUsFriendly(el.key, { titleCase: true }),
+    val: jobAppl[el.key as keyof JobApplicationT],
+  }));

@@ -71,7 +71,7 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
       prevData.current = rst as PrevDataT<T>;
 
       // ? is enough to send to server key value pairs, no need to send all object with useless properties for sql query
-      for (const field of cpy?.txtFields) {
+      for (const field of cpy?.txtFields ?? []) {
         (cpy as Record<string, unknown>)[field.name] = field.val;
       }
 
