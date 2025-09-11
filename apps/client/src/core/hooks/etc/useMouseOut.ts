@@ -18,5 +18,6 @@ export const useMouseOut = ({ ref, cb }: Params) => {
     return () => {
       document.removeEventListener("mousedown", handleMouse);
     };
-  }, [ref, cb]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 };

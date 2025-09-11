@@ -38,6 +38,15 @@ export type FormFieldTxtT<T extends FieldValues> = {
   type: FieldInputT;
 };
 
+export type FieldTxtArrT = {
+  id: string;
+  name: string;
+  type: string;
+  label: string;
+  place: string;
+  val: string;
+};
+
 export type FormFieldTxtSearchBarT<T extends FieldValues> = FormFieldTxtT<T> & {
   id: string;
   val: string;

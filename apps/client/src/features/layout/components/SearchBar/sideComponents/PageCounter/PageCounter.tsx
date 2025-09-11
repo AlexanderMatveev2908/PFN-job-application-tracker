@@ -18,13 +18,17 @@ import { PayloadPaginationT } from "../../context/etc/actions";
 import { FieldValues } from "react-hook-form";
 import { TriggerApiT } from "@/common/types/api";
 
-type PropsType<K extends any[]> = {
-  hook: K;
+type PropsType<H extends any[]> = {
+  hook: H;
 };
 
-const PageCounter = <T extends FieldValues, K extends any[]>({
+const PageCounter = <
+  T extends FieldValues,
+  H extends any[],
+  R = ReturnType<H[0]["call"]>
+>({
   hook,
-}: PropsType<K>) => {
+}: PropsType<H>) => {
   const { isHydrated } = useHydration();
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 
@@ -50,7 +54,7 @@ const PageCounter = <T extends FieldValues, K extends any[]>({
           page: key === "page" ? val : 0,
           limit: key === "limit" ? val : limit,
         } as FreshDataArgT<T>,
-        triggerRTK: triggerRTK as TriggerApiT<K>,
+        triggerRTK: triggerRTK as TriggerApiT<R>,
         keyPending: "submit",
         skipCall: true,
       });

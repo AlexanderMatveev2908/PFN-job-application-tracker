@@ -11,16 +11,21 @@ import { genURLSearchQuery } from "@/core/lib/forms";
 import { useWrapAPI } from "@/core/hooks/api/useWrapAPI";
 import { TriggerApiT } from "@/common/types/api";
 import { cpyObj } from "@/core/lib/dataStructure/ect";
+import { FieldTxtArrT } from "@/common/types/ui";
+import { FieldValues } from "react-hook-form";
 
-export type FreshDataArgT<T> = T & {
+export type PrevDataT<T> = {
+  txtFields: FieldTxtArrT[];
+} & T;
+
+export type FreshDataArgT<T> = {
   page: number;
   limit: number;
-  txtFields: Record<string, string>[];
-};
+} & PrevDataT<T>;
 
-export const useSearchCtxProvider = <T>() => {
+export const useSearchCtxProvider = <T extends FieldValues, R>() => {
   const [state, dispatchRct] = useReducer(searchbarReducer, searchBarInitState);
-  const prevData = useRef<T | null>(null);
+  const prevData = useRef<PrevDataT<T> | null>(null);
 
   const { wrapAPI } = useWrapAPI();
 
@@ -54,7 +59,7 @@ export const useSearchCtxProvider = <T>() => {
   const triggerSearch = useCallback(
     async (arg: {
       freshData: FreshDataArgT<T>;
-      triggerRTK: TriggerApiT<T>;
+      triggerRTK: TriggerApiT<R>;
       keyPending: "submit" | "reset";
       skipCall?: boolean;
     }) => {
@@ -63,7 +68,7 @@ export const useSearchCtxProvider = <T>() => {
       // ? pagination is handled separately so does not need to be tracked
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { page, limit, ...rst } = cpy;
-      prevData.current = rst as T;
+      prevData.current = rst as PrevDataT<T>;
 
       // ? is enough to send to server key value pairs, no need to send all object with useless properties for sql query
       for (const field of cpy?.txtFields) {

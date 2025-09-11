@@ -29,23 +29,27 @@ import { useDebounce } from "./hooks/useDebounce";
 import { FreshDataArgT } from "./context/hooks/useSearchCtxProvider";
 import { TriggerApiT } from "@/common/types/api";
 
-type PropsType<T extends FieldValues, K extends any[]> = {
+type PropsType<T extends FieldValues, H extends any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
   resetVals: T;
   filters: FilterSearchBarT[];
   sorters: SorterSearchBarT[];
-  hook: K;
+  hook: H;
   schema: ZodObject;
 };
 
-const SearchBar = <T extends FieldValues, K extends any[]>({
+const SearchBar = <
+  T extends FieldValues,
+  H extends any[],
+  R = ReturnType<H[0]["call"]>
+>({
   allowedTxtFields,
   resetVals,
   filters,
   sorters,
   hook,
   schema,
-}: PropsType<T, K>) => {
+}: PropsType<T, H>) => {
   const { isHydrated } = useHydration();
 
   const [triggerRTK, res] = hook;
@@ -60,7 +64,7 @@ const SearchBar = <T extends FieldValues, K extends any[]>({
   const handleSave = handleSubmit(async (data) => {
     await triggerSearch({
       freshData: { ...data, page, limit } as FreshDataArgT<T>,
-      triggerRTK: triggerRTK as TriggerApiT<K>,
+      triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "submit",
       skipCall: true,
     });
@@ -71,7 +75,7 @@ const SearchBar = <T extends FieldValues, K extends any[]>({
 
     await triggerSearch({
       freshData: { ...resetVals, page: 0, limit } as FreshDataArgT<T>,
-      triggerRTK: triggerRTK as TriggerApiT<K>,
+      triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "reset",
       skipCall: true,
     });
@@ -87,7 +91,7 @@ const SearchBar = <T extends FieldValues, K extends any[]>({
 
   useDebounce({
     schema,
-    triggerRTK: triggerRTK as TriggerApiT<K>,
+    triggerRTK: triggerRTK as TriggerApiT<R>,
   });
 
   const existingFields: FormFieldTxtSearchBarT<T>[] =

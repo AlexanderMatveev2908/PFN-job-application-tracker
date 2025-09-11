@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { FieldValues, useFormContext } from "react-hook-form";
 import { useSearchCtxConsumer } from "../context/hooks/useSearchCtxConsumer";
 import { useEffect, useRef } from "react";
 import { ZodObject } from "zod";
@@ -9,12 +9,15 @@ import { TriggerApiT } from "@/common/types/api";
 import { getNumCardsForPage } from "../sideComponents/PageCounter/uiFactory";
 import { FreshDataArgT } from "../context/hooks/useSearchCtxProvider";
 
-type Params<T> = {
+type Params<R> = {
   schema: ZodObject;
-  triggerRTK: TriggerApiT<T>;
+  triggerRTK: TriggerApiT<R>;
 };
 
-export const useDebounce = <T>({ schema, triggerRTK }: Params<T>) => {
+export const useDebounce = <T extends FieldValues, R>({
+  schema,
+  triggerRTK,
+}: Params<R>) => {
   const timerID = useRef<NodeJS.Timeout>(null);
 
   const { prevData, setPending, triggerSearch } = useSearchCtxConsumer();
