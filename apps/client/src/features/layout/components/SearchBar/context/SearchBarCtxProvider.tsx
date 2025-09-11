@@ -2,13 +2,9 @@
 "use client";
 
 import { ChildrenT } from "@/common/types/ui";
-import { createContext, type FC } from "react";
-import {
-  SearchBarCtxT,
-  useSearchCtxProvider,
-} from "./hooks/useSearchCtxProvider";
-
-export const SearchBarCtx = createContext<SearchBarCtxT | null>(null);
+import { type FC } from "react";
+import { useSearchCtxProvider } from "./hooks/useSearchCtxProvider";
+import { SearchBarCtx } from "./ctx";
 
 const SearchBarCtxProvider: FC<ChildrenT> = ({ children }) => {
   return (

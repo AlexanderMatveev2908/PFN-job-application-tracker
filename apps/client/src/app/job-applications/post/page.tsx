@@ -13,6 +13,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { jobApplicationSliceAPI } from "@/features/jobApplications/slices/api";
 import { genFormData, logFormErrs } from "@/core/lib/forms";
+import { useAppFormsCtxConsumer } from "@/core/contexts/appForms/hooks/useAppFormsCtxConsumer";
 
 const Page: FC = () => {
   const formCtx = useForm({
@@ -21,6 +22,8 @@ const Page: FC = () => {
     defaultValues: resetValsJobApplForm,
   });
   const { handleSubmit, reset } = formCtx;
+
+  const { formCtxJobs: formCtxRead } = useAppFormsCtxConsumer();
 
   const { nav, wrapAPI } = useKitHooks();
   const [mutate] = jobApplicationSliceAPI.useAddJobApplicationMutation();
@@ -35,6 +38,10 @@ const Page: FC = () => {
     if (!res) return;
 
     reset(resetValsJobApplForm);
+
+    formCtxRead.setValue("txtFields.0.val", res.job_application.company_name, {
+      shouldValidate: true,
+    });
 
     nav.replace("/job-applications/read");
   }, logFormErrs);
