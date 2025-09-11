@@ -61,6 +61,7 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
       freshData: FreshDataArgT<T>;
       triggerRTK: TriggerApiT<R>;
       keyPending: "submit" | "reset";
+      payloadPagination?: PayloadPaginationT;
       skipCall?: boolean;
     }) => {
       const cpy = cpyObj(arg.freshData);
@@ -71,11 +72,13 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
       prevData.current = rst as PrevDataT<T>;
 
       // ? is enough to send to server key value pairs, no need to send all object with useless properties for sql query
-      for (const field of cpy?.txtFields) {
+      for (const field of cpy?.txtFields ?? []) {
         (cpy as Record<string, unknown>)[field.name] = field.val;
       }
 
       setPending({ key: arg.keyPending, val: true });
+
+      if (arg.payloadPagination) setPagination(arg.payloadPagination);
 
       setSearchApi({ key: "skipCall", val: !!arg.skipCall });
 
@@ -83,7 +86,7 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
         cbAPI: () => arg.triggerRTK(genURLSearchQuery(cpy)),
       });
     },
-    [wrapAPI, setPending, setSearchApi]
+    [wrapAPI, setPending, setSearchApi, setPagination]
   );
 
   return {

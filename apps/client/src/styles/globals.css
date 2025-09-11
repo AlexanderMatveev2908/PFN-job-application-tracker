@@ -97,36 +97,44 @@
   transform: scale(0.8);
 }
 
-.z__bg_sidebar {
+.z__tooltips {
   z-index: 100;
 }
 
-.z__header {
+.z__bg_sidebar {
   z-index: 200;
 }
 
-.z__sidebar {
+.z__header {
   z-index: 300;
 }
 
-.z__black_bg__search_bar {
+.z__sidebar {
   z-index: 400;
 }
 
-.z__search_bar {
+.z__black_bg__search_bar {
   z-index: 500;
 }
 
-.z__black_bg__popup {
+.z__search_bar {
   z-index: 600;
 }
 
-.z__popup {
+.z__black_bg__popup {
   z-index: 700;
 }
 
-.z__toast {
+.z__popup {
   z-index: 800;
+}
+
+.z__toast {
+  z-index: 900;
+}
+
+.txt__xxs {
+  @apply font-thin text-xs lg:text-sm;
 }
 
 .txt__xs {
@@ -569,6 +577,7 @@
   --white__0: #f5f5f5;
   --gray__300: #d1d5dc;
   --green__600: #16a34a;
+  --blue__300: #93c5fd;
   --blue__600: #2563eb;
   --red__600: #dc2626;
   --orange__600: #ea580c;

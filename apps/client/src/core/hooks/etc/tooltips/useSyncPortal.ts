@@ -29,7 +29,7 @@ export const useSyncPortal = (optDep?: any[]) => {
         el.getBoundingClientRect();
 
       setCoords({
-        top: top + window.scrollY,
+        top: top,
         left,
         right: window.innerWidth - right,
         bottom: window.innerHeight - bottom,

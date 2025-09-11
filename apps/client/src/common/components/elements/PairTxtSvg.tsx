@@ -1,35 +1,40 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT } from "@/common/types/ui";
+import { FieldTxtSvgT, JustifyT, SizeT } from "@/common/types/ui";
 import type { FC } from "react";
 import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
 import { css, SerializedStyles } from "@emotion/react";
-
-export type LabelSizeT = "lg" | "xl" | "2xl" | "3xl";
 
 type PropsType = {
   el: FieldTxtSvgT;
   act?: AppEventT;
   isLoading?: boolean;
   isHover?: boolean;
-  $SvgCls?: string;
-  $labelSizeCls?: LabelSizeT;
+  $SvgSize?: SizeT;
+  $labelSize?: SizeT;
+  $justify?: JustifyT;
   $ctmLabelCSS?: SerializedStyles;
 };
 
 const PairTxtSvg: FC<PropsType> = ({
   el,
-  $SvgCls,
+  $SvgSize,
   isLoading,
   isHover,
   act = "NONE",
   $ctmLabelCSS,
-  $labelSizeCls,
+  $labelSize,
+  $justify,
 }) => {
   return (
-    <div className="flex items-center justify-start gap-6">
+    <div
+      className="flex items-center gap-6"
+      css={css`
+        justify-content: ${$justify ?? "center"};
+      `}
+    >
       {el.Svg &&
         (isLoading ? (
           <SpinTxt
@@ -39,12 +44,12 @@ const PairTxtSvg: FC<PropsType> = ({
             }}
           />
         ) : (
-          <el.Svg className={$SvgCls ?? "svg__sm"} />
+          <el.Svg className={$SvgSize ? `svg__${$SvgSize}` : "svg__sm"} />
         ))}
 
       {el.label && (
         <span
-          className={`${$labelSizeCls ? `txt__${$labelSizeCls}` : "txt__lg"}`}
+          className={`${$labelSize ? `txt__${$labelSize}` : "txt__lg"}`}
           css={css`
             ${$ctmLabelCSS}
           `}

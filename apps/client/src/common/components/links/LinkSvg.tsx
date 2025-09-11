@@ -10,7 +10,7 @@ type PropsType = {
   href: string;
 } & WrapSvgTltPropsT;
 
-const LinkSvg: FC<PropsType> = ({ Svg, act, confPortal, href }) => {
+const LinkSvg: FC<PropsType> = ({ Svg, act, confPortal, href, tooltipTxt }) => {
   return (
     <WrapElWithSvgTooltip
       {...{
@@ -18,6 +18,7 @@ const LinkSvg: FC<PropsType> = ({ Svg, act, confPortal, href }) => {
         Svg,
         act,
         confPortal,
+        tooltipTxt,
         propsLink: {
           href,
         },

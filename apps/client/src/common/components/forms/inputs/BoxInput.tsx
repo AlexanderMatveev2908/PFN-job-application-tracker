@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { CheckChoiceT, TestIDT } from "@/common/types/ui";
+import { CheckChoiceT, TestIDT, SizeT } from "@/common/types/ui";
 import { css, SerializedStyles } from "@emotion/react";
 import type { FC } from "react";
-import PairTxtSvg, { LabelSizeT } from "../../elements/PairTxtSvg";
+import PairTxtSvg from "../../elements/PairTxtSvg";
 
 type PropsType = {
   handleClick: () => void;
   isChosen: boolean;
   opt: CheckChoiceT;
   $ctmLabelCSS?: SerializedStyles;
-  $labelSizeCls?: LabelSizeT;
+  $labelSize?: SizeT;
 } & TestIDT;
 
 const BoxInput: FC<PropsType> = ({
@@ -20,7 +20,7 @@ const BoxInput: FC<PropsType> = ({
   $ctmLabelCSS,
   handleClick,
   opt,
-  $labelSizeCls,
+  $labelSize,
 }) => {
   return (
     <button
@@ -48,7 +48,7 @@ const BoxInput: FC<PropsType> = ({
             Svg: opt.Svg,
           },
           $ctmLabelCSS,
-          $labelSizeCls,
+          $labelSize,
         }}
       />
     </button>

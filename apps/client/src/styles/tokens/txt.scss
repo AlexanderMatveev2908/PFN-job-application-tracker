@@ -1,3 +1,7 @@
+.txt__xxs {
+  @apply font-thin text-xs lg:text-sm;
+}
+
 .txt__xs {
   @apply font-normal text-xs sm:text-sm lg:text-base;
 }

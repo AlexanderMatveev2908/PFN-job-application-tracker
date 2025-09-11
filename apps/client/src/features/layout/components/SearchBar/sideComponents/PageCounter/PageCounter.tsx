@@ -33,7 +33,14 @@ const PageCounter = <
   const [pagesForSwap, setPagesForSwap] = useState(getMaxBtnForSwap());
 
   const [triggerRTK, res] = hook;
-  const { data: { n_hits = 0, pages = 0 } = {} } = res ?? {};
+  const {
+    data: { n_hits = 0, pages = 0 } = {},
+    isLoading,
+    isFetching,
+    isUninitialized,
+  } = res ?? {};
+
+  const isPending = isLoading || isFetching || isUninitialized;
 
   const {
     pagination: { swap, page, limit },
@@ -46,8 +53,6 @@ const PageCounter = <
     async (arg: PayloadPaginationT) => {
       const { key, val } = arg;
 
-      setPagination(arg);
-
       await triggerSearch({
         freshData: {
           ...(prevData.current ?? {}),
@@ -57,9 +62,10 @@ const PageCounter = <
         triggerRTK: triggerRTK as TriggerApiT<R>,
         keyPending: "submit",
         skipCall: true,
+        payloadPagination: arg,
       });
     },
-    [limit, prevData, setPagination, triggerRTK, triggerSearch]
+    [limit, prevData, triggerRTK, triggerSearch]
   );
 
   useEffect(() => {
@@ -137,7 +143,7 @@ const PageCounter = <
     await handleChangePagination({ key: "page", val });
   };
 
-  return !isHydrated ? null : (
+  return !isHydrated || isPending || !n_hits ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
       <div className="w-full grid grid-cols-[75px_1fr_75px] gap-10">
         <BtnBg
@@ -162,7 +168,7 @@ const PageCounter = <
                     isChosen: el.val === page,
                     handleClick: async () => await handleChangePage(el.val),
                     opt: el,
-                    $labelSizeCls: "lg",
+                    $labelSize: "lg",
                   }}
                 />
               </div>

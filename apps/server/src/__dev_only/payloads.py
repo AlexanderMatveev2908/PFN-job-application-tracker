@@ -52,5 +52,13 @@ def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
             .isoformat(),
             "status": random.choice(status_str),
             "user_id": str(us_id),
+            "notes": gen_lorem(4),
         },
+    )
+
+
+def gen_lorem(n: int | None = None) -> str:
+    return (
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem perferendis nostrum, sapiente dicta praesentium neque ratione rem facilis. Alias quos libero vel iusto quam in, recusandae accusamus cupiditate fugiat nam."  # noqa: E501
+        * (n or 1)
     )

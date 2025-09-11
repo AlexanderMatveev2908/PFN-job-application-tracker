@@ -28,6 +28,7 @@ import { ZodObject } from "zod";
 import { useDebounce } from "./hooks/useDebounce";
 import { FreshDataArgT } from "./context/hooks/useSearchCtxProvider";
 import { TriggerApiT } from "@/common/types/api";
+import HitsCounter from "./components/HitsCounter";
 
 type PropsType<T extends FieldValues, H extends any[]> = {
   allowedTxtFields: FormFieldTxtSearchBarT<T>[];
@@ -57,16 +58,17 @@ const SearchBar = <
   const { watch, control, handleSubmit, reset } = useFormContext<T>();
   const {
     setCurrFilter,
-    pagination: { page, limit },
+    pagination: { limit },
     triggerSearch,
   } = useSearchCtxConsumer();
 
   const handleSave = handleSubmit(async (data) => {
     await triggerSearch({
-      freshData: { ...data, page, limit } as FreshDataArgT<T>,
+      freshData: { ...data, page: 0, limit } as FreshDataArgT<T>,
       triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "submit",
       skipCall: true,
+      payloadPagination: { key: "page", val: 0 },
     });
   }, logFormErrs);
 
@@ -78,6 +80,7 @@ const SearchBar = <
       triggerRTK: triggerRTK as TriggerApiT<R>,
       keyPending: "reset",
       skipCall: true,
+      payloadPagination: { key: "page", val: 0 },
     });
   }, [reset, resetVals, limit, triggerRTK, triggerSearch]);
 
@@ -113,46 +116,54 @@ const SearchBar = <
       }}
     />
   ) : (
-    <form
-      onSubmit={handleSave}
-      className="w-full max-w-[1400px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
-    >
-      <div className="w-full grid grid-cols-1 gap-6 relative">
-        <PrimaryRow
-          {...{ existingFields, remove, control, append, allowedTxtFields }}
-        />
-        <AddFieldTxtDrop
-          {...{
-            allowedTxtFields,
-            append,
-            existingFields,
-          }}
-        />
-      </div>
+    <div className="w-full grid grid-cols-1 gap-12">
+      <form
+        onSubmit={handleSave}
+        className="w-full max-w-[1400px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"
+      >
+        <div className="w-full grid grid-cols-1 gap-6 relative">
+          <PrimaryRow
+            {...{ existingFields, remove, control, append, allowedTxtFields }}
+          />
+          <AddFieldTxtDrop
+            {...{
+              allowedTxtFields,
+              append,
+              existingFields,
+            }}
+          />
+        </div>
 
-      <div className="w-full grid grid-cols-1 gap-8 xl:grid-cols-2">
-        <SecondaryRow />
+        <div className="w-full grid grid-cols-1 gap-8 xl:grid-cols-2">
+          <SecondaryRow />
 
-        <TertiaryRow
+          <TertiaryRow
+            {...{
+              handleReset,
+            }}
+          />
+        </div>
+
+        <FilterBar
           {...{
             handleReset,
+            filters,
           }}
         />
-      </div>
 
-      <FilterBar
+        <SortBar
+          {...{
+            sorters,
+          }}
+        />
+      </form>
+
+      <HitsCounter
         {...{
-          handleReset,
-          filters,
+          res,
         }}
       />
-
-      <SortBar
-        {...{
-          sorters,
-        }}
-      />
-    </form>
+    </div>
   );
 };
 

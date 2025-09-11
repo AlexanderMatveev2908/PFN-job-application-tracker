@@ -1,5 +1,5 @@
 import { isStr } from "./dataStructure/ect";
-import { formatDate } from "./dataStructure/formatters";
+import { formatDateDev } from "./dataStructure/formatters";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const __cg = (...args: any[]) => {
@@ -30,5 +30,5 @@ export const __cg = (...args: any[]) => {
 
   const path = firstTrace?.split("src")?.[1];
 
-  console.log(`=> ${path} 🚀 \n ${formatDate(Date.now())} 🕰️`);
+  console.log(`=> ${path} 🚀 \n ${formatDateDev(Date.now())} 🕰️`);
 };

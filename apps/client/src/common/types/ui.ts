@@ -91,3 +91,7 @@ export type RawEventT = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 export type TestIDT = {
   testID?: string;
 };
+
+export type SizeT = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+
+export type JustifyT = "start" | "center" | "end";

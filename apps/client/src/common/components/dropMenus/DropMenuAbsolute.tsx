@@ -22,18 +22,16 @@ type PropsType = {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
   }) => ReactNode;
   isEnabled?: boolean;
-  $SvgCls?: string;
   $cstmDropCSS?: SerializedStyles;
-  $cstmLabelCSS?: SerializedStyles;
+  $cstmBtnCSS?: SerializedStyles;
 } & TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
-  $SvgCls,
   isEnabled = true,
   children,
   $cstmDropCSS,
-  $cstmLabelCSS,
+  $cstmBtnCSS,
   testID,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +49,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
         data-testid={testID}
         onClick={() => setIsOpen((prev) => !prev)}
         css={css`
-          ${$cstmLabelCSS}
+          ${$cstmBtnCSS}
         `}
         className={`btn__app w-full cursor-pointer border-2 bd__sm ${
           isOpen
@@ -64,7 +62,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
           } as React.CSSProperties
         }
       >
-        <PairTxtSvg {...{ el, $SvgCls }} />
+        <PairTxtSvg {...{ el }} />
       </button>
 
       <div

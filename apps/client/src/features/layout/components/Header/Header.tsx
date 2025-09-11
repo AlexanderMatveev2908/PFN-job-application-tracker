@@ -60,11 +60,10 @@ const Header: FC = () => {
                 ? extractInitialsUser(usState!.user!)
                 : null,
             },
-            $SvgCls: "svg__sm",
             $cstmDropCSS: css`
               left: -200px;
             `,
-            $cstmLabelCSS: css`
+            $cstmBtnCSS: css`
               padding: ${usState.isUsOk ? "6px 10px" : "6px"};
             `,
           }}

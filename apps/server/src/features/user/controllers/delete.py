@@ -11,6 +11,7 @@ from src.middleware.combo.idx import (
     combo_check_jwt_cbc_hmac_body_mdw,
 )
 from src.models.backup_code import BackupCode
+from src.models.job_application import JobApplication
 from src.models.token import Token, TokenT
 
 
@@ -33,6 +34,10 @@ async def delete_account_ctrl(
 
         await trx.execute(
             delete(BackupCode).where(BackupCode.user_id == us.id)
+        )
+
+        await trx.execute(
+            delete(JobApplication).where(JobApplication.user_id == us.id)
         )
 
         await trx.delete(

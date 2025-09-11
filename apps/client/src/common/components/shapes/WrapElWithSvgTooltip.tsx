@@ -2,7 +2,7 @@
 "use client";
 
 import { AppEventT } from "@/common/types/api";
-import { PortalConfT, TestIDT } from "@/common/types/ui";
+import { PortalConfT, SizeT, TestIDT } from "@/common/types/ui";
 import { CSSProperties, useMemo, useState, type FC } from "react";
 import { IconType } from "react-icons";
 import { $argClr } from "@/core/uiFactory/style";
@@ -12,11 +12,14 @@ import Link from "next/link";
 import { RefObject } from "react";
 import PortalTooltip from "../tooltips/PortalTooltip";
 import { isObjOk } from "@/core/lib/dataStructure/ect";
+import Tooltip from "../tooltips/Tooltip/Tooltip";
 
 export type WrapSvgTltPropsT = {
   Svg: IconType;
+  tooltipTxt?: string;
   act?: AppEventT;
-  confPortal?: PortalConfT & { txt: string };
+  confPortal?: PortalConfT;
+  $SvgSize?: SizeT;
 };
 
 type PropsType = {
@@ -26,7 +29,7 @@ type PropsType = {
   };
   propsBtn?: {
     isEnabled?: boolean;
-    handleClick: () => void;
+    handleClick?: () => void;
   };
 } & WrapSvgTltPropsT &
   TestIDT;
@@ -39,6 +42,8 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
   propsLink,
   propsBtn,
   testID,
+  $SvgSize,
+  tooltipTxt,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const $clr = $argClr[act];
@@ -52,8 +57,12 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
       onMouseLeave: () => setIsHover(false),
       ref: parentRef,
       className: `${
-        wrapper === "html_button" ? "btn__app" : "el__app"
-      } flex items-center justify-center relative`,
+        tooltipTxt
+          ? "cursor-pointer"
+          : wrapper === "html_button"
+          ? "btn__app"
+          : "el__app"
+      } flex items-center gap-6 justify-center relative`,
       css: css`
         color: ${$clr};
       `,
@@ -61,12 +70,12 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
         "--scale__up": 1.3,
       } as CSSProperties,
     }),
-    [$clr, parentRef, wrapper, testID]
+    [$clr, tooltipTxt, parentRef, wrapper, testID]
   );
 
   const content = (
     <>
-      {isObjOk(confPortal) && (
+      {!tooltipTxt ? null : isObjOk(confPortal) ? (
         <PortalTooltip
           {...{
             isHover: isHover && confPortal!.showPortal,
@@ -82,11 +91,24 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
           }}
         >
           <span className="txt__md py-2 px-4 inline-block max-w-[300px] break-all">
-            {confPortal!.txt}
+            {tooltipTxt}
           </span>
         </PortalTooltip>
+      ) : (
+        <Tooltip
+          {...{
+            txt: tooltipTxt,
+            isHover,
+            act,
+            $ctmCSS: css`
+              right: -50%;
+              top: 20%;
+            `,
+          }}
+        />
       )}
-      <Svg className="svg__lg z-10" />
+
+      <Svg className={`${$SvgSize ? `svg__${$SvgSize}` : "svg__lg"} z-10`} />
     </>
   );
 
