@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT, TxtSizeT } from "@/common/types/ui";
+import { FieldTxtSvgT, SizeT } from "@/common/types/ui";
 import type { FC } from "react";
 import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
@@ -12,19 +12,19 @@ type PropsType = {
   act?: AppEventT;
   isLoading?: boolean;
   isHover?: boolean;
-  $SvgCls?: string;
-  $labelSizeCls?: TxtSizeT;
+  $SvgSize?: SizeT;
+  $labelSize?: SizeT;
   $ctmLabelCSS?: SerializedStyles;
 };
 
 const PairTxtSvg: FC<PropsType> = ({
   el,
-  $SvgCls,
+  $SvgSize,
   isLoading,
   isHover,
   act = "NONE",
   $ctmLabelCSS,
-  $labelSizeCls,
+  $labelSize,
 }) => {
   return (
     <div className="flex items-center justify-start gap-6">
@@ -37,12 +37,12 @@ const PairTxtSvg: FC<PropsType> = ({
             }}
           />
         ) : (
-          <el.Svg className={$SvgCls ?? "svg__sm"} />
+          <el.Svg className={$SvgSize ? `svg__${$SvgSize}` : "svg__sm"} />
         ))}
 
       {el.label && (
         <span
-          className={`${$labelSizeCls ? `txt__${$labelSizeCls}` : "txt__lg"}`}
+          className={`${$labelSize ? `txt__${$labelSize}` : "txt__lg"}`}
           css={css`
             ${$ctmLabelCSS}
           `}

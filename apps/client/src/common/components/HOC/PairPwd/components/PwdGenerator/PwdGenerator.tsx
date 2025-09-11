@@ -43,8 +43,8 @@ const PwdGenerator: FC<PropsType> = ({
             confPortal: {
               optDep: [swapMode],
               showPortal: swapMode === "swapped" && isCurrSwap,
-              txt: "Generate Password",
             },
+            tooltipTxt: "Generate Password",
           }}
         />
       </div>

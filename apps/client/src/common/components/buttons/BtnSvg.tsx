@@ -8,7 +8,7 @@ import WrapElWithSvgTooltip, {
 } from "../shapes/WrapElWithSvgTooltip";
 
 type PropsType = {
-  handleClick: () => void;
+  handleClick?: () => void;
   isEnabled?: boolean;
 } & WrapSvgTltPropsT &
   TestIDT;
@@ -20,6 +20,8 @@ const BtnSvg: FC<PropsType> = ({
   isEnabled = true,
   confPortal,
   testID,
+  $SvgSize,
+  tooltipTxt,
 }) => {
   return (
     <WrapElWithSvgTooltip
@@ -33,6 +35,8 @@ const BtnSvg: FC<PropsType> = ({
         act,
         Svg,
         testID,
+        $SvgSize,
+        tooltipTxt,
       }}
     />
   );

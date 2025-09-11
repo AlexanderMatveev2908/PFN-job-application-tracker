@@ -9,10 +9,15 @@ import {
 } from "../../../uiFactory";
 import { IoStatsChart } from "react-icons/io5";
 import { CgSandClock } from "react-icons/cg";
-import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
+import {
+  formatDate,
+  parseDevValUsFriendly,
+} from "@/core/lib/dataStructure/formatters";
 import { FaBuilding } from "react-icons/fa6";
-import { MdWork } from "react-icons/md";
+import { MdOutlineUpdate, MdWork } from "react-icons/md";
 import { JobApplicationT } from "@/features/jobApplications/types";
+import { FaPenFancy } from "react-icons/fa";
+import { IoIosCreate } from "react-icons/io";
 
 export const searchJobsFieldsTxt = [companyNameField, positionNameField];
 
@@ -57,7 +62,7 @@ export const sortersSearchJobs: SorterSearchBarT[] = [
   Svg: CgSandClock,
 }));
 
-export const genCardPairs = (jobAppl: JobApplicationT) =>
+export const genPairsMainCardInfo = (jobAppl: JobApplicationT) =>
   [
     {
       key: "company_name",
@@ -67,8 +72,31 @@ export const genCardPairs = (jobAppl: JobApplicationT) =>
       key: "position_name",
       Svg: MdWork,
     },
+    {
+      key: "applied_at",
+      Svg: FaPenFancy,
+    },
+  ].map((el) => {
+    const v = jobAppl[el.key as keyof JobApplicationT];
+
+    return {
+      ...el,
+      label: parseDevValUsFriendly(el.key, { titleCase: true }),
+      val: el.key !== "applied_at" ? v : formatDate(v as number),
+    };
+  });
+
+export const genPairsSecondaryInfoCard = (jobAppl: JobApplicationT) =>
+  [
+    {
+      key: "created_at",
+      Svg: IoIosCreate,
+    },
+    {
+      key: "updated_at",
+      Svg: MdOutlineUpdate,
+    },
   ].map((el) => ({
     ...el,
-    label: parseDevValUsFriendly(el.key, { titleCase: true }),
-    val: jobAppl[el.key as keyof JobApplicationT],
+    val: formatDate(jobAppl[el.key as keyof JobApplicationT] as number),
   }));

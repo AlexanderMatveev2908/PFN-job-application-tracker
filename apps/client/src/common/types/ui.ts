@@ -92,4 +92,4 @@ export type TestIDT = {
   testID?: string;
 };
 
-export type TxtSizeT = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+export type SizeT = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";

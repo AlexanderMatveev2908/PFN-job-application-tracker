@@ -22,14 +22,12 @@ type PropsType = {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
   }) => ReactNode;
   isEnabled?: boolean;
-  $SvgCls?: string;
   $cstmDropCSS?: SerializedStyles;
   $cstmLabelCSS?: SerializedStyles;
 } & TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
   el,
-  $SvgCls,
   isEnabled = true,
   children,
   $cstmDropCSS,
@@ -64,7 +62,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
           } as React.CSSProperties
         }
       >
-        <PairTxtSvg {...{ el, $SvgCls }} />
+        <PairTxtSvg {...{ el }} />
       </button>
 
       <div

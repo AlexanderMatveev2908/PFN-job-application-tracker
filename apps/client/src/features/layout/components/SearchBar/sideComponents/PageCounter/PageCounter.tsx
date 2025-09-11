@@ -169,7 +169,7 @@ const PageCounter = <
                     isChosen: el.val === page,
                     handleClick: async () => await handleChangePage(el.val),
                     opt: el,
-                    $labelSizeCls: "lg",
+                    $labelSize: "lg",
                   }}
                 />
               </div>

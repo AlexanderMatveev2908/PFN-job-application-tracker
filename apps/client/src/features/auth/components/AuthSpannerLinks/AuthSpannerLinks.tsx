@@ -34,8 +34,8 @@ const AuthSpannerLinks: FC = () => {
               Svg,
               confPortal: {
                 showPortal: true,
-                txt: el.msg as string,
               },
+              tooltipTxt: el.msg as string,
             }}
           />
         );

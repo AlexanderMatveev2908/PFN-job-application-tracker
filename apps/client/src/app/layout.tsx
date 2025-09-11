@@ -35,23 +35,23 @@ export default function RootLayout({
       <body
         className={`${fira_code.className} min-h-screen h-full w-full antialiased bg-neutral-950 text-neutral-200`}
       >
+        <div
+          id="portal-root"
+          className="w-full h-full fixed overflow-x-hidden pointer-events-none z__bg_sidebar"
+        ></div>
+
         <Providers
           {...{
             preloadedState: store.getState(),
           }}
         >
           <CallbacksWrapper>
-            <div
-              id="portal-root"
-              className="w-full h-full min-h-screen overflow-x-hidden absolute pointer-events-none"
-            ></div>
-
             <Header />
             <Sidebar />
             <Toast />
 
             <WrapWakeUp>
-              <div className="w-full h-full p-[25px] sm:pb-[50px]">
+              <div className="w-full h-full p-[25px] sm:pb-[100px]">
                 {children}
               </div>
             </WrapWakeUp>

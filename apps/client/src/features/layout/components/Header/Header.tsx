@@ -60,7 +60,6 @@ const Header: FC = () => {
                 ? extractInitialsUser(usState!.user!)
                 : null,
             },
-            $SvgCls: "svg__sm",
             $cstmDropCSS: css`
               left: -200px;
             `,

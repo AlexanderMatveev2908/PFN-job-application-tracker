@@ -23,7 +23,7 @@ const PrimaryRow = <T extends FieldValues>({
   control,
   existingFields,
 }: PropsType<T>) => {
-  return existingFields.map((el, i, arg) => (
+  return existingFields.map((el, i) => (
     <div key={el.id} className="w-full relative">
       <FormFieldTxt
         {...{
@@ -42,11 +42,7 @@ const PrimaryRow = <T extends FieldValues>({
             Svg: MdDelete,
             act: "ERR",
             handleClick: () => remove(i),
-            confPortal: {
-              showPortal: true,
-              txt: `Remove`,
-              optDep: [arg.length],
-            },
+            tooltipTxt: `Remove`,
           }}
         />
       </div>

@@ -1,6 +1,6 @@
 import { UserT } from "@/features/user/types";
 
-export const formatDate = (date: Date | string | number) => {
+export const formatDateDev = (date: Date | string | number) => {
   const param =
     date instanceof Date
       ? date
@@ -45,3 +45,13 @@ export const getDefValDatePicker = () => new Date().toISOString().split("T")[0];
 
 export const fromPickerToTmst = (v: string) =>
   new Date(v + "T00:00:00Z").getTime();
+
+export const formatDate = (val: number) =>
+  new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(new Date(val));

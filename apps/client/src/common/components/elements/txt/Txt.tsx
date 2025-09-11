@@ -3,10 +3,10 @@
 
 import type { FC } from "react";
 import { css } from "@emotion/react";
-import { TxtSizeT } from "@/common/types/ui";
+import { SizeT } from "@/common/types/ui";
 
 type PropsType = {
-  $size: TxtSizeT;
+  $size: SizeT;
   $justify: "start" | "center" | "end";
   txt: string;
 };
