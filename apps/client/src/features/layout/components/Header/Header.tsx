@@ -63,7 +63,7 @@ const Header: FC = () => {
             $cstmDropCSS: css`
               left: -200px;
             `,
-            $cstmLabelCSS: css`
+            $cstmBtnCSS: css`
               padding: ${usState.isUsOk ? "6px 10px" : "6px"};
             `,
           }}

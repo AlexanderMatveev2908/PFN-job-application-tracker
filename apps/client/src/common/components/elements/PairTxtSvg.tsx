@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT, SizeT } from "@/common/types/ui";
+import { FieldTxtSvgT, JustifyT, SizeT } from "@/common/types/ui";
 import type { FC } from "react";
 import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
@@ -14,6 +14,7 @@ type PropsType = {
   isHover?: boolean;
   $SvgSize?: SizeT;
   $labelSize?: SizeT;
+  $justify?: JustifyT;
   $ctmLabelCSS?: SerializedStyles;
 };
 
@@ -25,9 +26,15 @@ const PairTxtSvg: FC<PropsType> = ({
   act = "NONE",
   $ctmLabelCSS,
   $labelSize,
+  $justify,
 }) => {
   return (
-    <div className="flex items-center justify-start gap-6">
+    <div
+      className="flex items-center gap-6"
+      css={css`
+        justify-content: ${$justify ?? "center"};
+      `}
+    >
       {el.Svg &&
         (isLoading ? (
           <SpinTxt

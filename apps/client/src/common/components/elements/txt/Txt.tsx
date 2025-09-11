@@ -3,11 +3,11 @@
 
 import type { FC } from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { SizeT } from "@/common/types/ui";
+import { JustifyT, SizeT } from "@/common/types/ui";
 
 type PropsType = {
   $size: SizeT;
-  $justify: "start" | "center" | "end";
+  $justify: JustifyT;
   $ctmCSS?: SerializedStyles;
   txt: string;
 };

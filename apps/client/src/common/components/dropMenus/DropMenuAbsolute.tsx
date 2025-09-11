@@ -23,7 +23,7 @@ type PropsType = {
   }) => ReactNode;
   isEnabled?: boolean;
   $cstmDropCSS?: SerializedStyles;
-  $cstmLabelCSS?: SerializedStyles;
+  $cstmBtnCSS?: SerializedStyles;
 } & TestIDT;
 
 const DropMenuAbsolute: FC<PropsType> = ({
@@ -31,7 +31,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
   isEnabled = true,
   children,
   $cstmDropCSS,
-  $cstmLabelCSS,
+  $cstmBtnCSS,
   testID,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +49,7 @@ const DropMenuAbsolute: FC<PropsType> = ({
         data-testid={testID}
         onClick={() => setIsOpen((prev) => !prev)}
         css={css`
-          ${$cstmLabelCSS}
+          ${$cstmBtnCSS}
         `}
         className={`btn__app w-full cursor-pointer border-2 bd__sm ${
           isOpen

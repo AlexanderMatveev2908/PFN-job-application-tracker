@@ -39,7 +39,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
               Svg: TbNotes,
               label: "Notes",
             },
-            $cstmLabelCSS: css`
+            $cstmBtnCSS: css`
               padding: 5px 20px;
             `,
           }}
