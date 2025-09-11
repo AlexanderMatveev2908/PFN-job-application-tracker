@@ -28,6 +28,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
               label: pair.val as string,
               Svg: pair.Svg,
             },
+            $justify: "start",
           }}
         />
       ))}
