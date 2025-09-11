@@ -24,7 +24,11 @@ const PrimaryRow = <T extends FieldValues>({
   existingFields,
 }: PropsType<T>) => {
   return existingFields.map((el, i) => (
-    <div key={el.id} className="w-full relative">
+    <div
+      data-testid={"search_bar__primary_row"}
+      key={el.id}
+      className="w-full relative"
+    >
       <FormFieldTxt
         {...{
           control,
@@ -43,6 +47,7 @@ const PrimaryRow = <T extends FieldValues>({
             act: "ERR",
             handleClick: () => remove(i),
             tooltipTxt: `Remove`,
+            testID: `primary_row__btn__remove__${el.name}`,
           }}
         />
       </div>

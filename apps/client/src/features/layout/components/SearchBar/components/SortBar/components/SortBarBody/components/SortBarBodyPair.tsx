@@ -27,7 +27,10 @@ const SortBarBodyPair: FC<PropsType> = ({ el, currVal, handleClick }) => {
   } = useGenIDs({ lengths: [2] });
 
   return (
-    <div className="w-full grid grid-cols-1 gap-6 justify-items-center">
+    <div
+      data-testid={`body__${el.name}`}
+      className="w-full grid grid-cols-1 gap-6 justify-items-center"
+    >
       <PairTxtSvg
         {...{
           el: {

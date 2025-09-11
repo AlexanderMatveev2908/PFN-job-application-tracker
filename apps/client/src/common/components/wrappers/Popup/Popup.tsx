@@ -12,6 +12,7 @@ import BlackBg from "../../elements/BlackBg";
 import BtnSvg from "../../buttons/BtnSvg";
 import BtnShadow from "../../buttons/BtnShadow";
 import { useMouseOut } from "@/core/hooks/etc/useMouseOut";
+import { TestIDT } from "@/common/types/ui";
 
 export type BtnWrapPopT = {
   msg?: string;
@@ -31,7 +32,7 @@ export type WrapPopPropsType = {
   propsActions?: {
     btns: [BtnWrapPopT, BtnWrapPopT];
   };
-};
+} & TestIDT;
 
 const Popup: FC<WrapPopPropsType> = ({
   isPop,
@@ -39,6 +40,7 @@ const Popup: FC<WrapPopPropsType> = ({
   children,
   allowClose = true,
   propsActions,
+  testID,
 }) => {
   const popRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,6 +58,7 @@ const Popup: FC<WrapPopPropsType> = ({
       <BlackBg {...{ isDark: isPop, classIndexCSS: "z__black_bg__popup" }} />
 
       <motion.div
+        data-testid={testID}
         ref={popRef}
         className="z__popup fixed inset-0 m-auto w-[80%] max-w-[600px] h-full max-h-[600px] bg-neutral-950 p-5 rounded-2xl border-neutral-600 border-[3px]"
         initial={{

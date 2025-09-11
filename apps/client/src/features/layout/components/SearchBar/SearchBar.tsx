@@ -116,7 +116,7 @@ const SearchBar = <
       }}
     />
   ) : (
-    <div className="w-full grid grid-cols-1 gap-12">
+    <div data-testid={"search_bar"} className="w-full grid grid-cols-1 gap-12">
       <form
         onSubmit={handleSave}
         className="w-full max-w-[1400px] mx-auto h-fit min-h-[200px] border-3 border-w__0 rounded-xl p-5 grid grid-cols-1 gap-8"

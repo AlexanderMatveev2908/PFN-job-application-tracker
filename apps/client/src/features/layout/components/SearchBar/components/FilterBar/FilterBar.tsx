@@ -39,6 +39,7 @@ const FilterBar: FC<PropsType> = ({ handleReset, filters }) => {
       />
 
       <div
+        data-testid={"search_bar__filter_bar"}
         ref={filterBarRef}
         className="z__search_bar w-full flex flex-col fixed bottom-0 left-0 border-[3px] border-neutral-800 rounded-t-xl h-[600px] bg-neutral-950"
         css={css`

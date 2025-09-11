@@ -13,7 +13,11 @@ export type MainBtnsSearchBarPropsType = {
   handleReset: () => void;
 };
 
-const MainBtnsSearchBar: FC<MainBtnsSearchBarPropsType> = ({ handleReset }) => {
+type PropsType = {
+  testIDs: string[];
+} & MainBtnsSearchBarPropsType;
+
+const MainBtnsSearchBar: FC<PropsType> = ({ handleReset, testIDs }) => {
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
@@ -37,7 +41,7 @@ const MainBtnsSearchBar: FC<MainBtnsSearchBarPropsType> = ({ handleReset }) => {
               display: block;
             }
           `,
-
+          testID: testIDs[i],
           isTxtLoading: btn.act === "OK" ? pending.submit : pending.reset,
         }}
       />
