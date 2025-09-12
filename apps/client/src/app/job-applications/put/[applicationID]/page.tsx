@@ -2,13 +2,13 @@
 "use client";
 
 import JobApplicationForm from "@/features/jobApplications/forms/JobApplicationForm/JobApplicationForm";
+import { useJobApplForm } from "@/features/jobApplications/hooks/useJobApplForm";
+import { jobApplicationSliceAPI } from "@/features/jobApplications/slices/api";
 import type { FC } from "react";
 import { FormProvider } from "react-hook-form";
-import { jobApplicationSliceAPI } from "@/features/jobApplications/slices/api";
-import { useJobApplForm } from "@/features/jobApplications/hooks/useJobApplForm";
 
 const Page: FC = () => {
-  const [mutate] = jobApplicationSliceAPI.useAddJobApplicationMutation();
+  const [mutate] = jobApplicationSliceAPI.usePutJobApplicationMutation();
 
   const { handleSave, formCtx } = useJobApplForm({ mutate });
 
