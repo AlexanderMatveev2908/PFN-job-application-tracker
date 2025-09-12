@@ -63,6 +63,7 @@ test("put appl ok", async ({ browser }) => {
 
   await clickByID(page, "job_application__form__submit");
 
+  await waitTmr(page, 10000);
   await waitURL(page, "/job-applications/read");
   await waitTmr(page, 10000);
 
