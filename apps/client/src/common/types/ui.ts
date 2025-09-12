@@ -84,6 +84,7 @@ export type RawFieldPropsT<T extends FieldValues> = {
   dynamicInputT?: FieldInputT;
   optRef?: RefObject<HTMLElement | null>;
   portalConf?: PortalConfT;
+  manualTestID?: string;
 };
 
 export type RawEventT = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;

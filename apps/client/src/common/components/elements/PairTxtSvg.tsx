@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { FieldTxtSvgT, JustifyT, SizeT } from "@/common/types/ui";
+import { FieldTxtSvgT, JustifyT, SizeT, TestIDT } from "@/common/types/ui";
 import type { FC } from "react";
 import SpinTxt from "./spinners/SpinTxt";
 import { AppEventT } from "@/common/types/api";
@@ -16,7 +16,7 @@ type PropsType = {
   $labelSize?: SizeT;
   $justify?: JustifyT;
   $ctmLabelCSS?: SerializedStyles;
-};
+} & TestIDT;
 
 const PairTxtSvg: FC<PropsType> = ({
   el,
@@ -27,6 +27,7 @@ const PairTxtSvg: FC<PropsType> = ({
   $ctmLabelCSS,
   $labelSize,
   $justify,
+  testID,
 }) => {
   return (
     <div
@@ -49,6 +50,7 @@ const PairTxtSvg: FC<PropsType> = ({
 
       {el.label && (
         <span
+          data-testid={testID}
           className={`${$labelSize ? `txt__${$labelSize}` : "txt__lg"}`}
           css={css`
             ${$ctmLabelCSS}

@@ -50,6 +50,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
               Svg: pair.Svg,
             },
             $justify: "start",
+            testID: `card__${pair.key}`,
           }}
         />
       ))}
@@ -74,7 +75,10 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
           >
             {() => (
               <div className="flex justify-center p-3">
-                <span className="txt__md"> {job.notes ?? "N/A"}</span>
+                <span data-testid={"card__notes"} className="txt__md">
+                  {" "}
+                  {job.notes ?? "N/A"}
+                </span>
               </div>
             )}
           </DropMenuAbsolute>
@@ -107,6 +111,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
               Svg: IoStatsChart,
               label: job.status,
             },
+            testID: "card__status",
           }}
         />
       </div>

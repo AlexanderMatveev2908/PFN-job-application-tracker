@@ -37,6 +37,7 @@ const PrimaryRow = <T extends FieldValues>({
             name: `txtFields.${i}.val` as Path<T>,
           },
           showLabel: false,
+          manualTestID: `primary_row__${el.name}`,
         }}
       />
 
