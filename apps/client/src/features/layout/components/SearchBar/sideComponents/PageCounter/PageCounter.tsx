@@ -143,17 +143,26 @@ const PageCounter = <
     await handleChangePagination({ key: "page", val });
   };
 
+  const isNextDisabled = useMemo(
+    () => (swap + 1) * pagesForSwap > totPages - 1,
+    [pagesForSwap, totPages, swap]
+  );
+
   return !isHydrated || isPending || !n_hits ? null : (
     <div className="w-full absolute bottom-0 flex justify-center">
       <div className="w-full grid grid-cols-[75px_1fr_75px] gap-10">
-        <BtnBg
-          {...{
-            el: { Svg: ArrowBigLeftDash },
-            act: "NONE",
-            handleClick: () => setPagination({ key: "swap", val: swap - 1 }),
-            isDisabled: !swap,
-          }}
-        />
+        {swap ? (
+          <BtnBg
+            {...{
+              el: { Svg: ArrowBigLeftDash },
+              act: "NONE",
+              handleClick: () => setPagination({ key: "swap", val: swap - 1 }),
+              isDisabled: !swap,
+            }}
+          />
+        ) : (
+          <div className=""></div>
+        )}
         <div
           className="w-full grid justify-items-center gap-6"
           css={css`
@@ -175,14 +184,18 @@ const PageCounter = <
             );
           })}
         </div>
-        <BtnBg
-          {...{
-            el: { Svg: ArrowBigRightDash },
-            act: "NONE",
-            handleClick: () => setPagination({ key: "swap", val: swap + 1 }),
-            isDisabled: (swap + 1) * pagesForSwap > totPages - 1,
-          }}
-        />
+        {isNextDisabled ? (
+          <div className=""></div>
+        ) : (
+          <BtnBg
+            {...{
+              el: { Svg: ArrowBigRightDash },
+              act: "NONE",
+              handleClick: () => setPagination({ key: "swap", val: swap + 1 }),
+              isDisabled: isNextDisabled,
+            }}
+          />
+        )}
       </div>
     </div>
   );

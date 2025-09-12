@@ -7,7 +7,7 @@ import {
   filtersSearchJobs,
   searchJobsFieldsTxt,
   sortersSearchJobs,
-} from "./uiFactory";
+} from "./uiFactory/search";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";
@@ -48,7 +48,7 @@ const SearchJobs = <K extends any[]>({ hook, schema }: PropsType<K>) => {
           $minH: "min-h-[60vh]",
         }}
       >
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 pb-[100px]">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 pb-[150px]">
           {jobs.map((el) => (
             <JobApplItem key={el.id} {...{ job: el }} />
           ))}

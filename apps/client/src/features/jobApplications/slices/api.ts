@@ -17,7 +17,7 @@ export const jobApplicationSliceAPI = apiSlice.injectEndpoints({
         data,
       }),
 
-      invalidatesTags: [TagAPI.JOB_APPLICATIONS],
+      invalidatesTags: [{ type: TagAPI.JOB_APPLICATIONS, id: "LIST" }],
     }),
 
     readJobApplications: builder.query<
@@ -61,6 +61,19 @@ export const jobApplicationSliceAPI = apiSlice.injectEndpoints({
           );
         } catch {}
       },
+    }),
+
+    putJobApplication: builder.mutation<
+      ResApiT<{ job_application: JobApplicationT }>,
+      { applicationID: string; data: FormData }
+    >({
+      query: (data) => ({
+        url: `${BASE}/job-applications/put/${data.applicationID}`,
+        method: "PUT",
+        data: data.data,
+      }),
+
+      invalidatesTags: [{ type: TagAPI.JOB_APPLICATIONS, id: "LIST" }],
     }),
   }),
 });

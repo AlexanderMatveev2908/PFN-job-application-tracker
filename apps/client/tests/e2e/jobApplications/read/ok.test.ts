@@ -29,7 +29,7 @@ test("read job appl filter by text inputs ok", async ({ browser }) => {
 
   await positionNameField.fill(firstAppl.position_name);
 
-  await waitTmr(page, 5000);
+  await waitTmr(page, 7500);
 
   const cardsByTxt = await page.getByTestId("job_appl__card");
   const countByTxt = await cardsByTxt.count();
@@ -79,7 +79,7 @@ test("read job appl filter by status checkbox ok", async ({ browser }) => {
 
     await clickByID(filterBar, "search_bar__btn__close_filter_bar");
 
-    await waitTmr(page, 5000);
+    await waitTmr(page, 7500);
 
     const cardsByStatus = await page.getByTestId("job_appl__card");
     const countByStatus = await cardsByStatus.count();
@@ -104,7 +104,7 @@ test("read job appl sort by applied_at ok", async ({ browser }) => {
 
   await clickByID(sortBar, "btn__close_popup");
 
-  await waitTmr(page, 5000);
+  await waitTmr(page, 7500);
 
   const cardsSortedByApplDate = await page.getByTestId("job_appl__card");
   await expect(await spanHits.innerText()).toBe("5");

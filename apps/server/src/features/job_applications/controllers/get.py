@@ -2,6 +2,10 @@ from fastapi import Depends, Request, Response
 from sqlalchemy import UnaryExpression, select
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
+from src.features.job_applications.middleware.get_appl_by_id import (
+    GetApplByIdMdwReturnT,
+    get_appl_by_id_mdw,
+)
 from src.features.job_applications.middleware.read_job_appl import (
     read_job_appl_mdw,
 )
@@ -66,3 +70,11 @@ async def read_job_appl_ctrl(
             pages=res_pag["pages"],
             job_applications=[itm.to_d() for itm in res],
         )
+
+
+async def get_appl_by_id_ctrl(
+    req: Request,
+    res_check: GetApplByIdMdwReturnT = Depends(get_appl_by_id_mdw),
+) -> Response:
+
+    return ResAPI(req).ok_200()

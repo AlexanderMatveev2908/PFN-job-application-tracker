@@ -84,6 +84,7 @@ export const useSearchCtxProvider = <T extends FieldValues, R>() => {
 
       await wrapAPI({
         cbAPI: () => arg.triggerRTK(genURLSearchQuery(cpy)),
+        showToast: false,
       });
     },
     [wrapAPI, setPending, setSearchApi, setPagination]
