@@ -12,14 +12,18 @@ from src.models.root import RootTable
 from src.models.user import User
 
 
-def random_timestamp() -> int:
-    return int(
-        (
-            datetime.datetime.now(datetime.timezone.utc)
-            + datetime.timedelta(days=random.randint(1, 60))
-        ).timestamp()
-        * 1000
+def random_timestamp_mid() -> int:
+    random_day = datetime.datetime.now(
+        datetime.timezone.utc
+    ).date() - datetime.timedelta(days=random.randint(1, 60))
+
+    midnight = datetime.datetime.combine(
+        random_day,
+        datetime.time.min,
+        tzinfo=datetime.timezone.utc,
     )
+
+    return int(midnight.timestamp() * 1000)
 
 
 async def reset_mock() -> None:
@@ -53,12 +57,12 @@ async def reset_mock() -> None:
             for _ in range(10):
                 payload = gen_job_appl_payload(new_us_db.id)
 
-                payload["applied_at"] = random_timestamp()
+                payload["applied_at"] = random_timestamp_mid()
 
                 newJobAppl = JobApplication(
                     **payload,
-                    created_at=random_timestamp(),
-                    updated_at=random_timestamp(),
+                    created_at=random_timestamp_mid(),
+                    updated_at=random_timestamp_mid(),
                 )
                 trx.add(newJobAppl)
                 await trx.flush([newJobAppl])

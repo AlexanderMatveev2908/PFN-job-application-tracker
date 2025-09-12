@@ -58,7 +58,10 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
       ref: parentRef,
       className: `${
         tooltipTxt
-          ? "cursor-pointer"
+          ? wrapper === "next_link" ||
+            typeof propsBtn?.handleClick === "function"
+            ? "cursor-pointer"
+            : ""
           : wrapper === "html_button"
           ? "btn__app"
           : "el__app"
@@ -70,7 +73,7 @@ const WrapElWithSvgTooltip: FC<PropsType> = ({
         "--scale__up": 1.3,
       } as CSSProperties,
     }),
-    [$clr, tooltipTxt, parentRef, wrapper, testID]
+    [$clr, tooltipTxt, propsBtn?.handleClick, parentRef, wrapper, testID]
   );
 
   const content = (
