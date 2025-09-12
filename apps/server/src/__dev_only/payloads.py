@@ -40,19 +40,25 @@ def get_payload_register() -> RegisterPayloadT:
 status_str = [x.value for x in ApplicationStatusT]
 
 
-def gen_job_appl_payload(us_id: str | uuid.UUID) -> JobApplicationDct:
+def gen_payload_application_client() -> dict:
+    return {
+        "company_name": faker.company(),
+        "position_name": faker.job(),
+        "applied_at": datetime.datetime.now(datetime.timezone.utc)
+        .date()
+        .isoformat(),
+        "status": random.choice(status_str),
+        "notes": gen_lorem(4),
+    }
+
+
+def gen_job_appl_payload_server(us_id: str | uuid.UUID) -> JobApplicationDct:
 
     return cast(
         JobApplicationDct,
         {
-            "company_name": faker.company(),
-            "position_name": faker.job(),
-            "applied_at": datetime.datetime.now(datetime.timezone.utc)
-            .date()
-            .isoformat(),
-            "status": random.choice(status_str),
+            **gen_payload_application_client(),
             "user_id": str(us_id),
-            "notes": gen_lorem(4),
         },
     )
 

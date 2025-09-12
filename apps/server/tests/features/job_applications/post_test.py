@@ -2,7 +2,9 @@ from typing import Any, cast
 from httpx import AsyncClient
 import pytest
 
-from src.__dev_only.payloads import gen_job_appl_payload
+from src.__dev_only.payloads import (
+    gen_payload_application_client,
+)
 from src.constants.reg import REG_ID
 from tests.conf.lib.data_structure import assrt_msg
 from tests.conf.lib.etc import get_tokens_lib
@@ -15,7 +17,7 @@ async def ok_t(api: AsyncClient) -> None:
         api,
     )
 
-    payload = gen_job_appl_payload(res_tokens["user"]["id"])
+    payload = gen_payload_application_client()
     files = {k: (None, str(v)) for k, v in payload.items()}
 
     res_post = await wrap_httpx(
@@ -46,7 +48,7 @@ async def bad_cases_t(
 ) -> None:
     res_tokens = await get_tokens_lib(api, expired=case.split("_expired"))
 
-    payload = gen_job_appl_payload(res_tokens["user"]["id"])
+    payload = gen_payload_application_client()
     if case == "err_status":
         payload["status"] = cast(Any, "wrong_status")
     elif case == "err_date":
