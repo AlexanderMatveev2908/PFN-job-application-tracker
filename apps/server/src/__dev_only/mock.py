@@ -3,7 +3,7 @@ import random
 from typing import cast
 
 from sqlalchemy import text
-from src.__dev_only.payloads import gen_job_appl_payload
+from src.__dev_only.payloads import gen_job_appl_payload_server
 from src.conf.db import db_trx
 from src.lib.counter import counter_cb
 from src.lib.resdis.idx import clean_redis
@@ -55,7 +55,7 @@ async def reset_mock() -> None:
             await trx.refresh(new_us_db)
 
             for _ in range(10):
-                payload = gen_job_appl_payload(new_us_db.id)
+                payload = gen_job_appl_payload_server(new_us_db.id)
 
                 payload["applied_at"] = random_timestamp_mid()
 
