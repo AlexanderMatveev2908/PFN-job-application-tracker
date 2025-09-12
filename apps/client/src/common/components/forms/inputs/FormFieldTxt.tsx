@@ -16,6 +16,7 @@ const FormFieldTxt = <T extends FieldValues>({
   cbBlur,
   showLabel = true,
   portalConf,
+  manualTestID,
 }: RawFieldPropsT<T>) => {
   return (
     <RawField
@@ -30,6 +31,7 @@ const FormFieldTxt = <T extends FieldValues>({
         showLabel,
         optRef,
         portalConf,
+        manualTestID,
       }}
     />
   );

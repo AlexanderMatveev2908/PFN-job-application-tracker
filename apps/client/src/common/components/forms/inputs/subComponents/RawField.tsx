@@ -32,12 +32,13 @@ const RawField = <T extends FieldValues>({
   dynamicInputT,
   optRef,
   portalConf,
+  manualTestID,
 }: PropsType<T>) => {
   const { coords, parentRef } = useSyncPortal(portalConf?.optDep);
 
   const genDefProps = useCallback(
     (field: ControllerRenderProps<T, Path<T>>) => ({
-      "data-testid": el.name,
+      "data-testid": manualTestID ?? el.name,
       placeholder: el.place,
       disabled: !!isDisabled,
       value: field.value ?? "",
@@ -75,7 +76,7 @@ const RawField = <T extends FieldValues>({
         cbBlur?.(v);
       },
     }),
-    [el, cbChange, cbFocus, cbBlur, isDisabled, optRef, parentRef]
+    [el, cbChange, cbFocus, cbBlur, isDisabled, optRef, parentRef, manualTestID]
   );
 
   return (

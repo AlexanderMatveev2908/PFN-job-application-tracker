@@ -54,6 +54,7 @@ const FilterBarBodyValsCol: FC<PropsType> = ({ filters }) => {
   return !chosenFilter ? null : (
     <FilterBarBodyWrapCol>
       <div
+        data-testid={"body__vals"}
         className="w-full grid gap-10 justify-items-center px-6"
         css={css`
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -74,6 +75,7 @@ const FilterBarBodyValsCol: FC<PropsType> = ({ filters }) => {
                   opt: el,
                   isChosen,
                   handleClick: () => handleClick(el.val as string),
+                  testID: `body__vals__${el.val}`,
                 }}
               />
             </div>

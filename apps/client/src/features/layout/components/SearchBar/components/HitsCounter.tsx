@@ -24,7 +24,9 @@ const HitsCounter = <R extends Record<string, any>>({ res }: PropsType<R>) => {
         {!!n_hits && <PartyPopper className="svg__md" />}
 
         <div className="w-full flex gap-6 items-center">
-          <span className="txt__2xl">{n_hits}</span>
+          <span data-testid={"search_bar__n_hits"} className="txt__2xl">
+            {n_hits}
+          </span>
 
           <span className="txt__xl">Result{n_hits !== 1 && "s"}</span>
         </div>

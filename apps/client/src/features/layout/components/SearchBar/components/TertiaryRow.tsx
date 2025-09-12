@@ -10,10 +10,14 @@ type PropsType = {} & MainBtnsSearchBarPropsType;
 
 const TertiaryRow: FC<PropsType> = ({ handleReset }) => {
   return (
-    <div className="search_bar__wrap_btns">
+    <div
+      data-testid={"search_bar__tertiary_row"}
+      className="search_bar__wrap_btns"
+    >
       <MainBtnsSearchBar
         {...{
           handleReset,
+          testIDs: ["tertiary_row__search", "tertiary_row__reset"],
         }}
       />
     </div>

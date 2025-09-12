@@ -49,7 +49,11 @@ const AddFieldTxtDrop = <T extends FieldValues>({
 
   return (
     !!filtered.length && (
-      <div ref={contRef} className="w-[75px] relative">
+      <div
+        data-testid={"search_bar__drop_row"}
+        ref={contRef}
+        className="w-[75px] relative"
+      >
         <BtnShadow
           {...{
             act: "INFO",
@@ -57,10 +61,12 @@ const AddFieldTxtDrop = <T extends FieldValues>({
               Svg: FaPlus,
             },
             handleClick: () => setIsShw(!isShw),
+            testID: "drop_row__btn",
           }}
         />
 
         <div
+          data-testid={"drop_row__txt_fields"}
           className="absolute w-[250px] border-2 border-w__0 rounded-xl left-0 z-10 bg-neutral-950 overflow-hidden max-h-[250px] scroll__app overflow-y-auto"
           css={css`
             top: calc(100% + 10px);
@@ -71,6 +77,7 @@ const AddFieldTxtDrop = <T extends FieldValues>({
         >
           {filtered.map((el) => (
             <div
+              data-testid={`txt_fields__${el.name}`}
               key={el.id}
               onClick={() => {
                 const newField = {

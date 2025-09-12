@@ -19,25 +19,28 @@ const SecondaryRow: FC = ({}) => {
   return (
     <div className="w-full grid grid-cols-1 gap-8">
       <div className="search_bar__wrap_btns">
-        {barsBtns.map((btn, i) => (
-          <div key={ids[i]} className="search_bar__btn">
-            <BtnShadow
-              {...{
-                el: btn,
-                act: "INFO",
-                handleClick: () =>
-                  setBar({ bar: !i ? "filterBar" : "sortBar", val: true }),
-                $customLabelCSS: css`
-                  display: none;
+        {barsBtns.map((btn, i) => {
+          const bar = !i ? "filterBar" : "sortBar";
+          return (
+            <div key={ids[i]} className="search_bar__btn">
+              <BtnShadow
+                {...{
+                  el: btn,
+                  act: "INFO",
+                  handleClick: () => setBar({ bar, val: true }),
+                  $customLabelCSS: css`
+                    display: none;
 
-                  ${resp("md")} {
-                    display: block;
-                  }
-                `,
-              }}
-            />
-          </div>
-        ))}
+                    ${resp("md")} {
+                      display: block;
+                    }
+                  `,
+                  testID: `search_bar__btn__${bar}`,
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

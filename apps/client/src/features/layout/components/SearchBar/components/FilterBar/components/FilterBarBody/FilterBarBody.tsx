@@ -14,6 +14,7 @@ type PropsType = {
 const FilterBarBody: FC<PropsType> = ({ filters }) => {
   return (
     <div
+      data-testid={"filter_bar__body"}
       className="w-full grid grid-cols-[80px_3px_1fr] md:grid-cols-[250px_3px_1fr] relative"
       css={css`
         height: 100%;

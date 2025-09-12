@@ -23,6 +23,7 @@ const SortBar: FC<PropsType> = ({ sorters }) => {
       {...{
         isPop: sortBar,
         setIsPop: (val: boolean | null) => setBar({ bar: "sortBar", val }),
+        testID: "search_bar__sort_bar",
       }}
     >
       <div className="w-full h-full flex flex-col gap-4">

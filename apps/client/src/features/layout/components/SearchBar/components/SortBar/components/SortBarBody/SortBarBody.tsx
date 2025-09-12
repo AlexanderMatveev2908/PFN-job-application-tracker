@@ -30,6 +30,7 @@ const SortBarBody: FC<PropsType> = ({ sorters }) => {
 
   return (
     <div
+      data-testid={"sort_bar__body"}
       className="flex flex-col overflow-y-auto scroll__app min-h-0 py-6 gap-10"
       css={css`
         max-height: calc(100% - 100px);
