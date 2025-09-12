@@ -74,7 +74,7 @@ async def ok_t(api: AsyncClient) -> None:
         ("jwt_not_provided", 401, "jwt_not_provided"),
         ("jwt_expired", 401, "jwt_expired"),
         ("invalid_payload", 422, None),
-        ("id_miss", 422, None),
+        ("id_invalid", 422, None),
     ],
 )
 async def bad_cases_t(
@@ -99,7 +99,7 @@ async def bad_cases_t(
 
     res_put = await wrap_httpx(
         api,
-        url=f"/job-applications/{result["appl_id"] if case != "id_miss" else ""}",  # noqa: E501
+        url=f"/job-applications/{result["appl_id"] if case != "id_invalid" else "<><>22222"}",  # noqa: E501
         method="PUT",
         expected_code=expected_code,
         data=updated_payload,
