@@ -5,6 +5,7 @@ import { extractHeaders, extractMsgErr, parseErr } from "./lib/etc";
 import { handleRefreshErr, refreshToken } from "./lib/refresh";
 import { getStorage } from "@/core/lib/storage";
 import { serialize } from "@/core/lib/dataStructure/serialization";
+import { ConfApiT } from "@/common/types/api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -19,12 +20,13 @@ export const baseQueryAxs: BaseQueryFn<
   params,
   responseType,
 }) => {
-  const conf = {
+  const conf: Omit<ConfApiT, "headers"> = {
     url: instanceAxs.defaults.baseURL + url,
     params,
     responseType,
     reqData: serialize(originalDataRequest),
     jwt: getStorage("access_token") as string,
+    method,
   };
 
   try {
@@ -45,7 +47,7 @@ export const baseQueryAxs: BaseQueryFn<
         conf: {
           ...conf,
           ...extractHeaders(headers),
-        },
+        } as ConfApiT,
         status,
       },
     };

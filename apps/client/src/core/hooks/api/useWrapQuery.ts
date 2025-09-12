@@ -15,6 +15,7 @@ type Params<T extends Record<string, any> | void> = {
   isError?: boolean;
   error?: any;
   data?: ResApiT<T>;
+  pushNotice?: number[] | "*";
 };
 
 export const useWrapQuery = <T extends Record<string, any> | void>({
@@ -25,6 +26,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
   isError,
   error,
   data,
+  pushNotice,
 }: Params<T>) => {
   const { handleErr } = useErrAPI();
   const hasRun = useRef(false);
@@ -41,7 +43,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
 
       handleMsgSession({ data: data as ResApiT<T>["data"], showToast });
     } else if (isError) {
-      handleErr({ err: error, hideErr, throwErr });
+      handleErr({ err: error, hideErr, throwErr, pushNotice });
     }
   }, [
     handleErr,
@@ -53,6 +55,7 @@ export const useWrapQuery = <T extends Record<string, any> | void>({
     data,
     throwErr,
     handleMsgSession,
+    pushNotice,
   ]);
 
   useEffect(() => {

@@ -68,12 +68,27 @@ export const jobApplicationSliceAPI = apiSlice.injectEndpoints({
       { applicationID: string; data: FormData }
     >({
       query: (data) => ({
-        url: `${BASE}/job-applications/put/${data.applicationID}`,
+        url: `${BASE}/${data.applicationID}`,
         method: "PUT",
         data: data.data,
       }),
 
-      invalidatesTags: [{ type: TagAPI.JOB_APPLICATIONS, id: "LIST" }],
+      invalidatesTags: (res, err, arg) => [
+        {
+          type: TagAPI.JOB_APPLICATIONS,
+          id: res?.job_application.id ?? arg.applicationID,
+        },
+      ],
+    }),
+
+    getJobApplicationByID: builder.query<
+      ResApiT<{ application: JobApplicationT }>,
+      string
+    >({
+      query: (applID) => ({
+        url: `${BASE}/${applID}`,
+        method: "GET",
+      }),
     }),
   }),
 });

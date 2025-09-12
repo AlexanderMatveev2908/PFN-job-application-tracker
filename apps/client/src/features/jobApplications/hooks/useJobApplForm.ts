@@ -10,13 +10,17 @@ import { useKitHooks } from "@/core/hooks/etc/useKitHooks";
 import { genFormData, logFormErrs } from "@/core/lib/forms";
 import { TriggerApiT } from "@/common/types/api";
 import { positionNameField } from "../uiFactory";
+import { JobApplicationT } from "../types";
+import { useEffect } from "react";
 
 type Params<T extends Record<string, any>> = {
   mutate: TriggerApiT<T>;
+  application?: JobApplicationT;
 };
 
 export const useJobApplForm = <T extends Record<string, any>>({
   mutate,
+  application,
 }: Params<T>) => {
   const formCtx = useForm({
     mode: "onChange",
@@ -33,13 +37,28 @@ export const useJobApplForm = <T extends Record<string, any>>({
     name: "txtFields",
   });
 
+  useEffect(() => {
+    if (!application) return;
+
+    reset({
+      company_name: application.company_name,
+      position_name: application.position_name,
+      status: application.status,
+      notes: application.notes ?? "",
+      applied_at: new Date(application.applied_at).toISOString().split("T")[0],
+    });
+  }, [application, reset]);
+
   const { nav, wrapAPI } = useKitHooks();
 
   const handleSave = handleSubmit(async (data) => {
     const formData = genFormData(data);
 
     const res = await wrapAPI<T>({
-      cbAPI: () => mutate(formData),
+      cbAPI: () =>
+        application
+          ? mutate({ data: formData, applicationID: application.id })
+          : mutate(data),
     });
 
     if (!res) return;

@@ -1,18 +1,16 @@
 from fastapi import Depends, Request, Response
 from src.conf.db import db_trx
 from src.decorators.res import ResAPI
-from src.features.job_applications.middleware.post_put_job_application import (
-    PostPutJobApplMdwReturnT,
-    post_put_job_application_mdw,
+from src.features.job_applications.middleware.post_job_application_mdw import (
+    PostJobApplMdwReturnT,
+    post_job_application_mdw,
 )
 from src.models.job_application import JobApplication
 
 
 async def add_job_appl_ctrl(
     req: Request,
-    res_check: PostPutJobApplMdwReturnT = Depends(
-        post_put_job_application_mdw
-    ),
+    res_check: PostJobApplMdwReturnT = Depends(post_job_application_mdw),
 ) -> Response:
 
     async with db_trx() as trx:
