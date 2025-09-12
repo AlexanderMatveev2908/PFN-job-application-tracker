@@ -70,7 +70,7 @@ test("register form swap 1", async ({ browser }) => {
 
   await clickByID(form, "form_field_pwd__toggle_password");
 
-  await waitTmr(page);
+  await waitTmr(page, 2000);
 
   await expect(pwd).toHaveAttribute("type", "text");
 

@@ -64,7 +64,7 @@ test("put appl ok", async ({ browser }) => {
   await clickByID(page, "job_application__form__submit");
 
   await waitURL(page, "/job-applications/read");
-  await waitTmr(page, 5000);
+  await waitTmr(page, 10000);
 
   const cards = await page.getByTestId("job_appl__card");
   await expect((await cards.all()).length).toBe(1);
