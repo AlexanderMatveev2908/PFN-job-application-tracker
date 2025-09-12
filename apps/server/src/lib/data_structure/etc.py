@@ -1,6 +1,9 @@
+import inspect
 import re
 from typing import Any, Optional
 import uuid
+
+from src.decorators.err import ErrAPI
 
 
 def is_obj_ok(obj: object | None) -> bool:
@@ -51,3 +54,13 @@ def pick(
 
 def dest_d(d: Any, keys: list[str]) -> tuple:
     return tuple(d[k] for k in keys if k in d)
+
+
+def pack(*names: str) -> dict[str, Any]:
+    frame = inspect.currentframe()
+    if frame is None or frame.f_back is None:
+        raise ErrAPI(msg="No caller frame available", status=500)
+
+    caller_locals = frame.f_back.f_locals
+
+    return {n: caller_locals[n] for n in names}
