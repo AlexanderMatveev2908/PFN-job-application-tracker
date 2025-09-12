@@ -48,5 +48,6 @@ export const preJobApplRead = async (browser: Browser) => {
     access_token,
     searchBar,
     applications,
+    spanHits,
   };
 };

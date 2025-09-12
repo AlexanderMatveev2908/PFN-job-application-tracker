@@ -77,6 +77,7 @@ const Popup: FC<WrapPopPropsType> = ({
               isEnabled: allowClose,
               Svg: X,
               act: "ERR",
+              testID: "btn__close_popup",
             }}
           />
         </div>

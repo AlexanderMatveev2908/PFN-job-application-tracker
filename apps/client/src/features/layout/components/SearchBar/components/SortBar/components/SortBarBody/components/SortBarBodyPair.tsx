@@ -62,6 +62,7 @@ const SortBarBodyPair: FC<PropsType> = ({ el, currVal, handleClick }) => {
                       display: block;
                     }
                   `,
+                  testID: `sort_bar__${el.name}__${val}`,
                 }}
               />
             </div>
