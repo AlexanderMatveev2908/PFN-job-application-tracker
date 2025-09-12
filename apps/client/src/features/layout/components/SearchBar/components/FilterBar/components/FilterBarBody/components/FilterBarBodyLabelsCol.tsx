@@ -20,7 +20,7 @@ const FilterBarBodyLabelsCol: FC<PropsType> = ({ filters }) => {
 
   return (
     <FilterBarBodyWrapCol>
-      <div className="w-full grid grid-cols-1">
+      <div data-testid={"body__labels"} className="w-full grid grid-cols-1">
         {filters.map((el, i) => (
           <div
             onClick={() => setCurrFilter({ val: el.label })}

@@ -2,6 +2,7 @@ import test, { expect } from "@playwright/test";
 import { preJobApplRead } from "./pre";
 import { clickByID, getByID } from "../../lib_tests/idx";
 import { waitTmr } from "../../lib_tests/shortcuts/wait";
+import { ApplicationStatusT } from "@/features/jobApplications/types";
 
 test("read job appl ok", async ({ browser }) => {
   const { searchBar, applications, page } = await preJobApplRead(browser);
@@ -30,13 +31,13 @@ test("read job appl ok", async ({ browser }) => {
 
   await waitTmr(page, 5000);
 
-  const cards = await page.getByTestId("job_appl__card");
-  const count = await cards.count();
+  const cardsByTxt = await page.getByTestId("job_appl__card");
+  const countByTxt = await cardsByTxt.count();
 
-  await expect(count >= 1).toBeTruthy();
+  await expect(countByTxt >= 1).toBeTruthy();
 
   let found = false;
-  for (const c of await cards.all()) {
+  for (const c of await cardsByTxt.all()) {
     try {
       const companyName = await getByID(c, "card__company_name");
       await expect(firstAppl.company_name).toBe(await companyName.innerText());
@@ -51,4 +52,43 @@ test("read job appl ok", async ({ browser }) => {
   }
 
   await expect(found).toBe(true);
+
+  await clickByID(searchBar, "tertiary_row__reset");
+
+  await waitTmr(page, 5000);
+
+  const spanHits = await getByID(searchBar, "search_bar__n_hits");
+  await expect(await spanHits.innerText()).toBe("5");
+
+  await clickByID(searchBar, "search_bar__btn__filterBar");
+  await waitTmr(page);
+
+  const filterBar = await getByID(page, "search_bar__filter_bar");
+  const filterBarBodyVals = await getByID(
+    await getByID(filterBar, "filter_bar__body"),
+    "body__vals"
+  );
+
+  await clickByID(filterBar, "search_bar__btn__close_filter_bar");
+  await waitTmr(page);
+
+  for (const status of Object.values(ApplicationStatusT)) {
+    await clickByID(searchBar, "tertiary_row__reset");
+
+    await clickByID(searchBar, "search_bar__btn__filterBar");
+    await waitTmr(page);
+
+    await clickByID(filterBarBodyVals, `body__vals__${status}`);
+
+    await clickByID(filterBar, "search_bar__btn__close_filter_bar");
+
+    await waitTmr(page, 5000);
+
+    const cardsByStatus = await page.getByTestId("job_appl__card");
+    const countByStatus = await cardsByStatus.count();
+
+    await expect(countByStatus).toBe(
+      applications.filter((el) => el.status === status).length
+    );
+  }
 });
