@@ -19,9 +19,12 @@ import { applicationStatusChoices } from "../../uiFactory";
 
 type PropsType = {
   handleSave: () => void;
+  propsCSR?: {
+    isLoading: boolean;
+  };
 };
 
-const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
+const JobApplicationForm: FC<PropsType> = ({ handleSave, propsCSR = {} }) => {
   const {
     control,
     setFocus,
@@ -33,7 +36,7 @@ const JobApplicationForm: FC<PropsType> = ({ handleSave }) => {
   useFocus("company_name", { setFocus });
 
   return (
-    <WrapCSR>
+    <WrapCSR {...propsCSR}>
       <form
         data-testid={`${testID}__form`}
         onSubmit={handleSave}

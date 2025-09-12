@@ -5,6 +5,7 @@ from src.features.job_applications.controllers.get import (
     read_job_appl_ctrl,
 )
 from src.features.job_applications.controllers.post import add_job_appl_ctrl
+from src.features.job_applications.controllers.put import put_application_ctrl
 from src.middleware.security.rate_limiter import rate_limit_mdw
 
 
@@ -22,4 +23,12 @@ job_applications_router.add_api_route("/", read_job_appl_ctrl, methods=["GET"])
 
 job_applications_router.add_api_route(
     "/{application_id}", get_appl_by_id_ctrl, methods=["GET"]
+)
+
+
+job_applications_router.add_api_route(
+    "/{application_id}",
+    put_application_ctrl,
+    methods=["PUT"],
+    dependencies=[Depends(rate_limit_mdw(20))],
 )

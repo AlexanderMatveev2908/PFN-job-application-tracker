@@ -1,6 +1,7 @@
 from fastapi import Depends, Request, Response
 from sqlalchemy import UnaryExpression, select
 from src.conf.db import db_trx
+from src.decorators.err import ErrAPI
 from src.decorators.res import ResAPI
 from src.features.job_applications.middleware.get_appl_by_id import (
     GetApplByIdMdwReturnT,
@@ -77,4 +78,16 @@ async def get_appl_by_id_ctrl(
     res_check: GetApplByIdMdwReturnT = Depends(get_appl_by_id_mdw),
 ) -> Response:
 
-    return ResAPI(req).ok_200()
+    async with db_trx() as trx:
+        application = (
+            await trx.execute(
+                select(JobApplication).where(
+                    JobApplication.id == res_check["application_id"]
+                )
+            )
+        ).scalar_one_or_none()
+
+        if not application:
+            raise ErrAPI(msg="application not found", status=404)
+
+        return ResAPI(req).ok_200(application=application)

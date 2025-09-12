@@ -26,11 +26,13 @@ class ApplicationStatusT(Enum):
 
 
 class JobApplicationDct(TypedDict):
+    id: str
     user_id: str | uuid.UUID
     company_name: str
     position_name: str
     status: ApplicationStatusT
     applied_at: int
+    notes: str | None
 
 
 class JobApplication(RootTable):

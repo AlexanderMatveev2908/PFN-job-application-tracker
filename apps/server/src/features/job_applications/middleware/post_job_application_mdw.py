@@ -29,14 +29,14 @@ class JobApplicationFormT(BaseModel):
     )
 
 
-class PostPutJobApplMdwReturnT(TypedDict):
+class PostJobApplMdwReturnT(TypedDict):
     job_appl: JobApplicationDct
     us_d: UserDcT
 
 
-async def post_put_job_application_mdw(
+async def post_job_application_mdw(
     req: Request,
-) -> PostPutJobApplMdwReturnT:
+) -> PostJobApplMdwReturnT:
 
     res_check = await check_form_mdw_logged(
         JobApplicationFormT, data=getattr(req.state, "parsed_f", None)

@@ -1,3 +1,4 @@
+import { MethodHttpT } from "@/core/store/conf/baseQuery/lib/types";
 import { AxiosRequestConfig } from "axios";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -31,7 +32,10 @@ export type ConfApiT = {
   responseType: AxiosRequestConfig["responseType"];
   headers: HeadersT;
   jwt?: string;
+  method: MethodHttpT;
+  reqData: any;
 };
+
 export type DataApiT = {
   conf?: ConfApiT;
   status?: number;
