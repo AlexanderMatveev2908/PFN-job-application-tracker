@@ -1,35 +1,47 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
+import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { JobApplicationT } from "@/features/jobApplications/types";
-import { css } from "@emotion/react";
 import type { FC } from "react";
-import { IoStatsChart } from "react-icons/io5";
+import { btnsFooter } from "../../uiFactory/cards";
+import BtnSvg from "@/common/components/buttons/BtnSvg";
+import { formatDate } from "@/core/lib/dataStructure/formatters";
+import LinkSvg from "@/common/components/links/LinkSvg";
 
 type PropsType = {
   job: JobApplicationT;
-  suffix: string;
 };
 
-const JobApplFooter: FC<PropsType> = ({ job, suffix }) => {
+const JobApplFooter: FC<PropsType> = ({ job }) => {
+  const {
+    ids: [ids],
+  } = useGenIDs({ lengths: [2] });
+
   return (
-    <div
-      data-testid={"job_appl__card__status"}
-      className="mx-auto border-2 rounded-xl py-2 px-10"
-      css={css`
-        color: var(--${suffix});
-      `}
-    >
-      <PairTxtSvg
-        {...{
-          el: {
-            Svg: IoStatsChart,
-            label: job.status,
-          },
-          testID: "card__status",
-        }}
-      />
+    <div className="w-full flex justify-center items-center gap-8 flex-wrap">
+      {btnsFooter.map((el, idx) => (
+        <div key={ids[idx]} className="mx-auto">
+          {!idx ? (
+            <LinkSvg
+              {...{
+                act: "INFO",
+                Svg: el.Svg,
+                tooltipTxt: `Last Update: ${formatDate(job.updated_at)}`,
+                href: `/job-applications/put/${job.id}`,
+              }}
+            />
+          ) : (
+            <BtnSvg
+              {...{
+                act: "ERR",
+                Svg: el.Svg,
+                tooltipTxt: "Delete",
+              }}
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };

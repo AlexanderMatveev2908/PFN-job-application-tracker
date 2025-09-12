@@ -3,7 +3,7 @@ import { REG_JOB_NAME } from "@/core/constants/regex";
 import { parseDevValUsFriendly } from "@/core/lib/dataStructure/formatters";
 import { MapperArrayFieldsT, txtFieldSchema } from "@/core/paperwork";
 import z from "zod";
-import { searchJobsFieldsTxt } from "../uiFactory";
+import { searchJobsFieldsTxt } from "../uiFactory/search";
 import { ApplicationStatusT } from "../../../types";
 import { isStr } from "@/core/lib/dataStructure/ect";
 

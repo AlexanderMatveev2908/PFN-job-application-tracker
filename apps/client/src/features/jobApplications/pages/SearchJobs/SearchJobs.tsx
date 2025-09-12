@@ -7,7 +7,7 @@ import {
   filtersSearchJobs,
   searchJobsFieldsTxt,
   sortersSearchJobs,
-} from "./uiFactory";
+} from "./uiFactory/search";
 import { resetValsSearchJobs, SearchJobsFormT } from "./paperwork";
 import { FormFieldTxtSearchBarT } from "@/common/types/ui";
 import WrapCSR from "@/common/components/wrappers/pages/WrapCSR";

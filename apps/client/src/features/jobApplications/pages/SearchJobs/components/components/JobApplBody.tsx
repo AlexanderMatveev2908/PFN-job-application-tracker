@@ -5,26 +5,19 @@ import DropMenuAbsolute from "@/common/components/dropMenus/DropMenuAbsolute";
 import { css } from "@emotion/react";
 import type { FC } from "react";
 import { TbNotes } from "react-icons/tb";
-import { genPairsSecondaryInfoCard } from "../../uiFactory";
-import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
-import BtnSvg from "@/common/components/buttons/BtnSvg";
 import { JobApplicationT } from "@/features/jobApplications/types";
+import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
+import { IoStatsChart } from "react-icons/io5";
 
 type PropsType = {
   job: JobApplicationT;
+  suffix: string;
 };
 
-const JobApplSideInfo: FC<PropsType> = ({ job }) => {
-  const { ids } = useGenIDs({ lengths: [2] });
-
+const JobApplBody: FC<PropsType> = ({ job, suffix }) => {
   return (
-    <div
-      className="w-full grid gap-6 justify-items-center"
-      css={css`
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      `}
-    >
-      <div className="w-fit">
+    <div className="w-full flex gap-8 items-center justify-center flex-wrap">
+      <div className="w-fit mx-auto">
         <DropMenuAbsolute
           {...{
             el: {
@@ -47,20 +40,25 @@ const JobApplSideInfo: FC<PropsType> = ({ job }) => {
         </DropMenuAbsolute>
       </div>
 
-      <div className="w-full grid grid-cols-2 justify-items-center">
-        {genPairsSecondaryInfoCard(job).map((pair, i) => (
-          <BtnSvg
-            key={ids[0][i]}
-            {...{
-              Svg: pair.Svg,
-              tooltipTxt: pair.val,
-              $SvgSize: "sm",
-            }}
-          />
-        ))}
+      <div
+        data-testid={"job_appl__card__status"}
+        className="mx-auto border-2 rounded-xl py-2 px-10"
+        css={css`
+          color: var(--${suffix});
+        `}
+      >
+        <PairTxtSvg
+          {...{
+            el: {
+              Svg: IoStatsChart,
+              label: job.status,
+            },
+            testID: "card__status",
+          }}
+        />
       </div>
     </div>
   );
 };
 
-export default JobApplSideInfo;
+export default JobApplBody;

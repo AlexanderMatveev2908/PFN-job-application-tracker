@@ -2,16 +2,16 @@
 "use client";
 
 import type { FC } from "react";
-import { genPairsMainCardInfo } from "../../uiFactory";
 import PairTxtSvg from "@/common/components/elements/PairTxtSvg";
 import { useGenIDs } from "@/core/hooks/etc/useGenIDs";
 import { JobApplicationT } from "@/features/jobApplications/types";
+import { genPairsMainCardInfo } from "../../uiFactory/cards";
 
 type PropsType = {
   job: JobApplicationT;
 };
 
-const JobApplMainInfo: FC<PropsType> = ({ job }) => {
+const JobApplHeader: FC<PropsType> = ({ job }) => {
   const { ids } = useGenIDs({ lengths: [4] });
 
   return genPairsMainCardInfo(job).map((pair, i) => (
@@ -29,4 +29,4 @@ const JobApplMainInfo: FC<PropsType> = ({ job }) => {
   ));
 };
 
-export default JobApplMainInfo;
+export default JobApplHeader;

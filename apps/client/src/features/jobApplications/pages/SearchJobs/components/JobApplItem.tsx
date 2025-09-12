@@ -7,8 +7,8 @@ import {
 } from "@/features/jobApplications/types";
 import type { FC } from "react";
 import { css } from "@emotion/react";
-import JobApplMainInfo from "./components/JobApplMainInfo";
-import JobApplSideInfo from "./components/JobApplSideInfo";
+import JobApplHeader from "./components/JobApplHeader";
+import JobApplBody from "./components/JobApplBody";
 import JobApplFooter from "./components/JobApplFooter";
 
 type PropsType = {
@@ -30,16 +30,16 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
   return (
     <div
       data-testid={`job_appl__card`}
-      className="w-full grid grid-cols-1 border-3 p-5 rounded-xl gap-6"
+      className="w-full grid grid-cols-1 border-3 p-5 rounded-xl gap-8"
       css={css`
         border-color: var(--${suffix});
       `}
     >
-      <JobApplMainInfo {...{ job }} />
+      <JobApplHeader {...{ job }} />
 
-      <JobApplSideInfo {...{ job }} />
+      <JobApplBody {...{ job, suffix }} />
 
-      <JobApplFooter {...{ job, suffix }} />
+      <JobApplFooter {...{ job }} />
     </div>
   );
 };
