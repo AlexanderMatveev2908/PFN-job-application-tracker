@@ -16,8 +16,8 @@ type PropsType = {
 
 const JobApplBody: FC<PropsType> = ({ job, suffix }) => {
   return (
-    <div className="w-full flex gap-8 items-center justify-center flex-wrap">
-      <div className="w-fit mx-auto">
+    <div className="w-full flex gap-8 items-center justify-around flex-wrap">
+      <div className="w-fit">
         <DropMenuAbsolute
           {...{
             el: {
@@ -42,7 +42,7 @@ const JobApplBody: FC<PropsType> = ({ job, suffix }) => {
 
       <div
         data-testid={"job_appl__card__status"}
-        className="mx-auto border-2 rounded-xl py-2 px-10"
+        className="border-2 rounded-xl py-2 px-10"
         css={css`
           color: var(--${suffix});
         `}
