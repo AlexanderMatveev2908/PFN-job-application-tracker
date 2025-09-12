@@ -548,7 +548,7 @@ erDiagram
   tokens {
     uuid user_id
     token_type token_t
-    string alg
+    alg_type alg
     bytes hashed
     bigint exp
   }
