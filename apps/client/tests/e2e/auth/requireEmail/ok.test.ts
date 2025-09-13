@@ -3,7 +3,7 @@ import { preRequireEmail } from "./pre";
 import { genMailNoticeMsg } from "@/core/constants/etc";
 import { getByID, getByTxt } from "../../lib_tests/shortcuts/get";
 import { clickByID } from "../../lib_tests/shortcuts/click";
-import { waitTmr, waitURL } from "../../lib_tests/shortcuts/wait";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
 
 test("require email auth ok", async ({ browser }) => {
   const { form, page, payload } = await preRequireEmail(browser, true);
@@ -13,8 +13,6 @@ test("require email auth ok", async ({ browser }) => {
   await clickByID(form, "conf_email__form__submit");
 
   await waitURL(page, "/notice");
-
-  await waitTmr(page);
 
   await getByTxt(page, genMailNoticeMsg("to confirm the account"));
 

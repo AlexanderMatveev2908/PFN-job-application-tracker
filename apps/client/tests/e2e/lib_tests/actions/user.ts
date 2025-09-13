@@ -27,8 +27,6 @@ export const getAccessManageAcc = async (browser: Browser) => {
   await pwd.fill(payload.password);
   await clickByID(form, "manage_acc__form__submit");
 
-  await waitTmr(page);
-
   await waitURL(page, "/user/manage-account");
 
   await isToastOk(page);

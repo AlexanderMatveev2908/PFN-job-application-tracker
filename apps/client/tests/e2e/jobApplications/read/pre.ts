@@ -7,7 +7,6 @@ import {
 } from "../../lib_tests/idx";
 import { REG_ID } from "@/core/constants/regex";
 import { JobApplicationT } from "@/features/jobApplications/types";
-import { waitTmr } from "../../lib_tests/shortcuts/wait";
 
 export const preJobApplRead = async (browser: Browser) => {
   const { page, access_token, ...rst } = await getTokensLib(browser, {});
@@ -34,8 +33,6 @@ export const preJobApplRead = async (browser: Browser) => {
   await expect(applications.length).toBe(5);
 
   await page.goto("/job-applications/read");
-
-  await waitTmr(page, 5000);
 
   const searchBar = await getByID(page, "search_bar");
   const spanHits = await getByID(searchBar, "search_bar__n_hits");

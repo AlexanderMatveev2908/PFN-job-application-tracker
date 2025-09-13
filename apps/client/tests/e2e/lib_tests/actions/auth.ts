@@ -2,7 +2,7 @@ import { genMailNoticeMsg } from "@/core/constants/etc";
 import { preAuthRegister } from "../../auth/register/pre";
 import { clickByID } from "../shortcuts/click";
 import { getByID, getByTxt } from "../shortcuts/get";
-import { waitTmr, waitURL } from "../shortcuts/wait";
+import { waitURL } from "../shortcuts/wait";
 import { preAuthLogin } from "../../auth/login/pre";
 import { Browser, expect, Page } from "@playwright/test";
 import { genRegisterPayload, PayloadRegisterT } from "../conf/payloads";
@@ -26,8 +26,6 @@ export const registerUserOk = async (
 
   await clickByID(form, "btns_swapper_next_swap");
 
-  await waitTmr(page);
-
   const pwd = await getByID(form, "password");
   await pwd.fill(payload.password);
 
@@ -37,8 +35,6 @@ export const registerUserOk = async (
   await clickByID(form, "body__form_terms");
 
   await clickByID(form, "register__form__submit");
-
-  await waitTmr(page);
 
   await waitURL(page, "/notice");
 
@@ -65,8 +61,6 @@ export const loginUserOk = async (browser: Browser) => {
   await clickByID(form, "login__form__submit");
 
   await waitURL(page, "/");
-
-  await waitTmr(page);
 
   await getByTxt(page, "operation successful");
 

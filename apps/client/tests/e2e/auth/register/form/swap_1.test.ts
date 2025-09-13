@@ -4,14 +4,11 @@ import { checkTxtList } from "../../../lib_tests/shortcuts/check";
 import { clickByID } from "../../../lib_tests/shortcuts/click";
 import { checkTxtOpc } from "../../../lib_tests/shortcuts/style";
 import { preAuthRegister } from "../pre";
-import { waitTmr } from "../../../lib_tests/shortcuts/wait";
 
 test("register form swap 1", async ({ browser }) => {
   const { form, page } = await preAuthRegister(browser);
 
   await clickByID(form, "btns_swapper_next_swap");
-
-  await waitTmr(page);
 
   const pwd = await getByID(form, "password");
   await expect(pwd).toBeFocused();
@@ -44,8 +41,6 @@ test("register form swap 1", async ({ browser }) => {
 
   await btn.hover();
 
-  await waitTmr(page);
-
   await getByTxt(page, "generate password");
 
   await btn.click();
@@ -63,20 +58,14 @@ test("register form swap 1", async ({ browser }) => {
   await pwd.fill(content!);
   await confPwd.fill(content!);
 
-  await waitTmr(page);
-
   await checkTxtOpc(page, msgs[0]);
   await checkTxtOpc(page, "passwords do not match");
 
   await clickByID(form, "form_field_pwd__toggle_password");
 
-  await waitTmr(page, 2000);
-
   await expect(pwd).toHaveAttribute("type", "text");
 
   await clickByID(form, "form_field_pwd__toggle_confirm_password");
-
-  await waitTmr(page, 2000);
 
   await expect(pwd).toHaveAttribute("type", "password");
   await expect(confPwd).toHaveAttribute("type", "text");

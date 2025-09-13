@@ -15,7 +15,7 @@ export const checkLinksList = async (parent: Locator, arg: string[]) => {
 };
 
 export const checkIsShw = async (el: Locator) => {
-  await el.waitFor({ state: "visible", timeout: 30 * 1000 });
+  await el.first().waitFor({ state: "visible", timeout: 30 * 1000 });
 };
 
 export const checkIsFocused = async (el: Locator) => {

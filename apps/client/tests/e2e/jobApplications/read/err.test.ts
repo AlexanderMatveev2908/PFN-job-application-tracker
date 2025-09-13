@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
 import { clickByID, getByID, getByTxt, preTest } from "../../lib_tests/idx";
-import { waitTmr, waitURL } from "../../lib_tests/shortcuts/wait";
+import { waitURL } from "../../lib_tests/shortcuts/wait";
 import { preJobApplRead } from "./pre";
 
 test("read job appl non logged user err", async ({ browser }) => {
@@ -16,15 +16,11 @@ test("read job appl forbidden char err", async ({ browser }) => {
     await getByID(searchBar, "primary_row__company_name")
   ).fill("<><>forbidden");
 
-  await waitTmr(page);
-
   await getByTxt(page, "invalid company name");
 
   await expect(await spanHits.innerText()).toBe("5");
 
   await clickByID(searchBar, "tertiary_row__search");
-
-  await waitTmr(page);
 
   await expect(await spanHits.innerText()).toBe("5");
 });

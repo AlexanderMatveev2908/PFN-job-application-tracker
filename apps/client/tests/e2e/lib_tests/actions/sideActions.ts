@@ -4,7 +4,7 @@ import { getByID, getByTxt } from "../shortcuts/get";
 import { b32ToHex, hexToRgb } from "@/core/lib/dataStructure/parsers";
 import { totp } from "otplib";
 import type { KeyEncodings } from "@otplib/core";
-import { waitTmr, waitURL } from "../shortcuts/wait";
+import { waitURL } from "../shortcuts/wait";
 import { checkIsFocused } from "../idx";
 
 export const closeToast = async (page: Page): Promise<undefined> => {
@@ -64,7 +64,6 @@ export const submitFormBackupCode = async (
   { backup_codes, url }: { backup_codes: string[]; url: string }
 ) => {
   await clickByID(page, "btns_swapper_next_swap");
-  await waitTmr(page);
 
   const form = await getByID(page, "backup_code__form");
   const codeInput = await getByID(form, "backup_code");
