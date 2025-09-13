@@ -36,6 +36,7 @@ const JobApplFooter: FC<PropsType> = ({ job, handleOpenPop }) => {
                 act: "ERR",
                 el,
                 handleClick: () => handleOpenPop(job),
+                testID: "btn__del_appl",
               }}
             />
           )}
