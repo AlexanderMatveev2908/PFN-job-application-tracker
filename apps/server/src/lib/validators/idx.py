@@ -1,4 +1,5 @@
 from typing import Self
+from fastapi import Request
 from pydantic import (
     BaseModel,
     EmailStr,
@@ -9,6 +10,7 @@ from pydantic import (
 from src.constants.reg import (
     REG_BACKUP_CODE,
     REG_CBC_HMAC,
+    REG_ID,
     REG_PWD,
     REG_TOTP_CODE,
 )
@@ -74,3 +76,12 @@ class PaginationFormT(BaseModel):
     limit: int = Field(
         gt=0,
     )
+
+
+def check_id_lib(req: Request, key: str) -> str:
+    params_id = req.path_params.get(key, "")
+
+    if not REG_ID.fullmatch(params_id):
+        raise ErrAPI(msg=f"invalid ${key}", status=422)
+
+    return params_id

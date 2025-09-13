@@ -1,5 +1,5 @@
 import datetime
-from typing import TypedDict, cast
+from typing import cast
 from fastapi import Request
 from pydantic import BaseModel, Field
 
@@ -8,7 +8,7 @@ from src.middleware.forms.check_form import (
     check_form_mdw_logged,
 )
 from src.models.job_application import ApplicationStatusT, JobApplicationDct
-from src.models.user import UserDcT
+from src.my_types.idx import UserDctReturnT
 
 
 class JobApplicationFormT(BaseModel):
@@ -29,9 +29,8 @@ class JobApplicationFormT(BaseModel):
     )
 
 
-class PostJobApplMdwReturnT(TypedDict):
+class PostJobApplMdwReturnT(UserDctReturnT):
     job_appl: JobApplicationDct
-    us_d: UserDcT
 
 
 async def post_job_application_mdw(

@@ -1,11 +1,11 @@
 import json
-from typing import Awaitable, Callable, Generic, Type, TypedDict, cast
+from typing import Awaitable, Callable, Generic, Type, cast
 from fastapi import Request
 from pydantic import ValidationError
 from src.decorators.err import ErrAPI
 from src.middleware.tokens.check_jwt import check_jwt_search_us_mdw
 from src.models.user import UserDcT
-from src.my_types.idx import FormT
+from src.my_types.idx import FormT, UserDctReturnT
 
 
 async def check_form_mdw(
@@ -41,9 +41,8 @@ async def check_form_mdw(
         )
 
 
-class CheckFormLoggedReturnT(TypedDict, Generic[FormT]):
+class CheckFormLoggedReturnT(UserDctReturnT, Generic[FormT]):
     data: dict
-    us_d: UserDcT
 
 
 def check_form_mdw_logged(
