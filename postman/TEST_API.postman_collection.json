@@ -71,17 +71,17 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "color",
+									"key": "color[]",
 									"value": "red",
 									"type": "text"
 								},
 								{
-									"key": "color",
+									"key": "color[]",
 									"value": "green",
 									"type": "text"
 								},
 								{
-									"key": "color",
+									"key": "color[]",
 									"value": "blue",
 									"type": "text"
 								},
@@ -98,7 +98,8 @@
 										"/home/ninja/Pictures/books/albert_camus/la_caduta.jpg",
 										"/home/ninja/Pictures/books/albert_camus/la_peste.jpg",
 										"/home/ninja/Pictures/books/albert_camus/lo_starniero.jpg"
-									]
+									],
+									"disabled": true
 								},
 								{
 									"key": "video",
@@ -106,7 +107,8 @@
 									"src": [
 										"/home/ninja/Videos/libraries/0.mp4",
 										"/home/ninja/Videos/libraries/6.mp4"
-									]
+									],
+									"disabled": true
 								}
 							]
 						},
@@ -294,7 +296,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{pwd}}\",\n    \"confirm_password\":\"{{pwd}}\",\n    \"terms\":true\n}",
+							"raw": "{\n    \"first_name\":\"A\",\n    \"last_name\":\"M\",\n    \"email\":\"{{email}}\",\n    \"password\":\"{{pwd}}\",\n    \"confirm_password\":\"{{pwd}}\",\n    \"terms\":true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -427,7 +429,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"totp_code\":\"197340\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
+							"raw": "{\n    \"totp_code\":\"207832\",\n    \"cbc_hmac_token\":\"{{cbc_hmac_token}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1191,6 +1193,243 @@
 									"key": "empty_codes",
 									"value": "false"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "job_applications",
+			"item": [
+				{
+					"name": "add_job_application",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "applied_at",
+									"value": "2025-09-07",
+									"type": "text"
+								},
+								{
+									"key": "company_name",
+									"value": "python software",
+									"type": "text"
+								},
+								{
+									"key": "position_name",
+									"value": "backend  dev",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "APPLIED",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "txt...",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/job-applications",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"job-applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read_job_applications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/job-applications?limit=5&page=0&company_name=&position_name=",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"job-applications"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "company_name",
+									"value": ""
+								},
+								{
+									"key": "position_name",
+									"value": ""
+								},
+								{
+									"key": "status[]",
+									"value": "APPLIED",
+									"disabled": true
+								},
+								{
+									"key": "status[]",
+									"value": "REJECTED",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_appl_by_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/job-applications/750189b8-e54e-4b4d-b8a0-e35019fc3da5",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"job-applications",
+								"750189b8-e54e-4b4d-b8a0-e35019fc3da5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DEF_URL}}/job-applications/516e3831-d1c7-467e-b7fc-65c4349a025a",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"job-applications",
+								"516e3831-d1c7-467e-b7fc-65c4349a025a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_appl",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "applied_at",
+									"value": "2025-09-07",
+									"type": "text"
+								},
+								{
+									"key": "company_name",
+									"value": "python software",
+									"type": "text"
+								},
+								{
+									"key": "position_name",
+									"value": "backend  dev",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "APPLIED",
+									"type": "text"
+								},
+								{
+									"key": "notes",
+									"value": "txt...",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DEF_URL}}/job-applications/516e3831-d1c7-467e-b7fc-65c4349a025a",
+							"host": [
+								"{{DEF_URL}}"
+							],
+							"path": [
+								"job-applications",
+								"516e3831-d1c7-467e-b7fc-65c4349a025a"
 							]
 						}
 					},
