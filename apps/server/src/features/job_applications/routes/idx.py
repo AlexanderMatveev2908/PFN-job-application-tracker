@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from src.features.job_applications.controllers.delete import del_appl_ctrl
 from src.features.job_applications.controllers.get import (
     get_appl_by_id_ctrl,
     read_job_appl_ctrl,
@@ -30,5 +31,12 @@ job_applications_router.add_api_route(
     "/{application_id}",
     put_application_ctrl,
     methods=["PUT"],
+    dependencies=[Depends(rate_limit_mdw(20))],
+)
+
+job_applications_router.add_api_route(
+    "/{application_id}",
+    del_appl_ctrl,
+    methods=["DELETE"],
     dependencies=[Depends(rate_limit_mdw(20))],
 )

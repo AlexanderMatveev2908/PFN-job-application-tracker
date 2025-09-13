@@ -35,8 +35,6 @@ test("put appl ok", async ({ browser }) => {
 
   await page.goto(`/job-applications/put/${job_application.id}`);
 
-  await waitTmr(page, 5000);
-
   const companyNameField = await getByID(page, "company_name");
   await expect(companyNameField).toHaveValue(job_application.company_name);
 
@@ -59,11 +57,8 @@ test("put appl ok", async ({ browser }) => {
 
   await clickByID(wrapBoxes, `swap_boxes__${updatedPayload.status}`);
 
-  await waitTmr(page);
-
   await clickByID(page, "job_application__form__submit");
 
-  await waitTmr(page, 10000);
   await waitURL(page, "/job-applications/read");
   await waitTmr(page, 10000);
 

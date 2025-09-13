@@ -1,6 +1,5 @@
 import test, { expect } from "@playwright/test";
 import { clickByID, getByID, isToastOk } from "../../lib_tests/idx";
-import { waitTmr } from "../../lib_tests/shortcuts/wait";
 import AdmZip from "adm-zip";
 import { getAccessManageAccVerified } from "../../lib_tests/actions/user";
 
@@ -8,8 +7,6 @@ test("setup 2FA ok", async ({ browser }) => {
   const { swap, page } = await getAccessManageAccVerified(browser);
 
   await clickByID(swap, "setup_2FA__btn");
-
-  await waitTmr(page, 10000);
 
   await isToastOk(page);
 

@@ -18,8 +18,6 @@ test("register form swap 0", async ({ browser }) => {
 
   const msgs = ["invalid characters", "last name is required", "invalid email"];
 
-  await waitTmr(page);
-
   await checkTxtList(page, msgs);
 
   await firstName.fill("John");
