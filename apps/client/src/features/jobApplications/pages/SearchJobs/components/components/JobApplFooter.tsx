@@ -10,9 +10,10 @@ import BtnShadow from "@/common/components/buttons/BtnShadow";
 
 type PropsType = {
   job: JobApplicationT;
+  handleOpenPop: (el: JobApplicationT) => void;
 };
 
-const JobApplFooter: FC<PropsType> = ({ job }) => {
+const JobApplFooter: FC<PropsType> = ({ job, handleOpenPop }) => {
   const {
     ids: [ids],
   } = useGenIDs({ lengths: [2] });
@@ -34,6 +35,7 @@ const JobApplFooter: FC<PropsType> = ({ job }) => {
               {...{
                 act: "ERR",
                 el,
+                handleClick: () => handleOpenPop(job),
               }}
             />
           )}
