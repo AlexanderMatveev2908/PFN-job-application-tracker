@@ -13,6 +13,7 @@ import JobApplFooter from "./components/JobApplFooter";
 
 type PropsType = {
   job: JobApplicationT;
+  handleOpenPop: (el: JobApplicationT) => void;
 };
 
 const statusClrMapper = {
@@ -24,7 +25,7 @@ const statusClrMapper = {
   [ApplicationStatusT.WITHDRAWN]: "yellow__600",
 };
 
-const JobApplItem: FC<PropsType> = ({ job }) => {
+const JobApplItem: FC<PropsType> = ({ job, handleOpenPop }) => {
   const suffix = statusClrMapper[job.status];
 
   return (
@@ -39,7 +40,7 @@ const JobApplItem: FC<PropsType> = ({ job }) => {
 
       <JobApplBody {...{ job, suffix }} />
 
-      <JobApplFooter {...{ job }} />
+      <JobApplFooter {...{ job, handleOpenPop }} />
     </div>
   );
 };

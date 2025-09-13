@@ -36,6 +36,19 @@ export const jobApplicationsSlice = createSlice({
 
       jobApplicationsAdapter.setAll(state, job_applications);
     },
+
+    insertJobAt: (
+      state,
+      action: PayloadAction<{ idx: number; appl: JobApplicationT }>
+    ) => {
+      const { idx, appl } = action.payload;
+
+      const all = jobApplicationsAdapter.getSelectors().selectAll(state);
+
+      const updated = [...all.slice(0, idx), appl, ...all.slice(idx)];
+
+      jobApplicationsAdapter.setAll(state, updated);
+    },
   },
 });
 
@@ -45,5 +58,7 @@ export const getJobApplicationsState = (state: StoreStateT) =>
 export const jobsSelectors = jobApplicationsAdapter.getSelectors(
   (state: StoreStateT) => state.jobApplications
 );
+
+export const getJobByID = jobsSelectors.selectById;
 
 export const getJobList = jobsSelectors.selectAll;

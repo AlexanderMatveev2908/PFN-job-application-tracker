@@ -24,6 +24,7 @@ const Txt: FC<PropsType> = ({ $size, $justify, $ctmCSS, txt }) => {
         className={`txt__${$size}`}
         css={css`
           ${$ctmCSS}
+          text-align: ${$justify};
         `}
       >
         {txt}

@@ -1,7 +1,8 @@
 import { ResApiT, TagAPI } from "@/common/types/api";
 import { apiSlice } from "@/core/store/api";
 import { JobApplicationT } from "../types";
-import { jobApplicationsSlice } from "./slice";
+import { getJobList, jobApplicationsSlice } from "./slice";
+import { StoreStateT } from "@/core/store";
 
 const BASE = "/job-applications";
 
@@ -89,6 +90,41 @@ export const jobApplicationSliceAPI = apiSlice.injectEndpoints({
         url: `${BASE}/${applID}`,
         method: "GET",
       }),
+    }),
+
+    delJobApplByID: builder.mutation<ResApiT<void>, string>({
+      query: (applID) => ({
+        url: `${BASE}/${applID}`,
+        method: "DELETE",
+      }),
+
+      async onQueryStarted(applID, { dispatch, getState, queryFulfilled }) {
+        const store = getState() as StoreStateT;
+
+        const jobs = getJobList(store);
+        const idx = jobs.findIndex((el) => el.id === applID);
+        const target = jobs[idx]; // save the entity
+        if (!target) return;
+
+        dispatch(jobApplicationsSlice.actions.delJob(target.id));
+
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            jobApplicationSliceAPI.util.invalidateTags([
+              {
+                type: TagAPI.JOB_APPLICATIONS,
+                id: "LIST",
+              },
+            ])
+          );
+        } catch {
+          dispatch(
+            jobApplicationsSlice.actions.insertJobAt({ idx, appl: target })
+          );
+        }
+      },
     }),
   }),
 });

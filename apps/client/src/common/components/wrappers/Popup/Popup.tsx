@@ -17,7 +17,7 @@ import { TestIDT } from "@/common/types/ui";
 export type BtnWrapPopT = {
   msg?: string;
   type?: AppEventT;
-  handleClick?: () => void;
+  handleClick?: () => void | Promise<void>;
   isLoading?: boolean;
 };
 
@@ -89,7 +89,8 @@ const Popup: FC<WrapPopPropsType> = ({
             <div className="w-full grid grid-cols-1 mt-[100px] gap-8">
               {ids.map((id, idx) => {
                 const label =
-                  propsActions.btns[idx].msg ?? (idx ? "Confirm" : "Cancel");
+                  propsActions.btns[idx].msg ?? (!idx ? "Cancel" : "Confirm");
+
                 return (
                   <div
                     key={id}
@@ -103,7 +104,7 @@ const Popup: FC<WrapPopPropsType> = ({
                         },
                         isLoading: propsActions.btns[idx].isLoading,
                         act:
-                          propsActions.btns[idx].type ?? (idx ? "ERR" : "OK"),
+                          propsActions.btns[idx].type ?? (!idx ? "OK" : "ERR"),
                         handleClick:
                           propsActions.btns[idx].handleClick ??
                           (() => setIsPop(false)),
