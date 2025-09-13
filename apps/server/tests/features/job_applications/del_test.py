@@ -87,7 +87,7 @@ async def bad_cases_t(
 
     res_del = await wrap_httpx(
         api,
-        url=url if case != "wrong_id" else "/job-applications/<wjf",
+        url=url if case != "wrong_id" else "/job-applications/w222jf",
         expected_code=expected_code,
         method="DELETE",
         access_token=access_token,
