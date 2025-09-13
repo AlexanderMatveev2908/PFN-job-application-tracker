@@ -4,5 +4,5 @@ import { waitTmr } from "./wait";
 export const goPage = async (page: Page, url: string) => {
   await page.goto(url);
 
-  await waitTmr(page, 2000);
+  await waitTmr(page);
 };

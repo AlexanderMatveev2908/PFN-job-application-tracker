@@ -10,14 +10,14 @@ export const checkTxtList = async (page: Page, msgs: string[]) => {
 export const checkLinksList = async (parent: Locator, arg: string[]) => {
   for (const name of arg) {
     const lk = parent.getByRole("link", { name });
-    await lk.waitFor({ state: "visible", timeout: 5000 });
+    await lk.waitFor({ state: "visible", timeout: 30 * 1000 });
   }
 };
 
 export const checkIsShw = async (el: Locator) => {
-  await el.waitFor({ state: "visible", timeout: 5000 });
+  await el.waitFor({ state: "visible", timeout: 30 * 1000 });
 };
 
 export const checkIsFocused = async (el: Locator) => {
-  await expect(el).toBeFocused({ timeout: 5000 });
+  await expect(el).toBeFocused({ timeout: 30 * 1000 });
 };

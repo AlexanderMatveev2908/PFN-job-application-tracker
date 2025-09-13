@@ -31,7 +31,7 @@ test("require email user ok", async ({ browser }) => {
 
   await clickByID(form, "conf_email__form__submit");
 
-  await waitTmr(page, 2000);
+  await waitTmr(page);
 
   await getByTxt(page, "email different from one declared at register time");
 

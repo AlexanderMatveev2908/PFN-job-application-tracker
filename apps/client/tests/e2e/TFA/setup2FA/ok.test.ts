@@ -9,7 +9,7 @@ test("setup 2FA ok", async ({ browser }) => {
 
   await clickByID(swap, "setup_2FA__btn");
 
-  await waitTmr(page, 10000);
+  await waitTmr(page, 5000);
 
   await isToastOk(page);
 
