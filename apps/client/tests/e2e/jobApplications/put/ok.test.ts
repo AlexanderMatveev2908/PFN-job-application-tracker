@@ -1,37 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import test, { expect } from "@playwright/test";
-import {
-  BASE_URL,
-  clickByID,
-  genPayloadJobAppl,
-  getByID,
-  getTokensLib,
-} from "../../lib_tests/idx";
+import { clickByID, genPayloadJobAppl, getByID } from "../../lib_tests/idx";
 import { waitTmr, waitURL } from "../../lib_tests/shortcuts/wait";
-import { JobApplicationT } from "@/features/jobApplications/types";
-
-const relevantKeys = ["company_name", "position_name", "status"];
+import { preJobAppl, relevantKeysJobAppl } from "../pre";
 
 test("put appl ok", async ({ browser }) => {
-  const { page, access_token } = await getTokensLib(browser, {});
-
-  const originalPayload = genPayloadJobAppl();
-
-  const resPost = await page.request.post(`${BASE_URL}/job-applications`, {
-    data: originalPayload,
-    headers: {
-      authorization: `Bearer ${access_token}`,
-    },
-  });
-
-  const { job_application } = (await resPost.json()) as {
-    job_application: JobApplicationT;
-  };
-
-  for (const k of relevantKeys)
-    await expect(
-      (job_application as any)[k] === (originalPayload as any)[k]
-    ).toBe(true);
+  const { originalPayload, page, job_application } = await preJobAppl(browser);
 
   await page.goto(`/job-applications/put/${job_application.id}`);
 
@@ -67,7 +41,7 @@ test("put appl ok", async ({ browser }) => {
 
   const cardUpdated = await cards.nth(0);
 
-  for (const k of relevantKeys)
+  for (const k of relevantKeysJobAppl)
     await expect(
       await (await getByID(cardUpdated, `card__${k}`)).innerText()
     ).toBe((updatedPayload as any)[k]);

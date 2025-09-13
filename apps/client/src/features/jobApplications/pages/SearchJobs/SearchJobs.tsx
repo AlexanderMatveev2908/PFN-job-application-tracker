@@ -86,6 +86,7 @@ const SearchJobs = <K extends any[]>({ hook, schema }: PropsType<K>) => {
         {...{
           isPop,
           setIsPop,
+          testID: "popup__del_application",
           propsActions: {
             btns: [
               {},
